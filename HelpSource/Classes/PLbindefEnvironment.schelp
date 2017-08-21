@@ -1,0 +1,44 @@
+CLASS::PLbindefEnvironment
+summary::Environment made by PLbindef to set its sources
+categories:: Libraries>miSCellaneous>PLx suite, Streams-Patterns-Events>PLx suite
+related:: Overviews/miSCellaneous, Tutorials/PLx_suite, Classes/PLbindef, Classes/PLbindefPar, Classes/PLbindefParEnvironment, Classes/EventShortcuts, Tutorials/PLx_and_live_coding_with_Strings
+
+
+DESCRIPTION::
+Instances of this class are made as side effect of PLbindef creation, assigned to PLbindef's name in an Environment of choice (by default the current one) and used to set PLbindef's sources in condensed syntax. They are not thought to be created, cleaned up and removed explicitely, this is all done by the interface of PLbindef. See link::Classes/PLbindef:: for examples.
+
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PLbindefEnvironment object with arguments of IdentityDictionary. In contrast to the latter strong::know:: defaults to true, which allows setting sources of the PLbindef in object prototyping style. strong::name:: is used for the corresponding key of the PLbindef.
+
+
+INSTANCEMETHODS::
+
+private::miSC_setName
+
+method::put
+
+Associates strong::obj:: with Symbol strong::key:: and updates PLbindef's source.
+
+
+
+method::superPut
+
+Associates strong::obj:: with Symbol strong::key:: mimicing link::Classes/IdentityDictionary#-put::.
+
+
+method::value
+
+Expects key/value pairs and applies strong::put::.
+
+
+method::name
+
+Getter for PLbindef's name.
+
+
+

@@ -1,0 +1,163 @@
+CLASS:: PLswitch1
+summary:: dynamic scope Pswitch1 variant
+categories::Libraries>miSCellaneous>PLx suite, Streams-Patterns-Events>PLx suite
+related:: Overviews/miSCellaneous, Classes/Pswitch1, Classes/PLswitch, Tutorials/PLx_suite, Tutorials/Event_patterns_and_Functions, Classes/VarGui, Tutorials/VarGui_shortcut_builds
+
+
+DESCRIPTION::
+
+
+Takes Symbol args for later reference by the Streams, which will read from variables in the Environments of their instantiation. See link::Tutorials/PLx_suite::.
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PLswitch1 object.
+
+argument::list
+Symbol or Pswitch1 list arg.
+If a Symbol is passed, list can be assigned to an envir variable later on.
+This lists's elements can be dynamically replaced by Patterns or Streams.
+
+argument::which
+Symbol or Pswitch1 which arg. If a Symbol is passed, repeats can be assigned to an envir variable later on. Can be dynamically replaced by Patterns or Streams. Defaults to 0.
+
+argument::cutItems
+Symbol or Boolean or Integer (0 or 1) or a Function returning Boolean or Integer.
+If a Symbol is passed, cutItems can be assigned to an envir variable later on.
+Determines if list items, which are Patterns or Streams themselves,
+will be finished if a replacement occurs during their embedding, or if they will be replaced immediately. The latter is the default behaviour (default value true).
+For protecting whole lists from immediate replacements see link::Classes/PLn::.
+
+argument::envir
+Dictionary or one of the Symbols
+\top, \t (topEnvironment), \current, \c (currentEnvironment).
+Dictionary to be taken for variable reference. Defaults to \current.
+
+
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+// definition for future reference in arbitrary Environments
+
+p = PLswitch1(\a, \w);
+
+
+// run Pbind in current Environment
+// take PLseq as they already default to repeats = inf
+
+(
+~a = [PLseq((85..80)), PLseq((65..70))];
+~w = PLseq([0, 1]);
+
+x = Pbind(\midinote, p, \dur, 0.1).play;
+)
+
+// update array element
+
+~a[1] = PLseq([96, 95]);
+
+
+// update array
+
+~a = [59, 85];
+
+
+// update index pattern, used to stop also
+
+~w = Pseq([0, 0, 1], 5);
+
+
+
+//////////////////////
+
+
+// placeholder may also get lists of event patterns
+
+(
+p = PLswitch1(\a, \w);
+
+~a = [
+	Pbind(
+        \midinote, Pwhite(60, 65),
+        \dur, 0.2
+    ),
+    Pbind(
+        \midinote, Pwhite(70, 75),
+        \dur, 0.15
+    ),
+    Pbind(
+        \midinote, Pwhite(80, 85),
+        \dur, 0.1
+    ),
+    Pbind(
+        \midinote, Pwhite(90, 95),
+        \dur, 0.05
+    )
+];
+
+~w = PLseq((0..3));
+
+x = p.play;
+)
+
+
+// replace index sequence
+
+~w = PLseq([3, 0]);
+
+~w = PLseq([1, 2]);
+
+
+// replace array element
+
+(
+~a[2] = Pbind(
+    \midinote, Pwhite(70, 75) + [0, 5],
+    \dur, 0.15
+);
+)
+
+
+// replace whole array
+
+(
+~a = [
+	Pbind(
+        \midinote, Pwhite(60, 65) + [0, 5],
+        \dur, 0.15
+    ),
+    Pbind(
+        \midinote, Pwhite(70, 80) + [0, 4],
+        \dur, 0.25
+    ),
+    Pbind(
+        \midinote, Pwhite(95, 100) + [0, -9],
+        \dur, 0.05
+    ),
+    Pbind(
+        \midinote, Pwhite(95, 100) + [0, -14],
+        \dur, 0.02
+    )
+];
+)
+
+~w = PLshuf((0..3));
+
+~w = PLshufn((0..3));
+
+
+x.stop;
+
+::
+ 

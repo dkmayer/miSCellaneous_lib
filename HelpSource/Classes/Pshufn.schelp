@@ -1,0 +1,51 @@
+CLASS::Pshufn
+summary::Pshuf with continuing permutations
+categories::Libraries>miSCellaneous>Other patterns
+related:: Overviews/miSCellaneous, Classes/Pshuf
+
+
+DESCRIPTION::
+
+
+Variation of Pshuf which scrambles the list with every repeat. 
+
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new Pshufn object.
+
+argument::list
+List to be scrambled.
+
+argument::repeats
+Number of permutations. Defaults to 1.
+
+
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+        
+(
+p = Pbind(
+    \midinote, Pshufn((70..73), inf),
+    \dur, 0.2
+);
+)
+
+x = p.play;
+
+x.stop;
+
+:: 
+ 
+ 

@@ -1,0 +1,43 @@
+CLASS::PLbindefParEnvironment
+summary::Environment made by PLbindefPar to set its sources
+categories:: Libraries>miSCellaneous>PLx suite, Streams-Patterns-Events>PLx suite
+related:: Overviews/miSCellaneous, Tutorials/PLx_suite, Classes/PLbindef, Classes/PLbindefPar, Classes/PLbindefEnvironment, Classes/EventShortcuts, Tutorials/PLx_and_live_coding_with_Strings
+
+
+DESCRIPTION::
+Instances of this class are made as side effect of PLbindefPar creation, assigned to PLbindefPar's name in an Environment of choice (by default the current one) and used to set PLbindefPar's sources in condensed syntax. They are not thought to be created, cleaned up and removed explicitely, this is all done by the interface of PLbindefPar. A PLbindefParEnvironment stores the sources passed with keys as well as the "unfolded" sources of single PLbindef streams. This is done by assigning PLbindefEnvironments to every Integer index of the PLbindefPar and updating them additionally. See link::Classes/PLbindefPar:: for examples.
+
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PLbindefParEnvironment object with arguments of IdentityDictionary. In contrast to the latter strong::know:: defaults to true, which allows setting sources of the PLbindefPar in object prototyping style. strong::name:: is used for the corresponding key of the PLbindefPar. strong::num:: is the number of parallel patterns in the PLbindefPar.
+
+
+INSTANCEMETHODS::
+
+private::miSC_setNum
+
+
+method::put
+
+Associates strong::obj:: with Symbol strong::key:: and updates PLbindefPar's source as well as the stored PLbindefEnvironments depending on the class of strong::obj::. For a SequenceableCollection items are assigned in the PLbindefEnvironments of corresponding indices (method 'wrapAt' is used for handling cases of smaller collections). Other passed objects are assigned in all PLbindefEnvironments.
+
+
+method::plbindefParInit
+
+Initializes the Environment, which includes using all integers up to strong::num:: - 1 as keys.
+
+
+method::value
+
+Expects key/value pairs and applies strong::put::. Optionally the first arg can be an Integer or a collection of Integers, specifying the PLbindefs to be set.
+
+method::num
+
+Getter for PLbindefPar's size.
+
+
+
