@@ -1,0 +1,85 @@
+CLASS:: PLexprand
+summary:: dynamic scope Pexprand variant
+categories::Libraries>miSCellaneous>PLx suite, Streams-Patterns-Events>PLx suite
+related:: Overviews/miSCellaneous, Classes/Pexprand, Tutorials/PLx_suite, Tutorials/Event_patterns_and_Functions, Classes/VarGui, Tutorials/VarGui_shortcut_builds 
+
+
+DESCRIPTION::
+
+
+Takes Symbol args for later reference by the Streams, which will read from variables in the Environments of their instantiation. See link::Tutorials/PLx_suite::. 
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PLexprand object.
+
+argument::lo
+Symbol or Pexprand lo arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Can be dynamically replaced by Patterns or Streams. Defaults to 0.0001.
+
+argument::hi
+Symbol or Pexprand hi arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Can be dynamically replaced by Patterns or Streams. Defaults to 1.
+
+argument::length
+Symbol or Pexprand length arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Defaults to inf.
+
+argument::envir
+Dictionary or one of the Symbols 
+\top, \t (topEnvironment), \current, \c (currentEnvironment).
+Dictionary to be taken for variable reference. Defaults to \current.
+
+
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+		
+		
+// definition for future reference in arbitrary Environments,
+// intervals grow together with base tone
+
+(
+q = PLexprand(\lo, \hi);
+
+p = Pbind(
+    \midinote, 60 + q + PLtuple([0, q]),
+    \dur, 0.1
+);
+)
+
+
+// prepare current Environment
+
+(
+~lo = 0.1;
+~hi = 10;
+)
+
+
+// run
+
+x = p.play;
+
+
+// replace  
+
+~hi = 20;
+
+x.stop;
+
+::
+ 

@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; min-height: 16.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #f60000}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #f60000}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #003fff}
+span.s5 {text-decoration: underline ; color: #01a0ff}
+span.s6 {color: #0091ff}
+span.s7 {text-decoration: underline ; color: #00a0ff}
+span.s8 {color: #0020e2}
+span.s9 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>PL<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>dynamic scope placeholder pattern<span class="Apple-converted-space"> </span></b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: PL_Pattern</b></p>
+<p class="p4"><br></p>
+<p class="p1">Takes Symbol args for later reference by the Streams, which will read from variables in the Environments of their instantiation. See <a href="PLx suite.html"><span class="s4">PLx suite</span></a>.</p>
+<p class="p1"><b>NOTE: </b>PL follows a paradigm of immediate replacement. There are cases though where you might prefer to finish streams or substreams before replacement, especially when syncing comes into play, for these options consider <a href="PLn.html"><span class="s5">PLn</span></a> and the <b>cutItems</b> arg of PLx list patterns.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>See also: </b><a href="PLn.html"><span class="s5">PLn</span></a></span><span class="s6">,</span><span class="s2"> <a href="Event patterns and Functions.html"><span class="s3">Event patterns and Functions</span></a></span><span class="s6">,</span><span class="s2"> <a href="VarGui.html"><span class="s7">VarGui</span></a></span><span class="s6">,</span><span class="s2"> <a href="VarGui shortcut builds.html"><span class="s3">VarGui shortcut builds</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new (item, repeats, type, envir)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new PL object.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>item </b>- Symbol or other Object.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If a Symbol is passed, item can be assigned to an envir variable later on.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Can be dynamically replaced by Patterns or Streams.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>repeats </b>- Symbol or repeats arg. Defaults to inf.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If a Symbol is passed, repeats can be assigned to an envir variable later on.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>type </b>- Expects 1 or inf.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defines how items other than Patterns or Streams should be embedded.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 1. Rather to be used by other PLx Patterns than by the user.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>envir </b>- Dictionary or one of the Symbols</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\top, \t (topEnvironment), \current, \c (currentEnvironment).</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Dictionary to be taken for variable reference. Defaults to \current.</p>
+<p class="p10"><br></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><b>Examples</b></p>
+<p class="p12"><br></p>
+<p class="p13">(</p>
+<p class="p13">s = <span class="s8">Server</span>.local;</p>
+<p class="p13"><span class="s8">Server</span>.default = s;</p>
+<p class="p13">s.boot;</p>
+<p class="p13">)</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14">// definition for future reference in arbitrary Environments</p>
+<p class="p6"><br></p>
+<p class="p13">p = <span class="s8">Pbind</span>(<span class="s9">\midinote</span>, <span class="s8">PL</span>(<span class="s9">\a</span>), <span class="s9">\dur</span>, 0.2);</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p15">// prepare current Environment</p>
+<p class="p4"><br></p>
+<p class="p13">(</p>
+<p class="p13">~a = 60;</p>
+<p class="p13">x = p.play;</p>
+<p class="p13">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p15">// replace with items or patterns</p>
+<p class="p4"><br></p>
+<p class="p13">~a = 58;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p15">// PL had repeats = inf, so Pseq is embedded endlessly</p>
+<p class="p4"><br></p>
+<p class="p13">~a = <span class="s8">Pseq</span>([60, 60, 58, 60, 53, 54.5, 56, 58]);</p>
+<p class="p4"><br></p>
+<p class="p13">x.stop;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p15">//////////////////////</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14">// placeholder may also get event patterns</p>
+<p class="p6"><br></p>
+<p class="p13">(</p>
+<p class="p13">p = <span class="s8">PL</span>(<span class="s9">\a</span>, 1);</p>
+<p class="p4"><br></p>
+<p class="p13">~a = <span class="s8">Pbind</span>(</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s9">\midinote</span>, <span class="s8">Pwhite</span>(80, 85),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s9">\dur</span>, 0.2</p>
+<p class="p13">);</p>
+<p class="p4"><br></p>
+<p class="p13">x = p.play;</p>
+<p class="p13">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14">// replace, PL had repeats = 1, so ...<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p13">(</p>
+<p class="p13">~a = <span class="s8">Pbind</span>(</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s9">\midinote</span>, <span class="s8">Pseq</span>((70..65)),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s9">\dur</span>, 0.05</p>
+<p class="p13">);</p>
+<p class="p13">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p15">//////////////////////</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14">// PL may be used in cases where there is no PLx implementation</p>
+<p class="p4"><br></p>
+<p class="p14">// Pseg used for pitch curve, linear interpolation<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p13">(</p>
+<p class="p13">p = <span class="s8">Pbind</span>(</p>
+<p class="p16"><span class="s2"><span class="Apple-tab-span">	</span></span>\midinote<span class="s2">, </span><span class="s8">Pseg</span><span class="s2">(</span><span class="s8">PL</span><span class="s2">(</span>\p<span class="s2">), </span><span class="s8">PL</span><span class="s2">(</span>\d<span class="s2">), </span>\lin<span class="s2">, </span><span class="s8">inf</span><span class="s2">),</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s9">\dur</span>, 0.1</p>
+<p class="p13">);</p>
+<p class="p4"><br></p>
+<p class="p13">~p = <span class="s8">Pshuf</span>((50..75));</p>
+<p class="p4"><br></p>
+<p class="p13">~d = 0.2;</p>
+<p class="p4"><br></p>
+<p class="p13">x = p.play;</p>
+<p class="p13">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p15">// play with segment length</p>
+<p class="p4"><br></p>
+<p class="p13">~d = 0.4;</p>
+<p class="p4"><br></p>
+<p class="p13">~d = 1;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p15">// can also be replaced by pattern</p>
+<p class="p4"><br></p>
+<p class="p13">~d = <span class="s8">Pseq</span>([0.2, 0.4, 1]);</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p15">// only two points left for interpolation<span class="Apple-converted-space"> </span></p>
+<p class="p15">// there may be repetitions<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p13">~p = <span class="s8">Pshufn</span>([50, 100]).trace;</p>
+<p class="p4"><br></p>
+<p class="p13">x.stop;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+</body>
+</html>

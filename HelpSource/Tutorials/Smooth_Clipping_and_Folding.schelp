@@ -1,0 +1,207 @@
+TITLE::Smooth Clipping and Folding	
+summary::a suite of pseudo ugens for smooth clipping and folding
+categories::Libraries>miSCellaneous>WaveFolding
+related:: Overviews/miSCellaneous, Guides/Introduction_to_miSCellaneous, Classes/SmoothClipS, Classes/SmoothClipQ, Classes/SmoothFoldS, Classes/SmoothFoldQ, Classes/SmoothFoldS2, Classes/SmoothFoldQ2
+
+DESCRIPTION::
+
+Wave folding is a synthesis technique from analog days, going back to Donald Buchla and the tradition of west coast synthesis. Smooth clipping and folding pseudo ugens from miSCellaneous lib come in variants which include quadratic and sinusoidal waveshaping and allow clipping and folding without aliasing. This can also be used for buffer scratching, a synthesis technique which I have been experimenting with recently with great fun.
+
+
+EXAMPLES::
+
+anchor::Ex. 1::
+subsection::Ex. 1:   Different types of folding
+
+code::
+
+// A typical usage is preamplifying a signal, here we start with a sine wave, compare plots
+
+{
+	[
+		// just smooth clipping
+		SmoothClipS.ar(SinOsc.ar(50) * 10), 
+		
+		// folding with main lib's Fold ugen
+		Fold.ar(SinOsc.ar(50) * 10, -1, 1), 
+		
+		// folding with rather low smoothing 
+		// wave shaper is partiallly a sine wave
+		SmoothFoldS.ar(SinOsc.ar(50) * 10, smoothAmount: 0.3), 
+		
+		// folding with maximum smoothing 
+		// wave shaper is full sine wave
+		SmoothFoldS.ar(SinOsc.ar(50) * 10, smoothAmount: 1), 
+		
+		// wave is folded back only to border ranges
+		SmoothFoldS.ar(SinOsc.ar(50) * 10, foldRange: 0.3),
+
+		// folding with different sizes of border ranges
+		SmoothFoldS2.ar(SinOsc.ar(50) * 10, foldRangeLo: 0.5, foldRangeHi: 0.2)
+	]
+}.plot(1/50)
+
+::
+
+image::attachments/Smooth_Clipping_and_Folding/fold_examples.png::
+
+
+
+anchor::Ex. 2::
+subsection::Ex. 2:   Generating rich spectra by folding sine waves
+
+code::
+
+// Folding ugens do multichannel expansion, let two anticyclic sines control the fold range,
+// control smoothing amount with MouseX
+
+(
+x = {
+	var source = SinOsc.ar(50);
+	SmoothFoldS.ar(source, -0.1, 0.1, SinOsc.kr(0.05, [0, pi]).range(0.1, 1), MouseX.kr(0, 1))
+}.scope
+)
+
+x.release
+
+
+// Compare with the parabolic smoothing variant, the difference isn't great in this case
+
+(
+x = {
+	var source = SinOsc.ar(50);
+	SmoothFoldQ.ar(source, -0.1, 0.1, SinOsc.kr(0.05, [0, pi]).range(0.1, 1), MouseX.kr(0, 1))
+}.scope
+)
+
+x.release
+
+
+// slow modulations of source frequency with independant LFOs 
+
+(
+x = {
+	var source = SinOsc.ar(50 * { LFDNoise3.kr(0.1).range(0.98, 1.02) } ! 2);
+	SmoothFoldS.ar(source, -0.1, 0.1, SinOsc.kr(0.05, [0, pi]).range(0.1, 1))
+}.scope
+)
+
+x.release
+
+
+// Adding more complexity by applying preamplification (causes more folding) and adding an offset,
+// these operations are also L/R-independant 
+
+(
+x = {
+	var source = SinOsc.ar(
+		50 * { LFDNoise3.kr(0.1).range(0.98, 1.02) } ! 2,
+		0,
+		{ LFDNoise3.kr(0.15).range(0.5, 3) } ! 2,
+		{ LFDNoise3.kr(0.2).range(-2, 2) } ! 2
+	);
+	SmoothFoldS.ar(source, -0.1, 0.1, SinOsc.kr(0.05, [0, pi]).range(0.1, 1))
+}.scope
+)
+
+x.release
+::
+
+
+
+anchor::Ex. 3::
+subsection::Ex. 3:   Applying modulated folding to LFO sources
+
+code::
+
+// the other way round, take a lfo source and modulate folding parameters, here the relative folding range
+
+(
+x = {
+	var source = LFDNoise3.ar(0.3!2).range(0.5, 1);
+	SmoothFoldS.ar(source, -0.1, 0.1, SinOsc.ar([50, 50.1]).range(0.1, 1) )
+}.scope
+)
+
+x.release
+
+
+// modulating fold bounds
+
+(
+x = {
+	var source = LFDNoise3.ar(0.3!2).range(0.5, 1);
+	var bounds = SinOsc.ar([50, 50.1]).range(0.02, 0.1);
+	SmoothFoldS.ar(source, bounds.neg, bounds)
+}.scope
+)
+
+x.release
+
+
+// modulating bounds and range
+
+(
+x = {
+	var source = LFDNoise3.ar(0.3!2).range(0.5, 1);
+	var range = SinOsc.ar([50, 50.1]).range(0.02, 0.1);
+	SmoothFoldS.ar(source, range.neg, range, SinOsc.ar([200, 200.1]).range(0.5, 1))
+}.scope
+)
+
+x.release
+::
+
+
+
+anchor::Ex. 4::
+subsection::Ex. 4:   Buffer scratching with folded signal as position control
+
+code::
+
+// Interesting micro textures can be generated that way.
+// Technically this is waveshaping with an audio buffer as transfer function and the folded signal as source.
+
+// compare with granulation, sound file from buffer granulation tutorial
+
+b = Buffer.read(s, Platform.miSCellaneousDirs[0] +/+ "Sounds" +/+ "kitchen_sounds_1.wav");
+// This searches the most likely extension places for the miSCellaneous folder.
+// In case of an extraordinary install situation or a removed sound file, pass the concerned path.
+
+
+(
+SynthDef(\bufScratchFold, { |bufnum = 0, globalFreq = 0.7, localOscSize = 0.01, foldRange = 0.28,
+	localFreq = 0.87, preAmp = 1.4, smoothAmount = 0.36|
+	var sig = BufRd.ar(
+		1,
+		bufnum,
+		(
+			// define global and local movement
+			LFDNoise3.ar(globalFreq).range(0.2, 0.7) +
+			SmoothFoldS.ar(
+				// adding space by decorrelating the local scratching / oscillation
+				LFTri.ar(localFreq * ({ LFDNoise3.ar(0.2).range(0.999, 1.001) } ! 2)) * preAmp,
+				foldRange: foldRange,
+				smoothAmount: smoothAmount
+			) * localOscSize
+		) * BufFrames.ir(bufnum)
+	);
+	// as local oscillation can stick with positive or negative values, a dc leaker is recommended 
+	Out.ar(0, LeakDC.ar(sig) * EnvGate.new)
+}).add
+)
+
+x = Synth(\bufScratchFold, [bufnum: b])
+
+x.set(\preAmp, 5.4)
+x.set(\foldRange, 0.08)
+x.set(\localFreq, 0.5)
+x.set(\localOscSize, 0.05)
+x.set(\foldRange, 0.02)
+x.set(\localFreq, 0.1)
+
+x.release
+
+::
+
+

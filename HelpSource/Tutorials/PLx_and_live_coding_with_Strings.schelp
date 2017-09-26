@@ -1,0 +1,773 @@
+TITLE::PLx and live coding with Strings
+summary::PLx patterns as placeholders for sequencing with letters
+categories:: Libraries>miSCellaneous>PLx suite
+related:: Overviews/miSCellaneous, Guides/Introduction_to_miSCellaneous, Tutorials/PLx_suite, Classes/PsymNilSafe, Classes/PLbindef, Classes/PLbindefPar, Classes/EventShortcuts 
+
+
+DESCRIPTION::
+
+Strings and Chars as high-level representations for musical objects can be used for sequencing with very condensed syntax. This is already possible with standard patterns like Pseq etc. – PLx list patterns fit this concept as their referenced Arrays/Strings can be replaced on the fly. Examples below also use EventShortcuts to minimize typing.
+
+warning::
+Sequencing with infinite Patterns/Streams has always the potential of hangs. E.g. Psym hangs if all referenced pattern return nil (SC 3.7.2). Here convenience method link::Classes/Pattern#-symplay:: is suggested: it employs PsymNilSafe, its method strong::embedInStream:: performs a check like in James Harkins' PnNilSafe from ddwPatterns quark (which can't be used directly this case). strong::symplay:: thus avoids hangs of that type, see link::#Ex.2b#Ex.2b) Embedding with continuation::.
+::
+
+
+anchor::above::
+code::
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+(
+// synthdefs to play with, use of EventShortcuts
+
+SynthDef(\noise, { |out = 0, freq = 400, att = 0.005, rel = 0.1, rq = 0.1, amp = 0.1|
+	var sig = { WhiteNoise.ar } ! 2;
+	sig = BPF.ar(sig, freq, rq) *
+		EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2) *
+		(rq ** -1) * (250 / (freq ** 0.8));
+	OffsetOut.ar(out, sig);
+}).add;
+
+SynthDef(\sin, { |out = 0, freq = 400, att = 0.005, rel = 0.1, amp = 0.1|
+	var sig = { SinOsc.ar(freq, Rand(0, 2pi)) } ! 2;
+	sig = sig * EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2);
+	OffsetOut.ar(out, sig);
+}).add;
+
+
+SynthDef(\saw, { |out = 0, freq = 400, att = 0.005, rel = 0.1, amp = 0.1|
+	var sig = { VarSaw.ar(freq, Rand(0, 1)) } ! 2;
+	sig = sig * EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2);
+	OffsetOut.ar(out, sig);
+}).add;
+
+EventShortcuts.on;
+)
+::
+
+
+SECTION::Ex.1) Straight usage with finite Patterns and Events
+
+code::
+(
+// use EventShortcuts
+
+EventShortcuts.on;
+EventShortcuts.postAll;
+
+// base Pbind
+
+~x = Pbind(\d, 0.1, \i, \sin);
+
+// chars for the string, event patterns or events
+
+~a = Pbind(\m, Pseries(60, 2, 4)) <> ~x;
+~b = Pbind(\m, Pseries(80, -2, 8)) <> ~x;
+~c = (i: \saw, m: [95, 96, 97], d: 0.8);
+
+// define sequence
+
+~p = "aab"
+)
+
+// symplay wraps into a PsymNilSafe
+// PLseq defaults to repeats = inf and refers to 'p' in current Environment,
+// thus the String "aab", the EventStreamPlayer should also get a name for start/stop,
+// in this case we take the same letter (p) as interpreter variable
+
+p = PLseq(\p).symplay
+
+
+// replace String of PLseq
+
+~p = "aacb"
+
+
+// use of basic String operations
+
+~p = ~p ++ "cc"
+
+~p = ~p.reverse
+
+
+(
+// new char and sequence
+
+~d = Pbind(\m, Pwhite(60, 90, 2), \i, \noise) <> ~x;
+~p = "adadcb";
+)
+
+// replace String
+
+~p = "bbcbcad"
+
+
+// new chars
+// the Function as first arg of Pseries is evaluated with every embedding,
+// thus movements up and down start on different pitches
+
+(
+~a = Pbind(\m, Pseries({ rrand(60, 75) }, 7, 4)) <> ~x;
+~b = Pbind(\m, Pseries({ rrand(85, 95) }, -5, 8)) <> ~x;
+~c = Pbind(\i, \noise, \m, Pn((95..100), 2)) <> ~x
+)
+
+
+// modify ~b
+
+~b = Pbind(\i, PLrand([\sin, \saw])) <> ~b;
+
+
+// modify list, loop goes on
+// evaluate several times, compare sound and posted String
+
+~p = ~p.scramble
+
+p.stop
+::
+
+
+
+
+SECTION::Ex.2) Repeated embedding
+
+Control of embedding resp. the number of Events, that one Patterns should produce when played, is a subtle topic. A basic distinction is whether an embedded sequence should be produced with desired behaviour from begin to end (2a) or it should be paused and resumed (2b). The latter is the classical behaviour of Streams, but it can be mimiced with PSx stream patterns. In any case embedding can be done with varying length, e.g. by defined sequences or by interaction.
+
+
+subsection::2a) Embedding without continuation
+
+Use SynthDefs from link::Tutorials/PLx_and_live_coding_with_Strings#above#above::.
+
+code::
+(
+// base Pbinds
+~x = Pbind(\d, 0.15, \i, \sin, \rel, 1.5, \a, 0.02);
+~y = Pbind(\d, Pn(0.9, 1), \i, \saw, \att, 0.8, \rel, 4, \a, 0.006);
+
+// variable for repeats arg
+~ar = 4;
+
+// descending sequence, note the repeats arg: as with the start arg
+// the Function is evaluated with every embedding,
+// ~ar can be a Stream or a value
+~a = Pbind(\m, Pseries({ rrand(75.0, 95) }, -7, { ~ar.next })) <> ~x;
+
+// chords without octave doubling
+~b = Pbind(\m, Pfunc { { [48, 60, 72].choose } ! 9 + (0..12).scramble.drop(3) }) <> ~y;
+
+// define sequence
+~p = "ba"
+)
+
+
+p = PLseq(\p).symplay
+
+// change to other repeats number
+
+~ar = 6
+
+// make it a sequence with a Stream
+
+~ar = PLseq([2, 2, 4]).asStream  // or shorter: PLseq([2, 2, 4]).iter
+
+
+// go back to num and change String
+
+~ar = 3
+
+~p = "baaa"
+
+~p = "baabaaaa"
+
+
+p.stop
+::
+
+
+anchor::Ex.2b::
+subsection::Ex.2b) Embedding with continuation
+
+Use SynthDefs from link::Tutorials/PLx_and_live_coding_with_Strings#above#above::.
+
+code::
+// This can be done by feeding a stream into a pattern, either directly or with PSx
+
+(
+// base Pbind
+~x = Pbind(\d, 0.2, \rel, 0.5, \a, 0.03);
+
+// Streams to be continued
+
+~as = (Pbind(\m, Pn(Pseries(60, 1, 16)), \i, \saw) <> ~x).asStream;
+~bs = (Pbind(\m, Pn(Pseries(90, -1, 16)), \i, \sin) <> ~x).asStream;
+
+// variable for repeats args
+~ar = 4;
+~br = 4;
+
+// for getting next values of an event stream we must pass an empty event as arg '.next(())'
+~a = Pfuncn({ ~as.next(()) }, { ~ar.next });
+~b = Pfuncn({ ~bs.next(()) }, { ~br.next });
+
+// define sequence
+~p = "ab"
+)
+
+
+p = PLseq(\p).symplay
+
+
+// change repeats
+
+~ar = 2;
+~br = 1;
+
+
+// this causes ~a to produce nils, only ~b still returns events
+
+~ar = nil;
+
+// This stops the player.
+// Note that this kind of nil-detection works because 'symplay' employs PsymNilSafe.
+// A construct like Psym(Pseq("ab", inf), ...).play would hang in that case
+
+~br = nil;
+
+// Note that this is different from the case, when the dictionary's key itself is nil.
+// Then we get silent events, that also would't cause a hang with Psym(Pseq("ab", inf), ...).play
+
+
+// evaluate above code starting from ~x = ... again and run
+
+p = PLseq(\p).trace.symplay
+
+// now we get a rest event
+
+~a = nil
+
+// player keeps running silently, stop explicitely
+
+~b = nil
+
+p.stop
+
+
+// same as above written with PSx stream patterns
+
+(
+// base Pbind
+~x = Pbind(\d, 0.2, \rel, 0.5, \a, 0.03);
+
+// variable for repeats args
+~ar = 4;
+~br = 4;
+
+~a = PS(Pbind(\m, Pn(Pseries(60, 1, 16)), \i, \saw) <> ~x, { ~ar.next });
+~b = PS(Pbind(\m, Pn(Pseries(90, -1, 16)), \i, \sin) <> ~x, { ~br.next });
+
+// define sequence
+~p = "ab"
+)
+
+
+p = PLseq(\p).symplay
+
+// change repeats
+
+~ar = 2;
+~br = 1;
+
+p.stop;
+::
+
+
+
+
+
+
+
+SECTION::Ex.3) Parallel embedding
+
+Use SynthDefs from link::Tutorials/PLx_and_live_coding_with_Strings#above#above::.
+
+code::
+// This can e.g. be done with Ppar, Ptuple or Pspawner, which is most flexible.
+// There's a tiny isssue here in combination with EventShortcuts, duration keys
+// should be in full length (You could apply method 'eventShortcuts' inside Ppar,
+// but that's even more typing in that case, so we just write 'dur' instead of 'd').
+
+(
+// base Pbind
+
+~x = Pbind(\dur, 0.1, \i, \sin);
+~y = Pbind(\dur, 0.05, \i, \sin);
+
+// chars for the String, event patterns or events
+
+~a = Pbind(\m, Pseries({ rrand(60.0, 65) }, 1, 8)) <> ~x;
+~b = Pbind(\m, Pseries({ rrand(85.0, 95) }, -1, 8)) <> ~y;
+
+~c = Ppar([~a, ~b]);
+
+~d = (i: \saw, m: [95, 96, 97], d: 0.8);
+
+// define sequence
+
+~p = "accd"
+)
+
+
+p = PLseq(\p).symplay
+
+// equivalent with Pspawner
+
+~c = Pspawner { |sp| sp.par(~a); sp.par(~b) };
+
+
+// with Pspawner you have precise control over embedding of subsequences
+
+~c = Pspawner { |sp| sp.par(~a); 4.do { sp.par(~b) } };
+
+
+~e = Pspawner { |sp| sp.par(~a); 3.do { sp.seq(~b) } };
+
+~p = "acde"
+
+p.stop
+::
+
+
+
+SECTION::Ex.4) Use of other PLx list patterns
+
+Use SynthDefs from link::Tutorials/PLx_and_live_coding_with_Strings#above#above::.
+
+code::
+// We can keep the String constant and switch to different PLx list patterns.
+
+(
+// base Pbind
+
+~x = Pbind(\d, 0.1, \i, \saw);
+~y = Pbind(\d, 0.2, \i, \sin);
+
+// chars for the String, event patterns or events
+
+~a = Pbind(\m, Pseries(60, Pwhite(1.0, 7.0), 4)) <> ~x;
+~b = Pbind(\m, Pseries(80, Pwhite(1.0, 7.0), 4)) <> ~y;
+
+~c = ~x <> ~b;
+~d = ~y <> ~a;
+
+~e = Pbind(\i, \noise, \m, Pn(70, 2)) <> ~x;
+
+// define sequence
+
+~p = "abcde"
+)
+
+
+// we need another proxy in that case, take general PL
+
+~l = PLseq(\p);
+
+p = PL(\l).symplay;
+
+
+// scramble sequence and keep
+
+~l = PLshuf(\p);
+
+
+// scramble with every loop
+
+~l = PLshufn(\p);
+
+
+
+// weighted random
+
+~l = PLwrand(\p, [4, 1, 3, 1, 1]/10);
+
+p.stop;
+::
+
+
+
+
+
+SECTION::Ex.5) PLbindef and PLbindefPar
+
+
+High-level control of Strings can be combined with replacing key streams with PLbindef/PLbindefPar.
+
+note::
+You should always do cleanup with link::Classes/PLbindef#-remove:: / link::Classes/PLbindefPar#-remove:: or link::Classes/Pdef#-removeAll:: after finishing the examples (see notes in link::Classes/PLbindef:: / link::Classes/PLbindefPar::).
+::
+
+
+subsection::Ex.5a) PLbindef
+
+Use SynthDefs from link::Tutorials/PLx_and_live_coding_with_Strings#above#above::.
+
+code::
+(
+// base PLbindef, continued embedding with PS as in Ex. 2b
+
+~x = PS(PLbindef(\y, \dur, 0.1, \i, \noise, \rq, 0.5, \att, 0.05, \rel, 0.1, \a, 0.05));
+
+// chars for the String, event patterns or events
+
+~a = Pbind(\m, Pn(75, 1)) <> ~x;
+~b = Pbind(\m, Pn(80, 1)) <> ~x;
+
+~c = Ppar([~a, ~b]);
+
+// define sequence
+
+~p = "ab"
+)
+
+p = PLseq(\p).symplay
+
+
+// update PLbindef's rq and amplitude with patterns
+
+~y.rq = PLseq((100..1).mirror / 1000)
+
+~y.a = PLseq((20..80).mirror / 1000)
+
+
+// update String
+
+~p = "c"
+
+~p = "ababccc"
+
+
+// stop and cleanup
+
+p.stop
+
+~y.remove
+::
+
+
+
+subsection::Ex.5b) PLbindefPar
+
+Use SynthDefs from link::Tutorials/PLx_and_live_coding_with_Strings#above#above::.
+
+code::
+(
+// data base for two PLbindefPars, continued embedding with PS as in Ex. 2b
+
+~w = [\dur, 0.1, \i, \noise, \rq, 0.5, \att, 0.05, \rel, 0.1, \a, 0.02];
+
+~chord = (46, 53..95);
+
+~a = PS(PLbindefPar(\u, 7, \m, ~chord, *~w), 1);
+~b = PS(PLbindefPar(\v, 7, \m, ~chord + 2, *~w), 1);
+
+// define sequence
+
+~p = "ab"
+)
+
+p = PLseq(\p).symplay
+
+
+~u.rq = 0.005
+
+~v.i = \saw
+
+
+// evolving changes
+
+~u.rq = PLseq((100, 95..5).mirror / 1000)
+
+~v.a = Pseg(PLseq([0.01, 0.04]), Pwhite(4, 7))
+
+
+// change sequence per String
+
+~p = "aabb"
+
+~p = "aabbabab"
+
+~p = "aabbcababc"
+
+~p = "aaaab"
+
+
+// fade out
+
+~v.a = Pseg(Pseq([0.02, 0]), 20)
+
+~u.a = Pseg(Pseq([0.02, 0]), 20)
+
+
+// stop and cleanup
+
+(
+p.stop;
+~u.remove;
+~v.remove;
+)
+::
+
+
+SECTION::Ex.6) String sequencing with PbindFx
+
+Control with Strings can be thought in many ways. With effects one can e.g. use different Strings for src and fx sequencing.
+
+anchor::last::
+subsection::Ex.6a) PbindFx
+
+code::
+// boot server with extended resources for PbindFx
+
+(
+s.options.numPrivateAudioBusChannels = 1024;
+s.options.memSize = 8192 * 16;
+s.reboot;
+
+// fx synths
+
+SynthDef(\resample, { |out = 0, in, mix = 1, amp = 1,
+	resampleRate = 22050, lagTime = 1|
+	var sig, inSig = In.ar(in, 2);
+	sig = Latch.ar(inSig, Impulse.ar(resampleRate)); // resampling
+	// lag in milliseconds for smoothing
+	sig = sig.lag(lagTime * 0.001);
+	Out.ar(out, (1 - mix) * inSig + (sig * mix));
+}).add;
+
+SynthDef(\wah, { |out, in, resLo = 200, resHi = 5000,
+	cutOffMoveFreq = 0.5, rq = 0.1, amp = 1, mix = 1|
+	var sig, inSig = In.ar(in, 2);
+	sig = RLPF.ar(
+		inSig,
+		LinExp.kr(LFDNoise3.kr(cutOffMoveFreq), -1, 1, resLo, resHi),
+		rq,
+		amp
+	).softclip;
+	Out.ar(out, (1 - mix) * inSig + (sig * mix));
+}).add;
+
+
+// src synths
+
+SynthDef(\noise, { |out = 0, freq = 400, att = 0.005, rel = 0.1, rq = 0.1, amp = 0.1|
+	var sig = { WhiteNoise.ar } ! 2;
+	sig = BPF.ar(sig, freq, rq) *
+		EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2) *
+		(rq ** -1) * (250 / (freq ** 0.8));
+	OffsetOut.ar(out, sig);
+}).add;
+
+SynthDef(\saw, { |out = 0, freq = 400, att = 0.005, rel = 0.1, amp = 0.1|
+	var sig = { VarSaw.ar(freq, Rand(0, 1)) } ! 2;
+	sig = sig * EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2);
+	OffsetOut.ar(out, sig);
+}).add;
+
+
+// prepare EventShortcuts for additional keys
+
+EventShortcuts.addOnBase(\default, \fxExs, (
+	dec: \decayTime,
+	cd: \cleanupDelay,
+	cf: \cutOffMoveFreq,
+	fxo: \fxOrder,
+	rs: \resampleRate
+), true);
+
+EventShortcuts.makeCurrent(\fxExs);
+
+EventShortcuts.on;
+)
+
+
+(
+// base Pbind
+// PbindFx's fxOrder (short: fxo) syntax employed by Symbol mapping:
+// u: no fx, x: resample, y: wah, z: resample and wah in sequence
+
+~r = Pbind(
+	\fxo, Psym(PLseq(\fx), (u:0, x:1, y:2, z:[1, 2])),
+	\a, 0.07,
+	\att, 0.01,
+	\rel, 0.3,
+	\cd, Pkey(\att)+ Pkey(\rel) + 0.1
+);
+
+// PS to embed
+
+~a = PS(Pbind(\i, \saw, \d, 0.1, \m, PLseq([60, 60, 60, 62])) <> ~r, 1);
+
+~b = PS(Pbind(
+	\i, \noise,
+	\d, 0.2,
+	\m, PLseq([Pwhite(41.0, 50),Pwhite(71.0, 80)]),
+	\rq, 0.01
+) <> ~r, 1);
+
+// no cleanupDelay defaults for fxs as they don't delay
+q = PbindFx(PsymNilSafe(PLseq(\p)), [
+		\fx, \resample,
+		\mix, 0.3,
+		\rs, Pwhite(200, 500),
+		\a, 1
+	],[
+		\fx, \wah,
+		\mix, 0.8,
+		\cf, Pwhite(0.5, 5),
+		\a, 0.7
+]);
+)
+
+// start instrument sequence with no fx
+
+(
+~fx = "u";
+~p = "aab";
+p = q.play;
+)
+
+// fx sequences
+
+~fx = "uuxy"
+
+~fx = "uyuxzzzz"
+
+
+~p = "b"
+
+p.stop
+::
+
+
+subsection::Ex.6b) PbindFx and PLbindef
+
+Use SynthDefs from link::Tutorials/PLx_and_live_coding_with_Strings#last#last example::.
+
+code::
+// There's more fine-tuned control if we can replace key streams also
+
+(
+// base pairs for PLbindef
+
+~r = [
+	\fxo, Psym(PLseq(\fx), (u:0, x:1, y:2, z:[1, 2])),
+	\a, 0.07,
+	\att, 0.01,
+	\rel, 0.3,
+	\cd, Pkey(\att) + Pkey(\rel) + 0.001
+];
+
+// PS to embed
+
+~a = PS(PLbindef(\aa, \i, \saw, \d, 0.1, \m, PLseq([60, 60, 60, 62]), *~r), 1);
+
+~b = PS(PLbindef(\bb,
+	\i, \noise,
+	\d, 0.2,
+	\m, PLseq([Pwhite(41.0, 50),Pwhite(71.0, 80)]),
+	\rq, 0.1,
+	*~r
+), 1);
+
+// as we have defined fx chars 'x' and 'y' above,
+// choose related names 'xx' and'yy' for PLbindefs
+
+q = PbindFx(PsymNilSafe(PLseq(\p)),
+	PLbindef(\xx,
+		\fx, \resample,
+		\mix, 0.3,
+		\rs, Pwhite(200, 500),
+		\a, 1
+	),
+	PLbindef(\yy,
+		\fx, \wah,
+		\mix, 0.8,
+		\cf, Pwhite(0.5, 5),
+		\a, 0.7
+	)
+);
+)
+
+// start with no fxs
+
+(
+~fx = "u";
+~p = "aab";
+p = q.play;
+)
+
+// fx sequence
+
+~fx = "uuxy"
+
+
+// midinote for ~a and ~b
+
+~aa.m = [50, 52]
+
+~bb.m = Pwhite(80, 96)
+
+
+
+// switch to single fx resample for testing changes of its control streams
+// resample, test rate
+
+~fx = "x"
+
+~xx.rs = Pwhite(1000, 3000)
+
+
+// same with wah
+
+~fx = "y"
+
+~yy.cf = 3
+
+
+// src changes
+
+~aa.rel = 0.1
+
+~bb.rel = 0.5
+
+
+// further playing
+
+~fx = "xxy"
+
+~p = "aabaabaaaabb"
+
+
+~aa.m = [38, 40]
+
+~bb.rq = 0.7
+
+~fx = "z"
+
+
+// fade out
+
+~aa.a = Pseg(Pseq([0.04, 0]), 20)
+
+~bb.a = Pseg(Pseq([0.04, 0]), 20)
+
+
+// cleanup
+
+p.stop
+
+Pdef.removeAll
+::

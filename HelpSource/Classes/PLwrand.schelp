@@ -1,0 +1,103 @@
+CLASS:: PLwrand
+summary:: dynamic scope Pwrand variant
+categories::Libraries>miSCellaneous>PLx suite, Streams-Patterns-Events>PLx suite
+related:: Overviews/miSCellaneous, Classes/Pwrand, Classes/PLrand, Classes/PLxrand, Classes/PLshuf, Classes/PLshufn, Tutorials/PLx_suite, Tutorials/Event_patterns_and_Functions, Classes/VarGui, Tutorials/VarGui_shortcut_builds
+
+
+DESCRIPTION::
+
+
+Takes Symbol args for later reference by the Streams, which will read from variables in the Environments of their instantiation. See link::Tutorials/PLx_suite::.
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PLwrand object.
+
+argument::list
+Symbol or Pwrand list arg.
+If a Symbol is passed, list can be assigned to an envir variable later on.
+This lists's elements can be dynamically replaced by Patterns or Streams.
+
+argument::weights
+Symbol or Pwrand weights arg.
+If a Symbol is passed, weights can be assigned to an envir variable later on.
+Can be dynamically replaced by Patterns or Streams.
+
+argument::repeats
+Symbol or Pwrand repeats arg. If a Symbol is passed, repeats can be assigned to an envir variable later on. Defaults to inf.
+
+argument::cutItems
+Symbol or Boolean or Integer (0 or 1) or a Function returning Boolean or Integer.
+If a Symbol is passed, cutItems can be assigned to an envir variable later on.
+Determines if list items, which are Patterns or Streams themselves,
+will be finished if a replacement occurs during their embedding, or if they will be replaced immediately. The latter is the default behaviour (default value true).
+For protecting whole lists from immediate replacements see link::Classes/PLn::.
+
+argument::envir
+Dictionary or one of the Symbols
+\top, \t (topEnvironment), \current, \c (currentEnvironment).
+Dictionary to be taken for variable reference. Defaults to \current.
+
+
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+(
+p = Pbind(
+    \freq, 50 * PLwrand(\a, \w),
+    \dur, 0.01,
+    \amp, 0.02
+);
+
+// prepare (current) Environment
+// give low overtones more weight
+
+~a = (1..8);
+~w = (8..1).cubed.normalizeSum;
+)
+
+x = p.play;
+
+
+// reverse overtone weights
+
+~w = (1..8).cubed.normalizeSum;
+
+
+// replace with Pattern for weights,
+// PLseq taken as repeats defaults to inf
+
+~w = Pstutter(50, PLseq([(8..1), (1..8)].collect { |x| x.cubed.normalizeSum }));
+
+
+// replace arrays (must be sufficiently long)
+
+~a = (3..10);
+~a = (5..12);
+
+~a = (1,3..15);
+~a = (1,4..22);
+~a = (1,5..29);
+~a = (1,6..36);
+~a = (2,7..37);
+~a = (3,8..38);
+~a = (4,9..39);
+~a = (5,10..40);
+
+x.stop;
+
+
+
+::
+ 

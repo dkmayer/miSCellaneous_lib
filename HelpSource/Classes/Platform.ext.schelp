@@ -1,0 +1,12 @@
+
+INSTANCEMETHODS::
+
+method:: miSCellaneousDirs
+
+Returns an Array of Strings, representing found directories of miSCellaneous lib. The method is searching at places of the most likely installation scenarios:
+user and system extension as well as quark extension directories.
+
+argument::withWarnings
+Determines if warnings should be posted in case of no or more than one matches.
+
+
