@@ -1,0 +1,183 @@
+
+INSTANCEMETHODS::
+
+
+private:: miSC_isGrouping, miSC_isConnected, miSC_groupingFromIndices, miSC_isKeysAndValues, miSC_isPossiblePbindData
+private:: miSC_isPossiblePbindArgs, miSC_hasNoReservedKeys, miSC_hasNoReservedKeysInPbindData
+private:: miSC_hasNoReservedKeysInPbindArgs, miSC_isPossibleHelpSynthArgs, miSC_isPossibleHelpSynthParArgs, miSC_areControlRateSynthDefs
+private:: miSC_isIndexSubset
+
+private:: miSC_isGrouping, miSC_isConnected, miSC_groupingFromIndices
+
+private:: miSC_pfuncPbindsFromTuples, miSC_specAsArray, miSC_oddSpecAsArray, miSC_sVarGuiData, miSC_pVarGuiData
+
+private:: miSC_makeLacePat, miSC_makeLaceList
+
+private:: miSC_partitionIndex
+
+private:: miSC_getClutch, miSC_atKey, miSC_makeStartFxBundle, miSC_makeStartZeroBundle, miSC_checkFxOrder, miSC_fxOrderWarnString, miSC_getTopoOrder, miSC_getPredecessors, miSC_getSuccessors, miSC_getFxOrders, miSC_getFxBusData, miSC_collectEvalWithoutKeyPairs
+
+
+private:: miSC_lowestIndexForWhichGreaterEqual, miSC_highestIndexForWhichLessEqual, miSC_checkSymmetricPeriods, miSC_checkCharacteristicPeriod, miSC_streamifySieveItems, miSC_streamifySieveItems, miSC_isQuasiSymmetricRange, miSC_isSymmetricRange, miSC_smallestPeriodLength, miSC_symmetryType
+
+private:: miSC_getFFTbufSizes
+
+private:: miSC_unifySize
+
+private:: miSC_Dmultiply
+
+
+method:: specPairsDup
+Duplicates pairs strong::num:: times. See link::Classes/VarGui#Ex. 5a#Ex.5a::
+
+method:: specPairsDupGroups
+Returns an index grouping for rearranging a collection that has been duplicated strong::num:: times. See link::Classes/VarGui#Ex. 5a#Ex.5a::
+
+
+
+method:: sVarGui
+See link::Tutorials/VarGui_shortcut_builds::. Instantiate a VarGui object for control of Synths derived from a collection of SynthDef names (Symbols / Strings). Options for Synth controls are taken from the corresponding arg Dictionaries. Size of receiver must equal strong::N::, the number of Dictionaries.
+
+argument::... args
+arg Dictionaries, see link::Classes/Symbol#-sVarGui:: for valid arg syntax, with exception of server. Optionally the last item of args may be a Server to send node messages for synth control. Defaults to the default server.
+
+
+
+
+
+method:: pVarGui
+See link::Tutorials/VarGui_shortcut_builds::. Instantiate a VarGui object for control of Pbinds / EventStreamPlayers derived from a collection of SynthDef names (Symbols / Strings). Options for controls are taken from the corresponding arg Dictionaries. Size of collection must equal strong::N::, the number of Dictionaries.
+
+argument::... args
+arg Dictionaries, see link::Classes/Symbol#-pVarGui:: for valid arg syntax.
+
+
+
+
+
+
+method:: spVarGui
+See link::Tutorials/VarGui_shortcut_builds::. Instantiate a VarGui object for control of Pbinds / EventStreamPlayers and Synths derived from SynthDef names (Symbols / Strings). Thus receiver must be of the form strong::[ synthNames, pbindSynthNames ]::, whereby strong::synthNames:: and strong::pbindSynthNames:: may be Symbols / Strings or SequenceableCollections of Symbols / Strings.
+
+argument::sVarGuiArgDictionaries
+arg Dictionary or SequenceableCollection thereof, whose size must be equal to that of strong::synthNames:: (if a collection). See link::Classes/Symbol#-sVarGui:: for valid arg syntax. Defaults to [].
+
+argument::pVarGuiArgDictionaries
+arg Dictionary or SequenceableCollection thereof, whose size must be equal to that of strong::pbindSynthNames:: (if a collection). See link::Classes/Symbol#-pVarGui:: for valid arg syntax. Defaults to [].
+
+argument::server
+Server. The server to send node messages for synth control. Defaults to the default server.
+
+
+
+
+method:: psVarGui
+See link::Tutorials/VarGui_shortcut_builds::. Instantiate a VarGui object for control of Pbinds / EventStreamPlayers and Synths derived from SynthDef names (Symbols / Strings). Thus receiver must be of the form strong::[ pbindSynthNames, synthNames ]::, whereby strong::pbindSynthNames:: and strong::synthNames:: may be Symbols / Strings or SequenceableCollections of Symbols / Strings.
+
+argument::pVarGuiArgDictionaries
+arg Dictionary or SequenceableCollection thereof, whose size must be equal to that of strong::pbindSynthNames:: (if a collection). See link::Classes/Symbol#-pVarGui:: for valid arg syntax. Defaults to [].
+
+argument::sVarGuiArgDictionaries
+arg Dictionary or SequenceableCollection thereof, whose size must be equal to that of strong::synthNames:: (if a collection). See link::Classes/Symbol#-sVarGui:: for valid arg syntax. Defaults to [].
+
+argument::server
+Server. The server to send node messages for synth control. Defaults to the default server.
+
+
+
+
+
+method::ev
+See link::Tutorials/Other_event_and_pattern_shortcuts::. Derives an Event from an array of key/value-pairs. Values might be functions that refer to prior keys of the array.
+
+method::on
+See link::Tutorials/Other_event_and_pattern_shortcuts::. Derives an Event from an array with method link::Classes/SequenceableCollection#-ev:: and plays it using link::Classes/Event#-on::.
+
+method::pa
+See link::Tutorials/Other_event_and_pattern_shortcuts::. Expects basically an array of key/value-pairs ready for an event pattern. Exception: values might be functions that refer to prior keys of the array, thus delivering an shortcut functionality of the common Pfunc { |e|  ... } construct (and similar to Pkey).
+
+method::p
+See link::Tutorials/Other_event_and_pattern_shortcuts::. Derives a Pbind from an array involving link::Classes/SequenceableCollection#-pa::.
+
+
+method::pm
+See link::Tutorials/Other_event_and_pattern_shortcuts::. Derives a Pmono with instrument passed as Symbol from an array involving link::Classes/SequenceableCollection#-pa::.
+
+argument::sym
+Symbol.
+
+
+method::pma
+See link::Tutorials/Other_event_and_pattern_shortcuts::. Derives a PmonoArtic with instrument passed as Symbol from an array involving link::Classes/SequenceableCollection#-pa::.
+
+argument::sym
+Symbol.
+
+
+method::pbf
+See link::Tutorials/Other_event_and_pattern_shortcuts::. Derives a Pbindef with reference passed as Symbol from an array involving link::Classes/SequenceableCollection#-pa::.
+
+argument::sym
+Symbol.
+
+
+
+method::pp
+See link::Tutorials/Other_event_and_pattern_shortcuts::. Derives a Pbind from an array involving link::Classes/SequenceableCollection#-pa::. Arguments strong::clock::, strong::protoEvent:: and strong::quant:: are used by method link::Classes/Pattern#-play::.
+
+method::ppm
+See link::Tutorials/Other_event_and_pattern_shortcuts::. Derives a Pmono with instrument strong::sym:: (a Symbol) from an array involving link::Classes/SequenceableCollection#-pa::. Arguments strong::clock::, strong::protoEvent:: and strong::quant:: are used by method link::Classes/Pattern#-play::.
+
+method::ppma
+See link::Tutorials/Other_event_and_pattern_shortcuts::. Derives a PmonoArtic with instrument strong::sym:: (a Symbol) from an array involving link::Classes/SequenceableCollection#-pa::. Arguments strong::clock::, strong::protoEvent:: and strong::quant:: are used by method link::Classes/Pattern#-play::.
+
+
+method::ppma
+See link::Tutorials/Other_event_and_pattern_shortcuts::. Derives a Pbindef with reference strong::sym:: (a Symbol) from an array involving link::Classes/SequenceableCollection#-pa::. Arguments strong::clock::, strong::protoEvent:: and strong::quant:: are used by method link::Classes/Pattern#-play::.
+
+
+
+method::eventShortcuts
+
+Applies method to all items of the collection. See also link::Classes/EventShortcuts::, link::Classes/Pattern#-eventShortcuts::, link::Classes/Event#-eventShortcuts:: and link::Tutorials/PLx_and_live_coding_with_Strings::
+
+
+
+
+method:: toSieve
+
+Expects a strictly ascending collection of Integers and converts to a new Sieve.
+See link::Tutorials/Sieves_and_Psieve_patterns::
+
+argument::fromMode
+Determines how to interpret the receiver. Must be Symbol 'points' (or 'p'), or Symbol 'intervals' (or 'i').
+Defaults to 'points'.
+
+argument::toMode
+Determines resulting mode. Must be Symbol 'points' (or 'p'), or Symbol 'intervals' (or 'i').
+Defaults to 'points'.
+
+argument::addOffset
+Integer offset added to the result. Defaults to 0.
+
+argument::withCheck
+Boolean. Determines if receiver should be checked. Defaults to true.
+In normal use it's recommended not to change this, as Sieve methods
+assume properly ordered lists. It only makes sense in a case where
+large collection data, that is known to be ordered, has to be converted.
+
+
+
+method:: lcmByGcd
+
+Expects a SequenceableCollection of Integers and calculates the least common multiple by using the greatest common divisor.
+This can avoid problems with large numbers. See link::Tutorials/Sieves_and_Psieve_patterns#4b::
+
+
+method:: lcmByFactors
+
+Expects a SequenceableCollection of Integers and calculates the least common multiple by prime factors.
+This can avoid problems with large numbers. Returns an array with lcm as first item, an array with prime factors of
+lcm as second item and an array of receiver's and all arguments' prime factors.
+See link::Tutorials/Sieves_and_Psieve_patterns#4b::
+

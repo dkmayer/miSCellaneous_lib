@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000bf2}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; min-height: 16.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ef0000}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ef0000; min-height: 12.0px}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ca0000}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {color: #0094ff}
+span.s5 {color: #001cda}
+span.s6 {color: #007300}
+span.s7 {color: #000dc6}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>PlaceAll<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>Arbitrarily nested embedding of subarrays<span class="Apple-converted-space"> </span></b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Ppatlace</b></p>
+<p class="p4"><br></p>
+<p class="p1">PlaceAll is integrating Ppatlace and Place (taking items as well as Patterns) and allows an arbitrary depth of nesting arrays.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>See also: </b><a href="SC://Place.html"><span class="s3">Place</span></a></span><span class="s4">,</span><span class="s2"> <a href="SC://Ppatlace.html"><span class="s3">Ppatlace</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new (list, repeats, offset)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new PlaceAll object.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>list </b>- Array which may contain subarrays. Leaves of the array tree may be<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Patterns, Streams or other Items to be embedded.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>repeats </b>- Number of list loops. Defaults to 1.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>offset </b>- List index offset. Defaults to 0.</p>
+<p class="p10"><br></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><b>Examples</b></p>
+<p class="p12"><br></p>
+<p class="p13">(</p>
+<p class="p13">s = <span class="s5">Server</span>.local;</p>
+<p class="p13"><span class="s5">Server</span>.default = s;</p>
+<p class="p13">s.boot;</p>
+<p class="p13">)</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13">(</p>
+<p class="p13">p = <span class="s5">Pbind</span>(</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s6">\midinote</span>, <span class="s5">PlaceAll</span>([[60, 61], 70, [80, [81, 81.5], 82]], <span class="s5">inf</span>),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s6">\dur</span>, 0.2</p>
+<p class="p13">);</p>
+<p class="p4"><br></p>
+<p class="p13">x = p.play;</p>
+<p class="p13">)</p>
+<p class="p4"><br></p>
+<p class="p13">x.stop;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14">// to distinguish subarrays from arrays to be taken as output use Refs,<span class="Apple-converted-space"> </span></p>
+<p class="p14">// as wrapping in another array wouldn't do</p>
+<p class="p15"><br></p>
+<p class="p13">(</p>
+<p class="p13">p = <span class="s5">Pbind</span>(</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s6">\midinote</span>, <span class="s5">PlaceAll</span>([[60, 61], 70, [80, `[81, 81.5], 82]], <span class="s5">inf</span>),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s6">\dur</span>, 0.2</p>
+<p class="p13">);</p>
+<p class="p4"><br></p>
+<p class="p13">x = p.play;</p>
+<p class="p14"><span class="s2">)</span><span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">x.stop;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// Items may also be Patterns or Streams</p>
+<p class="p4"><br></p>
+<p class="p13">(</p>
+<p class="p13">p = <span class="s7">Pbind</span>(</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s6">\midinote</span>, <span class="s7">PlaceAll</span>([[60, 61], 70, [80, <span class="s7">Pwhite</span>(84.0, 89), 82]], <span class="s7">inf</span>),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s6">\dur</span>, 0.2</p>
+<p class="p13">);</p>
+<p class="p4"><br></p>
+<p class="p13">x = p.play;</p>
+<p class="p13">)<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">x.stop;</p>
+<p class="p4"><span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+</body>
+</html>

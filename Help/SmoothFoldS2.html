@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; min-height: 16.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #cd1c00}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {color: #0326cb}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>SmoothFoldS2<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>wave folding pseudo ugen using sine segments, two fold ranges</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1">Wave folding using SmoothClipS. Values outside the range <b>lo</b>-<b>hi</b> are folded back, if the concerned foldRange &gt; 0. A larger foldRange means less folding whereas a smaller foldRange causes more folding. The spectral result depends on the source wave form also but in general a smaller foldRange causes more energy in the higher spectrum whereas near foldRange == 0 the higher part of the spectrum again decreases. Note that, in contrast to classical wave folding, the number of foldings isn't limited here, possibly causing aliasing when heavy folding is forced.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>See also:</b> <a href="Smooth Clipping and Folding.html"><span class="s3">Smooth Clipping and Folding</span></a>, <a href="SmoothClipS.html"><span class="s3">SmoothClipS</span></a>, <a href="SmoothClipQ.html"><span class="s3">SmoothClipQ</span></a>, <a href="SmoothFoldS.html"><span class="s3">SmoothFoldS</span></a>, <a href="SmoothFoldQ.html"><span class="s3">SmoothFoldQ</span></a>, <a href="SmoothFoldQ2.html"><span class="s3">SmoothFoldQ2</span></a><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Class Methods</b></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*ar (in, lo, hi, foldRangeLo, foldRangeHi, smoothAmount, delta)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p6"><b><span class="Apple-tab-span">	</span>*kr (in, lo, hi, foldRangeLo, foldRangeHi, smoothAmount, delta)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>in </b>- input signal.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>lo </b>- lower limit, defaults to -1.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>hi </b>- upper limit, defaults to 1.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>foldRangeLo </b>- the relative amount of the range (defined by <b>lo</b> and <b>hi)</b> used for folding back values below <b>lo</b>, should be &gt;= 0 and &lt;= 1.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0 means no folding (just smooth clipping), 1 means that the full range is used for folding, values inbetween determine<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the range near <b>lo</b>, which is used for folding, defaults to 1.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>foldRangeHi </b>- the relative amount of the range (defined by <b>lo</b> and <b>hi)</b> used for folding back values above <b>hi</b>, should be &gt;= 0 and &lt;= 1.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0 means no folding (just smooth clipping), 1 means that the full range is used for folding, values inbetween determine<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the range near <b>hi</b>, which is used for folding, defaults to 1.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>smoothAmount </b>- amount of smoothness, must be &gt;= 0 and &lt;= 1, defaults to 0.5.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>delta </b>- threshold for avoiding zero divisions (which would happen if <b>lo</b> = <b>hi</b> and the border case of <b>amount</b> = 1).</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Normally not to be set by the user, except for very small folding ranges, defaults to 0.00001.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><br></p>
+<p class="p11"><b>Examples</b></p>
+<p class="p12"><br></p>
+<p class="p13">(</p>
+<p class="p13">s = <span class="s4">Server</span>.local;</p>
+<p class="p13"><span class="s4">Server</span>.default = s;</p>
+<p class="p13">s.boot;</p>
+<p class="p13">)</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14">// see scope, MouseX controls foldRangeLo, MouseY foldRangeHi</p>
+<p class="p5"><br></p>
+<p class="p13">x = { <span class="s4">SmoothFoldS2</span>.ar(<span class="s4">SinOsc</span>.ar(90), -0.1, 0.1, <span class="s4">MouseX</span>.kr(0, 1), <span class="s4">MouseY</span>.kr(0, 1)) }.scope <span class="Apple-converted-space"> </span></p>
+<p class="p15"><br></p>
+<p class="p13">x.release</p>
+<p class="p15"><br></p>
+<p class="p15"><br></p>
+<p class="p15"><br></p>
+</body>
+</html>

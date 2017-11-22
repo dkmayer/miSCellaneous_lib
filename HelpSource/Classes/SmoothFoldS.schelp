@@ -1,0 +1,72 @@
+CLASS:: SmoothFoldS
+summary:: wave folding pseudo ugen using sine segments	
+categories::Libraries>miSCellaneous>WaveFolding
+related:: Overviews/miSCellaneous, Tutorials/Smooth_Clipping_and_Folding, Classes/SmoothClipS, Classes/SmoothClipQ, Classes/SmoothFoldQ, Classes/SmoothFoldS2, Classes/SmoothFoldQ2
+
+
+DESCRIPTION::
+
+Wave folding using SmoothClipS. Values outside the range strong::lo::-strong::hi:: are folded back, if foldRange > 0. A larger strong::foldRange:: means less folding whereas a smaller strong::foldRange:: causes more folding. The spectral result depends on the source wave form also but in general a smaller strong::foldRange:: causes more energy in the higher spectrum whereas near strong::foldRange:: == 0 the higher part of the spectrum again decreases. Note that, in contrast to classical wave folding, the number of foldings isn't limited here, possibly causing aliasing when heavy folding is forced.
+
+CLASSMETHODS::
+
+method::ar
+
+argument::in
+input signal.
+
+argument::lo
+lower limit, defaults to -1.
+
+argument::hi
+upper limit, defaults to 1.
+
+argument::foldRange
+the relative amount of the range (defined by strong::lo:: and strong::hi::) used for folding, should be >= 0 and <= 1. 0 means no folding (just smooth clipping), 1 means that the full range is used for folding, values inbetween determine the ranges near both borders, which are used for folding, defaults to 1.
+
+argument::smoothAmount
+amount of smoothness, must be >= 0 and <= 1, defaults to 0.5.
+
+argument::delta
+Threshold for avoiding zero divisions (which would happen if strong::lo:: = strong::hi:: and the border case of strong::amount:: = 1). Normally not to be set by the user, except for very small clipping ranges, defaults to 0.00001.
+
+
+method::kr
+
+argument::in
+input signal.
+
+argument::lo
+lower limit, defaults to -1.
+
+argument::hi
+upper limit, defaults to 1.
+
+argument::foldRange
+the relative amount of the range (defined by strong::lo:: and strong::hi::) used for folding, should be >= 0 and <= 1. 0 means no folding (just smooth clipping), 1 means that the full range is used for folding, values inbetween determine the ranges near both borders, which are used for folding, defaults to 1.
+
+argument::smoothAmount
+amount of smoothness, must be >= 0 and <= 1, defaults to 0.5.
+
+argument::delta
+Threshold for avoiding zero divisions (which would happen if strong::lo:: = strong::hi:: and the border case of strong::amount:: = 1). Normally not to be set by the user, except for very small clipping ranges, defaults to 0.00001.
+
+
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+		
+// see scope, MouseX controls foldRange, MouseY smoothAmount
+
+x = { SmoothFoldS.ar(SinOsc.ar(90), -0.1, 0.1, MouseX.kr(0.2, 0.8), MouseY.kr(0, 1)) }.scope  
+
+x.release
+::
+

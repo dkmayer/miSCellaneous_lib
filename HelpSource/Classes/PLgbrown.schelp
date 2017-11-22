@@ -1,0 +1,97 @@
+CLASS:: PLgbrown   
+summary:: dynamic scope Pgbrown variant
+categories::Libraries>miSCellaneous>PLx suite, Streams-Patterns-Events>PLx suite
+related:: Overviews/miSCellaneous, Classes/Pgbrown, Classes/PLbrown, Tutorials/PLx_suite, Tutorials/Event_patterns_and_Functions, Classes/VarGui, Tutorials/VarGui_shortcut_builds 
+
+
+DESCRIPTION::
+
+
+Takes Symbol args for later reference by the Streams, which will read from variables in the Environments of their instantiation. See link::Tutorials/PLx_suite::. 
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PLgbrown object.
+
+argument::lo
+Symbol or Pgbrown lo arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Can be dynamically replaced by Patterns or Streams. Defaults to 0.
+
+argument::hi
+Symbol or Pgbrown hi arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Can be dynamically replaced by Patterns or Streams. Defaults to 1.
+
+argument::step
+Symbol or Pgbrown step arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Can be dynamically replaced by Patterns or Streams. Defaults to 0.125.
+
+argument::length
+Symbol or Pgbrown length arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Defaults to inf.
+
+argument::envir
+Dictionary or one of the Symbols 
+\top, \t (topEnvironment), \current, \c (currentEnvironment).
+Dictionary to be taken for variable reference. Defaults to \current.
+
+
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+        
+    	
+// definition for future reference in arbitrary Environments
+
+(
+p = Pbind(
+    \midinote, PLgbrown(\lo, \hi, \step) + [0, -7.4, -12.7], 
+    \dur, 0.1,
+    \amp, 0.05
+);
+)
+
+// prepare Environments
+
+(
+e = (lo: 65, hi: 90, step: 0.01);
+f = e.copy.put(\step, 0.05);
+)
+
+
+// run
+
+(
+e.use { x = p.play(quant: 0.2) };
+f.use { y = p.play(quant: 0.2) };
+)
+
+// replace
+
+(
+e.lo = 65;
+f.lo = 65;
+e.hi = Pwhite(65, 67);
+f.hi = Pwhite(65, 95);
+f.step = 0.3
+)
+
+y.stop;
+
+x.stop;
+
+::
+

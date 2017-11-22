@@ -1,0 +1,346 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; min-height: 16.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00; min-height: 12.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0326cb}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0433ff}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #042eee}
+span.s5 {color: #00bbff}
+span.s6 {color: #0326cb}
+span.s7 {color: #0433ff}
+span.s8 {color: #434ccb}
+span.s9 {color: #008300}
+span.s10 {color: #737373}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>DXFanOut<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>crossfades signals between out buses according to demand-rate control</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="../miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: AbstractDX</b></p>
+<p class="p4"><br></p>
+<p class="p1">DXFanOut crossfades signals to a sequence of out buses, which, together with fadeTimes and stepTimes, can be passed as demand rate ugens.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>As interface and conventions of DX ugens are nearly identical, I didn't double examples for all features. It's recommended to start with the DX suite overview and go through the help file examples in this order: DXMix - DXMixIn - DXEnvFan - DXEnvFanOut - DXFan - DXFanOut. Some general conventions are treated in detail in the following examples: fades and steps in DXMix help, Ex.2 – width and offset arguments in DXMix help, Ex.3 – multichannel expansion in DXMix help, Ex.6 – crossfade types in DXEnvFan help, Ex.1.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>PanAz.ar's args pos and orientation were scaled wrongly in SC versions up to 3.8. DX ugens neutralize this bug by inverse scaling, so it should actually work the same with SC versions before 3.9 with the exception of examples with modulatable width (disabled in earlier versions). I didn't encounter differences in any other test examples, however I'd rather recommend a SC version from 3.9 onwards, if you have the choice.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>Depending on the multichannel sizes it might be necessary to increase server resources, i.e. the number of interconnect buffers (e.g. s.options.numWireBufs = 256; s.reboot). See Ex.8 from DXMix help and Ex.2, Ex.4 from DXEnvFan help for aspects of CPU demand.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>In my tests timing was exact up to one sample. So when used for granulation DX ugens avoid the inevitable inccuracies of language-based triggering in realtime. However care has to be taken: fade and step times must be larger than the duration of a control cycle. With default values sampleRate = 44100 Hz and blockSize = 64, this equals ca. 0.00145 sec. If you go below, the fade mechanism is messed up and you get jumps and clicks. Accordingly with fadeModes 3 and 4 you have to ensure that the remaining 'real' stepTime, which is calculated by stepTime minus fadeTime, is larger than this threshold. But as a workaround you can always lower the blocksize. See DXFan help Ex.4 for aspects of granulation with high trigger rates / short grain durations.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>The current implementation is bound to counting with Dseries and – inherent to 32 bit floats – the integer accuracy limit of 2 ** 24 - 1 = 16777215. This can be an issue with setups that are using extreme short durations for hours.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>CREDITS: </b>Thanks to Wouter Snoei for his PlayBufCF class. It gave me a lot of inspiration for DX ugens – although in the end the implementation with PanAz and DemandEnvGen is quite different. Thanks also to Till Bovermann for ironing out a longstanding bug in PanAz.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>See also: </b><a href="../DX suite.html"><span class="s4">DX suite</span></a>,<b> </b><a href="../DXMix.html"><span class="s4">DXMix</span></a>,<b> </b><a href="../DXMixIn.html"><span class="s4">DXMixIn</span></a>,<b> </b><a href="../DXEnvFan.html"><span class="s4">DXEnvFan</span></a>, <a href="../DXEnvFanOut.html"><span class="s4">DXEnvFanOut</span></a>, <a href="../DXFan.html"><span class="s4">DXFan</span></a>, <a href="../Buffer Granulation.html"><span class="s3">Buffer Granulation</span></a>, <a href="../Live Granulation.html"><span class="s3">Live Granulation</span></a>, <a href="../PbindFx.html"><span class="s3">PbindFx</span></a></span><span class="s5">,</span><span class="s2"> <a href="../kitchen studies.html"><span class="s3">kitchen studies</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*ar (out, channelsArrayRef, fadeTime = 1, stepTime = 1, fadeMode = 0, sine = 1, equalPower = 1, power = 1, curve = 0, allowTypeSeq = 0, fadeRate = \ar, maxFadeNum = inf, maxWidth = 2, width = 2, initOutOffset = 0, maxDynOutOffset = 1, dynOutOffset = 0, allowFadeEnd = 1, zeroThr = nil, doneAction = 0)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>out </b>- Determines the sequence of buses between which the signal should be crossfaded.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>An out bus, a demand rate or other ugen returning out buses or<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SequenceableCollection of such, causing multichannel expansion.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If in this case the overall multichannel size is larger than the size of <b>out</b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and the latter contains demand rate ugens, they must all be wrapped into Functions.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>channelsArrayRef </b>- The signals to be crossfaded.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A single channel doesn't can be passed as such, an array must be wrapped into a<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Ref object to avoid multichannel expansion.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>In this case the multichannel signal is crossfaded from one block of adjacent buses to the next,</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>whereby the lowest bus index follows the base sequence defined by <b>out</b>.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A SequenceableCollection causes multichannel expansion, whereby single items of the collection</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>can itself be Ref objects containing multichannel signals.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>fadeTime </b>- A fade time, a demand rate or other ugens returning fade times or<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SequenceableCollection of such, causing multichannel expansion.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If in this case the overall multichannel size is larger than the size of <b>fadeTime</b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and the latter contains demand rate ugens, they must all be wrapped into Functions.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The interpretation of <b>fadeTime</b> depends on <b>fadeMode</b>.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>fadeTime</b> must be larger than the duration of a control cycle.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 1.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>stepTime </b>- A step time, a demand rate or other ugens returning step times or<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SequenceableCollection of such, causing multichannel expansion.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If in this case the overall multichannel size is larger than the size of <b>stepTime</b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and the latter contains demand rate ugens, they must all be wrapped into Functions.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The interpretation of <b>stepTime</b> depends on <b>fadeMode</b>.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>stepTime</b> must be larger than the duration of a control cycle.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 1.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>fadeMode </b>- Integers between 0 and 4 or</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SequenceableCollection of such, causing multichannel expansion. Not modulatable.</p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>fadeMode = 0: <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>only fadeTimes are used, no steps</p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>fadeMode = 1:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>alternate steps and fades, begin with step; <b>stepTime</b> means time without fade</p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>fadeMode = 2:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>alternate fades and steps, begin with fade; <b>stepTime</b> means time without fade</p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>fadeMode = 3:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>alternate steps and fades, begin with step; <b>stepTime</b> means sum of step and fade,</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>thus <b>stepTime </b>must be larger than <b>fadeTime</b>,</p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the difference must be larger than the duration of a control cycle</p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>fadeMode = 4:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>alternate fades and steps, begin with fade; <b>stepTime</b> means sum of fade and step,</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>thus <b>stepTime </b>must be larger than <b>fadeTime</b>,</p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>the difference must be larger than the duration of a control cycle</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 0.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>sine </b>- Determines the crossfade type: sine-based or not.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A Boolean, 0 or 1 or a demand rate or other ugen returning <b>sine</b> numbers or<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SequenceableCollection of such, causing multichannel expansion.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If in this case the overall multichannel size is larger than the size of <b>sine</b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and the latter contains demand rate ugens, they must all be wrapped into Functions.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Modulating this arg is only possible if <b>allowTypeSeq </b>equals 1.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 1.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>equalPower </b>- Determines if crossfading of equal power type (square root) should be applied.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A Boolean, 0 or 1 or a demand rate or other ugen returning <b>equalPower</b> numbers or<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SequenceableCollection of such, causing multichannel expansion.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If in this case the overall multichannel size is larger than the size of <b>equalPower</b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and the latter contains demand rate ugens, they must all be wrapped into Functions.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Modulating this arg is only possible if <b>allowTypeSeq </b>equals 1.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 1.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>power </b>- This only comes into play if <b>equalPower</b> equals 0, then it's applied to the<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>crossfade amplitude. If power and curve are passed, power applies before.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A positive Number or a demand rate or other ugen returning positive <b>power</b> numbers or<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SequenceableCollection of such, causing multichannel expansion.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If in this case the overall multichannel size is larger than the size of <b>power</b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and the latter contains demand rate ugens, they must all be wrapped into Functions.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Sequencing this arg with demand rate ugens is only possible if <b>allowTypeSeq </b>equals 1.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 1.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>curve </b>- This only comes into play if <b>equalPower</b> equals 0, then it's applied to the<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>crossfade amplitude according to the lincurve mapping.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If power and curve are passed, power applies before.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A Number or a demand rate or other ugen returning <b>curve</b> numbers or<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SequenceableCollection of such, causing multichannel expansion.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If in this case the overall multichannel size is larger than the size of <b>curve</b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and the latter contains demand rate ugens, they must all be wrapped into Functions.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Sequencing this arg with demand rate ugens is only possible if <b>allowTypeSeq </b>equals 1.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Calculation of curvature is not giving reliable results when <b>width</b> and / or <b>dynOutOffset </b>are<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>being modulated at the same time.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 0.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>allowTypeSeq </b>- Enables sequencing of <b>sine</b>, <b>equalPower</b>, <b>power</b> and <b>curve</b> with<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>demand rate ugens and modulating of <b>sine</b> and <b>equalPower</b> with other ugens.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A Boolean, 0 or 1 or a SequenceableCollection of such, causing multichannel expansion.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Not modulatable. As this requires more ugens running in parallel it is disabled by default = 0.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>fadeRate </b>- One of the Symbols \ar and \kr, determining the crossfade rate used by PanAz or</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SequenceableCollection of such, causing multichannel expansion. Not modulatable.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to \ar.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>maxFadeNum </b>- Integer determining the maximum number of fades, after which <b>doneAction </b>applies<b>.</b><span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A SequenceableCollection causes multichannel expansion. Not modulatable.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to inf.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>maxWidth </b>- An Integer determining the maximum <b>width</b> or</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SequenceableCollection of such, causing multichannel expansion, <b>width </b>goes into PanAz's width arg.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>maxWidth</b> increases the internally used and potentially needed number of parallel channels. Not modulatable.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 2.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>width </b>- Integer, Float, UGen (only from SC 3.9 onwards) or a SequenceableCollection of such,<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>causing multichannel expansion. Not modulatable in versions earlier than SC 3.9.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>It determines the width according to PanAz's width arg. Note that a ugen's output must not exceed <b>maxWidth.</b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 2.</p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>initOutOffset</b><span class="Apple-tab-span">	</span>- An Integer or Float or a SequenceableCollection of such, causing multichannel expansion.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Determins an initial offset for PanAz's pos arg.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This can be useful for a start with full or reduced width, see examples.<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Not modulatable. Defaults to 0.</p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>maxDynOutOffset</b> - An Integer or Float or a SequenceableCollection of such, causing multichannel expansion.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Determins the maximum <b>dynOutOffset </b>to be expected.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>maxDynOutOffset</b> increases the internally used and potentially needed number of parallel channels.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Not modulatable. Defaults to 1.</p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>dynOutOffset</b> - UGen, Integer or Float or</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SequenceableCollection of such, causing multichannel expansion.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>By passing a ugen the movement between buses can be modulated.<span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Note that a ugen's output must not exceed <b>maxDynOutOffset.</b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 0.</p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>allowFadeEnd</b> - Integer, Boolean or a SequenceableCollection of such, causing multichannel expansion.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Determines if a demand rate input to <b>out</b> with finite length will be monitored, which needs a quite complicated<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trigger logic and more running ugens. If set to 0, the behaviour after the end of <b>out</b> is undefined.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 1.</p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zeroThr</b> - A Number or a ugen returning <b>zeroThr</b> numbers or<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SequenceableCollection of such, causing multichannel expansion.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Determines if output values below this threshold are replaced by 0.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This makes sense if the output signal is used as trigger (e.g. with DXEnvFan).</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>In the case of low power numbers small inaccuracies are amplified, this is avoided</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>with an appropriate zeroThr (e.g. = 0.001), as the operation is applied before taking the power.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>As this requires more ugens running in parallel it is disabled by default = nil.</p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>doneAction</b> - Integer or a SequenceableCollection of such, causing multichannel expansion.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Determines the doneAction after <b>maxFadeNum </b>is exceeded.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 0.</p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*kr (out, channelsArrayRef, fadeTime = 1, stepTime = 1, fadeMode = 0, sine = 1, equalPower = 1, power = 1, curve = 0, allowTypeSeq = 0, fadeRate = \ar, maxFadeNum = inf, maxWidth = 2, width = 2, initOutOffset = 0, maxDynOutOffset = 1, dynOutOffset = 0, allowFadeEnd = 1, zeroThr = nil, doneAction = 0)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><br></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><br></p>
+<p class="p10"><b>Examples</b></p>
+<p class="p11"><br></p>
+<p class="p12">(</p>
+<p class="p13">// load with extended resources</p>
+<p class="p12">s = <span class="s6">Server</span>.local;</p>
+<p class="p12"><span class="s6">Server</span>.default = s;</p>
+<p class="p12">s.options.numWireBufs = 256;<span class="Apple-converted-space"> </span></p>
+<p class="p12">s.reboot;</p>
+<p class="p12">)</p>
+<p class="p14"><br></p>
+<p class="p14"><br></p>
+<p class="p13">// NOTE: Examples from DXFan help also can be written with DXFanOut,</p>
+<p class="p13">// DXFanOut doesn't need a size arg as the out bus is addressed directly.</p>
+<p class="p13">// There is a small difference though with multichannel expansion, see example below.</p>
+<p class="p4"><br></p>
+<p class="p15"><br></p>
+<p class="p10"><b>Ex.1) Multichannel expansion</b></p>
+<p class="p15"><br></p>
+<p class="p13">// Compare with Ex. 2 from DXFan help.</p>
+<p class="p13">// As DXFanOut, other than DXFan, doesn't return an array, a mix is not necessary,<span class="Apple-converted-space"> </span></p>
+<p class="p13">// by internal use of Out ugens the signal is mixed to the referred buses anyway.</p>
+<p class="p4"><br></p>
+<p class="p13">// For the same reason a normal release doesn't work, to get this option we can add an EnvGate.</p>
+<p class="p4"><br></p>
+<p class="p12">(</p>
+<p class="p12">x = {</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s7">var</span> lfo = { <span class="s6">LFDNoise3</span>.kr(0.2) };</p>
+<p class="p16"><span class="s2"><span class="Apple-tab-span">	</span></span>DXFanOut<span class="s2">.ar(</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s6">Dseq</span>([0, 1], <span class="s8">inf</span>), <span class="s6">Dseq</span>([1, 0], <span class="s8">inf</span>)],</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">LFTri</span>.ar(150 * lfo.().range(1, 2), 0, 0.05),</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">BPF</span>.ar(<span class="s6">PinkNoise</span>.ar(), lfo.().range(1000, 3000), 0.1, 0.7)</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>] * <span class="s6">EnvGate</span>(),</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fadeTime: 0.07,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>width: 1</p>
+<p class="p12"><span class="Apple-tab-span">	</span>)</p>
+<p class="p12">}.play</p>
+<p class="p12">)</p>
+<p class="p4"><br></p>
+<p class="p12">x.release</p>
+<p class="p15"><br></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><b>Ex.2) Fast crossfading between fx processings ("fx granulation")</b></p>
+<p class="p4"><br></p>
+<p class="p13">// To be distinguished by fx processing of grains!</p>
+<p class="p13">// define fxs to read from buses</p>
+<p class="p4"><br></p>
+<p class="p12">(</p>
+<p class="p12">a = <span class="s6">Bus</span>.audio(s, 6);</p>
+<p class="p4"><br></p>
+<p class="p17"><span class="s6">SynthDef</span><span class="s2">(</span><span class="s9">\resample</span><span class="s2">, { </span>|out = 0, in, lfoFreq = 0.2, resampleLo = 500, resampleHi = 2000,</p>
+<p class="p17"><span class="Apple-tab-span">	</span>lag = 0.001, mix = 1, amp = 0.1|</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s7">var</span> sig, inSig = <span class="s6">In</span>.ar(in, 2), lfo;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>lfo = <span class="s6">LFDNoise3</span>.kr(lfoFreq).range(resampleLo, resampleHi);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>sig = <span class="s6">Latch</span>.ar(inSig, <span class="s6">Impulse</span>.ar(lfo)).lag(lag);</p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s6">Out</span>.ar(out, ((1 - mix) * inSig + (sig * mix)) * amp);</p>
+<p class="p12">}).add;</p>
+<p class="p4"><br></p>
+<p class="p17"><span class="s6">SynthDef</span><span class="s2">(</span><span class="s9">\ring</span><span class="s2">, { </span>|out = 0, in, lfoFreq = 0.2, modFreqLo = 50, modFreqHi = 2000,</p>
+<p class="p17"><span class="Apple-tab-span">	</span>mix = 1, amp = 0.1|</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s7">var</span> sig, mod, lfo, src, inSig = <span class="s6">In</span>.ar(in, 2);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>lfo = <span class="s6">LFDNoise3</span>.kr(lfoFreq).range(modFreqLo, modFreqHi);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>mod = <span class="s6">SinOsc</span>.ar(lfo);</p>
+<p class="p12"><span class="Apple-tab-span">	</span>sig = inSig * mod;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s6">Out</span>.ar(out, ((1 - mix) * inSig + (sig * mix)) * amp);</p>
+<p class="p12">}).add;</p>
+<p class="p4"><br></p>
+<p class="p17"><span class="s6">SynthDef</span><span class="s2">(</span><span class="s9">\rectifier</span><span class="s2">, { </span>|out = 0, in, amount = 0, mix = 1, amp = 0.1|</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s7">var</span> sig, inSig = <span class="s6">In</span>.ar(in, 2);</p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span></span>// need collect as if ugen doesn't take arrays</p>
+<p class="p12"><span class="Apple-tab-span">	</span>sig = inSig.collect { <span class="s7">|x,i|</span> x.ceil.if(x, x.abs * amount) };</p>
+<p class="p12"><span class="Apple-converted-space">   <span class="Apple-tab-span">	</span></span><span class="s6">Out</span>.ar(out, ((1 - mix) * inSig + (sig * mix)) * amp);</p>
+<p class="p12">}).add;</p>
+<p class="p12">)</p>
+<p class="p4"><br></p>
+<p class="p13">// start fxs first</p>
+<p class="p12">(</p>
+<p class="p12">u = <span class="s6">Synth</span>(<span class="s9">\resample</span>, [in: a.subBus(0, 2)]);</p>
+<p class="p12">v = <span class="s6">Synth</span>(<span class="s9">\ring</span>, [in: a.subBus(2, 2)]);</p>
+<p class="p12">w = <span class="s6">Synth</span>(<span class="s9">\rectifier</span>, [in: a.subBus(4, 2)]);</p>
+<p class="p12">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// start source, crossfade between fx buses</p>
+<p class="p13">// play with MouseX, fx and source period are in integer relation</p>
+<p class="p4"><br></p>
+<p class="p12">(</p>
+<p class="p12">x = {</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s7">var</span> seq = <span class="s6">Demand</span>.kr(</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Impulse</span>.kr(5),</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Dxrand</span>([60, 62, 65.5, 66, 68.5], <span class="s8">inf</span>) + <span class="s6">Drand</span>([-12, 0, 12], <span class="s8">inf</span>)</p>
+<p class="p12"><span class="Apple-tab-span">	</span>).midicps.lag(0.015);</p>
+<p class="p4"><br></p>
+<p class="p16"><span class="s2"><span class="Apple-tab-span">	</span></span>DXFanOut<span class="s2">.ar(</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Dseq</span>([0, 1, 2], <span class="s8">inf</span>) * 2 + a.index,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>`(<span class="s6">SinOsc</span>.ar(</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>seq * [1, 1.01],</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>) * <span class="s6">EnvGate</span>()),</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fadeTime: 0.2 / (<span class="s6">MouseX</span>.kr(5, 25).round.poll),</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>width: 1.2</p>
+<p class="p12"><span class="Apple-tab-span">	</span>)</p>
+<p class="p12">}.play</p>
+<p class="p12">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// cleanup</p>
+<p class="p4"><br></p>
+<p class="p12">x.release;</p>
+<p class="p4"><br></p>
+<p class="p12">[u, v, w].do(<span class="s6">_</span>.free);</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// granulated source + fast fx crossfades</p>
+<p class="p4"><br></p>
+<p class="p13">// load sound file</p>
+<p class="p4"><br></p>
+<p class="p12">b = <span class="s6">Buffer</span>.read(s, <span class="s6">Platform</span>.miSCellaneousDirs[0] +/+ <span class="s10">"Sounds"</span> +/+ <span class="s10">"kitchen_sounds_1.wav"</span>);</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// start fxs first</p>
+<p class="p12">(</p>
+<p class="p12">u = <span class="s6">Synth</span>(<span class="s9">\resample</span>, [in: a.subBus(0, 2), lag: 0.01, mix: 0.6]);</p>
+<p class="p12">v = <span class="s6">Synth</span>(<span class="s9">\ring</span>, [in: a.subBus(2, 2), mix: 1]);</p>
+<p class="p12">)</p>
+<p class="p4"><br></p>
+<p class="p13">// feed DXFanOut with granulated signal</p>
+<p class="p13">// control two trigger rates with MouseX and MouseY</p>
+<p class="p12">(</p>
+<p class="p12">x = {</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s7">var</span> trig = <span class="s6">Impulse</span>.ar(<span class="s6">MouseY</span>.kr(20, 100).poll(2, label: <span class="s9">'source trigrate'</span>));</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s7">var</span> pos = <span class="s6">BufDur</span>.kr(b) * <span class="s6">LFDNoise3</span>.ar(0.6).range(0.1, 0.5);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s7">var</span> sig = <span class="s6">TGrains</span>.ar(2, trig, b, 1, pos, 0.5, <span class="s6">Dseq</span>([-1, 1], <span class="s8">inf</span>) * 0.8, 3);</p>
+<p class="p16"><span class="s2"><span class="Apple-tab-span">	</span></span>DXFanOut<span class="s2">.ar(</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">Dseq</span>([0, 2], <span class="s8">inf</span>) + a.index,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>`(sig * <span class="s6">EnvGate</span>()),</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fadeTime: 0.2 / (<span class="s6">MouseX</span>.kr(5, 100).round.poll(2, label: <span class="s9">'fx trigrate'</span>)),</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>width: 1.5</p>
+<p class="p12"><span class="Apple-tab-span">	</span>)</p>
+<p class="p12">}.play</p>
+<p class="p12">)</p>
+<p class="p4"><br></p>
+<p class="p13">// cleanup</p>
+<p class="p4"><br></p>
+<p class="p12">x.release;</p>
+<p class="p4"><br></p>
+<p class="p12">[u, v].do(<span class="s6">_</span>.free);</p>
+<p class="p4"><br></p>
+<p class="p12">a.free;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+</body>
+</html>

@@ -1,0 +1,73 @@
+
+CLASS::PSVop
+summary::Sieve pattern for arbitrary set operations of integer generators with point output	
+categories:: Libraries>miSCellaneous>Sieves and Psieve Patterns, Streams-Patterns-Events>Sieves and Psieve Patterns
+related:: Overviews/miSCellaneous, Tutorials/Sieves_and_Psieve_patterns, Classes/Sieve, Classes/Psieve, Classes/PSVunion, Classes/PSVunion_i, Classes/PSVunion_o, Classes/PSVunion_oi, Classes/PSVsect, Classes/PSVsect_i, Classes/PSVsect_o, Classes/PSVsect_oi, Classes/PSVsymdif, Classes/PSVsymdif_i, Classes/PSVsymdif_o, Classes/PSVsymdif_oi, Classes/PSVdif_i, Classes/PSVdif_oi, Classes/PSVop_i, Classes/PSVop_o, Classes/PSVop_oi 
+
+DESCRIPTION::
+Pattern for arbitrary set operations of integer generators with point output. For an introduction and more examples see link::Tutorials/Sieves_and_Psieve_patterns::.
+
+
+
+CLASSMETHODS::
+
+
+method::new
+
+Creates a new PSVop object.
+
+argument::genList
+An array of generators. 
+Allowed generators: Integers, Streams or Patterns producing intervals or Sieves itself.
+Integers and Stream/Pattern output must be strictly positive. 
+Integers as generators produce zero and its positive multiples.
+
+argument::op
+One of the Symbols 'u', 's', 'sd', 'd' as abbreviations for set operations 'union',
+'sect', 'symdif', 'dif' or a Pattern/Stream to produce such. Defaults to 'u'.
+
+argument::difIndex
+Integer or a Pattern/Stream to produce such. 
+Determines the generator from which will be subtracted in case of operation 'dif'.
+Defaults to 0.
+
+argument::maxLength
+Integer. Maximum number of items, which the stream will return.
+Defaults to inf.
+
+argument::limit
+Integer. Limit up to which integers can be returned by the stream.
+If no limit is passed, returned integers might go up to default limit 65536.
+
+
+SECTION::Examples
+
+code::
+// equivalent
+
+x = PSVop([3, 5], \sd)
+y = PSVsymdif([3, 5])
+
+x.asStream.nextN(15)
+y.asStream.nextN(15)
+
+
+// sequencing of logical operations
+
+p = PSVop([3, 3], Pseq([\u, \sd], inf))
+
+p.asStream.nextN(15)
+
+
+// specify difference
+
+q = PSVop([2, 5], \d, 1)
+
+q.asStream.nextN(100)
+
+
+r = PSVop([2, 5], \d, 0)
+
+r.asStream.nextN(100)
+::
+

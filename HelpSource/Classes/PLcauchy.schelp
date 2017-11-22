@@ -1,0 +1,86 @@
+CLASS:: PLcauchy      
+summary:: dynamic scope Pcauchy variant
+categories::Libraries>miSCellaneous>PLx suite, Streams-Patterns-Events>PLx suite
+related:: Overviews/miSCellaneous, Classes/Pcauchy, Tutorials/PLx_suite, Tutorials/Event_patterns_and_Functions, Classes/VarGui, Tutorials/VarGui_shortcut_builds 
+
+
+DESCRIPTION::
+
+
+Takes Symbol args for later reference by the Streams, which will read from variables in the Environments of their instantiation. See link::Tutorials/PLx_suite::. 
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PLcauchy object.
+
+argument::mean
+Symbol or Pcauchy mean arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Can be dynamically replaced by Patterns or Streams. Defaults to 0.
+
+argument::spread
+Symbol or Pcauchy spread arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Can be dynamically replaced by Patterns or Streams. Defaults to 1.
+
+argument::length
+Symbol or Pcauchy length arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Defaults to inf.
+
+argument::envir
+Dictionary or one of the Symbols 
+\top, \t (topEnvironment), \current, \c (currentEnvironment).
+Dictionary to be taken for variable reference. Defaults to \current.
+
+
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+
+// definition for future reference in arbitrary Environments,
+// Cauchy distribution is not bounded, so do clip !
+
+(
+p = Pbind(
+    \midinote, PLcauchy(\mean, \spread).clip(60, 90),
+    \dur, 0.1
+);
+)
+
+// prepare current Environment
+
+(
+~mean = 75;
+~spread = 0.1;
+)
+
+
+// run
+
+x = p.play;
+
+
+// move mean value and distribution
+// PLseq defaults to repeats = inf
+
+(
+~mean = PLseq((80, 79.7..70));
+~spread = PLseq([0, 0, 0, 1]);
+)
+
+x.stop;
+
+::
+
