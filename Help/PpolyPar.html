@@ -1,0 +1,497 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Helvetica; min-height: 11.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0433ff}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0326cb}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #008300}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #0000ee}
+span.s5 {color: #00afff}
+span.s6 {text-decoration: underline ; color: #042eee}
+span.s7 {color: #0326cb}
+span.s8 {color: #008300}
+span.s9 {color: #434ccb}
+span.s10 {color: #0433ff}
+span.s11 {color: #cd1c00}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>PpolyPar<span class="Apple-tab-span">	</span></b></span><b><span class="Apple-tab-span">	</span>polyphonic event pattern for an arbitrary number of timed setting streams<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Inherits from: Plazy</b></p>
+<p class="p5"><br></p>
+<p class="p4"><b>See also: </b><a href="Pmono.html"><span class="s4">Pmono</span></a><span class="s5">, <a href="PmonoPar.html"><span class="s6">PmonoPar</span></a>, <a href="PbindFx.html"><span class="s6">PbindFx</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p4">This is similar to PmonoPar and allows an arbitrary number of monophonic streams as well as an arbitrary number of differently timed setting streams applied to them in parallel. Each setting action can affect an arbitrary combination of running synths. PpolyPar can be used for polyphonic sources alone as well as in combination with effects.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>History:</b> PmonoPar and PpolyPar grew out of discussions on sc-users list, based on an example by Jonatan Liljedahl. Thanks to him, Ron Kuivila, user Monsieur and others for their comments on this – I then suggested classes PsetGroup and PsetFxGroup, which internally use Pgroup. Meanwhile I reworked the implementation, but it's still based on groups. I renamed PsetGroup to PmonoPar – as this makes the functionality more clear – and PsetFxGroup to PpolyPar, as it can be used with or without effect synths, the crucial point is the setting of parallel streams.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p6"><b>Creation / Class Methods</b></p>
+<p class="p7"><br></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>*new (setPatternPairs, defNames, order, offset)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new PpolyPar object.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>setPatternPairs </b>- SequenceableCollection of SequenceableCollections containing key/value pairs.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Each of the inner collections represents the data of one synth setting stream.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Per convention key/value pairs written after a pair with \dur will cause setting, pairs before will not.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If keys \midinote, \note or \degree are occuring after \dur, they will be converted to a frequency value,</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>which will be used for setting the arg 'freq'.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Also per convention, if the number of setting streams (the size of <b>setPatternPairs</b>) equals the number</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>of synths (the size of <b>defNames</b>), the settings of stream i will automatically affect synth i.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If sizes are unequal, each collection of key/value pairs needs a pair with key <b>\synths</b> and a value.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This value can be an Integer, meaning synth i, or a SequenceableCollection of Integers, in which case all of those</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>synths will be affected by the setting. The value can also be a Pattern, so that synths to be set</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>might change from event to event (see examples).</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>defNames </b>- SequenceableCollection of Symbols or Strings. Names of the SynthDefs to be used for the synths being set.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to #[\default].</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>order </b>- SequenceableCollection of Integers indicating the order of nodes passed to <b>defNames</b>.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to nil, in that case an order 0, ... , (defNames.size - 1) is assumed, i.e. synth i comes before synth i+1.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>offset </b>- Number. Offset to be taken for time-shifting synth inits and streams. Defaults to 1e-6.</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><br></p>
+<p class="p12"><b>Examples</b></p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p13">s = <span class="s7">Server</span>.local;</p>
+<p class="p13"><span class="s7">Server</span>.default = s;</p>
+<p class="p13">s.boot;</p>
+<p class="p13">)</p>
+<p class="p7"><br></p>
+<p class="p5"><br></p>
+<p class="p12"><b>Ex. 1a:<span class="Apple-tab-span">	</span>PpolyPar with different instruments</b></p>
+<p class="p14"><br></p>
+<p class="p15">// basic SynthDefs, EnvGate invents a gate arg which is necessary for release</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p16"><span class="s7">SynthDef</span><span class="s2">(</span><span class="s8">\saw</span><span class="s2">, { </span>|freq = 400, freqlag = 0.0, amp = 0.1, amplag = 0.01|</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">Out</span>.ar(0, <span class="s7">Saw</span>.ar(Lag.kr(freq, freqlag), VarLag.kr(amp, amplag, warp: 1)) ! 2 * <span class="s7">EnvGate</span>());</p>
+<p class="p13">}).add;</p>
+<p class="p5"><br></p>
+<p class="p16"><span class="s7">SynthDef</span><span class="s2">(</span><span class="s8">\pulse</span><span class="s2">, { </span>|freq = 400, freqlag = 0.0, amp = 0.1, amplag = 0.05|</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">Out</span>.ar(0, <span class="s7">Pulse</span>.ar(Lag.kr(freq, freqlag), mul: VarLag.kr(amp, amplag, warp: 1)) ! 2 * <span class="s7">EnvGate</span>());</p>
+<p class="p13">}).add;</p>
+<p class="p5"><br></p>
+<p class="p16"><span class="s7">SynthDef</span><span class="s2">(</span><span class="s8">\sine</span><span class="s2">, { </span>|freq = 400, freqlag = 0.0, amp = 0.1, amplag = 0.05|</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">Out</span>.ar(0, <span class="s7">SinOsc</span>.ar(Lag.kr(freq, freqlag), 0, mul: VarLag.kr(amp, amplag, warp: 1)) ! 2 * <span class="s7">EnvGate</span>());</p>
+<p class="p13">}).add;</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p15">// simple usage, each stream is setting the corresponding instrument</p>
+<p class="p5"><br></p>
+<p class="p15">// per convention keys after \dur are the ones to be set</p>
+<p class="p15">// note that you'd need \freq (the SynthDef arg)<span class="Apple-converted-space"> </span></p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p17"><span class="s2">p = </span>PpolyPar<span class="s2">([[</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 1/6,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, <span class="s7">Pwrand</span>([0, 0.07], [1, 7]/8, <span class="s9">inf</span>),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">Pshuf</span>((30..68), <span class="s9">inf</span>)</p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, <span class="s7">Prand</span>([1, 1, 2]/4, <span class="s9">inf</span>),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, <span class="s7">Pwrand</span>([0, 0.07, 0.1], [0.3, 0.3, 0.4], <span class="s9">inf</span>),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\freqlag</span>, 0.2,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amplag</span>, <span class="s7">Prand</span>([0.2, 0.4], <span class="s9">inf</span>),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">Pbrown</span>(70, 90, 5)</p>
+<p class="p13"><span class="Apple-tab-span">	</span>]],</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span>[</span>\saw<span class="s2">, </span>\pulse<span class="s2">]</span></p>
+<p class="p13">).play;</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p13">p.stop;</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p12"><b>Ex. 1b:<span class="Apple-tab-span">	</span>PpolyPar with different instruments and overlapping settings</b></p>
+<p class="p5"><br></p>
+<p class="p15">// SynthDefs from Ex. 1a</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p15">// Function to create midinote patterns in different ranges</p>
+<p class="p5"><br></p>
+<p class="p13">r = { <span class="s10">|add = 0|</span> <span class="s7">Pstutter</span>(5, <span class="s7">Pwhite</span>(60, 70) + add) };</p>
+<p class="p5"><br></p>
+<p class="p15">// each setting stream affects two synths: those of corresponding indices of \synths,</p>
+<p class="p15">// but only with one value: the Integer polled from the Pstutter stream</p>
+<p class="p5"><br></p>
+<p class="p17"><span class="s2">p = </span>PpolyPar<span class="s2">([[</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\synths</span>, [0, 1],</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 1/6,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, r.(),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.04</p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\synths</span>, [0, 2],</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 1/4,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, r.(10),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.03</p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\synths</span>, [1, 2],</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 1/3,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, r.(20),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.05</p>
+<p class="p13"><span class="Apple-tab-span">	</span>]],</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span>[</span>\saw<span class="s2">, </span>\pulse<span class="s2">, </span>\sine<span class="s2">]</span></p>
+<p class="p13">).play</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p13">p.stop;</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p12"><b>Ex. 1c:<span class="Apple-tab-span">	</span>PpolyPar with different instruments, overlapping settings with array dispatch</b></p>
+<p class="p5"><br></p>
+<p class="p15">// SynthDefs from Ex. 1a</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p15">// Similar to Ex. 1b, but the midinote pattern will cause the stream to generate arrays of two elements,</p>
+<p class="p15">// they will be distributed to the indicated synths</p>
+<p class="p5"><br></p>
+<p class="p13">r = { <span class="s10">|add = 0, int = 7|</span> <span class="s7">Pstutter</span>(5, <span class="s7">Pwhite</span>(60, 65) + [0, int] + add) };</p>
+<p class="p5"><br></p>
+<p class="p15">// each setting streams affects two synths: those of corresponding indices of \synths</p>
+<p class="p5"><br></p>
+<p class="p17"><span class="s2">p = </span>PpolyPar<span class="s2">([[</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\synths</span>, [0, 1],</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 1/6,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, r.(0, 5),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.04</p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\synths</span>, [0, 2],</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 1/4,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, r.(10, 6),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.03</p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\synths</span>, [1, 2],</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 1/3,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, r.(20, 7),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.05</p>
+<p class="p13"><span class="Apple-tab-span">	</span>]],</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span>[</span>\saw<span class="s2">, </span>\pulse<span class="s2">, </span>\sine<span class="s2">]</span></p>
+<p class="p13">).play</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p13">p.stop;</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p12"><b>Ex. 2a:<span class="Apple-tab-span">	</span>PpolyPar with one effect synth</b></p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p15">// With t_gate a percussive envelope will be triggered,</p>
+<p class="p15">// so articulation can be achieved within a monophonic stream.</p>
+<p class="p15">// This is similar to Pbind, though only if envelopes are shorter than entry time differences.<span class="Apple-converted-space"> </span></p>
+<p class="p5"><br></p>
+<p class="p16"><span class="s7">SynthDef</span><span class="s2">(</span><span class="s8">\test</span><span class="s2">, { </span>|out = 0, freq = 440, att = 0.01, rel = 0.1, amp = 0.1, t_gate = 1|</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s10">var</span> sig = <span class="s7">Saw</span>.ar(freq, amp), delayedSig;</p>
+<p class="p13"><span class="Apple-tab-span">	</span>sig = sig!2 * <span class="s7">EnvGen</span>.ar(<span class="s7">Env</span>.perc(att, rel), t_gate);</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span></span>// add some spatial variance by LFO on delaytime</p>
+<p class="p13"><span class="Apple-tab-span">	</span>delayedSig = <span class="s7">DelayL</span>.ar(sig, delaytime: { <span class="s7">LFDNoise3</span>.kr(0.5).range(0.005, 0.02) } ! 2);</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">Out</span>.ar(out, delayedSig * <span class="s7">EnvGate</span>())</p>
+<p class="p13">}).add;</p>
+<p class="p5"><br></p>
+<p class="p15">// Effect synthdefs with in and out bus,</p>
+<p class="p15">// both get an EnvGate which introduces a gate arg for proper release,</p>
+<p class="p15">// one could also add a gate arg and an EnvGen using it.</p>
+<p class="p5"><br></p>
+<p class="p15">// wet/dry-relation is fixed, considering the example with fx chain a bypass arg is introduced</p>
+<p class="p5"><br></p>
+<p class="p16"><span class="s7">SynthDef</span><span class="s2">(</span><span class="s8">\echo</span><span class="s2">, { </span>|out = 0, in, maxdtime = 0.2, dtime = 0.2, decay = 3, amp = 0.5, bypass = 0|</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s10">var</span> sig, insig;</p>
+<p class="p13"><span class="Apple-tab-span">	</span>insig = <span class="s7">In</span>.ar(in, 2);</p>
+<p class="p13"><span class="Apple-tab-span">	</span>sig = <span class="s7">CombL</span>.ar(insig, maxdtime, dtime, decay, amp, add: insig) * <span class="s7">EnvGate</span>();</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">Out</span>.ar(out, bypass * insig + ((1 - bypass) * sig));</p>
+<p class="p13">}).add;</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p16"><span class="s7">SynthDef</span><span class="s2">(</span><span class="s8">\wah</span><span class="s2">, { </span>|out = 0, in, freqLo = 200, freqHi = 5000, modFreq = 10, amp = 0.7, bypass = 0|</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s10">var</span> sig, insig;</p>
+<p class="p13"><span class="Apple-tab-span">	</span>insig = <span class="s7">In</span>.ar(in, 2);</p>
+<p class="p13"><span class="Apple-tab-span">	</span>sig = <span class="s7">RLPF</span>.ar(</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>insig,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">LinExp</span>.kr(<span class="s7">LFDNoise1</span>.kr(modFreq), -1, 1, freqLo, freqHi),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.1,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>amp,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>insig * 0.3</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>).softclip * 0.8 * <span class="s7">EnvGate</span>();</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s7">Out</span>.ar(out, bypass * insig + ((1 - bypass) * sig));</p>
+<p class="p13">}).add;</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p15">// Whereas node order is done by PpolyPar, bus handling is the user's responsibility,</p>
+<p class="p15">// it looks more flexible to me to define buses separately.</p>
+<p class="p5"><br></p>
+<p class="p15">// one fx</p>
+<p class="p5"><br></p>
+<p class="p13">b = <span class="s7">Bus</span>.audio(s, 2);</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p17"><span class="s2">p = </span>PpolyPar<span class="s2">([[</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 0.5,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.2,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\out</span>, b,</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\t_gate<span class="s2">, 1,</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">Pwhite</span>(50, 100)</p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// dur = inf causes just a running fx synth, none of its args is set by a stream</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, <span class="s9">inf</span>,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\in</span>, b,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dtime</span>, 0.1,</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\decay<span class="s2">, 3</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>]],</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span>[</span>\test<span class="s2">, </span>\echo<span class="s2">]</span></p>
+<p class="p13">).play</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p13">p.stop;</p>
+<p class="p5"><br></p>
+<p class="p13">b.free;</p>
+<p class="p5"><br></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><b>Ex. 2b:<span class="Apple-tab-span">	</span>PpolyPar with more effect synths</b></p>
+<p class="p5"><br></p>
+<p class="p15">// SynthDefs from Ex. 2a</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p13">b = <span class="s7">Bus</span>.audio(s, 2);</p>
+<p class="p13">c = <span class="s7">Bus</span>.audio(s, 2);</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p15">// still none of the effects is set by a stream</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p17"><span class="s2">p = </span>PpolyPar<span class="s2">([[</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// values before \dur are not sent to server, so do this work here:</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// echo (out b) is coupled with short release time</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// wah (out c) is coupled with longer release time</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\data</span>, <span class="s7">Prand</span>([[b, 0.1], [c, 0.5]], <span class="s9">inf</span>),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, <span class="s7">Prand</span>([1, 1, 2]/5, <span class="s9">inf</span>),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.3,</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// data dispatch from above, these values will be sent</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\rel</span>, <span class="s7">Pkey</span>(<span class="s8">\data</span>).collect(<span class="s7">_</span>[1]),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\out</span>, <span class="s7">Pkey</span>(<span class="s8">\data</span>).collect(<span class="s7">_</span>[0]),</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\t_gate<span class="s2">, 1,</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">Pwhite</span>(50, 100)</p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, <span class="s9">inf</span>,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\in</span>, b,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\out</span>, 0,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dtime</span>, 0.1,</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\decay<span class="s2">, 3</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, <span class="s9">inf</span>,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\in</span>, c,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.3</p>
+<p class="p13"><span class="Apple-tab-span">	</span>]],</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span>[</span>\test<span class="s2">, </span>\echo<span class="s2">, </span>\wah<span class="s2">]</span></p>
+<p class="p13">).play;</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p13">p.stop;</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p13">b.free;</p>
+<p class="p13">c.free;</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p12"><b>Ex. 2c:<span class="Apple-tab-span">	</span>PpolyPar with more effect synths and streamed setting</b></p>
+<p class="p5"><br></p>
+<p class="p15">// SynthDefs from Ex. 2a</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p13">b = <span class="s7">Bus</span>.audio(s, 2);</p>
+<p class="p13">c = <span class="s7">Bus</span>.audio(s, 2);</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p15">// effects set by streams</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p17"><span class="s2">p = </span>PpolyPar<span class="s2">([[</span></p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// values before \dur are not sent to server, so do this work here:</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// echo (out b) is coupled with short release time</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// wah (out c) is coupled with longer release time</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\data</span>, <span class="s7">Prand</span>([[b, 0.1], [c, 0.5]], <span class="s9">inf</span>),</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// will get "bars" of length 4/5</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, <span class="s7">Pn</span>(<span class="s7">Pshuf</span>([1, 1, 2]/5)),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.3,</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// data dispatch from above, these values will be sent</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\rel</span>, <span class="s7">Pkey</span>(<span class="s8">\data</span>).collect(<span class="s7">_</span>[1]),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\out</span>, <span class="s7">Pkey</span>(<span class="s8">\data</span>).collect(<span class="s7">_</span>[0]),</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\t_gate<span class="s2">, 1,</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">Pwhite</span>(50, 100)</p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 4/5,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\in</span>, b,</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// change delaytime per "bar", random add avoids repeating echo frequencies</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dtime</span>, <span class="s7">Pshuf</span>([1, 2, 4]/40, <span class="s9">inf</span>) + (<span class="s7">Pwhite</span>(-0.5, 0.5)/40),</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\decay<span class="s2">, 3</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 4/5,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\in</span>, c,</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// change modFreq per "bar"</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\modFreq</span>, <span class="s7">Pshuf</span>((1..20), <span class="s9">inf</span>),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.3</p>
+<p class="p13"><span class="Apple-tab-span">	</span>]],</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span>[</span>\test<span class="s2">, </span>\echo<span class="s2">, </span>\wah<span class="s2">]</span></p>
+<p class="p13">).play</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p13">p.stop;</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p13">b.free;</p>
+<p class="p13">c.free;</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p12"><b>Ex. 2d:<span class="Apple-tab-span">	</span>PpolyPar with more effect synths, streamed setting and more than one setting stream per synth</b></p>
+<p class="p5"><br></p>
+<p class="p15">// SynthDefs from Ex. 2a</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p13">b = <span class="s7">Bus</span>.audio(s, 2);</p>
+<p class="p13">c = <span class="s7">Bus</span>.audio(s, 2);</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p15">// Now we have more setting streams than synths,</p>
+<p class="p15">// so we need to define which synth is to be set by which stream,</p>
+<p class="p15">// this done via the \synths key, which must be contained in every collection of pairs.</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p17"><span class="s2">p = </span>PpolyPar<span class="s2">([[</span></p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\synths<span class="s2">, 0,</span></p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// values before \dur are not sent to server, so do this work here:</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// echo (out b) is coupled with short release time</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// wah (out c) is coupled with longer release time</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\data</span>, <span class="s7">Prand</span>([[b, 0.1], [c, 0.5]], <span class="s9">inf</span>),</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// will get "bars" of length 4/5</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, <span class="s7">Pn</span>(<span class="s7">Pshuf</span>([1, 1, 2]/5)),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.3,</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// data dispatch from above, these values will be sent</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\rel</span>, <span class="s7">Pkey</span>(<span class="s8">\data</span>).collect(<span class="s7">_</span>[1]),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\out</span>, <span class="s7">Pkey</span>(<span class="s8">\data</span>).collect(<span class="s7">_</span>[0]),</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\t_gate<span class="s2">, 1</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// stream setting frequency<span class="Apple-converted-space"> </span></p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\synths<span class="s2">, 0,</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 1/20,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">Pshuf</span>((45..90), <span class="s9">inf</span>)</p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\synths<span class="s2">, 1,</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 4/5,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\in</span>, b,</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// change delaytime per "bar", random add avoids repeating echo frequencies</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dtime</span>, <span class="s7">Pshuf</span>([1, 2, 4]/40, <span class="s9">inf</span>) + (<span class="s7">Pwhite</span>(-0.5, 0.5)/40),</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\decay<span class="s2">, 3</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\synths<span class="s2">, 2,</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 4/5,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\in</span>, c,</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// change modFreq per "bar"</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\modFreq</span>, <span class="s7">Pshuf</span>((1..20), <span class="s9">inf</span>),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.3</p>
+<p class="p13"><span class="Apple-tab-span">	</span>]],</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span>[</span>\test<span class="s2">, </span>\echo<span class="s2">, </span>\wah<span class="s2">]</span></p>
+<p class="p13">).play</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p13">p.stop;</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p13">b.free;</p>
+<p class="p13">c.free;</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p12"><b>Ex. 2e:<span class="Apple-tab-span">	</span>PpolyPar with effect chain and streamed fx repatching</b></p>
+<p class="p5"><br></p>
+<p class="p15">// SynthDefs from Ex. 2a</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p13">b = <span class="s7">Bus</span>.audio(s, 2);</p>
+<p class="p13">c = <span class="s7">Bus</span>.audio(s, 2);</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p15">// Here effects are chained in order - see buses passed to \in and \out</p>
+<p class="p15">// Again more setting streams than synths, so the \synths key is needed.</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p17"><span class="s2">p = </span>PpolyPar<span class="s2">([[</span></p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\synths</span><span class="s2">, 0, </span>// source synth</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// will get "bars" of length 4/5</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, <span class="s7">Pn</span>(<span class="s7">Pshuf</span>([1, 1, 2]/5)),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.3,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\rel</span>, 0.2,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\out</span>, b,</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\t_gate<span class="s2">, 1</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// freq rhythm might differ from envelope rhythm (stream 0)</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\synths<span class="s2">, 0,</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, <span class="s7">Pn</span>(<span class="s7">Pshuf</span>([1, 1, 2]/5)),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">Pshuf</span>((45..90), <span class="s9">inf</span>)</p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\synths</span>, 1, <span class="s11">// echo</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 4/5,</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\in</span><span class="s2">, b, </span>// gets from source and sends to wah</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\out</span>, c,</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// change delaytime per "bar", random add avoids repeating echo frequencies</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dtime</span>, <span class="s7">Pshuf</span>([1, 2, 4]/20, <span class="s9">inf</span>) + (<span class="s7">Pwhite</span>(-0.5, 0.5)/20),</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\decay<span class="s2">, 3</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\synths</span>, 2, <span class="s11">// wah</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 4/5,</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\in</span><span class="s2">, c, </span>// gets from echo, sends to out 0 by default</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// change modFreq per "bar"</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\modFreq</span>, <span class="s7">Pshuf</span>((1..20), <span class="s9">inf</span>),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.3</p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// this stream determines effects in action by setting bypass args of both fx synths</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\synths</span>, [1, 2],</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 1/5,<span class="Apple-converted-space"> </span></p>
+<p class="p15"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// alternate bypassing of wah synth</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\bypass</span>, <span class="s7">Pseq</span>([[0, 0], [0, 1]], <span class="s9">inf</span>)</p>
+<p class="p13"><span class="Apple-tab-span">	</span>]],</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span>[</span>\test<span class="s2">, </span>\echo<span class="s2">, </span>\wah<span class="s2">]</span></p>
+<p class="p13">).play</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p13">p.stop;</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p13">b.free;</p>
+<p class="p13">c.free;</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+</body>
+</html>

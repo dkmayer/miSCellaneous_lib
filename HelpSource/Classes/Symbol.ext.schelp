@@ -1,0 +1,212 @@
+
+INSTANCEMETHODS::
+
+private:: miSC_getCtrIndex, miSC_getEnvir
+
+private:: miSC_specAsArray, miSC_expandCtrs, miSC_expandCtrPairs, miSC_findGlobalControlSpec, miSC_getControlTuples, miSC_controlsToExclude, miSC_sVarGuiSpecsFromTuples, miSC_pVarGuiData
+
+private:: miSC_checkPbindFxBusMatch
+
+
+method:: sVarGui
+See link::Tutorials/VarGui_shortcut_builds::. Instantiate a VarGui object for control of one or more Synth(s) derived from a SynthDef name which may also be given as String. Per default controlspecs are taken from metadata definition, if defined with the SynthDef, or the global dictionary Spec.specs. Controls can be excluded with strong::exclude::, added with strong::ctrBefore:: or strong::ctrAfter:: and replaced with strong::ctrReplace::, this is also the order of operations.
+
+argument::ctrBefore
+a spec pair collection of the form strong::[ key, spec, ...:: strong::]:: where strong::key:: is the symbol of the control arg to be set and strong::spec:: can be a collection of the form strong::[:: strong::minval, maxval, warp, step, default:: strong::]:: defining the corresponding ControlSpec, a Symbol / String to look for a ControlSpec in the global dictionary Spec.specs or a collection of specs of this form for an arrayed control. May also be a SimpleNumber for a dummy slider with fixed value. Defaults to nil. Also takes a Function of indices that returns a valid arg. 
+
+argument::ctrReplace
+a spec pair collection of a form like strong::ctrBefore::. Also takes a Function of indices that returns a valid arg. Defaults to nil.
+
+argument::ctrAfter
+a spec pair collection of a form like strong::ctrBefore::. Also takes a Function of indices that returns a valid arg. Defaults to nil. 
+
+argument::exclude
+a collection of control keys (Symbols) to be excluded. Also takes a Function of indices that returns a valid arg. Defaults to nil.
+
+argument::metaKey
+Symbol. Key to lookup SynthDef metadata. Also takes a Function of indices that returns a Symbol. Defaults to \specs.
+
+argument::useGlobalSpecs
+Boolean. Defines if to consider global ControlSpecs if metadata is not given. Also takes a Function of indices that returns a Boolean. Defaults to true.
+
+argument::num
+Boolean. Integer. Number of Synths to be controlled. Defaults to 1.
+
+argument::server
+Server. Defaults to the default server.
+
+
+
+
+
+method:: pVarGui
+See link::Tutorials/VarGui_shortcut_builds::. Instantiate a VarGui object for control of one or more Pbind(s) / EventStreamPlayer(s), derived from a SynthDef name which may also be given as String. One or more Pbind(s) with Pfunc pairs and the corresponding environmental variable controls are generated, controls for duration and legato are added. Per default controlspecs are taken from metadata definition, if defined with the SynthDef, or the global dictionary Spec.specs. Controls can be excluded with strong::exclude::, added with strong::ctrBefore:: or strong::ctrAfter:: and replaced with strong::ctrReplace::; Pbind pairs can be excluded with strong::exclude::, added with strong::pBefore:: or strong::pAfter::: and replaced with strong::pReplace::, this is the order of operations for Synths and Pbind pairs. Note that strong::exclude:: applies to Synth controls and Pbind pairs. If an added Pbind pair with key \degree, \note or \midinote is detected, \freq is excluded automatically from Pbind and controls. Gate control is excluded per default.
+
+argument::ctrBefore
+a spec pair collection of the form strong::[ key, spec, ...:: strong::]:: where strong::key:: is the symbol of the environmental variable to be set and strong::spec:: can be a collection of the form strong::[:: strong::minval, maxval, warp, step, default:: strong::]:: defining the corresponding ControlSpec, a Symbol / String to look for a ControlSpec in the global dictionary Spec.specs or a collection of specs of this form for an arrayed control if the environmental variable should have the value of a collection itself. May also be a SimpleNumber for a dummy slider with fixed value. Defaults to nil. Also takes a Function of indices that returns a valid arg. 
+
+argument::ctrReplace
+a spec pair collection of a form like strong::ctrBefore::. Also takes a Function of indices that returns a valid arg. Defaults to nil.
+
+argument::ctrAfter
+a spec pair collection of a form like strong::ctrBefore::. Also takes a Function of indices that returns a valid arg. Defaults to nil. 
+
+
+argument::durCtr
+a controlspec of the form strong::[:: strong::minval, maxval, warp, step, default:: strong::]:: or a Symbol / String to look for a ControlSpec in the global dictionary Spec.specs. Also takes a Function of indices that returns a valid arg. Defaults to #[0.05, 3, \exp, 0, 0.2].
+
+
+argument::legatoCtr
+a controlspec of the form strong::[:: strong::minval, maxval, warp, step, default:: strong::]:: or a Symbol / String to look for a ControlSpec in the global dictionary Spec.specs. Also takes a Function of indices that returns a valid arg. Defaults to #[0.1, 5, \exp, 0, 0.8].
+
+argument::pBefore
+a Pbind pair collection of the form strong::[ key, patterns, ...:: strong::]::. Also takes a Function of indices that returns a Pbind pair collection. Defaults to nil. 
+
+argument::pReplace
+a Pbind pair collection of the form strong::[ key, patterns, ...:: strong::]::. Also takes a Function of indices that returns a Pbind pair collection. Defaults to nil. 
+
+argument::pAfter
+a Pbind pair collection of the form strong::[ key, patterns, ...:: strong::]::. Also takes a Function of indices that returns a Pbind pair collection. Defaults to nil. 
+
+argument::exclude
+a control key (Symbol) or a collection of control keys to be excluded from Pbind pairs and controls. Also takes a Function of indices that returns a valid arg. Defaults to nil.
+
+argument::excludeGate
+Boolean. Determines if gate control should be excluded. Also takes a Function of indices that returns a Boolean. Defaults to true.
+
+argument::clock
+TempoClock, nil or collection thereof for playing streams. Also takes a Function of indices that returns a valid arg. Defaults to the default TempoClock.
+
+argument::quant
+Quant, Float, nil or collection thereof used as quant data for playing streams. Also takes a Function of indices that returns a valid arg. Defaults to Quant.default (none).
+
+argument::metaKey
+Symbol. Key to lookup SynthDef metadata. Also takes a Function of indices that returns a Symbol. Defaults to \specs.
+
+argument::useGlobalSpecs
+Boolean. Defines if to consider global ControlSpecs if metadata is not given. Also takes a Function of indices that returns a Boolean. Defaults to true.
+
+argument::post
+Boolean. Determines if to post order of Pbind pairs. Also takes a Function of indices that returns a Boolean. Defaults to false.
+
+argument::trace
+Boolean. Determines if EventStreamPlayer should post Events when playing. Also takes a Function of indices that returns a Boolean. Defaults to false.
+
+argument::num
+Integer. Number of Pbinds / EventStreamPlayers to be controlled. Defaults to 1.
+
+
+
+
+method:: sVarGuiSpecs
+See link::Tutorials/VarGui_shortcut_builds::. Generate control data for one or more Synth(s) derived from a SynthDef name which may also be given as String. Returns a grouped collection, also for num = 1. Data can directly been used as input to VarGui's synthCtr arg. This method can be used for control of Synths derived from more than one SynthDef in one VarGui or combined control of Synths and Pbinds / EventStreamPlayers.
+
+argument::ctrBefore
+a spec pair collection of the form strong::[ key, spec, ...:: strong::]:: where strong::key:: is the symbol of the control arg to be set and strong::spec:: can be a collection of the form strong::[:: strong::minval, maxval, warp, step, default:: strong::]:: defining the corresponding ControlSpec, a Symbol / String to look for a ControlSpec in the global dictionary Spec.specs or a collection of specs of this form for an arrayed control. May also be a SimpleNumber for a dummy slider with fixed value. Defaults to nil. Also takes a Function of indices that returns a valid arg. 
+
+argument::ctrReplace
+a spec pair collection of a form like strong::ctrBefore::. Also takes a Function of indices that returns a valid arg. Defaults to nil.
+
+argument::ctrAfter
+a spec pair collection of a form like strong::ctrBefore::. Also takes a Function of indices that returns a valid arg. Defaults to nil. 
+
+argument::exclude
+a collection of control keys (Symbols) to be excluded. Also takes a Function of indices that returns a valid arg. Defaults to nil.
+
+argument::metaKey
+Symbol. Key to lookup SynthDef metadata. Also takes a Function of indices that returns a Symbol. Defaults to \specs.
+
+argument::useGlobalSpecs
+Boolean. Defines if to consider global ControlSpecs if metadata is not given. Also takes a Function of indices that returns a Boolean. Defaults to true.
+
+argument::num
+Boolean. Integer. Number of Synths to be controlled. Defaults to 1.
+
+
+
+
+
+method:: pVarGuiSpecs
+See link::Tutorials/VarGui_shortcut_builds::. Generate envir variable control data for one or more Environments derived from a SynthDef name which may also be given as String. Returns a grouped collection, also for num = 1. Data can directly been used as input to VarGui's varCtr arg. This method can be used for control of Pbinds / EventStreamPlayers derived from more than one SynthDef in one VarGui or combined control of Synths and Pbinds / EventStreamPlayers.
+
+
+argument::ctrBefore
+a spec pair collection of the form strong::[ key, spec, ...:: strong::]:: where strong::key:: is the symbol of the environmental variable to be set and strong::spec:: can be a collection of the form strong::[:: strong::minval, maxval, warp, step, default:: strong::]:: defining the corresponding ControlSpec, a Symbol / String to look for a ControlSpec in the global dictionary Spec.specs or a collection of specs of this form for an arrayed control if the environmental variable should have the value of a collection itself. May also be a SimpleNumber for a dummy slider with fixed value. Defaults to nil. Also takes a Function of indices that returns a valid arg. 
+
+argument::ctrReplace
+a spec pair collection of a form like strong::ctrBefore::. Also takes a Function of indices that returns a valid arg. Defaults to nil.
+
+argument::ctrAfter
+a spec pair collection of a form like strong::ctrBefore::. Also takes a Function of indices that returns a valid arg. Defaults to nil. 
+
+
+argument::durCtr
+a controlspec of the form strong::[:: strong::minval, maxval, warp, step, default:: strong::]:: or a Symbol to look for a ControlSpec in the global dictionary Spec.specs. Also takes a Function of indices that returns a valid arg. Defaults to #[0.05, 3, \exp, 0, 0.2].
+
+
+argument::legatoCtr
+a controlspec of the form strong::[:: strong::minval, maxval, warp, step, default:: strong::]:: or a Symbol to look for a ControlSpec in the global dictionary Spec.specs. Also takes a Function of indices that returns a valid arg. Defaults to #[0.1, 5, \exp, 0, 0.8].
+
+argument::exclude
+a control key (Symbol) or a collection of control keys to be excluded from Pbind pairs and controls. Also takes a Function of indices that returns a valid arg. Defaults to nil.
+
+argument::excludeGate
+Boolean. Determines if gate control should be excluded. Also takes a Function of indices that returns a Boolean. Defaults to true.
+
+argument::metaKey
+Symbol. Key to lookup SynthDef metadata. Also takes a Function of indices that returns a Symbol. Defaults to \specs.
+
+argument::useGlobalSpecs
+Boolean. Defines if to consider global ControlSpecs if metadata is not given. Also takes a Function of indices that returns a Boolean. Defaults to true.
+
+argument::num
+Integer. Number of Pbinds / EventStreamPlayers to be controlled. Defaults to 1.
+
+
+
+
+
+method:: pfuncPbinds
+See link::Tutorials/VarGui_shortcut_builds::. Generate Pbinds with Pfunc pairs derived from corresponding SynthDef metadata resp. global ControlSpecs. Duration and legato pairs are added by default. If an added Pbind pair with key \degree, \note or \midinote is detected, \freq is excluded automatically. Returns a collection, also for num = 1.
+
+
+argument::pBefore
+a Pbind pair collection of the form strong::[ key, patterns, ...:: strong::]::. Also takes a Function of indices that returns a Pbind pair collection. Defaults to nil. 
+
+argument::pReplace
+a Pbind pair collection of the form strong::[ key, patterns, ...:: strong::]::. Also takes a Function of indices that returns a Pbind pair collection. Defaults to nil. 
+
+argument::pAfter
+a Pbind pair collection of the form strong::[ key, patterns, ...:: strong::]::. Also takes a Function of indices that returns a Pbind pair collection. Defaults to nil. 
+
+argument::exclude
+a control key (Symbol) or a collection of control keys to be excluded from Pbind pairs and controls. Also takes a Function of indices that returns a valid arg. Defaults to nil.
+
+argument::excludeGate
+Boolean. Determines if gate control should be excluded. Also takes a Function of indices that returns a Boolean. Defaults to true.
+
+argument:: excludeDur
+Boolean. Determines if \dur should be excluded from the Pbind. Also takes a Function of indices that returns a Boolean. Defaults to false.
+
+argument:: excludeLegato
+Boolean. Determines if \legato should be excluded from the Pbind. Also takes a Function of indices that returns a Boolean. Defaults to false.
+
+argument::metaKey
+Symbol. Key to lookup SynthDef metadata. Also takes a Function of indices that returns a Symbol. Defaults to \specs.
+
+argument::useGlobalSpecs
+Boolean. Defines if to consider global ControlSpecs if metadata is not given. Also takes a Function of indices that returns a Boolean. Defaults to true.
+
+argument::post
+Boolean. Determines if to post order of Pbind pairs. Also takes a Function of indices that returns a Boolean. Defaults to false.
+
+argument::trace
+Boolean. Determines if EventStreamPlayer should post Events when playing. Also takes a Function of indices that returns a Boolean. Defaults to false.
+
+argument::num
+Integer. Number of Pbinds / EventStreamPlayers to be controlled. Defaults to 1.
+
+
+
+
+

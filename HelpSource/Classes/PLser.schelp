@@ -1,0 +1,115 @@
+CLASS:: PLser
+summary:: dynamic scope Pser variant
+categories::Libraries>miSCellaneous>PLx suite, Streams-Patterns-Events>PLx suite
+related:: Overviews/miSCellaneous, Classes/Pser, Classes/PLseq, Tutorials/PLx_suite, Tutorials/Event_patterns_and_Functions, Classes/VarGui, Tutorials/VarGui_shortcut_builds
+
+
+DESCRIPTION::
+
+
+Takes Symbol args for later reference by the Streams, which will read from variables in the Environments of their instantiation. See link::Tutorials/PLx_suite::.
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PLser object.
+
+argument::list
+Symbol or Pser list arg.
+If a Symbol is passed, list can be assigned to an envir variable later on.
+This lists's elements can be dynamically replaced by Patterns or Streams.
+
+argument::repeats
+Symbol or Pser repeats arg. If a Symbol is passed, repeats can be assigned to an envir variable later on. Defaults to inf.
+
+argument::offset
+Symbol or Pser offset arg. Defaults to 0.
+If a Symbol is passed, offset can be assigned to an envir variable later on.
+
+argument::cutItems
+Symbol or Boolean or Integer (0 or 1) or a Function returning Boolean or Integer.
+If a Symbol is passed, cutItems can be assigned to an envir variable later on.
+Determines if list items, which are Patterns or Streams themselves,
+will be finished if a replacement occurs during their embedding, or if they will be replaced immediately. The latter is the default behaviour (default value true).
+For protecting whole lists from immediate replacements see link::Classes/PLn::.
+
+argument::envir
+Dictionary or one of the Symbols
+\top, \t (topEnvironment), \current, \c (currentEnvironment).
+Dictionary to be taken for variable reference. Defaults to \current.
+
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+(
+// PLseq not used as proxy, only taken as it defaults to repeats = inf
+
+p = Pbind(
+    \midinote, PLseq([PLser(\a, \r), 60, 61]),
+    \dur, 0.2
+);
+
+// prepare current Environment
+
+~a = (67..70);
+~r = 6;
+)
+
+x = p.play;
+
+
+// replace repeats
+
+~r = 3;
+
+
+// replace array elements
+
+~a[0] = [77, 93.5];
+
+~a[2] = Pseq((94..96));
+
+
+// replace whole array
+
+~a = [55, 52];
+
+x.stop;
+
+
+
+
+//////////////////////
+
+
+// placeholder may also get lists of event patterns
+
+(
+p = PLser(\a, 3);
+
+~a = [
+	Pbind(
+        \midinote, Pwhite(60, 65, 3),
+        \dur, 0.1
+    ),
+    Pbind(
+        \midinote, Pwhite(80, 85, 3),
+        \dur, 0.1
+    )
+];
+
+x = p.play;
+)
+
+::
+ 

@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; min-height: 16.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #e80000}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #e80000}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #001cda}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #0043ff}
+span.s5 {color: #0093ff}
+span.s6 {text-decoration: underline ; color: #00a2ff}
+span.s7 {text-decoration: underline ; color: #042eee}
+span.s8 {color: #001cda}
+span.s9 {color: #007300}
+span.s10 {font: 6.0px Monaco}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>PLser<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>dynamic scope Pser variant<span class="Apple-converted-space"> </span></b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: PLseq</b></p>
+<p class="p4"><br></p>
+<p class="p1">Takes Symbol args for later reference by the Streams, which will read from variables in the Environments of their instantiation. See <a href="PLx suite.html"><span class="s4">PLx suite</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>See also: </b><a href="sc://Pser.html"><span class="s3">Pser</span></a></span><span class="s5">,</span><span class="s2"> <a href="PLseq.html"><span class="s3">PLseq</span></a></span><span class="s5">,</span><span class="s2"> <a href="Event patterns and Functions.html"><span class="s3">Event patterns and Functions</span></a></span><span class="s5">,</span><span class="s2"> <a href="VarGui.html"><span class="s6">VarGui</span></a></span><span class="s5">,</span><span class="s2"> <a href="VarGui shortcut builds.html"><span class="s3">VarGui shortcut builds</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new (list, repeats, offset, cutItems, envir)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new PLser object.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>list </b>- Symbol or Pser list arg.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If a Symbol is passed, list can be assigned to an envir variable later on.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This lists's elements can be dynamically replaced by Patterns or Streams.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>repeats </b>- Symbol or Pser repeats arg. Defaults to inf.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If a Symbol is passed, repeats can be assigned to an envir variable later on.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>offset </b>- Symbol or Pser offset arg. Defaults to 0.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If a Symbol is passed, offset can be assigned to an envir variable later on.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>cutItems </b>- Symbol or Boolean or Integer (0 or 1) or a Function returning Boolean or Integer.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If a Symbol is passed, cutItems can be assigned to an envir variable later on.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Determines if list items, which are Patterns or Streams themselves,</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>will be finished if a replacement occurs during their embedding, or if they will be replaced immediately.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The latter is the default behaviour (default value true).</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>For protecting whole lists from immediate replacements see <a href="PLn.html"><span class="s7">PLn</span></a>.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>envir </b>- Dictionary or one of the Symbols</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\top, \t (topEnvironment), \current, \c (currentEnvironment).</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Dictionary to be taken for variable reference. Defaults to \current.</p>
+<p class="p10"><br></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><b>Examples</b></p>
+<p class="p12"><br></p>
+<p class="p13">(</p>
+<p class="p13">s = <span class="s8">Server</span>.local;</p>
+<p class="p13"><span class="s8">Server</span>.default = s;</p>
+<p class="p13">s.boot;</p>
+<p class="p13">)</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13">(</p>
+<p class="p14">// PLseq not used as proxy, only taken as it defaults to repeats = inf</p>
+<p class="p4"><br></p>
+<p class="p13">p = <span class="s8">Pbind</span>(</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s9">\midinote</span>, <span class="s8">PLseq</span>([<span class="s8">PLser</span>(<span class="s9">\a</span>, <span class="s9">\r</span>), 60, 61]),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="s9">\dur</span>, 0.2</p>
+<p class="p13">);</p>
+<p class="p4"><br></p>
+<p class="p14">// prepare current Environment</p>
+<p class="p4"><br></p>
+<p class="p13">~a = (67..70);</p>
+<p class="p13">~r = 6;</p>
+<p class="p13">)</p>
+<p class="p4"><br></p>
+<p class="p13">x = p.play;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14">// replace repeats</p>
+<p class="p4"><br></p>
+<p class="p13">~r = 3;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14">// replace array elements</p>
+<p class="p4"><br></p>
+<p class="p13"><span class="s10">~</span>a[0] = [77, 93.5];</p>
+<p class="p4"><br></p>
+<p class="p13"><span class="s10">~</span>a[2] = <span class="s8">Pseq</span>((94..96));</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14">// replace whole array</p>
+<p class="p4"><br></p>
+<p class="p13"><span class="s10">~</span>a = [55, 52];</p>
+<p class="p4"><br></p>
+<p class="p13">x.stop;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14">//////////////////////</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p15">// placeholder may also get lists of event patterns</p>
+<p class="p6"><br></p>
+<p class="p13">(</p>
+<p class="p13">p = <span class="s8">PLser</span>(<span class="s9">\a, 3</span>);</p>
+<p class="p4"><br></p>
+<p class="p13">~a = [<span class="Apple-converted-space"> </span></p>
+<p class="p16"><span class="s2"><span class="Apple-tab-span">	</span></span>Pbind<span class="s2">(</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\midinote</span>, <span class="s8">Pwhite</span>(60, 65, 3),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\dur</span>, 0.1</p>
+<p class="p13"><span class="Apple-tab-span">	</span>),</p>
+<p class="p16"><span class="s2"><span class="Apple-tab-span">	</span></span>Pbind<span class="s2">(</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\midinote</span>, <span class="s8">Pwhite</span>(80, 85, 3),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\dur</span>, 0.1</p>
+<p class="p13"><span class="Apple-tab-span">	</span>)</p>
+<p class="p13">];</p>
+<p class="p4"><br></p>
+<p class="p13">x = p.play;</p>
+<p class="p13">)</p>
+<p class="p4"><br></p>
+</body>
+</html>

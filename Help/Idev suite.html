@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #042eee}
+span.s5 {text-decoration: underline ; color: #0000ee}
+span.s6 {font: 12.0px Helvetica}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Idev suite<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>classes for number search with integer distance from a source, optionally avoiding repetitions within a span</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="../miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>See also: </b><a href="DIdev.html"><span class="s4">DIdev</span></a>,<b> </b><a href="PIdev.html"><span class="s5">PIdev</span></a>,<b> </b><a href="PLIdev.html"><span class="s5">PLIdev</span></a></p>
+<p class="p4"><br></p>
+<p class="p1">DIdev / PIdef / PLIdev search for numbers with integer distance from a source signal / pattern up to a given deviation. Repetitions within a lookback span are avoided, DIdev / PIdef / PLIdev randomly choose from possible solutions. Intended for search within integer grids (pitches, indices etc.), however applications with non-integer sources are possible, see examples.</p>
+<p class="p2"><br></p>
+<p class="p1">The main musical idea of this classes is, that it's often unwanted to have certain characteristics repeated within a perceptional time window. This might apply to melodic lines as well as to rhythmic patterns or sequences of timbre and can be continued in the domain of microsound. The principle can easily be understood with pitches, therefore most examples are of this kind.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">In the following example integers are searched within the neighbourhood of a rounded sine source. The hi and lo deviation is constant (+/-5) and a lookBack value of 3 garantuees that there are no repetitions of integer values within a group of 4 (e.g. find a closest repetition within the last 5 points). In general lookback and deviations can be dynamic, the source doesn't need to be rounded and the comparison threshold for the repetition check can also be passed as a dynamic argument.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s6"><img src="attachments/Idev suite/XIdev_scheme_3.png" alt="attachments/Idev suite/XIdev_scheme_3.png"></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>It's the user's responsibility to pass a combination of deviation and lookback values that allows a possible choice, see examples.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>In contrast to PIdev and PLIdev, DIdev needs to know maximum deviations (<b>minLoDev</b>, <b>maxHiDev</b>) beforehand. Together with <b>maxLookBack </b>they determine multichannel sizes, which might be CPU-consuming.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+</body>
+</html>

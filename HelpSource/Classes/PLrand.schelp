@@ -1,0 +1,139 @@
+CLASS:: PLrand
+summary:: dynamic scope Prand variant
+categories::Libraries>miSCellaneous>PLx suite, Streams-Patterns-Events>PLx suite
+related:: Overviews/miSCellaneous, Classes/Prand, Classes/PLxrand, Classes/PLwrand, Classes/PLshuf, Classes/PLshufn, Tutorials/PLx_suite, Tutorials/Event_patterns_and_Functions, Classes/VarGui, Tutorials/VarGui_shortcut_builds
+
+
+DESCRIPTION::
+
+
+Takes Symbol args for later reference by the Streams, which will read from variables in the Environments of their instantiation. See link::Tutorials/PLx_suite::.
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PLrand object.
+
+argument::list
+Symbol or Prand list arg.
+If a Symbol is passed, list can be assigned to an envir variable later on.
+This lists's elements can be dynamically replaced by Patterns or Streams.
+
+argument::repeats
+Symbol or Prand repeats arg. If a Symbol is passed, repeats can be assigned to an envir variable later on. Defaults to inf.
+
+argument::cutItems
+Symbol or Boolean or Integer (0 or 1) or a Function returning Boolean or Integer.
+If a Symbol is passed, cutItems can be assigned to an envir variable later on.
+Determines if list items, which are Patterns or Streams themselves,
+will be finished if a replacement occurs during their embedding, or if they will be replaced immediately. The latter is the default behaviour (default value true).
+For protecting whole lists from immediate replacements see link::Classes/PLn::.
+
+argument::envir
+Dictionary or one of the Symbols
+\top, \t (topEnvironment), \current, \c (currentEnvironment).
+Dictionary to be taken for variable reference. Defaults to \current.
+
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+// define Pattern and prepare Environments
+
+(
+p = Pbind(
+    \midinote, PLrand(\a),
+    \dur, 0.2
+);
+
+e = (a: (67..72));
+f = (a: (77..82));
+)
+
+// start together or not, but sync anyway
+
+e.use { x = p.play(quant: 0.2) };
+f.use { y = p.play(quant: 0.2) };
+
+
+// replace array elements ...
+
+f.a[0] = 97;
+
+e.a[0] = 96;
+
+
+// ... or arrays
+
+f.a = (72, 72.5..77);
+
+e.a = [60];
+
+e.a = [Pseq([60, 47.5]) + [0, 5], [61, 65.5]];
+
+x.stop;
+y.stop;
+
+
+
+//////////////////////
+
+
+// placeholder may also get lists of event patterns
+
+(
+p = PLrand(\a);
+
+~a = [
+	Pbind(
+        \midinote, Pwhite(60, 65, 3),
+        \dur, 0.2
+    ),
+    Pbind(
+        \midinote, Pwhite(80, 85, 3),
+        \dur, 0.2
+    )
+];
+
+x = p.play;
+)
+
+
+// replace array element
+
+(
+~a[0] = Pbind(
+    \midinote, Pwhite(70, 75, 3) + [0, 5],
+    \dur, 0.15
+);
+)
+
+
+// replace whole array
+
+(
+~a = [
+	Pbind(
+        \midinote, Pwhite(60, 65, 3),
+        \dur, 0.05
+    ),
+    Pbind(
+        \midinote, Pwhite(70, 90, 2),
+        \dur, 0.25
+    )
+];
+)
+
+x.stop;
+
+::
+ 

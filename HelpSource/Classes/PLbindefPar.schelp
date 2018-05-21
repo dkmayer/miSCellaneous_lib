@@ -1,0 +1,672 @@
+CLASS::PLbindefPar
+summary::container for parallel PLbindefs which allows replacement in object prototyping style
+categories:: Libraries>miSCellaneous>PLx suite, Streams-Patterns-Events>PLx suite
+
+related:: Overviews/miSCellaneous, Tutorials/PLx_suite, Classes/PLbindef, Classes/PLbindefEnvironment, Classes/PLbindefParEnvironment, Classes/EventShortcuts, Tutorials/PLx_and_live_coding_with_Strings
+
+
+DESCRIPTION::
+PLbindefPar employs a number of parallel PLbindefs, replacement of key streams can be done in object prototyping style with a dedicated PLbindefParEnvironment, which also holds player methods. This hybrid Environment is itself assigned to the PLbindefPar's name in an Environment of choice, by default the current Environment. Setting can thus be done in very condensed syntax, also in combination with link::Classes/EventShortcuts::. For more info on object prototyping see link::Classes/Environment#Using Environments as object prototypes#::.
+
+note::
+PLbindefs are registered globally in the same Dictionary as Pdefs, Pbindefs and PLbindefPars. In addition for size = n PLbindefs of the same name with indices i = 0, ... n-1 appended are stored globally. It's recommended to do cleanup with code::remove:: or code::Pdef.removeAll:: after using PLbindef / PLbindefPar as in examples below. Otherwise unwanted or strange behaviour might be caused by leftover sources when playing a new PLbindef / PLbindefPar example with the same key. With SC >= 3.7 occasional posts of the default parent event occur with Pbindef, so also with PLbindef, this doesn't cause problems though.
+::
+
+note::
+For setting, getting, playing, stopping and resetting subsets of PLbindefs in prototyping syntax the class TempPLbindefParEnvironment is involved (see link::Classes/PLbindefPar#Ex. 1#Ex.1::). The user doesn't need to care about this class, instances are generated implicitely and might occur in the post window.
+::
+
+	
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PLbindefPar object or sets sources of an existing one.
+
+
+argument::... args
+First arg should be the strong::name::, followed by strong::num::, the number of parallel PLbindefs, and the key/value pairs. Values are assigned to single PLbindefs according to the convention of link::Classes/PLbindefParEnvironment#-put::, see there and examples below. The last arg can be an optional environment which determines where the corresponding PLbindefParEnvironment should be stored, by default this is the current Environment at instantiation time.
+
+INSTANCEMETHODS::
+
+private::miSC_setRefEnvir
+private::miSC_updateSourceEnvir
+private::eventShortcuts
+
+
+method::sourceEnvir
+
+Getter for PLbindefPar's PLbindefParEnvironment.
+
+
+method::refEnvir
+
+Getter for the Environment where PLbindefPar's PLbindefParEnvironment is associated with PLbindefPar's key.
+
+
+method::num
+
+Getter for PLbindefPar's number of parallel PLbindefs.
+
+
+method::play
+
+Plays all corresponding PLbindefs with passed arguments, which might be arrays. In this case wrapped indexing is applied.
+
+
+method::reset
+
+Resets all corresponding PLbindefs.
+
+
+method::stop
+
+Stops all corresponding PLbindefs.
+
+
+
+method::clear
+
+Clears all corresponding PLbindefs.
+
+
+method::remove
+
+Removes not only the PLbindefPar but also associated PLbindefs from global entry.
+
+
+method::subPLbindefs
+
+Returns corresponding PLbindefs.
+
+
+method::subEnvirs
+
+Returns corresponding PLbindefEnvironments.
+
+
+
+anchor::above::
+SECTION::Examples
+
+code::
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+// synthdefs to play with
+
+(
+SynthDef(\noise_grain, { |out = 0, freq = 400, att = 0.005, rel = 0.1, rq = 0.1, amp = 0.1|
+	var sig = { WhiteNoise.ar } ! 2;
+	sig = BPF.ar(sig, freq, rq) *
+		EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2) *
+		(rq ** -1) * (250 / (freq ** 0.8));
+	OffsetOut.ar(out, sig);
+}).add;
+
+SynthDef(\sin_grain, { |out = 0, freq = 400, att = 0.005, rel = 0.1, amp = 0.1|
+	var sig = { SinOsc.ar(freq, Rand(0, 2pi)) } ! 2;
+	sig = sig * EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2);
+	OffsetOut.ar(out, sig);
+}).add;
+
+SynthDef(\saw_grain, { |out = 0, freq = 400, att = 0.005, rel = 0.1, amp = 0.1|
+	var sig = { VarSaw.ar(freq, Rand(0, 1)) } ! 2;
+	sig = sig * EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2);
+	OffsetOut.ar(out, sig);
+}).add;
+
+EventShortcuts.on;
+)
+
+::
+
+anchor::Ex. 1::
+SUBSECTION::Ex.1) Setting key streams
+
+code::
+// start with a fresh global Dictionary
+
+Pdef.removeAll
+
+// use with EventShortcuts
+
+EventShortcuts.on
+
+(
+PLbindefPar(\v, 3,
+	\i, [\saw_grain, \sin_grain, \noise_grain],
+	\d, 0.8,
+	\m, [65, 70, 80],
+	\rq, 0.002,
+	\a, 0.03,
+	\att, Pwhite(0.05, 0.01)
+)
+)
+
+// now we have a PLbindefEnvironment as player which can use indices
+
+~v.play
+
+
+// set all streams to one val or pattern
+
+~v.d = PLseq([0.2, 0.1, 0.1])
+
+
+// set all streams to different vals or patterns
+
+~v.d = [0.1, 0.3, PLseq([0.2, 0.1])]
+
+
+// set single streams
+
+~v[2].d = PLseq([0.2, 0.2, 0.1])
+
+~v[2].m = Pwhite(90, 100)
+
+
+
+// set only some streams
+
+~v[[0, 1]].m = [67, 77]
+
+~v[[1, 2]].m = [Pwhite(75, 80.0), 92]
+
+
+
+// parallel intervals and chords for single streams
+
+~v[2].m = Pwhite(80, 90) + [0, 9]
+
+~v[0].m = Pwhite(50, 65) + [0, 5]
+
+~v[1].m = Pwhite(70, 75.5) + [0, 3, 7]
+
+
+~v.m = [72, 76, 79]
+
+~v.m = Pwhite(0.0, 1) ! 3 + [72, 76, 79]
+
+
+// this is different:
+// all PLbindefs get the same pattern with chord
+// WARNING: with large arrays this can become loud!
+
+~v.m = Pwhite(0.0, 2) + [72, 76, 79]
+
+
+// reference to last sources
+
+~v.m = [72, 76, 79 + PLseq([1, 2])]
+
+~v.m = ~v.m + 1.5
+
+~v.m = ~v.m + [0, -12, 12]
+
+~v[2].m = ~v[2].m - 5
+
+
+// subarray reference to last sources
+
+~v[[1, 2]].m = ~v[[1, 2]].m - 7
+
+
+// equivalent, here getter looks different as not from temporary envir:
+
+// ~v[[1, 2]].m = ~v.m[[1, 2]] - 7
+
+
+
+// use adverbs to build chords on each voice
+
+~v.m = ~v.m +.t [0, 4, 7]
+
+
+// pause single streams
+
+~v[1].stop
+
+~v[2].stop
+
+
+// play all again
+
+~v.play
+
+
+// can also be done this way
+
+PLbindefPar(\v).stop
+
+PLbindefPar(\v).play
+
+
+ // stop, start and reset substreams
+
+~v[[0, 1]].stop
+
+~v[[0, 1]].play
+
+
+
+// set more than one key, all streams
+
+~v.(\d, 0.1, \m, [70, 75, 80 + Pwhite(0.0, 5)])
+
+
+// set more than one key, but only chosen streams
+
+~v.([0, 2], \d, [0.35, 0.5], \m, [90, 97])
+
+
+// this can still be done similar to Pbindef-style
+
+PLbindefPar(\v, [0, 2], \d, [0.3, 0.55], \m, [83, 86])
+
+
+// prototyping's underscore syntax, applied successively
+
+~v.d_([0.4, 0.5, 0.6]).m_([70, 81, 92])
+
+~v[1].d_(0.15).m_(94)
+
+~v[[0, 2]].d_(0.25).m_([73, 77.5])
+
+
+
+// set all streams, they might be time-shifted
+
+~v.d = 0.2
+
+
+// hard sync with reset
+
+~v.reset
+
+~v.stop
+
+
+// with method 'play' arrays can be passed to clock, protoType, quants and doReset
+
+~v.play([1, 1.05, 1.1].collect(TempoClock(_)))
+
+~v.stop
+
+
+// wrapped indexing applies, same clock for players 0 and 2
+
+~v.play([1, 1.5].collect(TempoClock(_)))
+
+
+// stop + cleanup
+
+~v.remove
+::
+
+
+
+anchor::Ex. 2::
+SUBSECTION::Ex.2) More parallel streams, from granular to additive
+
+Use SynthDefs from link::Classes/PLbindefPar#above#above::.
+
+code::
+// use EventShortcuts
+
+EventShortcuts.on
+
+(
+PLbindefPar(\y, 12,
+	// wrapped indexing: collection is used for all 12 streams
+	\i, [\saw_grain, \sin_grain, \noise_grain],
+	\d, (1..12)/100,
+	\m, { rrand(60, 90) } ! 12,
+	\a, 0.02,
+	\rq, 0.002
+)
+)
+
+~y.play
+
+// evaluate more than once
+
+~y.m = { rrand(60, 90) } ! 12
+
+
+// refer to current midinotes
+
+~y.m = ~y.m - 1
+
+
+~y.d = [1, 2, 4] / 8
+
+~y.d = ~y.d / 4
+
+~y.stop
+
+~y.remove
+
+
+
+// replacement introducing additive structures
+
+(
+PLbindefPar(\add, 12,
+	\i, \sin_grain, 
+	\d, 1, 
+	\m, { Pn(Pseries(rrand(40, 60), Pwhite(1.0, 3), 20)) } ! 12, 
+	\att, 5,
+	\rel, 5,
+	\a, 0.005
+).play
+)
+
+~add.f = { PLseq((1..16)) * (100 + Pwhite(0.0, 3)) } ! 12
+
+~add.stop
+
+~add.remove
+::
+
+
+anchor::Ex. 3::
+SUBSECTION::Ex.3) PLbindefPar with VarGui
+
+Use SynthDefs from link::Classes/PLbindefPar#above#above::.
+
+code::
+// PLbindefPar's single streams can be prepared for VarGui
+// start with gui and define pitch sequences with sliders
+
+(
+EventShortcuts.on;
+
+p = PLbindefPar(\w, 3,
+	\i, [\saw_grain, \sin_grain, \noise_grain],
+	\d, [1, 2, 4] / 8,
+	\n, PLseq(\midi),
+	\m, 70 + Pkey(\n),
+	\a, 0.05,
+	\rq, 0.001
+);
+
+VarGui([\midi, [0, 12, \lin, 1, 0] ! 4] ! 3, stream: p.subPLbindefs, quant: 1).gui
+)
+
+
+~w.d = [4, 2, 1] / 8
+
+~w.d = [1, 2, PLrand([2, 2, 1])] / 8
+
+
+// lines or chords per layer
+
+~w.m = [70, 75, 80].collect(Pkey(\n) + _)  // ~w.m = [70, 75, 80].collect { |i| Pkey(\n) + i }
+
+~w.m = Pkey(\n) + [70, 75, 80] 
+
+
+// exchange instruments
+
+~w.i = ~w.i.reverse
+
+
+// exchange some durations
+
+~w[[0, 1]].d = [0.5, 0.8]
+
+
+// stop with gui
+
+// cleanup after stopping with gui
+
+~w.remove
+::
+
+
+
+anchor::Ex. 4::
+SUBSECTION::Ex.4) PLbindefPar with PbindFx
+
+See also link::Classes/PbindFx#Ex. 7c#Ex.7c: Replacement with Pbindef::
+
+code::
+// boot server with extended resources
+
+(
+s.options.numPrivateAudioBusChannels = 1024;
+s.options.memSize = 8192 * 16;
+s.reboot;
+
+// fx synths
+
+SynthDef(\noise_grain, { |out = 0, freq = 400, att = 0.005, rel = 0.1, rq = 0.1, amp = 0.1|
+	var sig = { WhiteNoise.ar } ! 2;
+	sig = BPF.ar(sig, freq, rq) *
+		EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2) *
+		(rq ** -1) * (250 / (freq ** 0.8));
+	OffsetOut.ar(out, sig);
+}).add;
+
+SynthDef(\sin_grain, { |out = 0, freq = 400, att = 0.005, rel = 0.1, amp = 0.1|
+	var sig = { SinOsc.ar(freq, Rand(0, 2pi)) } ! 2;
+	sig = sig * EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2);
+	OffsetOut.ar(out, sig);
+}).add;
+
+SynthDef(\saw_grain, { |out = 0, freq = 400, att = 0.005, rel = 0.1, amp = 0.1|
+	var sig = { VarSaw.ar(freq, Rand(0, 1)) } ! 2;
+	sig = sig * EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2);
+	OffsetOut.ar(out, sig);
+}).add;
+
+SynthDef(\echo, { |out, in, maxEchoDelta = 0.2, echoDelta = 0.1,
+	decayTime = 1, amp = 1, mix = 1|
+	var sig, inSig = In.ar(in, 2);
+	sig = DelayL.ar(
+		CombL.ar(inSig, maxEchoDelta, echoDelta, decayTime, amp),
+		maxEchoDelta,
+		maxEchoDelta - echoDelta
+	);
+	Out.ar(out, (1 - mix) * inSig + (sig * mix));
+}).add;
+
+SynthDef(\wah, { |out, in, resLo = 200, resHi = 5000,
+	cutOffMoveFreq = 0.5, rq = 0.1, amp = 1, mix = 1|
+	var sig, inSig = In.ar(in, 2);
+	sig = RLPF.ar(
+		inSig,
+		LinExp.kr(LFDNoise3.kr(cutOffMoveFreq), -1, 1, resLo, resHi),
+		rq,
+		amp
+	).softclip;
+	Out.ar(out, (1 - mix) * inSig + (sig * mix));
+}).add;
+
+
+// prepare EventShortcuts for additional keys
+
+EventShortcuts.addOnBase(\default, \fxs, (
+	dec: \decayTime,
+	cd: \cleanupDelay,
+	cf: \cutOffMoveFreq,
+	fxo: \fxOrder,
+	dta: \echoDelta
+), true);
+
+EventShortcuts.makeCurrent(\fxs);
+
+EventShortcuts.on;
+)
+
+
+(
+// source and fxs passed as PLbindefPar / PLbindefs
+
+PLbindefPar(\r, 12,
+	\i, [\noise_grain, \saw_grain],
+	\d, 0.25,
+	\m, PLseq([60, 60, 60, 62]),
+	\fxo, PLseq([0, 0, 1, 2]),
+	// echo introduces delay, so do delay if no echo
+	\lag, Pfunc { |e| e.fxo.asArray.includes(1).if { 0 }{ 0.2 } },
+	\a, 0.03,
+	\att, 0.01,
+	\rel, 0.1,
+
+	\cd, Pkey(\att) + Pkey(\rel) + 0.001
+);
+
+PLbindef(\echo,
+	\fx, \echo,
+	\dta, 0.06,
+	\a, 1,
+	\dec, Pwhite(0.3, 1.8),
+	\cd, Pkey(\dec)
+);
+
+PLbindef(\wah,
+	\fx, \wah,
+	\cf, Pwhite(1, 3),
+	\a, 1,
+	\cd, 0.01
+);
+
+
+// we rather take a Ppar of PbindFxs than a PbindFx with a Ppar source
+
+q = Ppar(
+	PLbindefPar(\r).subPLbindefs.collect { |plbindef|
+		PbindFx(plbindef, PLbindef(\echo), PLbindef(\wah))
+	}
+).play
+)
+
+ // still single source streams can be controlled by the PLbindefPar interface
+// differentiate rhythm
+
+~r.d = (1..12) / 8
+
+
+
+// manipulate midinotes
+
+~r.m = (48, 50..70)
+
+
+// echo param and fx order sequence
+
+~echo.dta = Pwhite(0.03, 0.08)
+
+~r.fxo = PLseq([0, 0, 1, 2, 1, [1, 2]])
+
+
+
+// produce overtone series with echodelta
+
+~echo.dta = 1 / 24.midicps / PLseq((1..16))
+
+
+// this also works in chords ("fx expansion")
+// source is processed twice per event
+
+~echo.dta = 1 / [24, 26.7].midicps / PLseq((1..32).mirror)
+
+
+// cleanup
+
+q.stop
+
+Pdef.removeAll
+::
+
+
+anchor::Ex. 5::
+SUBSECTION::Ex.5) PLbindefPar with array args
+
+code::
+// specific bracketing needed here in analogy to array args with Pbinds
+
+(
+SynthDef(\noise_grain_chord, { |out = 0, freq = #[400, 500], att = 0.005, rel = 0.1, rq = 0.1, amp = 0.1|
+	var sig = { WhiteNoise.ar } ! 2;
+	sig = BPF.ar(sig, freq, rq) *
+		EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2) *
+		(rq ** -1) * (250 / (freq ** 0.8));
+	OffsetOut.ar(out, sig);
+}).add;
+
+SynthDef(\sin_grain_chord, { |out = 0, freq = #[400, 500], att = 0.005, rel = 0.1, amp = 0.1|
+	var sig = { SinOsc.ar(freq, Rand(0, 2pi)) } ! 2;
+	sig = sig * EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2);
+	OffsetOut.ar(out, sig);
+}).add;
+
+SynthDef(\saw_grain_chord, { |out = 0, freq = #[400, 500], att = 0.005, rel = 0.1, amp = 0.1|
+	var sig = { VarSaw.ar(freq, Rand(0, 1)) } ! 2;
+	sig = sig * EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2);
+	OffsetOut.ar(out, sig);
+}).add;
+
+EventShortcuts.on
+)
+
+(
+PLbindefPar(\c, 3,
+	\i, [\saw_grain_chord, \noise_grain_chord, \sin_grain_chord],
+	\d, 0.5,
+	\rq, 0.02,
+	\m, [[70, 79]] ! 3, 
+	// or: [[[70, 79]]]
+	
+	// this looks a bit weird, but it's necessary:
+	// with Pbind and array args we need double bracketing,
+	// here we are refering to an array of Pbind data
+	\a, 0.03,
+	\att, Pwhite(0.02, 0.01),
+	\rel, 0.2
+);
+
+~c.play
+)
+
+
+~c.m = [[[75, 78]]]
+
+
+// set single streams
+
+~c[1].d = 0.3;
+
+~c[2].d = 0.4;
+
+
+
+~c[0].m = [[65, 68]]
+
+~c[2].m = [[87, 90]]
+
+
+// set substreams
+
+~c[[0, 1]].m = [[[65, 70]] + Pseq([0, 1.5], inf), [[75, 80]]]
+
+(
+~c.([1, 2], 
+	\d, [0.6, 0.35], 
+	\m, [
+		[[75, 80]] + Pseq([0, 1], inf), 
+		[[85, 90]] + Pseq([0, 1.5, 2.5], inf)
+	]
+)
+)
+
+~c.remove
+::
+
+
