@@ -1,0 +1,13 @@
+(
+	name: "miSCellaneous_lib",
+	author: "Daniel Mayer",
+	summary: "Extensions and tutorials: patterns, fx sequencing, granulation, wave folding, sieves, combined lang and server gui control, live coding",
+	version: "0.21.0",
+	since: "2009",
+	schelp: "miSCellaneous.schelp",
+	helpdoc: "miSCellaneous.html",
+	isCompatible:	{ Main.versionAtMost(3, 4).not },
+	organisation:	"Institute of Electronic Music and Acoustics Graz (IEM)",
+	country:	"Austria",
+	url: "http://daniel-mayer.at/software_en.htm"
+)
