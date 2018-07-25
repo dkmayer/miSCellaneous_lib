@@ -1,0 +1,815 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1404.47">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 21.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Helvetica; color: #0000ee; -webkit-text-stroke: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; line-height: 16.0px; font: 14.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 12.0px; font: 9.0px Monaco; color: #000000; -webkit-text-stroke: #000000}
+p.p6 {margin: 0.0px 0.0px 0.0px 28.0px; text-indent: -28.0px; line-height: 14.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+p.p7 {margin: 0.0px 0.0px 0.0px 28.0px; text-indent: -28.0px; line-height: 14.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000; min-height: 14.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 28.0px; text-indent: -28.0px; line-height: 14.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 16.0px; font: 14.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 12.0px; font: 9.0px Monaco; color: #cd1c00; -webkit-text-stroke: #cd1c00}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000; min-height: 14.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 12.0px; font: 9.0px Monaco; color: #008322; -webkit-text-stroke: #008322}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; line-height: 15.0px; font: 11.0px Monaco; color: #000000; -webkit-text-stroke: #000000}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 12.0px; font: 9.0px Monaco; color: #008300; -webkit-text-stroke: #008300}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 12.0px; font: 9.0px Monaco; color: #0326cb; -webkit-text-stroke: #0326cb}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 12.0px; font: 9.0px Monaco; color: #cd1c09; -webkit-text-stroke: #cd1c09}
+p.p18 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; line-height: 14.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+p.p19 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 12.0px; font: 9.0px Monaco; color: #000000; -webkit-text-stroke: #000000; min-height: 12.0px}
+p.p20 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 12.0px; font: 9.0px Monaco; color: #0033c4; -webkit-text-stroke: #0033c4}
+p.p21 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 12.0px; font: 9.0px Monaco; color: #de0005; -webkit-text-stroke: #de0005}
+p.p22 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; line-height: 16.0px; font: 14.0px Helvetica; -webkit-text-stroke: #000000}
+span.s1 {font: 18.0px Helvetica; font-kerning: none}
+span.s2 {font-kerning: none}
+span.s3 {font-kerning: none; color: #000000; -webkit-text-stroke: 0px #000000}
+span.s4 {text-decoration: underline ; font-kerning: none; color: #0000ee; -webkit-text-stroke: 0px #0000ee}
+span.s5 {text-decoration: underline ; font-kerning: none; color: #01caff; -webkit-text-stroke: 0px #01caff}
+span.s6 {font-kerning: none; color: #0326cb; -webkit-text-stroke: 0px #0326cb}
+span.s7 {font-kerning: none; color: #008300; -webkit-text-stroke: 0px #008300}
+span.s8 {font: 9.0px Monaco; text-decoration: underline ; font-kerning: none; color: #01caff; -webkit-text-stroke: 0px #01caff}
+span.s9 {text-decoration: underline ; font-kerning: none}
+span.s10 {font-kerning: none; color: #0033c4; -webkit-text-stroke: 0px #0033c4}
+span.s11 {font: 9.0px Monaco; text-decoration: underline ; font-kerning: none; color: #0000ee; -webkit-text-stroke: 0px #0000ee}
+span.s12 {font-kerning: none; color: #434ccb; -webkit-text-stroke: 0px #434ccb}
+span.s13 {text-decoration: underline ; font-kerning: none; color: #05cafb; -webkit-text-stroke: 0px #05cafb}
+span.s14 {font: 12.0px Arial; font-kerning: none}
+span.s15 {font-kerning: none; color: #008322; -webkit-text-stroke: 0px #008322}
+span.s16 {font-kerning: none; color: #ff7222; -webkit-text-stroke: 0px #ff7222}
+span.s17 {text-decoration: underline ; font-kerning: none; color: #04cafb; -webkit-text-stroke: 0px #04cafb}
+span.s18 {text-decoration: underline ; font-kerning: none; color: #042eee; -webkit-text-stroke: 0px #042eee}
+span.s19 {text-decoration: underline ; font-kerning: none; color: #042eee; -webkit-text-stroke: 0px #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Introduction to miSCellaneous<span class="Apple-tab-span">	</span></b></span><span class="s2"><b>overview, references and examples</b></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p3"><span class="s3"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s4">miSCellaneous</span></a></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">At the beginning of 2017, it was almost 10 years ago when I did my first steps in systematically ordering and extending personal SC tools. At that time I already had some experience in SC, but project-oriented composition was my main focus. Meanwhile miSCellaneous lib has grown and when I look at its readme file, although I always tried to keep stuff documented properly, I doubt that the connections between the different classes would be easy to get at a first glance. Topics accumulated, some help files have become huge (VarGui, PbindFx) and a lot of examples and documented (extra-)features might hide the basic motivations. As I was asked by colleagues at the Institute of Electronic Music and Acoustic Graz (IEM) we organized a one-day lecture/workshop on miSCellaneous lib on November 5th, 2016, and this tutorial summarizes the overview given then. At that point I'd like to say that I'm very grateful to IEM Graz and the interested SC community from here and abroad for support and feedback, we are going to have further SC meetings at the same place – Hanns Holger Rutz already continued in December. There's also a focus on artistic research here at IEM, and research projects, events and discussions are lighting an ongoing discourse in the field between art and science, creating an inspiring environment.</span></p>
+<p class="p2"><span class="s2">Concerning the structure of this file: after a brief history and a grouping of content the tour will guide through selected topics in an order which, hopefully, will outline the central ideas. It will start with VarGui, PLx, then go over PbindFx, EventShortcuts to live coding aspects of PLx, continue with independant classes, class families, methods and SC tutorials and end with the Buffer Granulation tutorial, which again integrates some of the previous topics. PbindFx gets more space, as it's in my recent focus and you can use it for a number of things which are not, or at least not easily doable in plain SC. To a large extent the tour consists of references to selected already existing examples, which are spread over various help files. Conitinuative, but less central topics are marked as such, as well as some legacy code, which is still working, but not very relevant, as other possibilities have been invented meanwhile. A few new examples have been added, the reader is invited to check the exercises and to have fun with his/her favourite instrument resp. effect SynthDefs.<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>History</b></span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">In 2007 / 08 I was working at ZKM Karlsruhe, preparing a piece for flute and multichannel electronics (<i>Lokale Orbits / Solo 3</i>). Then I thought it would be useful to order and document my tools, by doing so my programming would – hopefully – not only be useful for me but for others too and I would be able to give something back to the open source community, from which I have been getting so much valuable input. Also I noticed that a better structuring of code together with the need of documentation stimulated reflection and development and significantly improved the functionality of my tools also just for personal use.<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s2"><i>Lokale Orbits </i>is a series of works for small instrumentations and multichannel tape where recordings with involved musicians were the base for granular processings. From the beginning miSCellaneous lib was developed in parallel to the needs that came from that artistic motivation. The first particular motivation was related to the fundamental architecture of SC – the division between language and server – and its consequences for granular synthesis. I never wanted to spend much time in gui programming, but I wanted to have a multi-purpose gui that would easily let me experiment with granular synthesis driven by language (patterns in particular) and server (granulation ugens). It should also be easy to combine these different controls in a single patch, e.g. fine-tune the parameters of a LFO and those of a Pattern resp. the derived running EventStreamPlayer at the same time. This need led to the development of the VarGui interface. It is the the oldest part and, so to speak, the kernel of miSCellaneous, already contained in the first public release of 2009. A player section and a number of features was added in 2011. Thus VarGui doesn't use SC's extended gui features which came up with Qt and if I had to build something from scratch I'd certainly look for a revised code structure, nevertheless VarGui reliably served my needs quite well over a long period of time. The twofold control option (environmental variables and synth args) turned out to be useful in many contexts, also the handling of arrays (environmental variables as well as synth args) is quite practical and allows a quick instantiation of huge slider+player guis.<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s2">Between 2009 and 2016 a number of pattern families was added, some of them with granular synthesis in mind. The one I'm using most is the PLx proxy pattern family which takes advantage of environmental variables and dynamic scoping and goes well together with the VarGui interface concerning control of running Patterns/EventStreamPlayers. PLx also opens nice opportunities for live-coding with very condensed syntax. I'm not doing this on stage but I see live-coding as valuable part of a dynamic compositional process. As a side remark, PLx patterns mirror most of SC's main lib patterns and can also be used as non-proxies. In contrast to main lib's list patterns they default to repeats = inf, which probably saved myself the typing of many thousands of 'infs' over the years.</span></p>
+<p class="p2"><span class="s2">Another part of miSCellaneous is a number of tutorials, which I added from time to time. Some refer to general SC topics, independant from miSCellaneous (e.g. Event patterns and array args), others to topics specific to miSCellaneous (e.g. PLx and live coding with Strings) and in some I tried a general overview of principal SC strategies, but also used examples with features of miSCellaneous (Buffer Granulation). Finally there's other stuff that doesn't fall into the above categories, e.g. the class EventShortcuts for customized shortcuts with Events and event patterns. Classes related to nonlinear dynamics (single sample feedback with Fb1, generailzed functional iteration synthesis with GFIS) have been added in 2018.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Groups of content</b></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">.) <span class="Apple-tab-span">	</span>VarGui (2009), multi-purpose slider / player gui. Can have sliders for control of synth parameters and<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s2"><span class="Apple-tab-span">	</span>environmental variables as well as a player section for control of Synths, Tasks or<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s2"><span class="Apple-tab-span">	</span>EventStreamPlayers derived from Patterns.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p6"><span class="s2">.)<span class="Apple-tab-span">	</span>Pattern classes/class families:</span></p>
+<p class="p6"><span class="s2"><br>
+</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.) <span class="Apple-tab-span">	</span>PHSx (2009): pattern-like objects using synth values in language,</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>still working but a bit outdated as we have synchronous buses now</span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.) <span class="Apple-tab-span">	</span>PLx (2012): dynamic scope proxy patterns,</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>especially suited for VarGui control, also live coding</span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.) <span class="Apple-tab-span">	</span>PSx (2014): patterns acting like streams and remembering last values,</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>good for certain types of nested pattern use and recursion</span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.) <span class="Apple-tab-span">	</span>PmonoPar, PpolyPar (2015): differently timed setting of event streams</span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.) <span class="Apple-tab-span">	</span>PbindFx (2015): sequencing arbitrary effects and effect graphs</span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.)<span class="Apple-tab-span">	</span>PLbindef, PLbindefPar (2016): proxies based on Pbindef</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>allowing shortcut replacement syntax</span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.) <span class="Apple-tab-span">	</span>PSVx (2016): a pattern implementation of Xenakis sieves related to the class Sieve,</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Psieve patterns enable an unusual "realtime sieve modification".</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Interesting for many applications, e.g. granular rhythms,<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>though I didn't have the time to experiment a lot yet.</span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.)<span class="Apple-tab-span">	</span>PSPdiv (2017): a dynamic multi-layer pulse divider based on Pspawner</span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.) <span class="Apple-tab-span">	</span>Other pattern classes</span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span></span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="s2">.)<span class="Apple-tab-span">	</span>Tutorials:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="s2"><br>
+</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.)<span class="Apple-tab-span">	</span>Event patterns and Functions (2011)</span></p>
+<p class="p6"><span class="s2"><br>
+</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.)<span class="Apple-tab-span">	</span>Event patterns and LFOs (2011)</span></p>
+<p class="p6"><span class="s2"><br>
+</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.)<span class="Apple-tab-span">	</span>Buffer Granulation Tutorial (2012)</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>different strategies of buffer granulation and control</span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.)<span class="Apple-tab-span">	</span>Event patterns and array args (2015)</span></p>
+<p class="p6"><span class="s2"><br>
+</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.)<span class="Apple-tab-span">	</span>PLx and live coding with Strings (2016)</span></p>
+<p class="p6"><span class="s2"><br>
+</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.)<span class="Apple-tab-span">	</span>Sieves and Psieve patterns (2016)</span></p>
+<p class="p6"><span class="s2"><br>
+</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.)<span class="Apple-tab-span">	</span>kitchen studies (2016)</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>commented source code of six short pieces from a kitchen sound using PbindFx</span></p>
+<p class="p6"><span class="s2"><br>
+</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.)<span class="Apple-tab-span">	</span>Live Granulation Tutorial (2017)</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>different strategies of live granulation and control</span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.)<span class="Apple-tab-span">	</span>Other tutorials</span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p6"><span class="s2">.)<span class="Apple-tab-span">	</span>Other topics:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="s2"><br>
+</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.)<span class="Apple-tab-span">	</span>enum (2013): general enumeration tool</span></p>
+<p class="p6"><span class="s2"><br>
+</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.)<span class="Apple-tab-span">	</span>EventShortcuts (2014): user-defined keywords for events and event patterns</span></p>
+<p class="p6"><span class="s2"><br>
+</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.)<span class="Apple-tab-span">	</span>Smooth Clipping and Folding (2017)</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.)<span class="Apple-tab-span">	</span>DX suite (2017): pseudo ugens for crossfaded mixing and fanning with drate control</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.)<span class="Apple-tab-span">	</span>Idev suite (2018): patterns and drate ugen searching for numbers with integer distance from a source pattern / signal</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span>.)<span class="Apple-tab-span">	</span>Fb1, GFIS (2018): single sample feedback and generalized functional iteration synthesis</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span>.)<span class="Apple-tab-span">	</span>Other</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 1 – VarGui</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">The <a href="VarGui.html"><span class="s5">VarGui</span></a> class help file as well <a href="VarGui shortcut builds.html"><span class="s5">VarGui shortcut builds</span></a> are both bloated with information, so I'd like to give just a few examples and references here in order to show its basic features.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2">(</span></p>
+<p class="p5"><span class="s2">s = </span><span class="s6">Server</span><span class="s2">.local;</span></p>
+<p class="p5"><span class="s6">Server</span><span class="s2">.default = s;</span></p>
+<p class="p5"><span class="s2">s.boot;</span></p>
+<p class="p5"><span class="s2">)</span></p>
+<p class="p10"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 1a: synth control</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p11"><span class="s2">// quick control of default synth, specs are globally known</span></p>
+<p class="p11"><span class="s2">// note that amp is set to 0 by its default spec</span></p>
+<p class="p11"><span class="s2">// start by pressing the green button</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s6">VarGui</span><span class="s2">(synth: </span><span class="s7">\default</span><span class="s2">).gui</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p11"><span class="s2">// alternative writing, see help file <a href="VarGui shortcut builds.html"><span class="s8">VarGui shortcut builds</span></a><span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s7">\default</span><span class="s2">.sVarGui.gui<span class="Apple-converted-space">     </span></span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">For basic control of a self-defined Synth/SynthDef by passing control specs see the example "synth definition with raising frequency" in <a href="VarGui.html"><span class="s5">VarGui</span></a>.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">For control of multiple Synths/SynthDefs see the example in the section "discussion" of the same file below.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">It's often more practical to pass control specs as SynthDef metadata as done in Ex. 1a of <a href="Buffer Granulation.html"><span class="s5">Buffer Granulation</span></a><span class="Apple-converted-space"> </span></span></p>
+<p class="p11"><span class="s2"><br>
+</span></p>
+<p class="p11"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s9">Exercise</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">Control your own (sustained) SynthDef with VarGui, either use SynthDef metadata or VarGui's argument 'synthCtr' for passing specs.<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 1b: environmental variables and pattern control</b></span></p>
+<p class="p11"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">For basic control of an environmental variable in combination with a Pbind run the example in the discussion section of <a href="VarGui.html"><span class="s5">VarGui</span></a>'s method 'new'.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p11"><span class="s2">// after having evaluated p, consider the subtle differences of these variants:</span></p>
+<p class="p11"><span class="s2">// play with slider values and start and pause ad libitum.</span></p>
+<p class="p11"><span class="s2">// The quant argument ensures synchronization when starting players separately.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p11"><span class="s2">// one array variable in one environment, one player</span></p>
+<p class="p5"><span class="s2">v = </span><span class="s6">VarGui</span><span class="s2">([</span><span class="s7">\midi</span><span class="s2">, [50, 70, </span><span class="s7">\lin</span><span class="s2">, 1, 55] ! 3], stream: p, quant: 0.2).gui;</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p11"><span class="s2">// three single variables in three environments, three players</span></p>
+<p class="p5"><span class="s2">v = </span><span class="s6">VarGui</span><span class="s2">([</span><span class="s7">\midi</span><span class="s2">, [50, 70, </span><span class="s7">\lin</span><span class="s2">, 1, 55]] ! 3, stream: p!3, quant: 0.2).gui;</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p11"><span class="s2">// three array variables in three environments, three players</span></p>
+<p class="p5"><span class="s2">v = </span><span class="s6">VarGui</span><span class="s2">([</span><span class="s7">\midi</span><span class="s2">, [50, 70, </span><span class="s7">\lin</span><span class="s2">, 1, 55] ! 3] ! 3, stream: p!3, quant: 0.2).gui;</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">These examples show the application of dynamic scoping. A Function has been defined with an "unconnected" free variable and the players evaluate the Function in different Environments provided by the VarGui. Setting the sliders affects the variable of the same name in different Environments of different players.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">This example used a Pfunc, but it works the same with PLx patterns, we take a look at them and leave VarGui for a moment.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 2: PLx suite</b></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">Pdef and Pdefn are main lib's proxies for replacement of event patterns and non-event patterns. PL is the most general PLx proxy, taking over some combined functionality of Pdef and Pdefn on the base of dynamic scoping, go through the examples of the help file <a href="PL.html"><span class="s5">PL</span></a> to see how it works with value and event patterns.<span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">Though what neither PL nor Pdef/Pdefn can provide is the replacement of pure lists or list items in the case of list patterns. There's a main lib workaround with a combination of Pn and Plazy (<a href="PLx suite.html"><span class="s5">PLx suite</span></a>, Ex. 1a), but it isn't satisfying for several reasons, so I suppose that PLx list patterns like PLseq are amongst the most useful ones of the whole PLx family, e.g. see <a href="PLx suite.html"><span class="s5">PLx suite</span></a>, Ex. 1b. Other PLx list patterns like PLrand, PLwrand, PLser, PLshuf, PLshufn, PLswitch etc. work similar.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">There exists also a number of non-list PLx patterns, have a look at <a href="PLwhite.html"><span class="s5">PLwhite</span></a> as a typical example.</span></p>
+<p class="p12"><span class="s2"><span class="Apple-converted-space">  </span></span></p>
+<p class="p12"><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s9">Exercise</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">Play your own enveloped SynthDef (or take default SynthDef with params: freq, amp, pan) with some PLx patterns and perform live replacements as in the examples above.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 3: PLx patterns used with VarGui</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">See <a href="VarGui.html"><span class="s5">VarGui</span></a>, Ex. 1a, for basic step sequencing with PLseq, the array variable is implicitely defined in VarGui's first arg.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">See <a href="VarGui.html"><span class="s5">VarGui</span></a>, Ex. 1c for multiple players and array variables and control of multiple sliders and buttons with modifier keys (note that not all functionality might be available on all platforms).</span></p>
+<p class="p10"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">See <a href="VarGui.html"><span class="s5">VarGui</span></a>, Ex. 4a, for a sequencing setup with some PLs used. But more interesting here is that each synth reads is base frequency from a control bus, which gets its data from a separate synth. Synth and EventStreamPlayer are both controlled from the gui. The two slider blocks on the left side concern Synth settings (above) and variable setting for the Pbind / EventStreamPlayer (below). Accordingly we have two players on the right side. Try running the player and starting and stopping the control synth.</span></p>
+<p class="p12"><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s4"><a href="Buffer Granulation.html">Buffer Granulation</a></span><span class="s2">, Ex. 2a, shows basic language-driven granulation, gui values are taken over by PL patterns and Pfunc.</span></p>
+<p class="p12"><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p12"><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s9">Exercise</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">Write a combination of an event pattern and PLx patterns as above with your own SynthDef and play it with a VarGui. Note that it's not necessary to control all args by the gui, nor is it necessary to control parameters directly: you can e.g. control bounds for midinotes in the gui and define the calculation for the actual midinote (e.g. random selection) in the event pattern:</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p13"><span class="s2">\midinote</span><span class="s3">, </span><span class="s10">PLwhite</span><span class="s3">(</span><span class="s2">\midiLo</span><span class="s3">, </span><span class="s2">\midiHi</span><span class="s3">)</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 4: PbindFx</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">PbindFx is an event pattern for effect handling on per-event base. There are other ways for working with event patterns and effects, already possible with main lib, but they have disadvantages: with Pfx and Pfxb there is no built-in way to sequence effect types or effect parameters, you could also route the event's audio to effect buses, but for overlapping events with different fx graphs/params you'd have to define additional buses beforehand as in Ex. 4a.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p10"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Ex. 4a: sequencing fx params by using different fx buses</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p11"><span class="s2">// first go to <a href="PbindFx.html"><span class="s11">PbindFx</span></a>, Ex. 1a, reboot server with extended ressources and evaluate source and fx synths.</span></p>
+<p class="p14"><span class="s2"><br>
+</span></p>
+<p class="p11"><span class="s2">// start fxs<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s2">(</span></p>
+<p class="p5"><span class="s2">a = </span><span class="s6">Bus</span><span class="s2">.audio(s, 2);</span></p>
+<p class="p5"><span class="s2">b = </span><span class="s6">Bus</span><span class="s2">.audio(s, 2);</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2">x = </span><span class="s6">Synth</span><span class="s2">(</span><span class="s7">\echo</span><span class="s2">, [decayTime: 1.5, echoDelta: 0.15, in: a]);</span></p>
+<p class="p5"><span class="s2">y = </span><span class="s6">Synth</span><span class="s2">(</span><span class="s7">\echo</span><span class="s2">, [decayTime: 5, echoDelta: 0.1, in: b]);</span></p>
+<p class="p5"><span class="s2">)</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p11"><span class="s2">// play pattern, the two effects allow switching between them</span></p>
+<p class="p5"><span class="s2">(</span></p>
+<p class="p5"><span class="s2">p = </span><span class="s6">Pbind</span><span class="s2">(</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s7">\dur</span><span class="s2">, 0.5,</span></p>
+<p class="p15"><span class="s3"><span class="Apple-tab-span">	</span></span><span class="s2">\instrument</span><span class="s3">, </span><span class="s2">\source</span><span class="s3">,</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s7">\note</span><span class="s2">, </span><span class="s6">Pshuf</span><span class="s2">((0..11), </span><span class="s12">inf</span><span class="s2">) + </span><span class="s6">Pseq</span><span class="s2">([[0.2, 14.2], [0, 4], [0, 4]], </span><span class="s12">inf</span><span class="s2">),</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s7">\octave</span><span class="s2">, </span><span class="s6">Pwhite</span><span class="s2">(3, 6),</span></p>
+<p class="p11"><span class="s3"><span class="Apple-tab-span">	</span></span><span class="s7">\out</span><span class="s3">, </span><span class="s6">Pseq</span><span class="s3">([b, a, a], </span><span class="s12">inf</span><span class="s3">)<span class="Apple-converted-space">  </span></span><span class="s2">// here we do fx sequencing</span></p>
+<p class="p5"><span class="s2">).play</span></p>
+<p class="p5"><span class="s2">)</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2">p.stop</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p11"><span class="s2">// we need to do cleanup manually here</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2">[x, y, a, b].do(</span><span class="s6">_</span><span class="s2">.free);</span></p>
+<p class="p10"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Ex. 4b: sequencing fx params by using PbindFx</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p11"><span class="s2">// Ex. 4a translated to PbindFx syntax –</span></p>
+<p class="p11"><span class="s2">// though it's not exactly identical as fxs are processed in not only two but</span></p>
+<p class="p11"><span class="s2">// more parallel fx synths</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2">(</span></p>
+<p class="p16"><span class="s3">p = </span><span class="s2">PbindFx</span><span class="s3">([</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">\dur</span><span class="s2">, 0.5,</span></p>
+<p class="p15"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">\instrument</span><span class="s3">, </span><span class="s2">\source</span><span class="s3">,</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">\note</span><span class="s2">, </span><span class="s6">PLshuf</span><span class="s2">((0..11)) + </span><span class="s6">PLseq</span><span class="s2">([[0.2, 14.2], [0, 4], [0, 4]]),</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">\octave</span><span class="s2">, </span><span class="s6">Pwhite</span><span class="s2">(3, 6),</span></p>
+<p class="p11"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">\fxOrder</span><span class="s3">, 1<span class="Apple-tab-span">	</span></span><span class="s2">// always fx #1 (echo)</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span>],[</span></p>
+<p class="p15"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">\fx</span><span class="s3">, </span><span class="s2">\echo</span><span class="s3">,</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">\decayTime</span><span class="s2">, </span><span class="s6">PLseq</span><span class="s2">([5, 1.5, 1.5]),</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">\echoDelta</span><span class="s2">, </span><span class="s6">PLseq</span><span class="s2">([0.1, 0.15, 0.15]),</span></p>
+<p class="p11"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">\cleanupDelay</span><span class="s3">, 5.2,<span class="Apple-converted-space">    </span></span><span class="s2">// with short default echo would be cut</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p11"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">// this would save a bit CPU</span></p>
+<p class="p11"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">// \cleanupDelay, PLseq([5, 1.5, 1.5]) + 0.2</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span>]</span></p>
+<p class="p5"><span class="s2">).play</span></p>
+<p class="p5"><span class="s2">)</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p11"><span class="s2">// cleanup (delayed freeing of synths and buses) is done automatically</span></p>
+<p class="p11"><span class="s2">// watch server window:</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2">p.stop</span></p>
+<p class="p10"><span class="s2"><br>
+</span></p>
+<p class="p10"><span class="s2"><br>
+</span></p>
+<p class="p11"><span class="s2">// now run the same example with the following variant of 'echoDelta',</span></p>
+<p class="p11"><span class="s2">// obviously the result cannot be achieved with an approach like in Ex. 4a</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">\echoDelta</span><span class="s2">, </span><span class="s6">Pwhite</span><span class="s2">(0.05, 0.2)</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Ex. 4c: alternation of fx / non-fx by defining a fxOrder sequence</b></span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2">(</span></p>
+<p class="p16"><span class="s3">p = </span><span class="s2">PbindFx</span><span class="s3">([</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">\dur</span><span class="s2">, 0.2,</span></p>
+<p class="p15"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">\instrument</span><span class="s3">, </span><span class="s2">\source</span><span class="s3">,</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">\note</span><span class="s2">, </span><span class="s6">PLshuf</span><span class="s2">((0..11)) + </span><span class="s6">PLseq</span><span class="s2">([[0.4, 14.4], [0, 4], [0, 4]]),</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">\octave</span><span class="s2">, </span><span class="s6">Pwhite</span><span class="s2">(3, 6),</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p17"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">// fxOrder = 0 means no fx</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">\fxOrder</span><span class="s2">,<span class="Apple-converted-space">  </span></span><span class="s6">PLseq</span><span class="s2">([0, 0, 1]),</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p11"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">// if no fx, we need to compensate the unified echo delay of 0.2</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">\lag</span><span class="s2">, </span><span class="s6">Pif</span><span class="s2">(</span><span class="s6">Pkey</span><span class="s2">(</span><span class="s7">\fxOrder</span><span class="s2">) &gt; 0, 0, 0.2)</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span>],[</span></p>
+<p class="p15"><span class="s3"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">\fx</span><span class="s3">, </span><span class="s2">\echo</span><span class="s3">,</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">\decayTime</span><span class="s2">, </span><span class="s6">PLseq</span><span class="s2">([5, 1.5, 1.5]),</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">\echoDelta</span><span class="s2">, </span><span class="s6">Pwhite</span><span class="s2">(0.04, 0.12),</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s7">\cleanupDelay</span><span class="s2">, </span><span class="s6">PLseq</span><span class="s2">([5, 1.5, 1.5]) + 0.2</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span>]</span></p>
+<p class="p5"><span class="s2">).play</span></p>
+<p class="p5"><span class="s2">)</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2">p.stop</span></p>
+<p class="p10"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s9">Exercise</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">Play your own (percussive + stereo) SynthDef (or instrument 'source') with an arbitrary sequencing of no fx and echos (by defining 'fxOrder') and echo params as in Ex. 4c. Note that in fx 'echo' the max echoDelta defaults to 0.2.</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 4d: principle of operation</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">For each event several issues have to be internally considered by PbindFx: building and checking of fx graphs (no cycles !), cleaning buses from possibly remaining residual audio (adding "zero synths"), splitting (in case of parallel parts in the fx graph), grouping of all event-related synths and checking accumulated cleanup delay times. You might skip that for the moment, but for a more detailled overview see <a href="PbindFx.html"><span class="s5">PbindFx</span></a>, as well as for a listing of conventions.</span></p>
+<p class="p18"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 4e: sequential application of fxs (fixed fx chains)</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">See <a href="PbindFx.html"><span class="s5">PbindFx</span></a>, examples 1a and 1b.</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 4f: sequencing different fx chains</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">See <a href="PbindFx.html"><span class="s5">PbindFx</span></a>, examples 2a-d.</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s9">Exercise</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">Play your own (percussive + stereo) SynthDef (or instrument 'source') with an arbitrary sequencing of fx chains (your fxs and/or fxs from PbindFx help). Maybe just extend your last own example.</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 4g: parallel effects and arbitrary effect graphs</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">It seems to be a still underestimated option to design effect graphs different from simple chains. In a classical DAW interface a pile of slots for effects in chain is common, although more differentiated possibilities are also there. Considering event sequencing with PbindFx we can select fx graphs per event / grain, in addition to the sequencing of fx parameters itself. See <a href="PbindFx.html"><span class="s5">PbindFx</span></a>, Ex. 10a for a parallel application of echo, note the syntax of the event graph, passed as Event to 'fxOrder'.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s9">Exercise</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">Compare the sound of the two fx graphs given in Ex. 10a, also try the following or similar, how do the corresponding fx graphs look like ?</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s7">\fxOrder</span><span class="s2">, `(0: 1, 1: [2, 3], 2: 4),</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s7">\fxOrder</span><span class="s2">, `(0: 1, 1: [2, 3, </span><span class="s7">\o</span><span class="s2">], 2: 4),</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s7">\fxOrder</span><span class="s2">, `(0: 1, 1: [2, 3], 3: 4, 2: 3),</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s7">\fxOrder</span><span class="s2">, `(0: 1, 1: [2, 3], 3: 2, 2: 4),</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s7">\fxOrder</span><span class="s2">, `(0: 1, 1: [2, 3, </span><span class="s7">\o</span><span class="s2">], 3: 4, 2: 3),</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">See <a href="PbindFx.html"><span class="s5">PbindFx</span></a>, Ex. 10b and 10c for modulation graphs and their sequencing.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s9">Exercise</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">Play your own (percussive + stereo) SynthDef (or instrument 'source') with an arbitrary sequencing of fx *graphs* (your fxs and/or fxs from PbindFx help). Maybe just extend your last own example.</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 4h: implicit parallelism of single effects</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">This can simple be done by passing arrays within fxData, see <a href="PbindFx.html"><span class="s5">PbindFx</span></a>, Ex. 4a.<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 4i: different effects with parallel PbindFxs</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">A further option for parallelism, a typical case would be the application of different effects to the notes of a chord, see <a href="PbindFx.html"><span class="s5">PbindFx</span></a>, Ex. 3b (rather straight than 3a).<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 4j: PbindFx and replacements</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">See <a href="PbindFx.html"><span class="s5">PbindFx</span></a>, Ex. 7a for replacement of key streams.</span></p>
+<p class="p10"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">Up to now PbindFx got lists as args in all examples. As args can be event patterns too, they can also be proxy patterns which opens the door for various unusual kinds of source and fx replacements, see <a href="PbindFx.html"><span class="s5">PbindFx</span></a>, Ex. 7b and 7c.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s9">Exercise</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">Take one of your previous working PbindFx examples and rewrite its args (arrays of key/value pairs) as PL or Pbindef proxies. Run the example and replace source and/or fx patterns on the fly.</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 4k: continuative topics</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">For use with VarGui see <a href="PbindFx.html"><span class="s5">PbindFx</span></a>, Ex. 8.</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">For using one fx SynthDef in more than one fxData see <a href="PbindFx.html"><span class="s5">PbindFx</span></a>, Ex. 4.</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">For source and fxs reading from external buses (ar or kr) see <a href="PbindFx.html"><span class="s5">PbindFx</span></a>, Ex. 6a-c.</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">For using value conversions with fxData see <a href="PbindFx.html"><span class="s5">PbindFx</span></a>, Ex. 9.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 4l: kitchen studies, a granular synthesis application</b></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">One motivation for the development of PbindFx was the idea to explore granular synthesis variants with differentiated effect processings. The fixed media composition <i>kitchen studies</i> collects six short pieces with different fxs and handlings of fx sequencing, each derived from the kitchen sound of five seconds, which is already contained in miSCellaneous lib. At the same time <i>kitchen studies</i> is an ongoing artistic research project: the commented source code is published in the tutorial <a href="kitchen studies.html"><span class="s13">kitchen studies</span></a>, </span><span class="s14">compressed versions of the original piece as a whole and its parts can be found on my website <a href="http://daniel-mayer.at/index_en.htm"><span class="s13">http://daniel-mayer.at</span></a>, a further documentation of the compositional process will follow as publication in the artistic research database <i>Research Catalogue</i> (<a href="http://researchcatalogue.net/"><span class="s13">http://researchcatalogue.net</span></a>).</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 5: EventShortcuts: less typing with Events and event patterns</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">EventShortcuts is an interface for defining your own shortcut keys for often used keyword in Events and event patterns. For example you might want to write 'inst' or just 'i' instead of 'instrument' etc., then define your collection of shortcuts – e.g. in your startup or a certain load file – and activate it on occasion. There is also a default shortcuts dictionary, see its content and play a simple example:</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p20"><span class="s2">EventShortcuts</span><span class="s3">.on;</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p20"><span class="s2">EventShortcuts</span><span class="s3">.postAll;</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2">x = </span><span class="s10">Pbind</span><span class="s2">(</span><span class="s15">\m</span><span class="s2">, </span><span class="s10">Pwhite</span><span class="s2">(60, 90), </span><span class="s15">\d</span><span class="s2">, 0.2).play;</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">For examples of (re-)defining or extending shortcut dictionaries see <a href="EventShortcuts.html"><span class="s13">EventShortcuts</span></a>.</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s9">Exercise</span><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">Take one of your favourite SynthDefs with non-standard arguments (other than freq, amp, pan, etc.) and write an event pattern example, using these arguments. Then choose useful abbreviations, define a new shortcut dictionary with these (either by extending the default or by defining a new one), make it current and run the event pattern example with abbreviated keys.<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 6: live coding</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">This was not my main focus from the beginning, but it turned out that PLx patterns, in combination with EventShortcuts and/or Character sequencing (tour 6b) open up live coding possibilities with very condensed syntax.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 6a: PLbindef and PLbindefPar</b></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">PLbindef is a wrapper class for Pbindef, which allows replacements in pseudo-method syntax in a newly created Environment.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p20"><span class="s2">EventShortcuts</span><span class="s3">.on;</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2">y = </span><span class="s10">PLbindef</span><span class="s2">(</span><span class="s15">\x</span><span class="s2">, </span><span class="s15">\d</span><span class="s2">, 0.2, </span><span class="s15">\m</span><span class="s2">, </span><span class="s10">Pwhite</span><span class="s2">(60, 90)).play;</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p21"><span class="s2">// now 'x' is also the name of a new Environment in the current Environment,</span></p>
+<p class="p21"><span class="s2">// its pseudo-methods can be used for setting</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s16">~x</span><span class="s2">.m = </span><span class="s10">PLseq</span><span class="s2">((60..70))</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2">y.stop</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">For further examples see <a href="PLbindef.html"><span class="s13">PLbindef</span></a>.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">PLbindefPar is also based on Pbindef, but unlike PLbindef it's not a plain wrapper: it employs a number of Pbindefs in parallel, which allows control of polyphonic, additive or granular structures, see <a href="PLbindefPar.html"><span class="s13">PLbindefPar</span></a>. <b>WARNING: </b>if you're piling up a lot of layers, be careful with amplitudes, the amplitude values are taken for the single layers, so you'd have to reduce them accordingly !</span></p>
+<p class="p12"><span class="s2"><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 6b: PLx and live coding with Strings</b></span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">Already in plain SC Strings as Arrays of Characters can be used for sequencing. PLx patterns fit and continuate this concept, see <a href="PLx and live coding with Strings.html"><span class="s13">PLx and live coding with Strings</span></a> for some options, also in connection with PLbindef, PLbindefPar and PbindFx.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 7: Independant classes, class families and methods</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 7a: PSx stream patterns</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">These are a bit paradoxical classes: Patterns which behave as if they were Streams, thus have an internal state and remember its last value(s), which can e.g. be used for recursion or certain demands of repeated embedding as in the following example:</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2">(</span></p>
+<p class="p11"><span class="s2">// PS gets source and length patterns as args</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2">p = </span><span class="s6">PLseq</span><span class="s2">([</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s6">PS</span><span class="s2">(</span><span class="s6">PLseq</span><span class="s2">((1..5)), </span><span class="s6">PLseq</span><span class="s2">([1, 2])),</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s6">PS</span><span class="s2">(</span><span class="s6">PLseq</span><span class="s2">((1..5) * 100), </span><span class="s6">PLrand</span><span class="s2">((3..5)))</span></p>
+<p class="p5"><span class="s2">]);</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2">p.asStream.nextN(100)</span></p>
+<p class="p5"><span class="s2">)</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p11"><span class="s2">// this can also be written with a combination of Streams and Patterns,</span></p>
+<p class="p11"><span class="s2">// but it needs more typing (same with Pswitch1 variants)</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2">(</span></p>
+<p class="p5"><span class="s2">a = </span><span class="s6">Pseq</span><span class="s2">((1..5), </span><span class="s12">inf</span><span class="s2">).asStream;</span></p>
+<p class="p5"><span class="s2">b = </span><span class="s6">Pseq</span><span class="s2">((1..5) * 100, </span><span class="s12">inf</span><span class="s2">).asStream;</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2">p = </span><span class="s6">Pseq</span><span class="s2">([</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s6">Pfuncn</span><span class="s2">({ a.next }, </span><span class="s6">Pseq</span><span class="s2">([1, 2], </span><span class="s12">inf</span><span class="s2">).asStream),<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s6">Pfuncn</span><span class="s2">({ b.next }, </span><span class="s6">Prand</span><span class="s2">((3..5), </span><span class="s12">inf</span><span class="s2">).asStream),</span></p>
+<p class="p5"><span class="s2">], </span><span class="s12">inf</span><span class="s2">);</span></p>
+<p class="p5"><span class="s2"><br>
+</span></p>
+<p class="p5"><span class="s2">p.asStream.nextN(100)</span></p>
+<p class="p5"><span class="s2">)</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">See <a href="PSx stream patterns.html"><span class="s4">PSx stream patterns</span></a> for an overview.</span></p>
+<p class="p10"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 7b: PSVx sieve patterns and Sieves</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">Sieves, recommended by Iannis Xenakis as generative principles for arbitrary musical parameters, are implemented twice: with the class Sieve and Psieve patterns, which adapt the sieve calculus for realtime interactions. The tutorial <a href="Sieves and Psieve patterns.html"><span class="s17">Sieves and Psieve patterns</span></a> starts from scratch, thus can be studied completely independant from other miSCellaneous stuff and most other SC requirements. The last chapter gives some audio examples, granular rhythms might be an especially interesting application.</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 7c: PmonoPar and PpolyPar</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s4"><a href="PmonoPar.html">PmonoPar</a></span><span class="s2"> follows the Pmono convention of a single synth, being set but extends it to an arbitrary number of differently timed setting streams. With <a href="PpolyPar.html"><span class="s17">PpolyPar</span></a> the number of continously running synths is arbitrary as well and setting streams can switch the synths to set. That way complicated fx variations can be achieved by a paradigm different from <a href="PbindFx.html"><span class="s5">PbindFx</span></a>.</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 7d: enum</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">A general tool, which can be used for many enumeration and optimization problems (sets, partitions, graphs etc.), melodic shapes and scales are possible musical applications, see <a href="enum.html"><span class="s5">enum</span></a>.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 7e: HS / HSpar / PHS / PHSpar</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">A framework for using server-generated values in Pbind-like objects in the language. A bit outdated now, as synchronous bus gives easy access to server values, however the double-latency mechanism provides a good accuracy of values – better than synchronous bus with standard hardware settings if this is needed – by passing a high granularity parameter. A lower value minimizes OSC traffic if this is more important. See <a href="Working with HS and HSpar.html"><span class="s5">Working with HS and HSpar</span></a>.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 7f: PSPdiv</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">A dynamic multi-layer pulse divider based on Pspawner, as the latter it supports parallel and sequential sprouting of sub-patterns. Might be used for line ornamentation, polyrhythmical structures, granulation etc., see <a href="PSPdiv.html"><span class="s17">PSPdiv</span></a>.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p18"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 7g: Smooth Clipping and Folding</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">A suite of pseudo ugens, see <a href="Smooth Clipping and Folding.html"><span class="s17">Smooth Clipping and Folding</span></a>.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p18"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 7h: DX suite</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">pseudo ugens for crossfaded mixing and fanning according to demand-rate control, see <a href="DX suite.html"><span class="s18">DX suite</span></a>.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 7i: Idev suite</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p6"><span class="s2">patterns and drate ugen searching for numbers with integer distance from a source pattern / signal, see <a href="Idev suite.html"><span class="s18">Idev suite</span></a>.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p7"><span class="s2"></span><br></p>
+<p class="p22"><span class="s2"><b>Tour 7j: Nonlinear dynamics</b></span></p>
+<p class="p22"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2">pseudo ugens for single sample feedback and generalized functional iteration synthesis, see <a href="Fb1.html"><span class="s18">Fb1</span></a> and <a href="GFIS.html"><span class="s18">GFIS</span></a>.</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p7"><span class="s2"></span><br></p>
+<p class="p6"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 8: (Rather) independant SC tutorials</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 8a: Event patterns and Functions</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">This tutorial is about dynamic scope, comparing the behaviour of Functions, Streams and EventStreamPlayers in Environments. It's thus treating some preconditions which are relevant for <a href="PLx suite.html"><span class="s5">PLx suite</span></a></span><span class="s5"> </span><span class="s2">and <a href="VarGui.html"><span class="s5">VarGui</span></a>, see <a href="Event patterns and Functions.html"><span class="s5">Event patterns and Functions</span></a>.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 8b: Event patterns and LFOs</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">Continuous (with LFO) and discrete ("LFO-like") control strategies for event patterns are compared in <a href="Event patterns and LFOs.html"><span class="s5">Event patterns and LFOs</span></a>.</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 8c: Event patterns and array args</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">SynthDef array args seem to be a sometimes confusing topic, especially when it's about (pseudo-)variable array lengths and Envelopes, this is even more the case when it comes to the sequencing of such synths. For this reason, and not at last to remind myself to the subtle syntax differences, I wrote this tutorial: <a href="Event patterns and array args.html"><span class="s5">Event patterns and array args</span></a>.</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b>Tour 9: Buffer Granulation and Live Granulation – tutorials</b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2">Actually scheduled as a general overview of granulation possibilities in SC, also collecting various ideas from the sc-users mailing list discussions, I have to admit that in its current form many examples, especially in the Buffer granulation tutorial, require one or more features of miSCellaneous and thus might not always be easy to follow. Then again it would be hard to write such (gui) examples without presuppositions and at the same time with a clearly representable amount of code. However I hope that based on this guided tour it might be easier to step through for people who haven't used this lib before, see <a href="Buffer Granulation.html"><span class="s17">Buffer Granulation</span></a> and <a href="Live Granulation.html"><span class="s17">Live Granulation</span></a>.</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s2"><br>
+</span></p>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #042eee}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #cd1c00}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #0000ee}
+span.s5 {color: #00afff}
+span.s6 {text-decoration: underline ; color: #042eee}
+span.s7 {text-decoration: underline ; color: #01beff}
+span.s8 {text-decoration: underline ; color: #0078ff}
+span.s9 {color: #0326cb}
+span.s10 {color: #0433ff}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>PSrecur<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>Pattern to generate new values with a recursive Function<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: PS / PStream</b></p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s2"><b>See also: </b><a href="MemoRoutine.html"><span class="s4">MemoRoutine</span></a></span><span class="s5">, <a href="PSx stream patterns.html"><span class="s6">PSx stream patterns</span></a>,</span><span class="s2"> <a href="PS.html"><span class="s7">PS</span></a></span><span class="s5">,</span><span class="s2"> <a href="PSdup.html"><span class="s8">PSdup</span></a></span><span class="s5">,</span><span class="s2"> <a href="PSloop.html"><span class="s8">PSloop</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p6"><b>Creation / Class Methods</b></p>
+<p class="p7"><br></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>*new (recurFunc, length, bufSize, start, copyItems, copySets)</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new PSrecur object.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>recurFunc </b>- Recursive Function, the PSrecur will be passed as first arg, count as second arg.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>length </b>- Number of output items, may be pattern or stream, defaults to inf.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>bufSize </b>- Size of buffer to store last values.<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If <b>bufSize </b>is not defined<b> </b>and<b> start</b> is not given or a single item, <b>bufSize</b> gets value 1.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If <b>bufSize </b>is not defined<b> </b>and <b>start</b> is an array <b>bufSize</b> gets its length.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>start </b>- Single start item or array ot items used for recursion.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>copyItems </b>- Determines if and how to copy items generated by <b>recurFunc</b>,</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>which are either non-Sets or member of Sets.<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Takes Integer 0 (or false or Symbol \false), 1 (or true or Symbol \true) or 2 (or Symbol \deep).<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Other values are interpreted as 0. Defaults to 0.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0: original item<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1: copy item</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2: deepCopy item</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>copySets </b>- Determines if and how to copy Sets, generated by <b>recurFunc</b>.<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Takes Integer 0 (or false or Symbol \false), 1 (or true or Symbol \true).<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Other values are interpreted as 0. Defaults to 1.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0: original Set<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1: copy Set</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>NOTE 1: </b>The distinction of copying items and sets makes sense in the case of event streams.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Per default Events are copied (<b>copySets </b>== 1), not their values (<b>copyItems </b>== 0).<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>By playing Events those are used to store additional data (synth ids, msgFuncs …)<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>which is mostly not of interest when refering to the event stream, e.g. with PSx patterns which use<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>MemoRoutine - copied Events will not contain this additional data.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If values of Events or values returned directly by the stream (being no kind of Sets) are unstructured<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>then copying makes no sense, this is the normal case, so <b>copyItems </b>defaults to 0.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>When going to alter the ouput, you might want to set <b>copyItems </b>to 1 for a PSx returning<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>simple arrays or 2 for nested arrays (deepCopy). For deepCopying Events you'd have to set</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>copySets </b>to 1 and <b>copyItems</b> to 2 (an option <b>copySets </b>== 2 doesn't exist as</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>it would be contradictory in combination with <b>copyItems </b>&lt; 2).</p>
+<p class="p11"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>NOTE 2: </b>Copy options concern copying into PSrecur's buffer as well as<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the output of a Stream derived from the PSrecur. When such a Stream is outputting copies<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>this prevents unintended altering of items stored in the buffer of the source. On the other hand</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>storing copies in PSrecur's buffer prevents these from being altered unintendedly.</p>
+<p class="p11"><br></p>
+<p class="p12"><br></p>
+<p class="p6"><b>Instance Methods</b></p>
+<p class="p12"><br></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>recurFuncStream, recurFuncStream_(value)</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Instance variable getter and setter methods.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><br></p>
+<p class="p12"><br></p>
+<p class="p13"><b>Examples</b></p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">s = <span class="s9">Server</span>.local;</p>
+<p class="p14"><span class="s9">Server</span>.default = s;</p>
+<p class="p14">s.boot;</p>
+<p class="p14">)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p15">// another way to generate the fibonacci sequence</p>
+<p class="p15">// the first arg passed to the Function is the PSrecur itself,</p>
+<p class="p15">// x[0] refers to its last value, x[1] to the value before the last value<span class="Apple-converted-space"> </span></p>
+<p class="p7"><br></p>
+<p class="p14">(</p>
+<p class="p14">a = <span class="s9">PSrecur</span>({ <span class="s10">|x|</span> x[0] + x[1] }, start: [0, 1]);</p>
+<p class="p14">b = a.iter;</p>
+<p class="p14">b.nextN(10);</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p15">// shorter with partial application</p>
+<p class="p4"><br></p>
+<p class="p14"><span class="s9">PSrecur</span>(<span class="s9">_</span>[0]+<span class="s9">_</span>[1], start: [0, 1]).iter.nextN(10);</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// recursion with event patterns</p>
+<p class="p16">// function calculates an iterated average of past event values for all keys,</p>
+<p class="p16">// events at the end of the array are taken into account most. <span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">u = { <span class="s10">|e,f|</span> e.copy.keysValuesChange { <span class="s10">|k|</span> e[k]+f[k]/2 } };</p>
+<p class="p14">v = { <span class="s10">|a|</span> a.reduce(u) };</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p16">// three basic Events</p>
+<p class="p4"><br></p>
+<p class="p14">e = (midinote: 65, dur: 0.75, amp: 0.1, pan: 0);</p>
+<p class="p14">f = (midinote: 58, dur: 0.05, amp: 0.3, pan: -1);</p>
+<p class="p14">g = (midinote: 92, dur: 0.05, amp: 0.4, pan: 1);</p>
+<p class="p4"><br></p>
+<p class="p16">// mostly build "blurred" average of last five events,<span class="Apple-converted-space"> </span></p>
+<p class="p16">// by chance disturbance by choosing a basic event</p>
+<p class="p4"><br></p>
+<p class="p14">p = <span class="s9">PSrecur</span>({ <span class="s10">|x|</span> 0.8.coin.if { v.(x[..4]) }{ [e,f,f,g].choose } }, start: [e,f,e,g,e]);</p>
+<p class="p4"><br></p>
+<p class="p14">q = p.trace.play;</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">q.stop;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p2"><br></p>
+</body>
+</html>

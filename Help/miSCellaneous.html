@@ -1,0 +1,435 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {text-decoration: underline ; color: #0a67f8}
+span.s3 {text-decoration: underline ; color: #00a4ff}
+span.s4 {text-decoration: underline ; color: #0068ff}
+span.s5 {text-decoration: underline ; color: #009dff}
+span.s6 {text-decoration: underline ; color: #0069ff}
+span.s7 {color: #0069ff}
+span.s8 {text-decoration: underline ; color: #0433ff}
+span.s9 {text-decoration: underline ; color: #0071ff}
+span.s10 {color: #000000}
+span.s11 {text-decoration: underline}
+span.s12 {text-decoration: underline ; color: #042eee}
+span.s13 {text-decoration: underline ; color: #0770f8}
+span.s14 {text-decoration: underline ; color: #0149ff}
+span.s15 {text-decoration: underline ; color: #008bff}
+span.s16 {color: #00aaff}
+span.s17 {text-decoration: underline ; color: #01a6ff}
+span.s18 {color: #00adff}
+span.s19 {text-decoration: underline ; color: #01a0ff}
+span.s20 {text-decoration: underline ; color: #006cff}
+span.s21 {text-decoration: underline ; color: #0000ee}
+span.s22 {color: #003eff}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>miSCellaneous<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>a library of SuperCollider extensions (c) 2009-2018 Daniel Mayer<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">Version 0.21 contains these class and help files (SCDoc and old HTML system):</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">1.) <span class="Apple-tab-span">	</span>Guide <a href="Introduction to miSCellaneous.html"><span class="s2">Introduction to miSCellaneous</span></a>: recommended starting point.</p>
+<p class="p2"><br></p>
+<p class="p1">2.) <span class="Apple-tab-span">	</span><a href="VarGui.html"><span class="s3">VarGui</span></a>:<span class="Apple-converted-space">  </span>a slider / player gui to set envir variables and synth controllers and play synths,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>event patterns and tasks, see also <a href="VarGui shortcut builds.html"><span class="s4">VarGui shortcut builds</span></a>.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><a href="HS with VarGui.html"><span class="s5">HS with VarGui</span></a>, a specific tutorial about the combination of HS family and VarGui.</p>
+<p class="p2"><br></p>
+<p class="p1">3.) <span class="Apple-tab-span">	</span>General tutorials: <a href="Event patterns and LFOs.html"><span class="s5">Event patterns and LFOs</span></a> contains an overview of</p>
+<p class="p1"><span class="Apple-tab-span">	</span>related LFO-control setups with event patterns. <a href="Event patterns and Functions.html"><span class="s6">Event patterns and Functions</span></a><span class="s7"><span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>is treating requirements of the control of EventStreamPlayers with VarGui.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><a href="Event patterns and array args.html"><span class="s8">Event patterns and array args</span></a> focusses on passing arrays to synths with patterns.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><a href="enum.html"><span class="s6">enum</span></a> is a general enumeration method suited for many combinatorial problems such as<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>listing subsets, partitions of integers, searching for paths within graphs etc.</p>
+<p class="p2"><br></p>
+<p class="p1">4.)<span class="Apple-tab-span">	</span><a href="PLx suite.html"><span class="s9">PLx suite</span></a>, dynamic scope variants of common Pattern classes for convenient replacement.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>Can be used for shorter writing of Pbinds to be played with <a href="VarGui.html"><span class="s3">VarGui</span></a> and / or live coding,<span class="Apple-converted-space"> </span></p>
+<p class="p3"><span class="s10"><span class="Apple-tab-span">	</span>see <a href="PLx and live coding with Strings.html"><span class="s11">PLx and live coding with Strings</span></a>. <a href="PLbindef.html"><span class="s9">PLbindef</span></a> and <a href="PLbindefPar.html"><span class="s9">PLbindefPar</span></a> as subclasses of <a href="Pdef.html"><span class="s9">Pdef</span></a><span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>allow replacement of key streams in shortcut pseudomethod syntax.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1">5.)<span class="Apple-tab-span">	</span><a href="PSx stream patterns.html"><span class="s9">PSx stream patterns</span></a>, Pattern variants that have a state and can remember their last values.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>Can be used for recording streams and event streams (<a href="PS.html"><span class="s9">PS</span></a>),</p>
+<p class="p1"><span class="Apple-tab-span">	</span>data sharing between event streams (<a href="PSdup.html"><span class="s9">PSdup</span></a>), comfortable defining of subpatterns</p>
+<p class="p1"><span class="Apple-tab-span">	</span>with counted embedding, defining of recursive (event) sequences (<a href="PSrecur.html"><span class="s9">PSrecur</span></a>) and building</p>
+<p class="p1"><span class="Apple-tab-span">	</span>loops on given Patterns/Streams with a variety of options, also for live interaction (<a href="PSloop.html"><span class="s9">PSloop</span></a>).</p>
+<p class="p2"><br></p>
+<p class="p1">6.)<span class="Apple-tab-span">	</span>Event pattern classes for use with effects: <a href="PbindFx.html"><span class="s12">PbindFx</span></a> can handle arbitrary effect graphs per event,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><a href="PmonoPar.html"><span class="s12">PmonoPar</span></a> and <a href="PpolyPar.html"><span class="s12">PpolyPar</span></a> follow the Pmono paradigm. The tutorial <a href="kitchen studies.html"><span class="s13">kitchen studies</span></a> contains<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>the documented source code of a fixed media piece using PbindFx for granulation.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1">7.)<span class="Apple-tab-span">	</span>Further Pattern classes: <a href="PlaceAll.html"><span class="s9">PlaceAll</span></a>, <a href="Pshufn.html"><span class="s9">Pshufn</span></a>, <a href="PsymNilSafe.html"><span class="s9">PsymNilSafe</span></a>.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><a href="PSPdiv.html"><span class="s12">PSPdiv</span></a> is a dynamic multi-layer pulse divider based on Pspawner.</p>
+<p class="p2"><br></p>
+<p class="p1">8.)<span class="Apple-tab-span">	</span><a href="Buffer Granulation.html"><span class="s14">Buffer Granulation</span></a>, a tutorial covering different approaches of implementing</p>
+<p class="p1"><span class="Apple-tab-span">	</span>this synthesis method in SC (server versus language control, mixed forms),</p>
+<p class="p1"><span class="Apple-tab-span">	</span>examples with <a href="VarGui.html"><span class="s3">VarGui</span></a>, language-driven control with <a href="PLx suite.html"><span class="s9">PLx suite</span></a> patterns.</p>
+<p class="p1"><span class="Apple-tab-span">	</span>The tutorial <a href="Live Granulation.html"><span class="s14">Live Granulation</span></a> summarizes direct options without explicit use of a buffer.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1">9.) <span class="Apple-tab-span">	</span>A family of classes for the use of synth values in Pbind-like objects.</p>
+<p class="p1"><span class="Apple-tab-span">	</span>Take<b> </b><a href="Working with HS and HSpar.html"><span class="s15">Working with HS and HSpar</span></a> as a starting point, see also</p>
+<p class="p3"><span class="s10"><span class="Apple-tab-span">	</span><a href="HS.html"><span class="s3">HS</span></a></span><span class="s16">, <a href="PHS.html"><span class="s3">PHS</span></a>, <a href="PHSuse.html"><span class="s17">PHSuse</span></a>, <a href="HSpar.html"><span class="s17">HSpar</span></a>, <a href="PHSpar.html"><span class="s17">PHSpar</span></a></span><span class="s10">, <a href="PHSparUse.html"><span class="s3">PHSparUse</span></a>,</span><span class="s18"> <a href="PHSplayer.html"><span class="s19">PHSplayer</span></a></span><span class="s10">, <a href="PHSparPlayer.html"><span class="s11">PHSparPlayer</span></a>, <a href="PHSusePlayer.html"><span class="s11">PHSusePlayer</span></a>.</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1">10.)<span class="Apple-tab-span">	</span><a href="EventShortcuts.html"><span class="s9">EventShortcuts</span></a>, a class for user-defined keywords for events and event patterns.</p>
+<p class="p1"><span class="Apple-tab-span">	</span>The tutorial <a href="Other event and pattern shortcuts.html"><span class="s6">Other event and pattern shortcuts</span></a> collects some further abbreviations,</p>
+<p class="p1"><span class="Apple-tab-span">	</span>e.g. functional reference within events and event patterns, similar to Pkey.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1">11.) <span class="Apple-tab-span">	</span>An implementation of Xenakis' Sieves as class and pattern family, see</p>
+<p class="p1"><span class="Apple-tab-span">	</span><a href="Sieves and Psieve patterns.html"><span class="s6">Sieves and Psieve patterns</span></a> for an overview and examples.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1">12.) <span class="Apple-tab-span">	</span>FFT pseudo ugens for defining ranges by bin index: <a href="PV_BinRange.html"><span class="s13">PV_BinRange</span></a> and <a href="PV_BinGap.html"><span class="s13">PV_BinGap</span></a>.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1">13.)<span class="Apple-tab-span">	</span><a href="Smooth Clipping and Folding.html"><span class="s6">Smooth Clipping and Folding</span></a>, a suite of pseudo ugens.</p>
+<p class="p2"><br></p>
+<p class="p1">14.)<span class="Apple-tab-span">	</span><a href="../../../FastCrossfades/miSC_v0.19/Help/DX suite.html"><span class="s12">DX suite</span></a>, pseudo ugens for crossfaded mixing and fanning according to demand-rate control.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1">15.)<span class="Apple-tab-span">	</span><a href="../../../FastCrossfades/miSC_v0.19/Help/DX suite.html"><span class="s12">Idev suite</span></a>, patterns and drate ugen searching for numbers with integer distance from a<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>source pattern / signal.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p1">16.)<span class="Apple-tab-span">	</span>Nonlinear dynamics: <a href="Fb1.html"><span class="s12">Fb1</span></a> for single sample feedback / feedforward and <a href="GFIS.html"><span class="s12">GFIS</span></a> for<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>generalized functional iteration synthesis.</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p1">Many of the examples here are using patterns, resp. event patterns but do not cover their basic concepts.<span class="Apple-converted-space"> </span></p>
+<p class="p1">For a detailled description of SC's sequencing capabilities see James Harkins' Practical Guide to Patterns<span class="Apple-converted-space"> </span></p>
+<p class="p1">(<a href="sc://PG_01_Introduction.html"><span class="s20">PG_01_Introduction</span></a>), the tutorial <a href="sc://Streams-Patterns-Events1.html"><span class="s9">Streams-Patterns-Events</span></a> (1-7) and the Pattern help files<span class="Apple-converted-space"> </span></p>
+<p class="p1">(<a href="sc://Pattern.html"><span class="s20">Pattern</span></a>, <a href="sc://Pbind.html"><span class="s20">Pbind</span></a> and the type-specific ones).</p>
+<p class="p2"><br></p>
+<p class="p1">VarGui handles namespace separation by using different Environments.</p>
+<p class="p1">So a gui for control of parametrized families of different types of objects can be built on the fly</p>
+<p class="p1">(e.g. a number of EventStreamPlayers from a single Pbind definition with snippets of functional code,</p>
+<p class="p1">a number of Function plots from a single parametric function definition etc.).</p>
+<p class="p1">See <a href="sc://Environment.html"><span class="s20">Environment</span></a> and <a href="sc://Event.html"><span class="s20">Event</span></a> helpfiles for the underlying concepts and <a href="Event patterns and Functions.html"><span class="s6">Event patterns and Functions</span></a> and<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="s21"><a href="PLx suite.html">PLx suite</a></span> for their application to event patterns resp. EventStreamPlayers.</p>
+<p class="p2"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><b>Requirements</b></p>
+<p class="p2"><br></p>
+<p class="p1">At least SuperCollider version 3.5, though with 3.5 and 3.6 you'd have</p>
+<p class="p1">to use Qt GUI kit, which is the only option anyway from 3.7 onwards.<span class="Apple-converted-space"> </span></p>
+<p class="p1">If you still use Cocoa or SwingOSC with these old SC versions,</p>
+<p class="p1">you can take miSCellaneous 0.15b and add classes and help files from<span class="Apple-converted-space"> </span></p>
+<p class="p1">a newer version of miSCellaneous.</p>
+<p class="p2"><br></p>
+<p class="p1">For using VarGui with EZSmoothSlider and EZRoundSlider you would need to<span class="Apple-converted-space"> </span></p>
+<p class="p1">install Wouter Snoei's wslib Quark, one buffer granulation</p>
+<p class="p1">example using Wavesets depends on Alberto de Campo's Wavesets Quark.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1">I tested examples on SC versions 3.5 - 3.9,<span class="Apple-converted-space"> </span></p>
+<p class="p1">on OS 10.5 - 10.11, Ubuntu 12.04 and Windows 7,<span class="Apple-converted-space"> </span></p>
+<p class="p1">though not every platform / OS version / SC version combination.</p>
+<p class="p2"><br></p>
+<p class="p1">If you use SC 3.5.x I'd suggest taking a SC version &gt;= 3.5.3.</p>
+<p class="p1">There have been some changes in SCDoc (especially from 3.5.1 to 3.5.2)</p>
+<p class="p1">due to which wrong renderings (broken links) of newer SCDoc help files<span class="Apple-converted-space"> </span></p>
+<p class="p1">can happen with elder SC versions in some rare cases.</p>
+<p class="p1">Reciprocally elder versions of miSCellaneous SCDoc help files<span class="Apple-converted-space"> </span></p>
+<p class="p1">- due to formerly tolerated syntax inaccuracies -<span class="Apple-converted-space"> </span></p>
+<p class="p1">might not be rendered correctly or at all in newer versions of SC.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Installation</b></p>
+<p class="p2"><br></p>
+<p class="p1">By version 0.17 you can install either via the quarks extension management system or a<span class="Apple-converted-space"> </span></p>
+<p class="p1">downloaded zip from GitHub or my website.<span class="Apple-converted-space"> </span></p>
+<p class="p1">Both methods shouldn't be combined, e.g. if you have already done a manual install<span class="Apple-converted-space"> </span></p>
+<p class="p1">before by placing a miSCellaneous folder in the Extensions folder, then remove<span class="Apple-converted-space"> </span></p>
+<p class="p1">it from there before the quarks install.</p>
+<p class="p2"><br></p>
+<p class="p1">1.) Installation via Quarks</p>
+<p class="p2"><br></p>
+<p class="p1">This requires a SC version &gt;= 3.7, see the recommended ways to install here:</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s11"><a href="http://doc.sccode.org/Guides/UsingQuarks.html">http://doc.sccode.org/Guides/UsingQuarks.html</a></span></p>
+<p class="p3"><span class="s11"><a href="https://github.com/supercollider-quarks/quarks">https://github.com/supercollider-quarks/quarks</a></span></p>
+<p class="p2"><br></p>
+<p class="p1">After a install of a newer version of miSCellaneous do a SCDoc update by</p>
+<p class="p2"><br></p>
+<p class="p1">SCDoc.indexAllDocuments(true) // from SC 3.5.2 onwards</p>
+<p class="p1">SCDoc.cleanState(true)<span class="Apple-converted-space">  </span>// only for SC version 3.5.0 - 3.5.1</p>
+<p class="p2"><br></p>
+<p class="p1">2.) Manual installation from a downloaded zip</p>
+<p class="p2"><br></p>
+<p class="p1">You can download the newest version from<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s11"><a href="https://github.com/dkmayer/miSCellaneous_lib">https://github.com/dkmayer/miSCellaneous_lib</a></span></p>
+<p class="p2"><br></p>
+<p class="p1">and the newest and all previous versions from here:</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s11"><a href="http://daniel-mayer.at/">http://daniel-mayer.at</a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">Copy the miSCellaneous folder into the Extensions folder and recompile<span class="Apple-converted-space"> </span></p>
+<p class="p1">the class library or (re-)start SC. If the Extensions folder doesn't exist you'd probably<span class="Apple-converted-space"> </span></p>
+<p class="p1">have to create it yourself. Check SC help for platform-specific conventions<span class="Apple-converted-space"> </span></p>
+<p class="p1">(or changes) of extension places.</p>
+<p class="p2"><br></p>
+<p class="p1">Typical user-specific extension directories:</p>
+<p class="p2"><br></p>
+<p class="p1">OSX:<span class="Apple-tab-span">	</span>~/Library/Application Support/SuperCollider/Extensions/</p>
+<p class="p1">Linux: <span class="Apple-tab-span">	</span>~/.local/share/SuperCollider/Extensions/</p>
+<p class="p2"><br></p>
+<p class="p1">Typical system-wide extension directories:</p>
+<p class="p2"><br></p>
+<p class="p1">OSX:<span class="Apple-tab-span">	</span>/Library/Application Support/SuperCollider/Extensions/</p>
+<p class="p1">Linux: <span class="Apple-tab-span">	</span>/usr/share/SuperCollider/Extensions/</p>
+<p class="p2"><br></p>
+<p class="p1">You can check Extension directories with</p>
+<p class="p2"><br></p>
+<p class="p6"><span class="s22">Platform</span>.userExtensionDir;</p>
+<p class="p6"><span class="s22">Platform</span>.systemExtensionDir;</p>
+<p class="p2"><br></p>
+<p class="p1">On Windows see the README file of SC for the recommended extensions path.</p>
+<p class="p1">On Windows and OSX you might have to make the concerned folders visible,</p>
+<p class="p1">if they aren't already. The miSCellaneous folder should be placed directly</p>
+<p class="p1">into the Extensions folder, not into a subfolder.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>License</b></p>
+<p class="p2"><br></p>
+<p class="p1">miSCellaneous is distributed under the GNU Public License in accordance with SuperCollider.</p>
+<p class="p1">You should have received a copy of the GNU General Public License along</p>
+<p class="p1">with this program; if not, write to the Free Software Foundation, Inc.,</p>
+<p class="p1">51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Contact</b></p>
+<p class="p2"><br></p>
+<p class="p1">Email: <span class="Apple-tab-span">	</span>daniel-mayer@email.de</p>
+<p class="p3"><span class="s10">URL:<span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span><a href="http://daniel-mayer.at/"><span class="s11">http://daniel-mayer.at</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Credits</b></p>
+<p class="p2"><br></p>
+<p class="p1">Many thanks to James McCartney for developing SuperCollider,<span class="Apple-converted-space"> </span></p>
+<p class="p1">Alberto de Campo for showing me its capabilities,</p>
+<p class="p1">Wouter Snoei for his nice slider classes in wslib,<span class="Apple-converted-space"> </span></p>
+<p class="p1">Nathaniel Virgo for his suggestions for feedback,<span class="Apple-converted-space"> </span></p>
+<p class="p1">James Harkins for his remarks on many things and<span class="Apple-converted-space"> </span></p>
+<p class="p1">the whole community for contributions and hints !</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>History</b></p>
+<p class="p2"><br></p>
+<p class="p1">v0.21<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2018-07-25</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Fb1: single sample feedback / feedforward</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) GFIS: generalized functional iteration synthesis<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Redefined variables in Sieve, PSrecur and PSPdiv to enable inlining</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Minor fixes in help files<span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p1">v0.20<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2018-05-21</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Idev suite, search for numbers with integer distance from a source</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Bug fix in Integer method lcmByFactors</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Minor fixes in help files<span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p1">v0.19<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2017-11-22</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) DX, a suite of pseudo ugens for crossfaded mixing and fanning<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Minor adaption of PbindFx event type</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Minor fixes in help files<span class="Apple-tab-span">	</span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p1">v0.18<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2017-09-26</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) PLbindef / PLbindefPar: new features and implementation</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Minor fixes in PV_BinGap and PV_BinRange<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Minor fixes in help files<span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">v0.17<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2017-08-21</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Smooth Clipping and Folding, a suite of pseudo ugens</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Added MIDI learning feature for VarGui slider control</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Platform.miSCellaneousDirs, search for miSCellaneous folder</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Adapted PV_BinRange and PV_BinGap to do multichannel expansion</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Exchanged graphic examples in VarGui help (Qt now)<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Minor fixes in help files<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) First version released via GitHub and as Quark</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">v0.16<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2017-03-03</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Added PSPdiv, a dynamic multi-layer pulse divider based on Pspawner</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Added tutorial: Live Granulation</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Dropped miSCellaneous' b-branch: Cocoa and SwingOSC no longer supported</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Replaced OSCpathResponder by OSCFunc in classes VarGuiPlayerSection,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>HelpSynth and HelpSynthPar</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Minor fixes in help files<span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">v0.15<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2017-01-04</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Guide "Introduction to miSCellaneous"</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) kitchen studies: source code of the corresponding fixed media piece</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) PV_BinRange, PV_BinGap: FFT pseudo ugens for defining bin ranges</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) PbindFx help: new example 4a for defining implicit fx parallelism<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Minor fixes (help files, typos)<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Complemeting history information (tutorials)<span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">v0.14<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2016-08-25</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Sieves and Psieve patterns, an implementation of Xenakis' sieves</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) PLbindef / PLbindefPar: replacement of key streams in pseudomethod syntax</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Tutorial: PLx and live coding with Strings</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) PsymNilSafe, method symplay: avoid hangs with nil input</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) EventShortcuts: reworking of replacement, new method eventShortcuts</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) PbindFx: reworking of bus match check</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Minor fixes (help files, typos)<span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">v0.13<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2015-10-28</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) PbindFx: Event pattern class for effect handling on per-event base</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Minor fixes (help files, typos)<span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">v0.12<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2015-05-03</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) PmonoPar, PpolyPar:<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>Event pattern classes for parallel setting streams and effect handling</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) PSloop: Pattern to derive loops from a given Pattern</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Reworked replacing options of PL list patterns: cutItems arg</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) PLn: PLx Pattern for replacing with protecting periods</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Added PLxrand, PLx version of Pxrand<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Changed implementations of PStream (PS) and PSrecur,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>now the MemoRoutine isn't instantiated before embedding,</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>this enables use of PSx patterns with VarGui</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Fixed a bug in PL list patterns (PL_PproxyNth) that caused too early</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>replacements in certain cases</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Added method bufSeq for PStream</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Added missing help file of PLtuple</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Minor fixes (help files, typos)<span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">v0.11<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2015-02-02</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Tutorial: Event patterns and array args</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p1">v0.10<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2014-10-06</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Split into branches 0.10a (3.7 onwards) and 0.10b (from 3.4 up to 3.6.x),</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  </span>with SC 3.7 SwingOSC and Cocoa aren't supported anymore</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Class EventShortcuts and tutorial "Other event and pattern shortcuts"</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">v0.9<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2014-02-18</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) PSx stream patterns (classes and tutorial), based on class MemoRoutine</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Buffer Granulation Tutorial: new examples (1c - 1e, 3d)</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) VarGui save dialog fix (was broken with 3.6)</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Minor fixes (help files, typos)<span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">v0.8<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2013-05-05</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>.) Enumeration tutorial: method enum<span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">v0.7.1<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2013-04-28</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span></span>.) Fix in PLseries and PLgeom<span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">v0.7<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2012-08-31</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Buffer Granulation tutorial file<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) VarGui</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Support of wslib slider classes EZSmoothSlider and EZRoundSlider</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Color grouping options for synth and envir variable control</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Adapting EZSlider to ControlSpec step size (fixes certain rounding and jitter issues)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Multiple slider handling with modifier keys: fixes and cleanup</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">v0.6<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2012-05-19</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) PLx dynamic scope pattern suite<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Implementation of a number of common Patterns as PLx classes</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Tutorial PLx suite</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Changing examples in some previous help files accordingly</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Pstream, PlaceAll, Pshufn</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">v0.5<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2012-03-18</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) VarGui shortcut build methods<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Use of SynthDef metadata and global ControlSpecs</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Tutorial<span class="Apple-tab-span">	</span>VarGui shortcut builds<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Automatic Pbind generation</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Minor fixes in VarGui init procedure</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">v0.4<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2011-12-27</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) VarGui support for HS family classes<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Tutorial HS with VarGui<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) VarGui takes addAction as slider hook<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Linux check (tested on Ubuntu):</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Fixed system time issue in HS family</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Specified VarGui appearance default parameters for platform and gui kit</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Supports SCDoc, the new SC help system</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Tutorial Event Patterns and Functions</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Tutorial Event patterns and LFOs</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Play methods of PHSx and PHSxPlayer now also take numbers as quant arg</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Minor fixes in HS family</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">v0.4_beta<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2011-08-18</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) VarGui relaunch:</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Player section for Synths, EventStreamPlayers and Tasks<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Different player modes</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Button colors and background colors reflecting playing states<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Handling groups of players and sliders with modifier keys</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Player action by mouse down or up</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Variables can be set in different environments</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Latency setting, global and for synth player message bundling</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) GUI appearance customization in size, arrangement and color</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Many other changes, e.g. arg conventions<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Private extension methods get prefix miSC_</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">v0.3<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2010-10-21</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) VarGui:</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Arrayed synth control supported</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Slider update methods added</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) Save dialog now uses unified gui class Dialog<span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Again compiling with SC 3.3 and 3.3.1</p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p2"><br></p>
+<p class="p1">v0.2<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2010-09-18</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Minor adaptions to SC 3.4</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Fixed time shifting issue</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">v0.1<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2009-11-24</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) VarGui, interface for envir variable and synth arg control</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) HS / HSpar etc.: classes for the use of synth values in Pbind-like objects</p>
+<p class="p1"><span class="Apple-tab-span">	</span>.) Tutorial Working with HS and HSpar</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+</body>
+</html>

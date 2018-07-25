@@ -1,0 +1,6 @@
+
+INSTANCEMETHODS::
+
+private:: miSC_maybePutPairs, miSC_getEnvir
+
+

@@ -1,0 +1,82 @@
+CLASS::PLbindefEnvironment
+summary::Environment made by PLbindef to play and set its sources
+categories:: Libraries>miSCellaneous>PLx suite, Streams-Patterns-Events>PLx suite
+related:: Overviews/miSCellaneous, Tutorials/PLx_suite, Classes/PLbindef, Classes/PLbindefPar, Classes/PLbindefParEnvironment, Classes/EventShortcuts, Tutorials/PLx_and_live_coding_with_Strings
+
+
+DESCRIPTION::
+Instances of this class are made as side effect of PLbindef creation, assigned to PLbindef's name in an Environment of choice (by default the current one) and used as player interface as well as for setting PLbindef's sources in condensed prototyping syntax. They are not thought to be created explicitely though. See link::Classes/PLbindef:: for examples.
+
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PLbindefEnvironment object with arguments of IdentityDictionary. In contrast to the latter strong::know:: defaults to true, which allows setting sources of the PLbindef in object prototyping style. strong::name:: is used for the corresponding key of the PLbindef. Normally not to be used explicitely.
+
+
+INSTANCEMETHODS::
+
+private::miSC_setName
+private::miSC_envirClear
+private::miSC_setPLbindef
+
+method::put
+
+Associates strong::obj:: with Symbol strong::key:: and updates PLbindef's source.
+
+
+method::superPut
+
+Associates strong::obj:: with Symbol strong::key:: mimicing link::Classes/IdentityDictionary#-put::.
+
+
+method::value
+
+Expects key/value pairs and applies strong::put::.
+
+
+method::name
+
+Getter for PLbindef's key.
+
+
+method::plbindef
+
+Getter for the corrresponding PLbindef.
+
+
+method::play
+
+Plays all corresponding PLbindefs with passed arguments, which might be arrays. In this case wrapped indexing is applied.
+
+
+method::isPlaying
+
+Indicates if the corresponding PLbindef is playing.
+
+
+method::reset
+
+Resets the corresponding PLbindef.
+
+
+method::stop
+
+Stops the corresponding PLbindef.
+
+
+method::clear
+
+Clears the corresponding PLbindef.
+
+
+method::remove
+
+Removes the corresponding PLbindef.
+
+
+
+
+

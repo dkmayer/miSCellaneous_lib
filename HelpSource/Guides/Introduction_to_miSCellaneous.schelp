@@ -1,0 +1,574 @@
+TITLE::Introduction to miSCellaneous
+summary::overview, references and examples
+categories:: Libraries>miSCellaneous, Guides
+related:: Overviews/miSCellaneous
+
+
+DESCRIPTION::
+
+At the beginning of 2017, it was almost 10 years ago when I did my first steps in systematically ordering and extending personal SC tools. At that time I already had some experience in SC, but project-oriented composition was my main focus. Meanwhile miSCellaneous lib has grown and when I look at its readme file, although I always tried to keep stuff documented properly, I doubt that the connections between the different classes would be easy to get at a first glance. Topics accumulated, some help files have become huge (VarGui, PbindFx) and a lot of examples and documented (extra-)features might hide the basic motivations. As I was asked by colleagues at the Institute of Electronic Music and Acoustic Graz (IEM) we organized a one-day lecture/workshop on miSCellaneous lib on November 5th, 2016, and this tutorial summarizes the overview given then. At that point I'd like to say that I'm very grateful to IEM Graz and the interested SC community from here and abroad for support and feedback, we are going to have further SC meetings at the same place – Hanns Holger Rutz already continued in December. There's also a focus on artistic research here at IEM, and research projects, events and discussions are lighting an ongoing discourse in the field between art and science, creating an inspiring environment.
+
+Concerning the structure of this file: after a brief history and a grouping of content the tour will guide through selected topics in an order which, hopefully, will outline the central ideas. It will start with VarGui, PLx, then go over PbindFx, EventShortcuts to live coding aspects of PLx, continue with independant classes, class families, methods and SC tutorials and end with the Buffer Granulation tutorial, which again integrates some of the previous topics. PbindFx gets more space, as it's in my recent focus and you can use it for a number of things which are not, or at least not easily doable in plain SC. To a large extent the tour consists of references to selected already existing examples, which are spread over various help files. Conitinuative, but less central topics are marked as such, as well as some legacy code, which is still working, but not very relevant, as other possibilities have been invented meanwhile. A few new examples have been added, the reader is invited to check the exercises and to have fun with his/her favourite instrument resp. effect SynthDefs. 
+
+
+
+SECTION::History
+
+In 2007 / 08 I was working at ZKM Karlsruhe, preparing a piece for flute and multichannel electronics (emphasis::Lokale Orbits / Solo 3::). Then I thought it would be useful to order and document my tools, by doing so my programming would – hopefully – not only be useful for me but for others too and I would be able to give something back to the open source community, from which I have been getting so much valuable input. Also I noticed that a better structuring of code together with the need of documentation stimulated reflection and development and significantly improved the functionality of my tools also just for personal use.
+
+emphasis::Lokale Orbits:: is a series of works for small instrumentations and multichannel tape where recordings with involved musicians were the base for granular processings. From the beginning miSCellaneous lib was developed in parallel to the needs that came from that artistic motivation. The first particular motivation was related to the fundamental architecture of SC – the division between language and server – and its consequences for granular synthesis. I never wanted to spend much time in gui programming, but I wanted to have a multi-purpose gui that would easily let me experiment with granular synthesis driven by language (patterns in particular) and server (granulation ugens). It should also be easy to combine these different controls in a single patch, e.g. fine-tune the parameters of a LFO and those of a Pattern resp. the derived running EventStreamPlayer at the same time. This need led to the development of the VarGui interface. It is the the oldest part and, so to speak, the kernel of miSCellaneous, already contained in the first public release of 2009. A player section and a number of features was added in 2011. Thus VarGui doesn't use SC's extended gui features which came up with the invention of Qt and if I had to build something from scratch I'd certainly look for a revised code structure, nevertheless VarGui reliably served my needs quite well over a long period of time. The twofold control option (environmental variables and synth args) turned out to be useful in many contexts, also the handling of arrays (environmental variables as well as synth args) is quite practical and allows a quick instantiation of huge slider+player guis.
+
+Between 2009 and 2016 a number of pattern families was added, some of them with granular synthesis in mind. The one I'm using most is the PLx proxy pattern family which takes advantage of environmental variables and dynamic scoping and goes well together with the VarGui interface concerning control of running Patterns/EventStreamPlayers. PLx also opens nice opportunities for live-coding with very condensed syntax. I'm not doing this on stage but I see live-coding as valuable part of a dynamic compositional process. As a side remark, PLx patterns mirror most of SC's main lib patterns and can also be used as non-proxies. In contrast to main lib's list patterns they default to repeats = inf, which probably saved myself the typing of many thousands of 'infs' over the years.
+
+Another part of miSCellaneous is a number of tutorials, which I added from time to time. Some refer to general SC topics, independant from miSCellaneous (e.g. Event patterns and array args), others to topics specific to miSCellaneous (e.g. PLx and live coding with Strings) and in some I tried a general overview of principal SC strategies, but also used examples with features of miSCellaneous (Buffer Granulation). Finally there's other stuff that doesn't fall into the above categories, e.g. the class EventShortcuts for customized shortcuts with Events and event patterns. Classes related to nonlinear dynamics (single sample feedback with Fb1, generailzed functional iteration synthesis with GFIS) have been added in 2018.
+
+SECTION::Groups of content
+
+list::
+
+## VarGui (2009), multi-purpose slider / player gui. Can have sliders for control of synth parameters and environmental variables as well as a player section for control of Synths, Tasks or EventStreamPlayers derived from Patterns.
+
+## Pattern classes/class families:
+
+list::
+
+## PHSx (2009): pattern-like objects using synth values in language, still working but a bit outdated as we have synchronous buses now
+
+## PLx (2012): dynamic scope proxy patterns, especially suited for VarGui control, also live coding
+
+## PSx (2014): patterns acting like streams and remembering last values, good for certain types of nested pattern use and recursion
+
+## PmonoPar, PpolyPar (2015): differently timed setting of event streams
+
+## PbindFx (2015): sequencing arbitrary effects and effect graphs
+
+## PLbindef, PLbindefPar (2016): proxies based on Pbindef allowing shortcut replacement syntax
+
+## PSVx (2016): a pattern implementation of Xenakis sieves related to the class Sieve, Psieve patterns enable an unusual "realtime sieve modification". Interesting for many applications, e.g. granular rhythms, though I didn't have the time to experiment a lot yet.
+
+## PSPdiv (2017): a dynamic multi-layer pulse divider based on Pspawner
+
+## Other pattern classes
+::
+
+## Tutorials:
+
+list::
+
+## Event patterns and Functions (2011)
+
+## Event patterns and LFOs (2011)
+
+## Buffer Granulation Tutorial (2012): different strategies of buffer granulation and control
+
+## Event patterns and array args (2015)
+
+## PLx and live coding with Strings (2016)
+
+## Sieves and Psieve patterns (2016)
+
+## kitchen studies (2016): commented source code of six short pieces from a kitchen sound using PbindFx
+
+## Live Granulation Tutorial (2017): different strategies of live granulation and control
+
+## Other tutorials
+::
+
+
+## Other topics:
+
+list::
+
+## enum (2013): general enumeration tool
+
+## EventShortcuts (2014): user-defined keywords for events and event patterns
+
+## Smooth Clipping and Folding (2017)
+
+## DX suite (2017): pseudo ugens for crossfaded mixing and fanning with drate control
+
+## Idev suite (2018): patterns and drate ugen searching for numbers with integer distance from a source pattern / signal
+
+## Fb1, GFIS (2018): single sample feedback and generalized functional iteration synthesis
+
+## Other
+::
+
+::
+
+SECTION::Tour 1: VarGui
+
+The link::Classes/VarGui:: class help file as well link::Tutorials/VarGui_shortcut_builds:: are both bloated with information, so I'd like to give just a few examples and references here in order to show its basic features.
+
+
+code::
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+::
+
+subsection::Tour 1a: synth control
+
+code::
+// quick control of default synth, specs are globally known
+// note that amp is set to 0 by its default spec
+// start by pressing the green button
+
+VarGui(synth: \default).gui
+
+
+// alternative (shortcut build) writing
+
+\default.sVarGui.gui
+::
+
+For basic control of a self-defined Synth/SynthDef by passing control specs see link::Classes/VarGui#synth_0#this example:: in VarGui help.
+
+For control of multiple Synths/SynthDefs see link::Classes/VarGui#gt_0#this example:: in the same file below.
+
+It's often more practical to pass control specs as SynthDef metadata as done in link::Tutorials/Buffer_Granulation#1#Ex.1a:: of the Buffer Granulation tutorial.
+
+
+
+table::
+
+## strong::Exercise::: Control your own (sustained) SynthDef with VarGui, either use SynthDef metadata or VarGui's argument 'synthCtr' for passing specs.
+
+::
+
+
+subsection::Tour 1b: environmental variables and pattern control
+
+
+For basic control of an environmental variable in combination with a Pbind run link::Classes/VarGui#gt_1#this example:: in VarGui help.
+
+code::
+// after having evaluated p, consider the subtle differences of these variants:
+// play with slider values and start and pause ad libitum.
+// The quant argument ensures synchronization when starting players separately.
+
+// one array variable in one environment, one player
+v = VarGui([\midi, [50, 70, \lin, 1, 55] ! 3], stream: p, quant: 0.2).gui;
+
+// three single variables in three environments, three players
+v = VarGui([\midi, [50, 70, \lin, 1, 55]] ! 3, stream: p!3, quant: 0.2).gui;
+
+// three array variables in three environments, three players
+v = VarGui([\midi, [50, 70, \lin, 1, 55] ! 3] ! 3, stream: p!3, quant: 0.2).gui;
+
+::
+
+These examples show the application of dynamic scoping. A Function has been defined with an "unconnected" free variable and the players evaluate the Function in different Environments provided by the VarGui. Setting the sliders affects the variable of the same name in different Environments of different players.
+
+This example used a Pfunc, but it works the same with PLx patterns, we take a look at them and leave VarGui for a moment.
+
+
+
+SECTION::Tour 2: PLx suite
+
+Pdef and Pdefn are main lib's proxies for replacement of event patterns and non-event patterns. PL is the most general PLx proxy, taking over some combined functionality of Pdef and Pdefn on the base of dynamic scoping, go through the examples of the help file link::Classes/PL:: to see how it works with value and event patterns. 
+
+Though what neither PL nor Pdef/Pdefn can provide is the replacement of pure lists or list items in the case of list patterns. There's a main lib workaround with a combination of Pn and Plazy (link::Tutorials/PLx_suite#Ex. 1a#PLx suite, Ex.1a::), but it isn't satisfying for several reasons, so I suppose that PLx list patterns like PLseq are amongst the most useful ones of the whole PLx family, e.g. see link::Tutorials/PLx_suite#Ex. 1b#PLx suite, Ex.1b::. Other PLx list patterns like PLrand, PLwrand, PLser, PLshuf, PLshufn, PLswitch etc. work similar.
+
+There exists also a number of non-list PLx patterns, have a look at link::Classes/PLwhite:: as a typical example.
+
+
+table::
+
+## strong::Exercise::: Play your own enveloped SynthDef (or take default SynthDef with params: freq, amp, pan) with some PLx patterns and perform live replacements as in the examples above.
+::
+
+
+
+SECTION::Tour 3: PLx patterns used with VarGui
+
+See link::Classes/VarGui#Ex. 1a#VarGui, Ex.1a::, for basic step sequencing with PLseq, the array variable is implicitely defined in VarGui's first arg.
+
+See link::Classes/VarGui#Ex. 1c#VarGui, Ex.1c::, for multiple players and array variables and control of multiple sliders and buttons with modifier keys (note that not all functionality might be available on all platforms).
+
+See link::Classes/VarGui#Ex. 4a#VarGui, Ex.4a::, for a sequencing setup with some PLs used. But more interesting here is that each synth reads is base frequency from a control bus, which gets its data from a separate synth. Synth and EventStreamPlayer are both controlled from the gui. The two slider blocks on the left side concern Synth settings (above) and variable setting for the Pbind / EventStreamPlayer (below). Accordingly we have two players on the right side. Try running the player and starting and stopping the control synth.
+
+link::Tutorials/Buffer_Granulation#2#Buffer Granulation, Ex.2a::, shows basic language-driven granulation, gui values are taken over by PL patterns and Pfunc.
+
+
+table::
+
+## strong::Exercise::: Write a combination of an event pattern and PLx patterns as above with your own SynthDef and play it with a VarGui. Note that it's not necessary to control all args by the gui, nor is it necessary to control parameters directly: you can e.g. control bounds for midinotes in the gui and define the calculation for the actual midinote (e.g. random selection) in the event pattern:
+
+code::
+\midinote, PLwhite(\midiLo, \midiHi),
+::
+
+::
+
+
+SECTION::Tour 4: PbindFx
+
+PbindFx is an event pattern for effect handling on per-event base. There are other ways for working with event patterns and effects, already possible with main lib, but they have disadvantages: with Pfx and Pfxb there is no built-in way to sequence effect types or effect parameters, you could also route the event's audio to effect buses, but for overlapping events with different fx graphs/params you'd have to define additional buses beforehand as in Ex. 4a.
+
+
+subsection::Ex. 4a: sequencing fx params by using different fx buses
+
+First go to link::Classes/PbindFx#Ex. 1a#PbindFx, Ex. 1a::, reboot server with extended ressources and evaluate source and fx synths.
+
+
+code::
+// start fxs 
+(
+a = Bus.audio(s, 2);
+b = Bus.audio(s, 2);
+
+x = Synth(\echo, [decayTime: 1.5, echoDelta: 0.15, in: a]);
+y = Synth(\echo, [decayTime: 5, echoDelta: 0.1, in: b]);
+)
+
+// play pattern, the two effects allow switching between them
+(
+p = Pbind(
+	\dur, 0.5,
+	\instrument, \source,
+	\note, Pshuf((0..11), inf) + Pseq([[0.2, 14.2], [0, 4], [0, 4]], inf),
+	\octave, Pwhite(3, 6),
+	\out, Pseq([b, a, a], inf)  // here we do fx sequencing
+).play
+)
+
+p.stop
+
+// we need to do cleanup manually here
+
+[x, y, a, b].do(_.free);
+
+::
+
+subsection::Ex. 4b: sequencing fx params by using PbindFx
+
+code::
+// Ex. 4a translated to PbindFx syntax –
+// though it's not exactly identical as fxs are processed in not only two but
+// more parallel fx synths
+
+(
+p = PbindFx([
+		\dur, 0.5,
+		\instrument, \source,
+		\note, PLshuf((0..11)) + PLseq([[0.2, 14.2], [0, 4], [0, 4]]),
+		\octave, Pwhite(3, 6),
+		\fxOrder, 1	// always fx #1 (echo)
+	],[
+		\fx, \echo,
+		\decayTime, PLseq([5, 1.5, 1.5]),
+		\echoDelta, PLseq([0.1, 0.15, 0.15]),
+		\cleanupDelay, 5.2,    // with short default echo would be cut
+
+		// this would save a bit CPU
+		// \cleanupDelay, PLseq([5, 1.5, 1.5]) + 0.2
+	]
+).play
+)
+
+
+// cleanup (delayed freeing of synths and buses) is done automatically
+// watch server window:
+
+p.stop
+
+
+// now run the same example with the following variant of 'echoDelta',
+// obviously the result cannot be achieved with an approach like in Ex. 4a
+
+		\echoDelta, Pwhite(0.05, 0.2)
+::
+
+
+subsection::Ex. 4c: alternation of fx / non-fx by defining a fxOrder sequence
+
+code::
+(
+p = PbindFx([
+		\dur, 0.2,
+		\instrument, \source,
+		\note, PLshuf((0..11)) + PLseq([[0.4, 14.4], [0, 4], [0, 4]]),
+		\octave, Pwhite(3, 6),
+
+		// fxOrder = 0 means no fx
+		\fxOrder,  PLseq([0, 0, 1]),
+
+		// if no fx, we need to compensate the unified echo delay of 0.2
+		\lag, Pif(Pkey(\fxOrder) > 0, 0, 0.2)
+	],[
+		\fx, \echo,
+		\decayTime, PLseq([5, 1.5, 1.5]),
+		\echoDelta, Pwhite(0.04, 0.12),
+		\cleanupDelay, PLseq([5, 1.5, 1.5]) + 0.2
+	]
+).play
+)
+
+p.stop
+
+::
+
+
+table::
+##strong::Exercise::: Play your own (percussive + stereo) SynthDef (or instrument 'source') with an arbitrary sequencing of no fx and echos (by defining 'fxOrder') and echo params as in Ex. 4c. Note that in fx 'echo' the max echoDelta defaults to 0.2.
+::
+
+subsection::Tour 4d: principles of operation
+
+For each event several issues have to be internally considered by PbindFx: building and checking of fx graphs (no cycles !), cleaning buses from possibly remaining residual audio (adding "zero synths"), splitting (in case of parallel parts in the fx graph), grouping of all event-related synths and checking accumulated cleanup delay times. You might skip that for the moment, but for a more detailled overview see link::Classes/PbindFx#Principle of operation#Principle of operation::, as well as for a listing of conventions.
+
+
+subsection::Tour 4e: sequential application of fxs (fixed fx chains)
+
+See PbindFx, examples link::Classes/PbindFx#Ex. 1a#1a:: and link::Classes/PbindFx#Ex. 1b#1b::.
+
+
+subsection::Tour 4f: sequencing different fx chains
+
+See PbindFx, examples link::Classes/PbindFx#Ex. 2a#2a::, link::Classes/PbindFx#Ex. 2b#2b::, link::Classes/PbindFx#Ex. 2c#2c::, link::Classes/PbindFx#Ex. 2d#2d::.
+
+table::
+##strong::Exercise::: Play your own (percussive + stereo) SynthDef (or instrument 'source') with an arbitrary sequencing of fx chains (your fxs and/or fxs from PbindFx help). Maybe just extend your last own example.
+::
+
+subsection::Tour 4g: parallel effects and arbitrary effect graphs
+
+It seems to be a still underestimated option to design effect graphs different from simple chains. In a classical DAW interface a pile of slots for effects in chain is common, although more differentiated possibilities are also there. Considering event sequencing with PbindFx we can select fx graphs per event / grain, in addition to the sequencing of fx parameters itself. See link::Classes/PbindFx#Ex. 10a#PbindFx, Ex.10a::, for a parallel application of echo, note the syntax of the event graph, passed as Event to 'fxOrder'.
+
+table::
+##strong::Exercise::: Compare the sound of the two fx graphs given in link::Classes/PbindFx#Ex. 10a#Ex.10a::, also try the following or similar, how do the corresponding fx graphs look like ?
+
+code::
+	\fxOrder, `(0: 1, 1: [2, 3], 2: 4),
+	
+	\fxOrder, `(0: 1, 1: [2, 3, \o], 2: 4),
+
+	\fxOrder, `(0: 1, 1: [2, 3], 3: 4, 2: 3),
+	
+	\fxOrder, `(0: 1, 1: [2, 3], 3: 2, 2: 4),
+
+	\fxOrder, `(0: 1, 1: [2, 3, \o], 3: 4, 2: 3),
+::
+::
+
+See PbindFx, Ex. link::Classes/PbindFx#Ex. 10b#10b:: and link::Classes/PbindFx#Ex. 10c#10c:: for modulation graphs and their sequencing.
+
+table::
+##strong::Exercise::: Play your own (percussive + stereo) SynthDef (or instrument 'source') with an arbitrary sequencing of fx *graphs* (your fxs and/or fxs from PbindFx help). Maybe just extend your last own example.
+::
+
+subsection::Tour 4h: implicit parallelism of single effects
+
+This can simple be done by passing arrays within fxData, see link::Classes/PbindFx#Ex. 4#PbindFx, Ex.4a::. 
+
+
+
+subsection::Tour 4i: different effects with parallel PbindFxs
+
+A further option for parallelism, a typical case would be the application of different effects to the notes of a chord, see link::Classes/PbindFx#Ex. 3b#PbindFx, Ex.3b:: (rather straight than 3a). 
+
+
+subsection::Tour 4j: PbindFx and replacements
+
+See link::Classes/PbindFx#Ex. 7a#PbindFx, Ex.7a:: for replacement of key streams.
+
+Up to now PbindFx got lists as args in all examples. As args can be event patterns too, they can also be proxy patterns which opens the door for various unusual kinds of source and fx replacements, see PbindFx Ex. link::Classes/PbindFx#Ex. 7b#7b:: and link::Classes/PbindFx#Ex. 7c#7c::.
+
+table::
+##strong::Exercise::: Take one of your previous working PbindFx examples and rewrite its args (arrays of key/value pairs) as PL or Pbindef proxies. Run the example and replace source and/or fx patterns on the fly.
+::
+
+
+subsection::Tour 4k: continuative topics
+
+For use with VarGui see link::Classes/PbindFx#Ex. 8#PbindFx, Ex.8::.
+
+For using one fx SynthDef in more than one fxData see link::Classes/PbindFx#Ex. 4#PbindFx, Ex.4::.
+
+For source and fxs reading from external buses (ar or kr) see link::Classes/PbindFx#Ex. 6a#PbindFx, Ex.6a-c::.
+
+For using value conversions with fxData see PbindFx, link::Classes/PbindFx#Ex. 9#PbindFx, Ex.9::.
+
+
+subsection::Tour 4l: kitchen studies, a granular synthesis application
+
+One motivation for the development of PbindFx was the idea to explore granular synthesis variants with differentiated effect processings. The fixed media composition emphasis::kitchen studies:: collects six short pieces with different fxs and handlings of fx sequencing, each derived from the kitchen sound of five seconds, which is already contained in miSCellaneous lib. At the same time emphasis::kitchen studies:: is an ongoing artistic research project: the commented source code is published in the tutorial link::Tutorials/kitchen_studies::, compressed versions of the original piece as a whole and its parts can be found on my website link::http://daniel-mayer.at:: (use a separate browser, players won't work within this window), a further documentation of the compositional process will follow as publication in the artistic research database emphasis::Research Catalogue:: (link::http://researchcatalogue.net::).
+
+
+SECTION::Tour 5: EventShortcuts: less typing with Events and event patterns
+
+EventShortcuts is an interface for defining your own shortcut keys for often used keyword in Events and event patterns. For example you might want to write 'inst' or just 'i' instead of 'instrument' etc., then define your collection of shortcuts – e.g. in your startup or a certain load file – and activate it on occasion. There is also a default shortcuts dictionary, see its content and play a simple example:
+
+code::
+
+EventShortcuts.on;
+
+EventShortcuts.postAll;
+
+x = Pbind(\m, Pwhite(60, 90), \d, 0.2).play;
+
+::
+
+For examples of (re-)defining or extending shortcut dictionaries see link::Classes/EventShortcuts::.
+
+table::
+##strong::Exercise::: Take one of your favourite SynthDefs with non-standard arguments (other than freq, amp, pan, etc.) and write an event pattern example, using these arguments. Then choose useful abbreviations, define a new shortcut dictionary with these (either by extending the default or by defining a new one), make it current and run the event pattern example with abbreviated keys. 
+::
+
+
+SECTION::Tour 6: live coding
+
+This was not my main focus from the beginning, but it turned out that PLx patterns, in combination with EventShortcuts and/or Character sequencing (tour 6b) open up live coding possibilities with very condensed syntax.
+
+
+subsection::Tour 6a: PLbindef and PLbindefPar
+
+PLbindef is a wrapper class for Pbindef, which allows replacements in pseudo-method syntax in a newly created Environment.
+
+code::
+EventShortcuts.on;
+
+PLbindef(\x, \d, 0.2, \m, Pwhite(60, 90)).play;
+
+// Now 'x' is also the name of a new PLbindefEnvironment in the current Environment,
+// its pseudo-methods can be used for setting, moreover it is a player also.
+
+~x.play
+
+~x.m = PLseq((60..70))
+
+~x.stop
+
+::
+
+For further examples see link::Classes/PLbindef::.
+
+PLbindefPar is also based on Pbindef, but unlike PLbindef it's not a plain wrapper: it employs a number of Pbindefs in parallel, which allows control of polyphonic, additive or granular structures, see link::Classes/PLbindefPar::. 
+
+warning::
+If you're piling up a lot of layers, be careful with amplitudes, the amplitude values are taken for the single layers, so you'd have to reduce them accordingly !
+::
+
+subsection::Tour 6b: PLx and live coding with Strings
+
+Already in plain SC Strings as Arrays of Characters can be used for sequencing. PLx patterns fit and continuate this concept, see link::Tutorials/PLx_and_live_coding_with_Strings:: for some options, also in connection with PLbindef, PLbindefPar and PbindFx.
+
+
+SECTION::Tour 7: Independant classes, class families and methods
+
+subsection::Tour 7a: PSx stream patterns
+
+These are a bit paradoxical classes: Patterns which behave as if they were Streams, thus have an internal state and remember its last value(s), which can e.g. be used for recursion or certain demands of repeated embedding as in the following example:
+
+code::
+
+(
+// PS gets source and length patterns as args
+
+p = PLseq([
+	PS(PLseq((1..5)), PLseq([1, 2])),
+	PS(PLseq((1..5) * 100), PLrand((3..5)))
+]);
+
+p.asStream.nextN(100)
+)
+
+// this can also be written with a combination of Streams and Patterns,
+// but it needs more typing (same with Pswitch1 variants)
+
+(
+a = Pseq((1..5), inf).asStream;
+b = Pseq((1..5) * 100, inf).asStream;
+
+p = Pseq([
+	Pfuncn({ a.next }, Pseq([1, 2], inf).asStream), 
+	Pfuncn({ b.next }, Prand((3..5), inf).asStream),
+], inf);
+
+p.asStream.nextN(100)
+)
+::
+
+See link::Tutorials/PSx_stream_patterns:: for an overview.
+
+
+subsection::Tour 7b: PSVx sieve patterns and Sieves
+
+Sieves, recommended by Iannis Xenakis as generative principles for arbitrary musical parameters, are implemented twice: with the class Sieve and Psieve patterns, which adapt the sieve calculus for realtime interactions. The tutorial link::Tutorials/Sieves_and_Psieve_patterns:: starts from scratch, thus can be studied completely independant from other miSCellaneous stuff and most other SC requirements. The last chapter gives some audio examples, granular rhythms might be an especially interesting application.
+
+
+subsection::Tour 7c: PmonoPar and PpolyPar
+
+link::Classes/PmonoPar:: follows the Pmono convention of a single synth, being set but extends it to an arbitrary number of differently timed setting streams. With link::Classes/PpolyPar:: the number of continously running synths is arbitrary as well and setting streams can switch the synths to set. That way complicated fx variations can be achieved by a paradigm different from link::Classes/PbindFx::.
+
+
+subsection::Tour 7d: enum
+
+A general tool, which can be used for many enumeration and optimization problems (sets, partitions, graphs etc.), melodic shapes and scales are possible musical applications, see link::Tutorials/enum::.
+
+
+subsection::Tour 7e: HS / HSpar / PHS / PHSpar
+
+A framework for using server-generated values in Pbind-like objects in the language. A bit outdated now, as synchronous bus gives easy access to server values, however the double-latency mechanism provides a good accuracy of values – if this is needed – by passing a high granularity parameter. A lower value minimizes OSC traffic if this is more important. See link::Guides/Guide_to_HS_and_HSpar::.
+
+
+subsection::Tour 7f: PSPdiv
+
+A dynamic multi-layer pulse divider based on Pspawner, as the latter it supports parallel and sequential sprouting of sub-patterns. Might be used for line ornamentation, polyrhythmical structures, granulation etc., see link::Classes/PSPdiv::.
+
+
+subsection::Tour 7g: Smooth Clipping and Folding
+
+A suite of pseudo ugens, see link::Tutorials/Smooth_Clipping_and_Folding::.
+
+
+subsection::Tour 7h: DX suite
+
+pseudo ugens for crossfaded mixing and fanning according to demand-rate control, see link::Tutorials/DX_suite::.
+
+
+subsection::Tour 7i: Idev suite
+
+patterns and drate ugen searching for numbers with integer distance from a source pattern / signal, see link::Tutorials/Idev_suite::.
+
+
+subsection::Tour 7j: Nonlinear dynamics
+
+pseudo ugens for single sample feedback and generalized functional iteration synthesis, see link::Classes/Fb1:: and link::Classes/GFIS::.
+
+
+
+
+
+SECTION::Tour 8: (Rather) independant SC tutorials
+
+
+subsection::Tour 8a: Event patterns and Functions
+
+This tutorial is about dynamic scope, comparing the behaviour of Functions, Streams and EventStreamPlayers in Environments. It's thus treating some preconditions which are relevant for link::Tutorials/PLx_suite:: and link::Classes/VarGui::, see link::Tutorials/Event_patterns_and_Functions::.
+
+
+subsection::Tour 8b: Event patterns and LFOs
+
+Continuous (with LFO) and discrete ("LFO-like") control strategies for event patterns are compared in link::Tutorials/Event_patterns_and_LFOs::.
+
+
+subsection::Tour 8c: Event patterns and array args
+
+SynthDef array args seem to be a sometimes confusing topic, especially when it's about (pseudo-)variable array lengths and Envelopes, this is even more the case when it comes to the sequencing of such synths. For this reason, and not at last to remind myself to the subtle syntax differences, I wrote this tutorial: link::Tutorials/Event_patterns_and_array_args::.
+
+
+SECTION::Tour 9: Buffer Granulation and Live Granulation – tutorials
+
+Actually scheduled as a general overview of granulation possibilities in SC, also collecting various ideas from the sc-users mailing list discussions, I have to admit that in its current form many examples, especially in the Buffer granulation tutorial, require one or more features of miSCellaneous and thus might not always be easy to follow. Then again it would be hard to write such (gui) examples without presuppositions and at the same time with a clearly representable amount of code. However I hope that based on this guided tour it might be easier to step through for people who haven't used this lib before, see link::Tutorials/Buffer_Granulation:: and link::Tutorials/Live_Granulation::.
+
+
+
+
+
+
+
+

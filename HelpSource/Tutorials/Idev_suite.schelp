@@ -1,0 +1,26 @@
+TITLE::Idev suite
+summary::classes for number search with integer distance from a source, optionally avoiding repetitions within a span
+categories:: Libraries>miSCellaneous>Idev suite, Streams-Patterns-Events
+related:: Overviews/miSCellaneous, Guides/Introduction_to_miSCellaneous, Classes/DIdev, Classes/PIdev, Classes/PLIdev 
+
+
+DESCRIPTION::
+
+DIdev / PIdef / PLIdev search for numbers with integer distance from a source signal / pattern up to a given deviation. Repetitions within a lookback span are avoided, DIdev / PIdef / PLIdev randomly choose from possible solutions. Intended for search within integer grids (pitches, indices etc.), however applications with non-integer sources are possible, see examples.
+
+The main musical idea of this classes is, that it's often unwanted to have certain characteristics repeated within a perceptional time window. This might apply to melodic lines as well as to rhythmic patterns or sequences of timbre and can be continued in the domain of microsound. The principle can easily be understood with pitches, therefore most examples are of this kind. 
+
+In the following example integers are searched within the neighbourhood of a rounded sine source. The hi and lo deviation is constant (+/-5) and a lookBack value of 3 garantuees that there are no repetitions of integer values within a group of 4 (e.g. find a closest repetition within the last 5 points). In general lookback and deviations can be dynamic, the source doesn't need to be rounded and the comparison threshold for the repetition check can also be passed as a dynamic argument.
+
+
+image::attachments/Idev_suite/Idev_scheme_3.png::
+
+note::
+It's the user's responsibility to pass a combination of deviation and lookback values that allows a possible choice, see examples.
+::
+
+note::
+In contrast to PIdev and PLIdev, DIdev needs to know maximum deviations (strong::minLoDev::, strong::maxHiDev::) beforehand. Together with strong::maxLookBack:: they determine multichannel sizes, which might be CPU-consuming. 
+::
+
+
