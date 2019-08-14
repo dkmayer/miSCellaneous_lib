@@ -1,6 +1,0 @@
-
-INSTANCEMETHODS::
-
-private:: miSC_runMsg, miSC_setMsg, miSC_setnMsg, miSC_freeMsg
-
-
