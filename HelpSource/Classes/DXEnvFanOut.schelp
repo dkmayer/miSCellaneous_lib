@@ -1,0 +1,222 @@
+CLASS:: DXEnvFanOut
+summary:: sends crossfade envelopes to out buses according to demand-rate control
+categories:: Libraries>miSCellaneous>DX suite
+related:: Overviews/miSCellaneous, Guides/Introduction_to_miSCellaneous, Tutorials/DX_suite, Classes/DXMix, Classes/DXMixIn, Classes/DXEnvFan, Classes/DXFan, Classes/DXFanOut, Tutorials/Buffer_Granulation, Tutorials/Live_Granulation, Classes/PbindFx, Tutorials/kitchen_studies
+
+DESCRIPTION::
+
+DXEnvFanOut sends multichannel envelopes, which are used by DXMix / DXMixIn / DXFan / DXFanOut implicitely, to a sequence of out buses, which, together with fadeTimes and stepTimes, can be passed as demand rate ugens. It can be used as envelope and trigger at the same time, which leads to applications such as crossfading PlayBufs and different kinds of granulation, using a buffer or not. 
+
+note::
+As interface and conventions of DX ugens are nearly identical, I didn't double examples for all features. It's recommended to start with the link::Tutorials/DX_suite:: overview and go through the help file examples in this order: link::Classes/DXMix#Ex.1#DXMix:: - link::Classes/DXMixIn#Ex.1#DXMixIn:: - link::Classes/DXEnvFan#Ex.1#DXEnvFan:: - link::Classes/DXEnvFanOut#Ex.1#DXEnvFanOut:: - link::Classes/DXFan#Ex.1#DXFan:: - link::Classes/DXFanOut#Ex.1#DXFanOut::. Some general conventions are treated in detail in the following examples: fades and steps in link::Classes/DXMix#Ex.2#DXMix, Ex.2:: – width and offset arguments in link::Classes/DXMix#Ex.3#DXMix, Ex.3:: – multichannel expansion in link::Classes/DXMix#Ex.6#DXMix, Ex.6:: – crossfade types in link::Classes/DXEnvFan#Ex.1#DXEnvFan, Ex.1::.
+::
+
+note::
+PanAz.ar's args pos and orientation were scaled wrongly in SC versions up to 3.8. DX ugens neutralize this bug by inverse scaling, so it should actually work the same with SC versions before 3.9 with the exception of examples with modulatable width (disabled in earlier versions). I didn't encounter differences in any other test examples, however I'd rather recommend a SC version from 3.9 onwards, if you have the choice.
+::
+
+note::
+Depending on the multichannel sizes it might be necessary to increase server resources, i.e. the number of interconnect buffers (e.g. s.options.numWireBufs = 256; s.reboot). See link::Classes/DXMix#Ex.8#DXMix, Ex.8:: and link::Classes/DXEnvFan#Ex.2#DXEnvFan, Ex.2::, link::Classes/DXEnvFan#Ex.4#DXEnvFan, Ex.4:: for aspects of CPU demand.
+::
+
+note::
+In my tests timing was exact up to one sample. So when used for granulation DX ugens avoid the inevitable inccuracies of language-based triggering in realtime. However care has to be taken: fade and step times must be larger than the duration of a control cycle. With default values sampleRate = 44100 Hz and blockSize = 64, this equals ca. 0.00145 sec. If you go below, the fade mechanism is messed up and you get jumps and clicks. Accordingly with fadeModes 3 and 4 you have to ensure that the remaining 'real' stepTime, which is calculated by stepTime minus fadeTime, is larger than this threshold. But as a workaround you can always lower the blocksize. See link::Classes/DXFan#Ex.4#DXFan, Ex.4:: for aspects of granulation with high trigger rates / short grain durations.
+::
+
+note::
+The current implementation is bound to counting with Dseries and – inherent to 32 bit floats – the integer accuracy limit of 2 ** 24 - 1 = 16777215. This can be an issue with setups that are using extreme short durations for hours.
+::
+
+subsection::Credits
+Thanks to Wouter Snoei for his PlayBufCF class. It gave me a lot of inspiration for DX ugens – although in the end the implementation with PanAz and DemandEnvGen is quite different. Thanks also to Till Bovermann for ironing out a longstanding bug in PanAz.
+
+
+
+
+CLASSMETHODS::
+
+method::ar
+
+argument::out
+Determines the sequence of buses between which the envelope should be crossfaded. A bus index, a demand rate or other ugen returning bus indices or a SequenceableCollection of such, causing multichannel expansion. If in this case the overall multichannel size is larger than the size of strong::out:: and the latter contains demand rate ugens, they must all be wrapped into Functions.
+
+argument::fadeTime
+A fade time, a demand rate or other ugens returning fade times or a SequenceableCollection of such, causing multichannel expansion. If in this case the overall multichannel size is larger than the size of strong::fadeTime:: and the latter contains demand rate ugens, they must all be wrapped into Functions. The interpretation of strong::fadeTime:: depends on strong::fadeMode::. strong::fadeTime:: must be larger than the duration of a control cycle. Defaults to 1.
+
+argument::stepTime
+A step time, a demand rate or other ugens returning step times or a SequenceableCollection of such, causing multichannel expansion. If in this case the overall multichannel size is larger than the size of strong::stepTime:: and the latter contains demand rate ugens, they must all be wrapped into Functions. The interpretation of strong::stepTime:: depends on strong::fadeMode::. strong::stepTime:: must be larger than the duration of a control cycle. Defaults to 1.
+
+argument::fadeMode
+Integers between 0 and 4 or a SequenceableCollection of such, causing multichannel expansion. Not modulatable.
+list::
+## fadeMode = 0: only fadeTimes are used, no steps
+## fadeMode = 1: alternate steps and fades, begin with step; strong::stepTime:: means time without fade
+## fadeMode = 2: alternate fades and steps, begin with fade; strong::stepTime:: means time without fade
+## fadeMode = 3: alternate steps and fades, begin with step; strong::stepTime:: means sum of step and fade, thus strong::stepTime:: must be larger than strong::fadeTime::, the difference must be larger than the duration of a control cycle
+## fadeMode = 4: alternate fades and steps, begin with fade; strong::stepTime:: means sum of fade and step, thus strong::stepTime:: must be larger than strong::fadeTime::, the difference must be larger than the duration of a control cycle
+::
+Defaults to 0.
+
+argument::sine
+Determines the crossfade type: sine-based or not. A Boolean, 0 or 1 or a demand rate or other ugen returning strong::sine:: numbers or a SequenceableCollection of such, causing multichannel expansion. If in this case the overall multichannel size is larger than the size of strong::sine:: and the latter contains demand rate ugens, they must all be wrapped into Functions. Modulating this arg is only possible if strong::allowTypeSeq:: equals 1. Defaults to 1. 
+
+argument::equalPower
+Determines if crossfading of equal power type (square root) should be applied. A Boolean, 0 or 1 or a demand rate or other ugen returning strong::equalPower:: numbers or a SequenceableCollection of such, causing multichannel expansion. If in this case the overall multichannel size is larger than the size of strong::equalPower:: and the latter contains demand rate ugens, they must all be wrapped into Functions. Modulating this arg is only possible if strong::allowTypeSeq:: equals 1. Defaults to 1. 
+
+argument::power
+This only comes into play if strong::equalPower:: equals 0, then it's applied to the crossfade amplitude. If power and curve are passed, power applies before. A positive Number or a demand rate or other ugen returning positive strong::power:: numbers or a SequenceableCollection of such, causing multichannel expansion. If in this case the overall multichannel size is larger than the size of strong::power:: and the latter contains demand rate ugens, they must all be wrapped into Functions. Sequencing this arg with demand rate ugens is only possible if strong::allowTypeSeq:: equals 1. Defaults to 1. 
+
+argument::curve
+This only comes into play if strong::equalPower:: equals 0, then it's applied to the crossfade amplitude according to the lincurve mapping. If power and curve are passed, power applies before. A Number or a demand rate or other ugen returning strong::curve:: numbers or a SequenceableCollection of such, causing multichannel expansion. If in this case the overall multichannel size is larger than the size of strong::curve:: and the latter contains demand rate ugens, they must all be wrapped into Functions. Sequencing this arg with demand rate ugens is only possible if strong::allowTypeSeq:: equals 1. Calculation of curvature is not giving reliable results when strong::width:: and / or strong::dynOutOffset:: are being modulated at the same time. Defaults to 0. 
+
+argument::allowTypeSeq
+Enables sequencing of strong::sine::, strong::equalPower::, strong::power:: and strong::curve:: with demand rate ugens and modulating of strong::sine:: and strong::equalPower:: with other ugens. A Boolean, 0 or 1 or a SequenceableCollection of such, causing multichannel expansion. Not modulatable. As this requires more ugens running in parallel it is disabled by default = 0.
+
+argument::fadeRate
+One of the Symbols \ar and \kr, determining the crossfade rate used by PanAz or a SequenceableCollection of such, causing multichannel expansion. Not modulatable. Defaults to \ar. 
+
+argument::maxFadeNum
+Integer determining the maximum number of fades, after which strong::doneAction:: applies. A SequenceableCollection causes multichannel expansion. Not modulatable. Defaults to inf.
+
+argument::maxWidth
+An Integer determining the maximum strong::width:: or a SequenceableCollection of such, causing multichannel expansion, strong::width:: goes into PanAz's width arg. strong::maxWidth:: increases the internally used and potentially needed number of parallel channels. Not modulatable. Defaults to 2.
+
+argument::width
+Integer, Float, UGen (only from SC 3.9 onwards) or a SequenceableCollection of such, causing multichannel expansion. Not modulatable in versions earlier than SC 3.9. It determines the width according to PanAz's width arg. Note that a ugen's output must not exceed strong::maxWidth::. Defaults to 2.
+
+argument::initOutOffset
+An Integer or Float or a SequenceableCollection of such, causing multichannel expansion. Determines an initial offset for PanAz's pos arg. This can be useful for a start with full or reduced width. Not modulatable. Defaults to 0.
+
+argument::maxDynOutOffset
+An Integer or Float or a SequenceableCollection of such, causing multichannel expansion. Determines the maximum strong::dynOutOffset:: to be expected. strong::maxDynOutOffset:: increases the internally used and potentially needed number of parallel channels. Not modulatable. Defaults to 1.
+
+argument::dynOutOffset
+UGen, Integer or Float or a SequenceableCollection of such, causing multichannel expansion. By passing a ugen the movement between buses can be modulated. Note that a ugen's output must not exceed strong::maxDynOutOffset::. Defaults to 0.
+
+argument::allowFadeEnd
+Integer, Boolean or a SequenceableCollection of such, causing multichannel expansion. Determines if a demand rate input to in with finite length will be monitored, which needs a quite complicated trigger logic and more running ugens. If set to 0, the behaviour after the end of strong::in:: is undefined. Defaults to 1.
+
+argument::zeroThr
+A Number or a ugen returning strong::zeroThr:: numbers or a SequenceableCollection of such, causing multichannel expansion. Determines if output values below this threshold are replaced by 0. This makes sense if the output signal is used as trigger (e.g. with DXEnvFan). In the case of low power numbers small inaccuracies are amplified, this is avoided with an appropriate zeroThr (e.g. = 0.001), as the operation is applied before taking the power. As this requires more ugens running in parallel it is disabled by default = nil.
+
+argument::doneAction
+Integer or a SequenceableCollection of such, causing multichannel expansion. Determines the doneAction after strong::maxFadeNum:: is exceeded. Defaults to 0.
+
+method::kr
+
+
+SECTION::Examples
+
+note::
+As with DXFan / DXFanOut examples from DXEnvFan help also can be written with DXEnvFanOut, but the latter doesn't need size and bus args as out buses are addressed directly. There is a small difference also with multichannel expansion, see last example below.
+::
+
+
+anchor::Ex.1::
+code::
+(
+// load with extended resources
+s = Server.local;
+Server.default = s;
+s.options.numWireBufs = 256; 
+s.reboot;
+)
+::
+
+
+subsection::Ex.1: Basic usage
+
+code::
+// play SinOscs silently and wait for granulation envelopes
+
+(
+a = Bus.audio(s, 10);
+x = { Splay.ar(In.ar(a, 10) * SinOsc.ar((3..12) * 100, 0, 0.05)) }.play
+)
+
+
+// send envelopes to buses
+
+(
+z = {
+    DXEnvFanOut.ar(
+		Dseq((0..5) + a.index, inf) + Diwhite(1, 4),
+		
+		// with newer SC versions you can also write:
+		// Dseq((0..5), inf) + Diwhite(1, 4) + a.index,
+		
+        fadeTime: 0.05,
+        width: 1,
+        initOutOffset: -0.5
+    )
+}.play
+)
+
+x.release;
+
+// cleanup
+
+(
+z.free;
+a.free;
+)
+::
+
+
+
+anchor::Ex.2::
+subsection::Ex.2: Multichannel expansion
+
+code::
+// play SinOscs silently and wait for granulation envelopes
+
+(
+a = Bus.audio(s, 10);
+x = { Splay.ar(In.ar(a, 10) * SinOsc.ar((3..12) * 100, 0, 0.05)) }.play
+)
+
+// send envelope to buses in parallel
+
+(
+z = {
+    DXEnvFanOut.ar(
+        [0, 3] + Dseq((0..3) + a.index, inf) + Diwhite(0, 3),
+		
+		// with newer SC versions you can also write:
+        // [0, 3] + Dseq((0..3), inf) + Diwhite(0, 3) + a.index,
+		
+        fadeTime: 0.05,
+        width: 1,
+        initOutOffset: -0.5
+    )
+}.play
+)
+
+x.release;
+
+// cleanup
+
+(
+z.free;
+a.free;
+)
+
+
+// Ex.7 from DXEnvFan help looks a bit different,
+// as DXEnvFanOut is an out ugen we don't need to mix
+
+(
+a = Bus.audio(s, 4);
+{
+	DXEnvFanOut.ar(
+		(0..3).collect { |i| Dseq((0..3).rotate(i), inf) } + a.index,
+		fadeTime: [0.01, 0.05],
+		width: 1
+	);
+	In.ar(a, 4)
+}.plot(0.2)
+)
+
+a.free
+::
+

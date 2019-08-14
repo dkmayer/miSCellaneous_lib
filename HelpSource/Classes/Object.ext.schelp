@@ -1,0 +1,30 @@
+
+INSTANCEMETHODS::
+
+private:: miSC_isKindOfFixedHSindex, miSC_isKindOfFixedHSindices, miSC_isKindOfPossibleHSindices
+private:: miSC_isKindOfPossibleHSstartIndices, miSC_normalizeHSstartIndices
+
+
+private:: miSC_isGrouping, miSC_getCtrIndex, miSC_collectCopy, miSC_performWithEnvir
+
+private:: miSC_defNameAsArray
+
+private:: miSC_makeLacePat
+
+
+private:: miSC_repTypeFactor, miSC_applyNaryFuncProxy
+
+private:: miSC_getEnvir
+
+private:: miSC_copy, miSC_getCopyCode
+
+private:: miSC_check
+
+private:: miSC_checkFxOrder, miSC_fxOrderWarnString, miSC_getFxOrderData
+
+
+private:: miSC_isPointSel, miSC_isIntervalSel
+
+private:: miSC_unifySize
+
+private:: miSC_Dmultiply
