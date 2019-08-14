@@ -1,0 +1,6 @@
+
+INSTANCEMETHODS::
+
+private:: miSC_performWithEnvir
+
+private:: miSC_Dmultiply

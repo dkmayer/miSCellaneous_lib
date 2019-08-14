@@ -1,0 +1,277 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000bf2}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #bf0000}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #000000}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; min-height: 16.0px}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; color: #000000; min-height: 16.0px}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p19 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p20 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p21 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #007300}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #0063ff}
+span.s5 {color: #0069ff}
+span.s6 {text-decoration: underline ; color: #0069ff}
+span.s7 {text-decoration: underline ; color: #0085ff}
+span.s8 {text-decoration: underline ; color: #0070ff}
+span.s9 {text-decoration: underline ; color: #0088ff}
+span.s10 {color: #006dff}
+span.s11 {text-decoration: underline ; color: #0067ff}
+span.s12 {color: #0000bf}
+span.s13 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>HS (HelpSynth)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>object for use of synth values in the language by event patterns</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Object</b></p>
+<p class="p4"><br></p>
+<p class="p1">To be used in connection with <a href="PHS.html"><span class="s4">PHS</span></a><span class="s5"> </span><b>/</b><span class="s5"> <a href="PHSuse.html"><span class="s4">PHSuse</span></a></span> to play event patterns using synth values. Holds a singular synth definition, keeps track of OSC traffic when PHS / PHSuse are played. For using several help synths in parallel or setting controllers of a singular help synth see <a href="HSpar.html"><span class="s6">HSpar</span></a> and related.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>See also:</b> <a href="Working with HS and HSpar.html"><span class="s3">Working with HS and HSpar</span></a></span><span class="s7">,</span><span class="s2"> <a href="HS with VarGui.html"><span class="s8">HS with VarGui</span></a></span><span class="s9">,</span><span class="s2"> <a href="PHS.html"><span class="s4">PHS</span></a></span><span class="s10">, <a href="PHSuse.html"><span class="s6">PHSuse</span></a>, <a href="PHSplayer.html"><span class="s11">PHSplayer</span></a></span><span class="s2">, <a href="PHSusePlayer.html"><span class="s11">PHSusePlayer</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Some Important Issues</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2">See <a href="Working with HS and HSpar.html"><span class="s3">Working with HS and HSpar</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new (server, ugenFunc, demandLatency, respondLatency, postOSC, granularity, inputCheck)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new HS object.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>server </b>- Must be running server.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>ugenFunc </b>- Function that defines the synth.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>demandLatency </b>- Latency of help synth in seconds. Default value 0.15.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>respondLatency </b>- Time in seconds, given to the response to be received by the client on time.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default value 0.15.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>postOSC </b>- Boolean for posting of (server to client) OSC messages. Defaults to false.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>granularity </b>- Time grains per second, quantization for bookkeeping. Defaults to 200.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>inputCheck </b>- Boolean for checking input data. Defaults to true.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>s = <span class="s12">Server</span>.local;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s12">Server</span>.default = s;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>s.boot;</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// make a new HS<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// This compiles the SynthDef and prepares the HS to be played with a PHS,</p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// no Synth object is yet instantiated.</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>h = <span class="s12">HS</span>(s, { <span class="s12">LFDNoise3</span>.kr(0.7, 15, 75) });</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// A PHS, like a Pbind, defines event stream behaviour, only durations are given separately.</p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// Here values are demanded just by one stream with constant duration,<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// but more than one duration pattern per HS and more than one Pbind per duration pattern</p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// may be defined - see the PHS help file for examples.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// The play method of a PHS creates a PHSplayer which plays a synth from HS's synth definition,<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// synth values are accessible within the PHS definition by the variable ~val, e.g. by Pkey(\val).</p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// If HS's synthdef has no args, this must be specified in the PHS by nil or [].</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p = <span class="s12">PHS</span>(h, [], 0.15, [ <span class="s13">\midinote</span>, <span class="s12">Pkey</span>(<span class="s13">\val</span>) ]).play;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// also:</p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// p = PHS(h, [], 0.15, [ \midinote, Pfunc { |e| e.use { ~val } }<span class="Apple-converted-space">  </span>]).play;</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// stop allows resuming, cleanup with free or Cmd-.<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.stop;<span class="Apple-tab-span">	</span></span>// HS synth still playing<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.play; </span>// resume the PHSplayer</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.stop(</span><span class="s12">true</span><span class="s2">);<span class="Apple-tab-span">	</span></span>// HS synth also paused<span class="Apple-converted-space"> </span></p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.play; </span>// resume the PHSplayer together with HS synth</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>p.free; </span>// also stop HS synth and cleanup - PHSplayer and HS object are freed</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p14"><b>Accessing Instance Variables</b></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>demandLatency_(arg)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>demandLatency</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Latency of help synth in seconds. Defaults to 0.15.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>respondLatency_(arg)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>respondLatency</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Time (in seconds) given to the response to be received by the client on time. Defaults to 0.15.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>postOSC_(arg)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>postOSC</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defines whether OSC messages should be posted or not. Boolean. Defaults to false.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>granularity_(arg)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>granularity</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Integer. Time grains per second, quantization for bookkeeping. Defaults to 200.</p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>inputCheck_(arg)</b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>inputCheck</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Boolean for checking input data. Defaults to true.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><b>Status control</b></p>
+<p class="p15"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>listen(num, latency)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Make HS ready to poll values from a synth, demanded by possibly more than one stream.<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Therefore <b>num</b> trigger synths are run, ready to receive triggers for sending help synth values back to client,</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>but a synth from HS's ugenFunc definition is not yet<b> </b>playing after that.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If PHS / PHSuse are played there is no need to call <b>listen</b> explicitely.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>play(args, latency)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Play a synth derived from HS's ugenFunc definition. HS must already be listening.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If PHS / PHSuse are played there is no need to call <b>play</b> explicitely.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>clearBookkeeping</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Cleanup OSC bookkeeping.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>stop</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Free the playing help synth and cleanup OSC bookkeeping.</p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>sleep</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Free the listening trigger synths.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>busFree</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Deallocate the bus.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>free</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Free all related PHSplayers / PHSusePlayers, then <b>stop</b>, <b>sleep</b> and <b>busFree</b>.</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p7"><span class="Apple-tab-span">	</span><b><span class="s3">Note:</span></b> <span class="Apple-tab-span">	</span><b>stop</b> and <b>free</b> will normally be done by the respective player methods, see <a href="PHSplayer.html"><span class="s11">PHSplayer</span></a>. <span class="Apple-converted-space">   </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><b>Examples</b></p>
+<p class="p16"><br></p>
+<p class="p17"><br></p>
+<p class="p10">(</p>
+<p class="p10">s = <span class="s12">Server</span>.local;</p>
+<p class="p10"><span class="s12">Server</span>.default = s;</p>
+<p class="p10">s.boot;</p>
+<p class="p10">)</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12">// define a tendency for chord density</p>
+<p class="p11"><br></p>
+<p class="p13">h = <span class="s12">HS</span>(s, { <span class="s12">LFDNoise3</span>.kr(0.5, 4, 5) });</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12">// language operations used for building chords from synth values</p>
+<p class="p11"><br></p>
+<p class="p13">(</p>
+<p class="p13">p = <span class="s12">PHS</span>(h, [], 0.18,<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s13">\midinote</span>, <span class="s12">Pkey</span>(<span class="s13">\val</span>).collect {<span class="s12">|x|</span> <span class="s12">Array</span>.series(x.round, 60 - (x * 1.2), 5) + <span class="s12">Array</span>.rand(x.round, -0.8, 0.8)<span class="Apple-converted-space">  </span>},</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">\legato</span>, 0.6, <span class="s13">\amp</span>, 0.05]</p>
+<p class="p13"><span class="Apple-tab-span">	</span>).play;</p>
+<p class="p13">)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12">// cleanup (freeing buses and nodes) by pressing Cmd-. or explicitely</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13">p.free;<span class="Apple-tab-span">	</span></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12">/////////////////////////////////////////////////////////////////////</p>
+<p class="p11"><br></p>
+<p class="p18">// example with other than default instrument</p>
+<p class="p18">// define synth to move between two sounds</p>
+<p class="p19"><br></p>
+<p class="p10">(</p>
+<p class="p20">SynthDef<span class="s2">(</span><span class="s13">\simpleMorph</span><span class="s2">, {</span>|out = 0, freq = 440, amp = 0.1, morphQ = 0|</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="s12">var</span> src, normalMorphQ = morphQ.mod(1);</p>
+<p class="p10"><span class="Apple-tab-span">	</span>src = <span class="s12">Saw</span>.ar(freq, mul: amp) * (1 - normalMorphQ) + (<span class="s12">SinOsc</span>.ar(freq, mul: amp) * normalMorphQ);</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="s12">Out</span>.ar(out, src ! 2 * <span class="s12">EnvGen</span>.ar(<span class="s12">Env</span>.perc, doneAction: 2));</p>
+<p class="p10">}).add;</p>
+<p class="p10">)</p>
+<p class="p19"><br></p>
+<p class="p18">// HelpSynth definition, values between 0 and 1</p>
+<p class="p18">// Clock and Quant for syncing</p>
+<p class="p19"><br></p>
+<p class="p13">(</p>
+<p class="p13">h = <span class="s12">HS</span>(s, { <span class="s12">LFTri</span>.kr(0.5, mul: 0.5, add: 0.5) });</p>
+<p class="p11"><br></p>
+<p class="p20"><span class="s2">c = </span>TempoClock<span class="s2">.new;</span></p>
+<p class="p10">q = 0.2;</p>
+<p class="p10">)</p>
+<p class="p19"><br></p>
+<p class="p12">// help synth values for pitch and synth arg \morphQ<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p13">(</p>
+<p class="p13">p = <span class="s12">PHS</span>(h, [], 0.2,<span class="Apple-converted-space"> </span></p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[</span>\instrument<span class="s2">, </span>\simpleMorph<span class="s2">,<span class="Apple-converted-space"> </span></span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">\midinote</span>, <span class="s12">Pkey</span>(<span class="s13">\val</span>) * 30 + 60 + [0, 9] + <span class="s12">Pxrand</span>([0, 1.5, -1.5], <span class="s12">inf</span>),<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">\amp</span>, 0.07,</p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\morphQ<span class="s2">, </span><span class="s12">Pkey</span><span class="s2">(</span>\val<span class="s2">) ]</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>).play(c,q);</p>
+<p class="p13">)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12">// sync it with a normal pbind (EventStreamPlayer) with default instrument</p>
+<p class="p12">// no use of HS / PHS</p>
+<p class="p11"><br></p>
+<p class="p13">(</p>
+<p class="p13">r = <span class="s12">Pbind</span>(</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">\dur</span>, 0.2,<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">\midinote</span>, <span class="s12">Pxrand</span>([58, 60, 61, 63, 64, 67, 69, 70], <span class="s12">inf</span>) + [-7, 0, 5, 9] + <span class="s12">Pseq</span>([0.2, -0.2],<span class="s12">inf</span>),<span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">\amp</span>, 0.03</p>
+<p class="p13"><span class="Apple-tab-span">	</span>).play(c, quant: q);</p>
+<p class="p13">)</p>
+<p class="p11"><br></p>
+<p class="p12">// pause and stop are synonym</p>
+<p class="p11"><br></p>
+<p class="p13">p.pause;</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12">// resume p in sync</p>
+<p class="p11"><br></p>
+<p class="p13">p.play(c, q);</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12">// stop and free</p>
+<p class="p11"><br></p>
+<p class="p13">(</p>
+<p class="p13">r.stop;</p>
+<p class="p13">p.free;</p>
+<p class="p13">)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+</body>
+</html>

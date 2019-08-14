@@ -1,0 +1,306 @@
+CLASS:: EventShortcuts
+summary:: holds default and user-defined dictionaries of shortcuts for events and event patterns
+categories::Libraries>miSCellaneous>Event and pattern shortcuts
+related:: Overviews/miSCellaneous, Tutorials/PLx_and_live_coding_with_Strings, Tutorials/Other_event_and_pattern_shortcuts 
+
+
+DESCRIPTION::
+
+Container for dictionaries of shortcuts for the event framework, which can be defined by the user. Shortcuts might be for event keywords or any other (e.g. synth args). At every time one shortcut dictionary is current, but it's only active if EventShortcuts is turned on. Dictionaries are encapsulated and can only be accessed via copies and posting to prevent unintended changes. For event keywords see James Harkins' Practical Guide to Patterns (especially link::Tutorials/A-Practical-Guide/PG_07_Value_Conversions::  and link::Tutorials/A-Practical-Guide/PG_08_Event_Types_and_Parameters::).
+
+
+note::
+Implementation of shortcuts works like this: if you don't turn EventShortcuts on at all, nothing is changed in the event framework – if you turn it on a mapping function is prepended to every event type function, if this has not been done before in this session and the event type function hasn't been newly defined since last prepending – if you turn it off the prepended function is still there, but does no mapping. 
+
+Therfore shortcuts won't work automatically after new definitions of event types. You'd have to turn EventShortcuts on again or apply the method link::Classes/EventShortcuts#*prefixEventTypes::. Quite obviously, switching between different shortcut dictionaries might cause a mess while playing (or pausing and resuming) patterns with these shortcuts. But these are exceptional cases, a typical usage would be defining your personal shortcut dictionary (e.g. in the startup file), turning EventShortcuts on and playing therewith, then maybe turning it off and on again on occasion. 
+
+Some pattern classes (e.g. Ppar) don't work correctly with EventShortcuts, but this can be circumvented by applying shortcuts to source event patterns before, see method link::Classes/Pattern#-eventShortcuts::. See also link::Tutorials/PLx_and_live_coding_with_Strings::
+
+::
+
+CLASSMETHODS::
+
+private::miSC_replaceShortcuts
+
+method::add
+
+Adds a new named IdentityDictionary of shortcuts.
+
+argument::name 
+Symbol or String.
+
+argument::dict 
+IdentityDictionary of abbreviations (keys given as Symbols) and original names (values given as Symbols).
+
+argument::overwrite
+Boolean. Determines if a shortcut dictionary of that name – if existing at all – is overwritten. Defaults to false.
+
+
+
+method::addOnBase
+
+Adds a new named IdentityDictionary of shortcuts based on the copy of an existing one.
+
+argument::baseName
+Symbol or String. Name of the shortcut dictionary to build upon.
+		
+argument::newName 
+Symbol or String. Name of the new shortcut set.
+
+argument::dict 
+IdentityDictionary of new or/and additional abbreviations (keys given as Symbols) and original names (values given as Symbols).
+
+argument::overwrite
+Boolean. Determines if a shortcut dictionary of that name – if existing at all – is overwritten. Defaults to false.
+note::
+strong::overwrite:: only determines overwriting of an old dictionary of the same name. It doesn't influence the overwriting in the copy of the base dictionary itself, as exactly this is a main aim of the method. (you might want to replace the association 's'-> 'strum' by 's' -> 'server')
+::
+
+
+method::remove
+
+Removes a named IdentityDictionary of that name.
+
+argument::name
+Symbol or String. 
+
+
+method::removeAll
+
+Removes all IdentityDictionaries except \default.
+
+
+method::copyDict
+
+Returns a copy of a shortcut dictionary of that name (if stored).
+
+argument::name
+Symbol or String. 
+
+
+
+method::copyCurrentDict
+
+Returns a copy of the current shortcut dictionary of that name.
+
+argument::name
+Symbol or String. 
+
+
+method::copyAllDicts
+
+Returns an IdentityDictionary of copies of all stored shortcut dictionaries.
+
+
+
+method::post
+
+Posts the shortcut dictionary of that name (if stored).
+
+argument::name
+Symbol or String. 
+
+
+method::postCurrent
+
+Posts the current shortcut dictionary.
+
+
+
+method::postAll
+
+Posts all shortcut dictionaries.
+
+
+
+method::makeCurrent
+
+Makes the shortcut dictionary of that name current (if stored).	
+
+argument::name
+Symbol or String. 
+
+
+
+method::on
+
+Turns on the shortcut mechanism, making it ready for events / patterns to be played. Also invokes link::Classes/EventShortcuts#*prefixEventTypes::.
+
+
+method::off
+
+Turns the shortcut mechanism off.
+
+
+method::prefixEventTypes
+
+Puts the remapping function before all event type functions. Therefore a newly defined event type won't work with shortcuts before this has been called ( directly or via link::Classes/EventShortcuts#*on:: ).
+
+
+method::current
+
+Returns the Symbol of the current shortcut dictionary.
+
+
+method::dictNames
+
+Returns the Symbols of all shortcut dictionaries.
+
+
+method::state
+
+Returns the current state (\on or \off).
+
+
+
+
+
+EXAMPLES::
+
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+
+// turn shortcuts on
+
+EventShortcuts.on
+
+
+// post all, right now only \default exists
+
+EventShortcuts.postAll
+
+
+// play an Event with midinote 70
+
+(m: 70).play
+
+	
+// play a Pbind
+
+(
+Pbind(
+	\m, Pwhite(60, 90, 20) + [0, -7],	// midinote
+	\p, Pwhite(-1.0, 1), // pan
+	\l, 3, 		// legato
+	\s, 0.1,	// strum
+	\d, 0.5		// dur
+).play
+)
+
+
+
+// define new dictionary based on \default with two different shortcuts
+
+EventShortcuts.addOnBase(\default, \mine, (s: \scale, t: \ctranspose))
+
+
+// it isn't current yet, make it 
+
+EventShortcuts.makeCurrent(\mine)
+
+
+// play Pbind with new shortcuts, using key/value notation here
+
+(
+p = Pbind(*[
+	de: Prand([[0, 1, 26, 27], [-6, 4, 10], [0, 8, 14]], inf),	// degree
+	t: Pwhite(0, 1) + Pwrand([0, -10, 10], [0.9, 0.05, 0.05], 200), // ctranspose
+	d: 0.2,  				// dur
+	s: Scale.chromatic24	// scale
+]).play
+)
+
+
+// define a SynthDef
+
+(
+SynthDef(\test, { |out = 0, freq = 440, width = 0.5, amp = 0.05, gate = 1, 
+	att = 0.05, rel = 1, pan = 0|
+	Out.ar(out, Pan2.ar(Pulse.ar(freq, width, amp), pan) * 
+		EnvGen.ar(Env.asr(att, 1, rel), gate, doneAction:2)
+	)
+}).add
+)
+
+
+// you can also define shortcuts for synthdef args 
+
+(
+EventShortcuts.addOnBase(\mine, \mine, (w: \width, r: \rel), true);
+EventShortcuts.makeCurrent(\mine);
+)
+
+
+(
+Pbind(*[
+	i: \test, 					// instrument
+	n: Prand([0, 4, 7], inf), 	// note 
+	o: Pwhite(5, 6), 			// octave
+	dt: Pwhite(0, 20),			// detune (in cent)
+	l: 0.2,						// legato
+	d: 0.2,						// dur
+	w: Pseq((5, 10..40)/100, 4),	// width (synth arg)
+	r: Pseq([0.1, 0.5], inf),		// rel (synth arg)
+]).play
+)
+
+
+// works also with other event patterns: Pmono, PmonoArtic, Pbindef
+
+(
+Pmono(\default, *[
+	d: 0.03,	// dur
+	a: 0.3,		// amp
+	dt: Pseq([0, 10], inf),  // detune in Hz
+	p: Pseq((-100, -95..100)/100, 1)  // pan
+]).play
+)
+
+// further shortcuts for playing events and patterns are collected in "Other event and pattern shortcuts"
+// e.g. you can directly play a Pbind derived from an Array:
+
+(
+[
+	n: Pshuf((1..12)), // note 
+	d: 0.5, // dur
+	l: 3,	// legato 
+	o: Pwhite(4, 7) // octave
+].pp
+)
+
+// also possible with Pbindef, though you shouldn't change current shortcut
+// if you still want to refer later on to a Pbindef defined before the change
+
+
+(
+Pbindef(\x, *[
+	d: Prand([1,1,2]/5, inf), 	// dur
+	m: Pwhite(50, 80),			// midinote
+	ct: Prand([[0, 4], [0, 5]], inf) // ctranspose
+]).play
+)
+
+Pbindef(\x, \d, Prand([1,1,1,2,3]/7, inf))
+
+Pbindef(\x, \ct, [0, 5, 8, 13, 16])
+
+Pbindef(\x).stop;
+
+
+// turns off and ensures that default shortcuts are active when EventShortcuts is 
+// turned on next time in this session 
+
+(
+EventShortcuts.off;
+EventShortcuts.makeCurrent(\default);
+)
+
+::
+

@@ -1,0 +1,98 @@
+CLASS::PLbindefParEnvironment
+summary::Environment made by PLbindefPar to play and set its sources
+categories:: Libraries>miSCellaneous>PLx suite, Streams-Patterns-Events>PLx suite
+related:: Overviews/miSCellaneous, Tutorials/PLx_suite, Classes/PLbindef, Classes/PLbindefPar, Classes/PLbindefEnvironment, Classes/EventShortcuts, Tutorials/PLx_and_live_coding_with_Strings
+
+
+DESCRIPTION::
+Instances of this class are made as side effect of PLbindefPar creation, assigned to PLbindefPar's name in an Environment of choice (by default the current one) and used as player interface and to set PLbindef's sources in condensed syntax. They are not thought to be created explicitely though.
+A PLbindefParEnvironment contains the references to its PLbindefs as Associations of indices to PLbindefEnvironments. See link::Classes/PLbindefPar:: for examples.
+
+note::
+For setting, getting, playing, stopping and resetting subsets of PLbindefs in prototyping syntax the class TempPLbindefParEnvironment is involved (see link::Classes/PLbindefPar#Ex. 1#Ex.1:: in PLbindefPar's help). The user doesn't need to care about this class, instances are generated implicitely and might occur in the post window.
+::
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PLbindefParEnvironment object with arguments of IdentityDictionary. In contrast to the latter strong::know:: defaults to true, which allows setting sources of the PLbindefPar in object prototyping style. strong::name:: is used for the corresponding key of the PLbindefPar. strong::num:: is the number of parallel patterns in the PLbindefPar. strong::plbindefPar:: is the corresponding PLbindefPar, strong::plbindefs:: might be passed. Normally not be used explicitely.
+
+
+INSTANCEMETHODS::
+
+private::miSC_setNum
+private::miSC_setName
+private::miSC_setPLbindef
+private::miSC_plbindefParInit
+
+method::put
+
+Associates strong::obj:: with Symbol strong::key:: and updates the stored PLbindefEnvironments depending on the class of strong::obj::. For a SequenceableCollection items are assigned in the PLbindefEnvironments of corresponding indices (method 'wrapAt' is used for handling cases of smaller collections). Other types of passed objects are assigned in all PLbindefEnvironments. 
+
+
+method::superPut
+
+Associates strong::obj:: with Symbol strong::key:: mimicing link::Classes/IdentityDictionary#-put::. 
+
+
+method::value
+
+Expects key/value pairs and applies strong::put::. Optionally the first arg can be an Integer or a collection of Integers, specifying the PLbindefs to be set.
+
+
+method::num
+
+Getter for PLbindefPar's number of parallel PLbindefs.
+
+
+method::name
+
+Getter for PLbindefPar's key.
+
+
+method::plbindefPar
+
+Getter for the corrresponding PLbindefPar.
+
+
+method::at
+
+For Integers it works as link::Classes/IdentityDictionary#-at::, for SequenceableCollections of Integers it enables setting and getting as well as playing, stopping, resetting and clearing of sources of corresponding PLbindefs by using a TempPLbindefParEnvironment (see link::Classes/PLbindefPar#Ex. 1#Ex.1:: in PLbindefPar's help). 
+
+
+method::play
+
+Plays all PLbindefs of the corresponding PLbindefPar with passed arguments.
+
+
+method::reset
+
+Resets all PLbindefs of the corresponding PLbindefPar.
+
+
+method::stop
+
+Stops all PLbindefs of the corresponding PLbindefPar.
+
+
+method::clear
+
+Clears all PLbindefs of the corresponding PLbindefPar and delete references to sourceEnvir and refEnvir.
+
+
+method::remove
+
+Removes the corresponding PLbindefPar and all related PLbindefs from the global entry, delete references to sourceEnvir and refEnvir.
+
+
+method::subPLbindefs
+
+Returns corresponding PLbindefs.
+
+
+method::subEnvirs
+
+Returns corresponding PLbindefEnvironments.
+
+

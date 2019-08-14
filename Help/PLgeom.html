@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000bf2}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #003bff}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; min-height: 16.0px}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #e80000}
+p.p16 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ca0000}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #0065ff}
+span.s5 {text-decoration: underline ; color: #0018ff}
+span.s6 {color: #009dff}
+span.s7 {text-decoration: underline ; color: #003bff}
+span.s8 {text-decoration: underline ; color: #00acff}
+span.s9 {color: #0038ff}
+span.s10 {color: #000dc6}
+span.s11 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>PLgeom<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>dynamic scope Pgeom variant<span class="Apple-converted-space"> </span></b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Pgeom</b></p>
+<p class="p4"><br></p>
+<p class="p1">Takes Symbol args for later reference by the Streams, which will read from variables in the Environments of their instantiation. See <a href="PLx suite.html"><span class="s4">PLx suite</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s2"><b>See also:</b> <a href="SC://Pgeom.html"><span class="s5">Pgeom</span></a></span><span class="s6">, <a href="SC://PLseries.html"><span class="s5">PLseries</span></a>, <a href="Event patterns and Functions.html"><span class="s7">Event patterns and Functions</span></a>,</span><span class="s2"> <a href="VarGui.html"><span class="s8">VarGui</span></a></span><span class="s6">,</span><span class="s2"> <a href="VarGui shortcut builds.html"><span class="s5">VarGui shortcut builds</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p6"><b>Creation / Class Methods</b></p>
+<p class="p7"><br></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>*new (start, grow, length, envir)</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new PLgeom object.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>start </b>- Symbol or Pgeom start arg. Defaults to 0.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If a Symbol is passed, start can be assigned to an envir variable later on.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>grow </b>- Symbol or Pgeom grow arg. Defaults to 1.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If a Symbol is passed, grow can be assigned to an envir variable later on.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Can be dynamically replaced by Patterns or Streams.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>length </b>- Symbol or Pgeom length arg. Defaults to inf.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If a Symbol is passed, length can be assigned to an envir variable later on.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>envir </b>- Dictionary or one of the Symbols</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\top, \t (topEnvironment), \current, \c (currentEnvironment).</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Dictionary to be taken for variable reference. Defaults to \current.</p>
+<p class="p11"><br></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><b>Examples</b></p>
+<p class="p13"><br></p>
+<p class="p14">(</p>
+<p class="p14">s = <span class="s9">Server</span>.local;</p>
+<p class="p14"><span class="s9">Server</span>.default = s;</p>
+<p class="p14">s.boot;</p>
+<p class="p14">)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p15">// definition for future reference in arbitrary Environments</p>
+<p class="p7"><br></p>
+<p class="p16">(</p>
+<p class="p14">p = <span class="s10">Pbind</span>(</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s11">\freq</span>, <span class="s10">Pn</span>(<span class="s10">PLgeom</span>(<span class="s11">\start</span>, <span class="s11">\grow</span>, 50)) % 2000 + 400,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s11">\dur</span>, 0.1</p>
+<p class="p14">);</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p17">// prepare current Environment</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">~start = 100;</p>
+<p class="p14">~grow = 1.1;</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p17">// from ascending to random</p>
+<p class="p4"><br></p>
+<p class="p14">x = p.play;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p17">// replace</p>
+<p class="p4"><br></p>
+<p class="p14">~grow = 0.99;</p>
+<p class="p4"><br></p>
+<p class="p14">~grow = 1.4;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14">x.stop;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+</body>
+</html>
