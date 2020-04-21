@@ -1,0 +1,861 @@
+CLASS:: ZeroXBufRd
+summary:: reads consecutive sequences of segments between zero crossings from one or more buffers with demand-rate control
+categories:: Libraries>miSCellaneous>ZeroX ugens
+related:: Overviews/miSCellaneous, Guides/Introduction_to_miSCellaneous, Classes/TZeroXBufRd, Classes/ZeroXBufWr, Tutorials/DX_suite, Classes/DXMix, Classes/DXMixIn, Classes/DXEnvFan, Classes/DXEnvFanOut, Classes/DXFan, Classes/DXFanOut, Tutorials/Buffer_Granulation, Tutorials/Live_Granulation, Classes/PbindFx, Tutorials/kitchen_studies
+
+DESCRIPTION::
+
+ZeroXBufRd is for consecutive reading of segments between zero crossings (half wavesets) from one or more buffers, whereby several reading and processing parameters can be sequenced with demand rate ugens. Full waveset sequences can so be generated as a special case. It needs analysis data prepared with link::Classes/ZeroXBufWr::. For triggering possibly overlapped (half) wavesets see link::Classes/TZeroXBufRd::. ZeroXBufRd / TZeroXBufRd can be used for a number of synthesis / processing techniques in a field between wavesets [1, 4, 5], pulsar synthesis [1, 3], buffer modulation and rectification (which are both a kind of waveshaping) and stochastic concatenation methods [2, 6]. There are already existing SC waveset implementations like Alberto de Campo's Wavesets quark (https://github.com/supercollider-quarks/quarks) and Olaf Hochherz's SPList (https://github.com/olafklingt/SPList), which do language-side analysis and Fabian Seidl's RTWaveSets plugin (https://github.com/tai-studio/RTWaveSets). My focus has been server-side analysis and demand rate ugen control of half waveset parameters as well as multichannel and buffer switch options. Realtime control while analysis is possible, as long as reading is only refering to already analysed sections, but clearly most flexibility is given with a fully analysed buffer, which can also be done in quasi realtime.
+
+note::
+Depending on the multichannel sizes and the options used (rate and dir sequencing) it might be necessary to increase server resources, i.e. the number of interconnect buffers and / or memory size (e.g. s.options.numWireBufs = 256; s.options.memSize = 8192 * 32; s.reboot). Because of overlappings this is more relevant with TZeroXBufRd than with ZeroXBufRd.
+::
+
+note::
+Often it pays to adjust zero crossings in the sound buffer effectively to 0, that way sawtooth-like interpolation artefacts can be avoided. See link::#Ex. 7:: and link::Classes/TZeroXBufRd#Ex. 1:: and link::Classes/ZeroXBufWr#Ex. 2::.
+::
+
+note::
+The reading of consecutive half wavesets is implemented with Sweep and retriggering. For that reason each played back half waveset has a minimum length of 2 samples. In the case of adjusted zero crossings that immediately follow each other this can lead to flat sections of a few samples length. Normally this is irrelevant, but you might check setting ZeroXBufWr's flag 'adjustZeroXs' to 2, see link::#Ex. 7:: and link::Classes/ZeroXBufWr#Ex. 2::.
+::
+
+note::
+Demand rate UGens in ZeroXBufRd / TZeroXBufRd should always use inf as repeats arg, this is of course not necessary for nested ones. You might pass a length arg though (link::#Ex. 5::).
+::
+
+note::
+For avoiding too long half wavesets it might be useful to apply LeakDC resp. a high pass filter before analysis.
+::
+
+note::
+In rare cases I noticed corrupted buffers in multi buffer examples for no obvious reason.
+::
+
+note::
+For full functionality at least SC 3.7 is recommended (rate sequencing doesn't work in 3.6)
+::
+
+
+subsection::Credits 
+Thanks to Tommaso Settimi for an inspiring discussion, which gave me a nudge to tackle these classes.
+
+
+subsection::References
+
+numberedList::
+
+## de Campo, Alberto. "Microsound" In: Wilson, S., Cottle, D. and Collins, N. (eds). 2011. The SuperCollider Book. Cambridge, MA: MIT Press, 463-504.
+
+## Luque, Sergio (2006). Stochastic Synthesis, Origins and Extensions. Institute of Sonology, Royal Conservatory, The Netherlands. https://sergioluque.com
+
+## Roads, Curtis (2001). Microsound. Cambridge, MA: MIT Press.
+
+## Seidl, Fabian (2016). Granularsynthese mit Wavesets für Live-Anwendungen. Master Thesis, TU Berlin. https://www2.ak.tu-berlin.de/~akgroup/ak_pub/abschlussarbeiten/2016/Seidl_MasA.pdf
+
+## Wishart, Trevor (1994). Audible Design. York: Orpheus The Pantomime Ltd.
+
+## Xenakis, Iannis (1992). Formalized Music. Hillsdale, NY: Pendragon Press, 2nd Revised edition.
+
+::
+
+
+CLASSMETHODS::
+
+
+method::ar
+
+Creates a new ZeroXBufRd ar UGen.
+
+
+argument::sndBuf
+Buffer or SequenceableCollection of Buffers to read the data from, data must correspond to strong::zeroXBuf::.
+
+argument::zeroXBuf
+Analysis Buffer resp. SequenceableCollection of such, prepared with link::Classes/ZeroXBufWr::. Must refer to data passed to strong::sndBuf::.
+
+argument::bufMix
+A Number indicating the strong::sndBuf:: index, a demand rate or other ugens returning strong::sndBuf:: indices or a SequenceableCollection of such. In contrast to other args combinations of demand rate and normal ugens are not valid. If strong::bufMix:: equals nil (default) the size of the returned signal equals the size of strong::sndBuf::, otherwise it equals its own size.
+
+argument::zeroX
+A Number indicating the index in strong::zeroXBuf::, a demand rate or other ugens returning strong::zeroXBuf:: indices or a SequenceableCollection of such. If in this case the overall multichannel size determined by strong::sndBuf:: or strong::bufMix:: is larger than the size of strong::zeroX:: and the latter contains demand rate ugens, they must all be wrapped into Functions for being used more than once. Defaults to 0.
+
+
+argument::power
+Used for processing the buffer signal according to the formula: sig ** strong::power:: * strong::mul:: + strong::add:: per half waveset. Must be a positive Number, a demand rate or other ugens returning strong::power:: values or a SequenceableCollection of such. If in this case the overall multichannel size determined by strong::sndBuf:: or strong::bufMix:: is larger than the size of strong::power:: and the latter contains demand rate ugens, they must all be wrapped into Functions for being used more than once. Defaults to 1.
+
+argument::mul
+Used for processing the buffer signal according to the formula: sig ** strong::power:: * strong::mul:: + strong::add:: per half waveset. Must be a Number, a demand rate or other ugens returning strong::mul:: values or a SequenceableCollection of such. If in this case the overall multichannel size determined by strong::sndBuf:: or strong::bufMix:: is larger than the size of strong::mul:: and the latter contains demand rate ugens, they must all be wrapped into Functions for being used more than once. Defaults to 1.
+
+argument::add
+Used for processing the buffer signal according to the formula: sig ** strong::power:: * strong::mul:: + strong::add:: per half waveset. Must be a Number, a demand rate or other ugens returning strong::add:: values or a SequenceableCollection of such. If in this case the overall multichannel size determined by strong::sndBuf:: or strong::bufMix:: is larger than the size of strong::add:: and the latter contains demand rate ugens, they must all be wrapped into Functions for being used more than once. Defaults to 0.
+
+
+argument::rate
+Determines the playback rate per half waveset together with strong::rateMul::. Must be a positive Number, a demand rate or other ugens returning strong::rate:: values or a SequenceableCollection of such. If in this case the overall multichannel size determined by strong::sndBuf:: or strong::bufMix:: is larger than the size of strong::rate:: and the latter contains demand rate ugens, they must all be wrapped into Functions for being used more than once. In contrast to other args combinations of demand rate and normal ugens are not valid for implementational reasons. Though you can pass a demand rate ugen here and a normal ugen to strong::rateMul:: (or vice versa) which are then multiplied per half waveset. Defaults to 1.
+
+argument::rateMul
+Determines the playback rate per half waveset together with strong::rate::. Must be a positive Number, a demand rate or other ugens returning strong::rateMul:: values or a SequenceableCollection of such. If in this case the overall multichannel size determined by strong::sndBuf:: or strong::bufMix:: is larger than the size of strong::rateMul:: and the latter contains demand rate ugens, they must all be wrapped into Functions for being used more than once. In contrast to other args combinations of demand rate and normal ugens are not valid for implementational reasons. Though you can pass a normal ugen here and a demand rate ugen to strong::rate:: (or vice versa) which are then multiplied per half waveset. Defaults to 1.
+
+argument::dir
+Determines the playback direction of half wavesets. Must be +1 or -1, a demand rate or other ugens returning strong::dir:: values or a SequenceableCollection of such. If in this case the overall multichannel size determined by strong::sndBuf:: or strong::bufMix:: is larger than the size of strong::dir:: and the latter contains demand rate ugens, they must all be wrapped into Functions for being used more than once. In contrast to other args combinations of demand rate and normal ugens are not valid. Defaults to 1.
+
+
+argument::interpl
+Determines the interpolation type for the BufRd ugens. Must equal 1 (no), 2 (linear) or 4 (cubic) or a SequenceableCollection of these numbers. Defaults to 4.
+
+argument::dUniqueBufSize
+Determines the buffer size for Dunique objects which have to be used in the case of demand rate ugens passed to strong::rate::, strong::dir:: or strong::bufMix::. See link::#Ex. 2::. Must be an Integer or a SequenceableCollection of Integers. Defaults to 1048576. 
+
+argument::length
+Determines the number of triggers before release of the overall asr envelope. Can be a Sequenceable Collection too. Overruled by strong::maxTime:: if this is reached before. Defaults to inf. 
+
+argument::maxTime
+Determines the time before release of the overall asr envelope. Can be a Sequenceable Collection too. Overruled by strong::length:: if this is reached before. Defaults to inf.
+
+
+argument::att
+Attack time of overall asr envelope or SequenceableCollection thereof. Defaults to 0. 
+
+argument::rel
+Release time of overall asr envelope or SequenceableCollection thereof. Defaults to 0.
+
+argument::curve
+Curve of overall asr envelope or SequenceableCollection thereof. Defaults to -4.
+
+argument::doneAction
+Done action of overall asr envelope or SequenceableCollection thereof. Defaults to 0.
+
+
+
+
+section::Examples
+
+
+code::
+(
+// boot with extended resources, might be needed for some examples
+s = Server.local;
+Server.default = s;
+s.options.numWireBufs = 256; 
+s.options.memSize = 8192 * 32; 
+s.reboot;
+)
+::
+
+
+anchor::Ex. 1::
+subsection::Ex. 1: Basic usage
+
+
+code::
+(
+b = Buffer.alloc(s, 2000);
+z = Buffer.alloc(s, 200);
+)
+
+// analyse a short snippet of ring modulation
+
+(
+{
+	var src = SinOsc.ar(300) * SinOsc.ar(120) + SinOsc.ar(30) * 0.1;
+	ZeroXBufWr.ar(src, b, z, startWithZeroX: 1, doneAction: 2);
+	Silent.ar
+}.play
+)
+
+
+// check the waveform
+
+b.plot
+
+
+
+// loop 3rd half waveset
+// compare plot and scope
+
+x = { ZeroXBufRd.ar(b, z, zeroX: 2) }.play
+
+s.scope
+
+x.release
+
+
+// loop a whole waveset
+// demand rate ugens in ZeroXBufRd should always use inf as repeats arg
+ 
+
+x = { ZeroXBufRd.ar(b, z, zeroX: Dseq([1, 2], inf)) }.play
+
+x.release
+
+
+// Note that the distance between zero crossings can be very short,
+// here the half waveset at index 5 (735-740) has a length of only 5 samples and the amplitude is low.
+
+// zero crossing indices
+
+z.loadToFloatArray(action: { |b| b.postln })
+
+
+// the signal is hardly audible, but there as freqscope shows
+
+x = { ZeroXBufRd.ar(b, z, zeroX: 5) }.play
+
+s.freqscope
+
+x.release
+
+
+
+// loop a group of 3 wavesets
+
+x = { ZeroXBufRd.ar(b, z, zeroX: Dseq((1..6), inf)) }.play
+
+x.release
+
+
+
+// sequence multiplier for half wavesets
+
+x = { ZeroXBufRd.ar(b, z, zeroX: Dseq([1, 2], inf), mul: Dseq([1, 0.2], inf)) }.play
+
+x.release
+
+
+// mul can be used for rectifying effects
+
+x = { ZeroXBufRd.ar(b, z, zeroX: Dseq((1..2), inf), mul: Dseq([0, 1, 1], inf)) }.play
+
+x.release
+
+
+
+// add an offset sequence, this results in a pulse-like effect
+
+x = { ZeroXBufRd.ar(b, z, zeroX: Dseq([1, 2], inf), add: Dseq([-0.05, 0.05], inf)) * 0.5 }.play
+
+x.release
+
+x = { ZeroXBufRd.ar(b, z, zeroX: Dseq([1, 2], inf), add: Dseq([0.05, -0.05], inf)) * 0.5 }.play
+
+x.release
+
+
+
+// half wavesets can also get a power,
+// per waveset the signal is calculated according to
+// sig ** power * mul + add
+
+// be careful with this arg moving away from 1 ! 
+// high power values can result in loud signals if the source has values outside [-1, 1] and
+// small power values can also become loud with source values near zero
+
+
+x = { ZeroXBufRd.ar(b, z, zeroX: Dseq([1, 2], inf), power: 0.7) }.play
+
+x.release
+
+
+x = { ZeroXBufRd.ar(b, z, zeroX: Dseq([1, 2], inf), power: Dseq([0.8, 1.7, 1], inf)) }.play
+
+x.release
+::
+
+
+
+anchor::Ex. 2::
+subsection::Ex. 2: The 'rate' and 'dir' args
+
+
+code::
+// needs Buffers from Ex.1
+
+s.scope
+
+
+// playback rates can be defined generally ...
+
+x = { ZeroXBufRd.ar(b, z, zeroX: Dseq([1, 2], inf), rate: 2.5) }.play
+
+x.release
+
+
+// ... or as sequence
+
+x = { ZeroXBufRd.ar(b, z, zeroX: Dseq([1, 2], inf), rate: Dseq((1..3), inf)) }.play
+
+x.release
+
+
+// slightly different: here the whole waveset gets one rate
+
+x = { ZeroXBufRd.ar(b, z, zeroX: Dseq([1, 2], inf), rate: Dstutter(2, Dseq((1..3), inf))) }.play
+
+x.release
+
+
+
+// with the dir argument set to -1 the half wave set is reversed
+
+x = { ZeroXBufRd.ar(b, z, zeroX: 7) }.play
+
+x.release
+
+
+// compare scope, no audible difference here
+
+x = { ZeroXBufRd.ar(b, z, zeroX: 7, dir: -1) }.play
+
+x.release
+
+
+// dir can also be sequenced
+
+x = { ZeroXBufRd.ar(b, z, zeroX: 7, dir: Dseq([1, 1, -1], inf)) }.play
+
+x.release
+
+
+// When demand rate ugens are used for 'rate' or 'dir' args ZeroXBufRd employs Dunique objects.
+// This means that Buffers have to be allocated for counting, and if the Buffer is full
+// the synthesis fails. By default a value of 1048576 is defined for 'dUniqueBufSize'.
+// This should be sufficient for at least some minutes auf audio in average use cases.
+
+// However with very fast triggering you might want to pass a higher value.
+// With multichannel applications it might be necessary then to run the server with higher memSize.
+
+
+// With a deliberately bad (low) size, sequencing fails after a second
+
+x = { ZeroXBufRd.ar(b, z, zeroX: 1, rate: Dseq([1, 2], inf), dUniqueBufSize: 1024) }.play
+
+x.release
+
+// From low values you can roughly estimate the needed dUniqueBufSize to safely run your application
+// for a given time
+::
+
+
+
+
+anchor::Ex. 3::
+subsection::Ex. 3: Passing ordinary UGens as args
+
+code::
+// needs Buffers from Ex.1
+
+// values are sampled and hold for the duration of the segments
+
+s.scope
+
+x = { ZeroXBufRd.ar(b, z, zeroX: SinOsc.ar(SinOsc.ar(0.1).range(0.2, 5)).range(1, 15)) }.play
+
+x.release
+
+
+// more fun with moving rates
+
+(
+x = { 
+	ZeroXBufRd.ar(
+		b, z, 
+		zeroX: LFDNoise3.ar(SinOsc.ar(0.1).range(1, 10)).range(1, 15),
+		rate: SinOsc.ar(SinOsc.ar(0.3).range(0.2, 5)).exprange(1, 5)
+	) ! 2
+}.play
+)
+
+x.release
+
+
+// warp effect with accelerating rates
+
+(
+x = { 
+	ZeroXBufRd.ar(
+		b, z, 
+		zeroX: LFDNoise3.ar(SinOsc.ar(0.1).range(1, 10)).range(1, 15),
+		rate: Dseq((1..50) / 20 + 0.5, inf)
+	) ! 2
+}.play
+)
+
+x.release
+
+
+// also combinations of demand rate and ordinary ugens are possible
+// though with the exception of rate, dir and bufMix args
+
+(
+x = { 
+	ZeroXBufRd.ar(
+		b, z, 
+		zeroX: LFDNoise3.ar(SinOsc.ar(0.1).range(1, 10)).range(1, 15),
+		rate: Dstutter(Dwhite(10, 100), Dwhite(0.5, 2)),
+		mul: Dseq([0.2, 0.2, 1], inf) * LFDNoise3.ar(5).range(1, 5)
+	) ! 2
+}.play
+)
+
+x.release
+
+
+// for combinations of normal and demand ugens with the rate arg rateMul can be used
+
+(
+x = { 
+	ZeroXBufRd.ar(
+		b, z, 
+		zeroX: LFDNoise3.ar(SinOsc.ar(0.1).range(1, 10)).range(1, 15),
+		rate: Dstutter(Dstutter(3, Dwhite(1, 5)), Dseq([0.5, 1, 1.5], inf)),
+		rateMul: LFDNoise3.ar(5).range(1, 5)
+	) ! 2
+}.play
+)
+
+x.release
+
+
+// free resources
+
+(
+b.free;
+z.free;
+)
+::
+
+
+anchor::Ex. 4::
+subsection::Ex. 4: Multichannel usage and the 'bufMix' arg
+
+code::
+// Without passing a bufMix arg the size of the returned signal is determined by the buffer input. 
+// It may be a single channel buffer or an array of single channel buffers, 
+// in correspondence with the analysis buffer(s) - multichannel buffers are not allowed. 
+// If bufMix is passed, it determines the size of the returned signal, 
+// its components can be demand rate or other ugens to control switching between buffers per half waveset.
+
+// Note: buffer switching can become CPU-demanding with a lot of Buffers 
+// as for fast switching it is necessary to play all in parallel
+
+(
+// boot with extended resources
+s = Server.local;
+Server.default = s;
+s.options.numWireBufs = 256; 
+s.options.memSize = 8192 * 32; 
+s.reboot;
+)
+
+
+// prepare 3 buffers
+
+(
+b = { Buffer.alloc(s, 1000, 1) } ! 3;
+z = { Buffer.alloc(s, 100, 1) } ! 3;
+)
+
+// fill with basic waveforms
+(
+{
+	var src = [
+		SinOsc.ar(400),
+		LFTri.ar(400),
+		SinOsc.ar(400) ** 10
+	];
+	ZeroXBufWr.ar(src, b, z, startWithZeroX: 1, doneAction: 2);
+	Silent.ar
+}.play
+)
+
+
+
+s.scope(3)
+
+// play 3 channels
+
+x = { ZeroXBufRd.ar(b, z, zeroX: 1) * 0.1 }.play
+
+x.release
+
+
+// play from 1st buffer
+
+x = { ZeroXBufRd.ar(b, z, bufMix: 0, zeroX: Dseq([0, 1], inf)) * 0.2 }.play
+
+x.release
+
+
+
+// play from 3rd and 1st buffer
+// to use equally defined demand rate ugens for both, wrap them into a Function
+
+x = { ZeroXBufRd.ar(b, z, bufMix: [2, 0], zeroX: { Dseq([0, 1], inf) }) * 0.1 }.play
+
+x.release
+
+
+// play 2 channels with different zeroX sequences
+
+(
+x = {
+	ZeroXBufRd.ar(
+		b, z,
+		bufMix: [1, 2],
+		zeroX: [Dseq([0, 0, 1], inf), Dseq([0, 1], inf)]
+	) * 0.1
+}.play
+)
+
+x.release
+
+
+
+
+// buffers can be switched per half waveset
+
+
+x = { ZeroXBufRd.ar(b, z, bufMix: Dseq([0, 1, 2], inf), zeroX: 2, mul: 0.3) }.play
+
+x.release
+
+
+x = { ZeroXBufRd.ar(b, z, bufMix: Dseq([0, 1], inf), zeroX: Dseq([1, 2], inf), mul: 0.3) }.play
+
+x.release
+
+
+
+// Gendy-like texture
+
+(
+x = {
+	ZeroXBufRd.ar(
+		b, z,
+		bufMix: { Dseq([0, 1, 2], inf) } ! 2,
+		zeroX: 2,
+		mul: 0.1,
+		// array of Drands with different offset
+		// the average of the Drand output is 50,
+		// so on average 1/4 is added to x
+		// and the harmonic relation of L:R is 5:7 -> tritone
+		rate: [1, 1.5].collect { |x| Drand((1..100) / 200 + x, inf) }
+	)
+}.play
+)
+
+x.release
+
+
+// bufMix determines size
+// other args are expanded accordingly
+
+(
+x = {
+	ZeroXBufRd.ar(b, z,
+		bufMix: { Dseq([0, 1, 2], inf) } ! 2,
+		zeroX: { Dseq([1, 2], inf) },
+		mul: { Dstutter(Diwhite(1, 1000), Drand([0.01, 0.07, 0.2], inf)) },
+		rate: { Dstutter(Diwhite(1, 12), Dwhite(0.1, 10)) }
+	)
+}.play
+)
+
+x.release
+::
+
+
+anchor::Ex. 5::
+subsection::Ex. 5: The overall envelope
+
+
+code::
+// The finishing of a ZeroXBufRd is not detemined by finite demand rate ugens but by an overall envelope, 
+// its release section is triggered by a maximum number of half wavesets ('length') or a maximum time. 
+
+// Buffers from Ex.4
+
+{ ZeroXBufRd.ar(b[0], z[0], rate: 1, length: 10, rel: 0.01) }.plot(0.03)
+
+{ ZeroXBufRd.ar(b[0], z[0], rate: 1, maxTime: 0.01, rel: 0.01) }.plot(0.03)
+
+
+// envelopes can be differentiated
+
+{ ZeroXBufRd.ar(b[0..1], z[0..1], rate: 1, maxTime: [0.01, 0.005], rel: [0.005, 0.02]) }.plot(0.03)
+
+{ ZeroXBufRd.ar(b[0..1], z[0..1], rate: 1, length: [7, 2], rel: [0.005, 0.02]) }.plot(0.03)
+
+
+// there should be only one doneAction 2 in this case
+
+{ ZeroXBufRd.ar(b[0..1], z[0..1], rate: 1, maxTime: [0.01, 0.005], rel: [0.05, 0.5], doneAction: [0, 2]) }.play
+
+
+(
+b.do(_.free);
+z.do(_.free);
+)
+::
+
+
+anchor::Ex. 6::
+subsection::Ex. 6: Simultaneous writing and reading
+
+
+code::
+// The reading of half wavesets can start before analysis is finished,
+// if ZeroXBufRd is carefully used in with a bit of delay.
+
+
+// prepare buffers
+
+(
+p = Platform.resourceDir +/+ "sounds/a11wlk01.wav";
+b = Buffer.read(s, p);
+)
+
+(
+z = Buffer.alloc(s, b.duration * 44100 / 5, 1);
+s.scope;
+)
+
+
+
+// Here the average playback rate equals 1 (0.8 = 4/5, 1.25 = 5/4),
+// so playback will not be faster than writing.
+
+(
+{
+	var src = PlayBuf.ar(1, b, BufRateScale.ir(b));
+	// write zero crossings, but no need to overwrite sound buffer
+	ZeroXBufWr.ar(src, b, z, startWithZeroX: 1, writeSndBuf: false);
+	DelayL.ar(
+		ZeroXBufRd.ar(
+			b, z,
+			// Dseries keeps counting through the half-filled zeroX buffer
+			zeroX: Dseries(),
+			rate: Dstutter(10, Dseq([0.8, 1, 1.25], inf)),
+			// estimate end time
+			maxTime: b.duration + 1,
+			doneAction: 2
+		),
+		0.2,
+		0.1
+	) ! 2;
+}.play
+)
+
+(
+b.free;
+z.free;
+)
+
+// The same can be done with a live-generated signal or a mic input,
+// but ensure that reading comes after writing !
+
+
+// FAILURE BY BAD DEFINITION !
+// rates are fast, so zeroX indices are referred before analysis 
+// resulting in garbage noise
+
+
+(
+b = { Buffer.alloc(s, 5 * 44100) } ! 2;
+z = { Buffer.alloc(s, 2 * 44100) } ! 2;
+)
+
+
+(
+{
+	var src = LFDNoise3.ar(300 ! 2), sig;
+	ZeroXBufWr.ar(src, b, z, startWithZeroX: 1);
+	sig = DelayL.ar(
+		ZeroXBufRd.ar(
+			b, z,
+			// Dseries keeps counting through the half-filled zeroX buffer
+			zeroX: { Dseries() },
+
+			rate: { Dseq((1..10) / LFDNoise3.ar(3).range(5, 10) + 1, inf) },
+			mul: { Dstutter(Dwhite(50, 500), Drand([0.02, 0.1, 0.5], inf)) },
+			// estimate end time
+			maxTime: 10,
+			att: 0.2,
+			rel: 5,
+			doneAction: 2
+		),
+		0.2,
+		0.1
+	);
+	LeakDC.ar(sig)
+}.play
+)
+
+
+
+//  Reasonable realtime usage
+//  zeroX is deferred by stuttering, rates are sufficiently low
+
+(
+b.do(_.zero);
+z.do(_.zero);
+)
+
+
+(
+{
+	var src = LFDNoise3.ar(3000 ! 2);
+	ZeroXBufWr.ar(src, b, z, startWithZeroX: 1);
+	DelayL.ar(
+		ZeroXBufRd.ar(	
+			b, z,
+			zeroX: { Dstutter(Dwhite(50, 300), Dseries()) * 2 + Dseq((1..4), inf) },
+			rate: { Dseq((1..5) / LFDNoise3.ar(3).range(5, 10) + 0.5, inf) },
+			mul: { Dstutter(Dwhite(50, 500), Drand([0.05, 0.3, 0.7], inf)) },
+			// estimate end time
+			maxTime: 20,
+			att: 0.2,
+			rel: 5,
+			doneAction: 2
+		),
+		0.2,
+		0.1
+	);
+}.play
+)
+
+(
+b.do(_.free);
+z.do(_.free);
+)
+::
+
+
+
+anchor::Ex. 7::
+subsection::Ex. 7: Adjusting zero crossings
+
+
+code::
+// In general a half waveset isn't totally unipolar:
+// Zero crossing indices indicate the change of the sign of a signal,
+// so with this convention the last sample of the half waveset itself
+// has a different sign.
+
+// This can have the consequence that, depending on the playback rate,
+// sawtooth-like effects might occur. Such artefacts can be circumvented by
+// adjusting buffer values at zero crossing indices to 0,
+// so playback of (half) wavesets is smoothened, especially with extreme rate values.
+
+
+(
+p = Platform.resourceDir +/+ "sounds/a11wlk01.wav";
+b = Buffer.read(s, p);
+z = Buffer.alloc(s, 100000);
+)
+
+// analyse buffer
+(
+{
+	var src = PlayBuf.ar(1, b, BufRateScale.ir(b), doneAction: 2);
+	ZeroXBufWr.ar(src, b, z, startWithZeroX: 0, doneAction: 2);
+}.play
+)
+
+// this half waveset clearly shows the effect
+// (tested with samplerate 44100)
+
+s.scope
+
+x = { ZeroXBufRd.ar(b, z, nil, 220, rate: 0.1) * 2 }.play
+
+
+// adjust zeros, also works with arrays of Buffers
+// you can apply it while running, it might take a moment though
+
+b.adjustZeroXs(z)
+
+x.release
+
+
+// alternatively adjusting zero crossings can be chosen as option with analysis:
+// set flag 'adjustZeroXs' to 1
+
+
+(
+p = Platform.resourceDir +/+ "sounds/a11wlk01.wav";
+b = Buffer.read(s, p);
+z = Buffer.alloc(s, 100000);
+)
+
+(
+{
+	var src = PlayBuf.ar(1, b, BufRateScale.ir(b), doneAction: 2);
+	ZeroXBufWr.ar(src, b, z, startWithZeroX: 0, adjustZeroXs: 1, doneAction: 2);
+}.play
+)
+
+s.scope
+
+x = { ZeroXBufRd.ar(b, z, nil, 220, rate: 0.1) * 2 }.play
+
+x.release
+
+
+// the flag 'adjustZeroXs' can also be set to 2
+// in this case zero crossings have a minimum distance of 2 samples
+// This goes along with ZeroXBufRd's convention to play one half waveset with a minimum length of 2 samples
+// (otherwise it couldn't act as a trigger)
+
+// the difference can be observed with fast switches between signs like with WhiteNoise
+
+(
+b = Buffer.alloc(s, 2000);
+z = Buffer.alloc(s, 2000);
+)
+
+(
+{
+	var src = WhiteNoise.ar();
+	ZeroXBufWr.ar(src, b, z, startWithZeroX: 0, adjustZeroXs: 1, doneAction: 2) * 0.2;
+}.play
+)
+
+s.scope
+
+
+// this generates a more pulsar-like waveform with adjacent zero crossings,
+// note that transitions to flat sections are smoothened by cubic interpolation
+
+x = { ZeroXBufRd.ar(b, z, nil, Dseq((0..50), inf), rate: 0.03) * 0.5 }.play
+
+x.release
+
+
+// there are no flat sections with 'adjustZeroXs' set to 2
+
+(
+b.zero;
+z.zero;
+)
+
+(
+{
+	var src = WhiteNoise.ar();
+	ZeroXBufWr.ar(src, b, z, startWithZeroX: 0, adjustZeroXs: 2, doneAction: 2) * 0.2;
+}.play
+)
+
+
+x = { ZeroXBufRd.ar(b, z, nil, Dseq((0..50), inf), rate: 0.03) * 0.5 }.play
+
+x.release
+::
+
+
+
+anchor::Ex. 8::
+subsection::Ex. 8: Granulation with movement through a buffer
+
+See link::Tutorials/Buffer_Granulation#Ex.1g::
+

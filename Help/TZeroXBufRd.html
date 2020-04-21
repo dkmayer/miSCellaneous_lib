@@ -1,0 +1,734 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 27.0px; text-indent: -27.0px; font: 12.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 27.0px; text-indent: -27.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 27.0px; text-indent: -27.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p13 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0326cb}
+p.p19 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; color: #cd1c00}
+p.p20 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00; min-height: 12.0px}
+p.p21 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p22 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #cd1c00}
+p.p23 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p24 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #0326cb}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #042eee}
+span.s5 {color: #00bbff}
+span.s6 {color: #0326cb}
+span.s7 {color: #0433ff}
+span.s8 {color: #ff7c00}
+span.s9 {color: #434ccb}
+span.s10 {color: #737373}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>TZeroXBufRd<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>triggers sequences of segments between zero crossings from one or more buffers with demand-rate control</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="../miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: UGen</b></p>
+<p class="p4"><br></p>
+<p class="p1">TZeroXBufRd is for triggering possibly overlapped segments between zero crossings (half wavesets) from one or more buffers, whereby several reading and processing parameters can be sequenced with demand rate ugens. Full waveset sequences can so be generated as a special case. It needs analysis data prepared with <a href="../ZeroXBufWr.html"><span class="s4">ZeroXBufWr</span></a>. For consecutive reading of segments between zero crossings see <a href="../ZeroXBufRd.html"><span class="s4">ZeroXBufRd</span></a>. ZeroXBufRd / TZeroXBufRd can be used for a number of synthesis / processing techniques in a field between wavesets [1, 4, 5], pulsar synthesis [1, 3], buffer modulation and rectification (which are both a kind of waveshaping) and stochastic concatenation methods [2, 6]. There are already existing SC waveset implementations like Alberto de Campo's Wavesets quark (<a href="https://github.com/supercollider-quarks/quarks"><span class="s4">https://github.com/supercollider-quarks/quarks</span></a>) and Olaf Hochherz's SPList (<a href="https://github.com/olafklingt/SPList"><span class="s4">https://github.com/olafklingt/SPList</span></a>), which do language-side analysis and Fabian Seidl's RTWaveSets plugin (<a href="https://github.com/tai-studio/RTWaveSets"><span class="s4">https://github.com/tai-studio/RTWaveSets</span></a>). My focus has been server-side analysis and demand rate ugen control of half waveset parameters as well as multichannel and buffer switch options. Realtime control while analysis is possible, as long as reading is only refering to already analysed sections, but clearly most flexibility is given with a fully analysed buffer, which can also be done in quasi realtime.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>Depending on the multichannel sizes and the options used (rate and dir sequencing) it might be necessary to increase server resources, i.e. the number of interconnect buffers and / or memory size (e.g. s.options.numWireBufs = 256; s.options.memSize = 8192 * 32; s.reboot). Because of overlappings this is more relevant with TZeroXBufRd than with ZeroXBufRd.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>Often it pays to adjust zero crossings in the sound buffer effectively to 0, that way sawtooth-like interpolation artefacts can be avoided. See Ex.1 below.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>Demand rate UGens in ZeroXBufRd / TZeroXBufRd must always use inf as repeats arg, this is of course not necessary for nested ones. You might pass a length arg though (Ex. 5).</p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>The distance between triggers must remain above control duration, otherwise the synthesis fails. For faster trigerring you'd have to use the server with a lower blocksize.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>As triggered half wavesets can overlap you'd have to care for a sufficiently large 'overlapSize' arg. See Ex.3 for possible estimations.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>For avoiding too long half wavesets it might be useful to apply LeakDC resp. a high pass filter before analysis.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>In rare cases I noticed corrupted buffers in multi buffer examples for no obvious reason.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>CREDITS: </b>Thanks to Tommaso Settimi for an inspiring discussion, which gave me a nudge to tackle these classes.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>REFERENCES:</b></p>
+<p class="p2"><br></p>
+<p class="p5">[1]<span class="Apple-tab-span">	</span>de Campo, Alberto. "Microsound" In: Wilson, S., Cottle, D. and Collins, N. (eds). 2011.<span class="Apple-converted-space"> </span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><i>The SuperCollider Book</i>. Cambridge, MA: MIT Press, 463-504.</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5">[2]<span class="Apple-tab-span">	</span>Luque, Sergio (2006). <i>Stochastic Synthesis, Origins and Extensions</i>. Institute of Sonology, Royal Conservatory, The Netherlands.<span class="Apple-converted-space"> </span></p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><a href="http://sergioluque.com/"><span class="s3">http://sergioluque.com</span></a></span></p>
+<p class="p6"><br></p>
+<p class="p5">[3]<span class="Apple-tab-span">	</span>Roads, Curtis (2001). <i>Microsound</i>. Cambridge, MA: MIT Press.</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5">[4]<span class="Apple-tab-span">	</span>Seidl, Fabian (2016). <i>Granularsynthese mit Wavesets für Live-Anwendungen</i>. Master Thesis, TU Berlin.</p>
+<p class="p7"><span class="s2"><span class="Apple-tab-span">	</span><a href="https://www2.ak.tu-berlin.de/~akgroup/ak_pub/abschlussarbeiten/2016/Seidl_MasA.pdf"><span class="s3">https://www2.ak.tu-berlin.de/~akgroup/ak_pub/abschlussarbeiten/2016/Seidl_MasA.pdf</span></a></span></p>
+<p class="p6"><br></p>
+<p class="p5">[5]<span class="Apple-tab-span">	</span>Wishart, Trevor (1994). <i>Audible Design</i>. York: Orpheus The Pantomime Ltd.<span class="Apple-converted-space"> </span></p>
+<p class="p6"><br></p>
+<p class="p5">[6]<span class="Apple-tab-span">	</span>Xenakis, Iannis (1992). <i>Formalized Music</i>. Hillsdale, NY: Pendragon Press, 2nd Revised edition.</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>See also: </b><a href="../ZeroXBufRd.html"><span class="s3">ZeroXBufRd</span></a>,<b> </b><a href="../ZeroXBufWr.html"><span class="s3">ZeroXBufWr</span></a>,<b> </b><a href="../DX suite.html"><span class="s3">DX suite</span></a>,<b> </b><a href="../DXMix.html"><span class="s3">DXMix</span></a>, <a href="../DXMixIn.html"><span class="s3">DXMixIn</span></a>, <a href="../DXEnvFan.html"><span class="s3">DXEnvFan</span></a>,<b> </b><a href="../DXEnvFanOut.html"><span class="s3">DXEnvFanOut</span></a>, <a href="../DXFanOut.html"><span class="s3">DXFanOut</span></a>, <a href="../Buffer Granulation.html"><span class="s3">Buffer Granulation</span></a>, <a href="../Live Granulation.html"><span class="s3">Live Granulation</span></a>, <a href="../PbindFx.html"><span class="s3">PbindFx</span></a></span><span class="s5">,</span><span class="s2"> <a href="../kitchen studies.html"><span class="s3">kitchen studies</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p8"><b>Creation / Class Methods</b></p>
+<p class="p9"><br></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span>*ar (sndBuf, zeroXBuf, bufMix, trig, zeroX = 0, xNum = 1, xRep = 1,<span class="Apple-converted-space">  </span>power = 1, mul = 1, add = 0, rate = 1, dir = 1,<span class="Apple-converted-space"> </span></b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>interpl = 4, overlapSize = 10, length = inf, maxTime = inf, att = 0, rel = 1, curve = -4, doneAction = 0)</b></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>sndBuf </b>- Buffer or SequenceableCollection of Buffers to read the data from, data must correspond to <b>zeroXBuf</b>.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>zeroXBuf </b>- Analysis Buffer resp. SequenceableCollection of such, prepared with <a href="../ZeroXBufWr.html"><span class="s4">ZeroXBufWr</span></a>.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Must refer to data passed to <b>sndBuf</b>.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>bufMix </b>- A Number indicating the <b>sndBuf</b> index, a demand rate or other ugens returning <b>sndBuf</b> indices or<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SequenceableCollection of such.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If <b>bufMix </b>equals<b> </b>nil (default) the size of the returned signal equals the size of <b>sndBuf</b>,</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>otherwise it equals its own size.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>trig </b>- A trigger signal for starting new half waveset groups.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>zeroX </b>- A Number indicating the index in <b>zeroXBuf</b>, a demand rate or other ugens returning <b>zeroXBuf</b> indices or<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SequenceableCollection of such.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If in this case the overall multichannel size determined by <b>sndBuf </b>or<b> bufMix </b>is larger than the size of <b>zeroX</b></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and the latter contains demand rate ugens, they must all be wrapped into Functions for being used more than once.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 0.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>xNum </b>- Determining the number of half wavesets starting at <b>zeroX</b>, a demand rate or other ugens returning these numbers or<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SequenceableCollection of such.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If in this case the overall multichannel size determined by <b>sndBuf </b>or<b> bufMix </b>is larger than the size of <b>xNum</b></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and the latter contains demand rate ugens, they must all be wrapped into Functions for being used more than once.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 1.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>xRep </b>- Determining the number of repetitions of half wavesets resp. half waveset groups (given by <b>xNum</b>) starting at <b>zeroX</b>,<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a demand rate or other ugens returning these numbers or a SequenceableCollection of such.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If in this case the overall multichannel size determined by <b>sndBuf </b>or<b> bufMix </b>is larger than the size of <b>xNum</b></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and the latter contains demand rate ugens, they must all be wrapped into Functions for being used more than once.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 1.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>power </b>- Used for processing the buffer signal according to the formula: sig ** <b>power</b> * <b>mul</b> + <b>add</b> per half waveset group.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Must be a positive Number, a demand rate or other ugens returning <b>power </b>values or<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SequenceableCollection of such.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If in this case the overall multichannel size determined by <b>sndBuf </b>or<b> bufMix </b>is larger than the size of <b>power</b></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and the latter contains demand rate ugens, they must all be wrapped into Functions for being used more than once.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 1.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>mul </b>- Used for processing the buffer signal according to the formula: sig ** <b>power</b> * <b>mul</b> + <b>add</b> per half waveset group.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Must be a Number, a demand rate or other ugens returning <b>mul </b>values or<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SequenceableCollection of such.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If in this case the overall multichannel size determined by <b>sndBuf </b>or<b> bufMix </b>is larger than the size of <b>mul</b></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and the latter contains demand rate ugens, they must all be wrapped into Functions for being used more than once.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 1.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>add </b>- Used for processing the buffer signal according to the formula: sig ** <b>power</b> * <b>mul</b> + <b>add</b> per half waveset group.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Must be a Number, a demand rate or other ugens returning <b>add </b>values or<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a SequenceableCollection of such.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If in this case the overall multichannel size determined by <b>sndBuf </b>or<b> bufMix </b>is larger than the size of <b>add</b></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and the latter contains demand rate ugens, they must all be wrapped into Functions for being used more than once.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 0.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>rate </b>- Determines the playback rate per half waveset group.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Must be a positive Number, a demand rate or other ugens returning <b>rate </b>values or a SequenceableCollection of such.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If in this case the overall multichannel size determined by <b>sndBuf </b>or<b> bufMix </b>is larger than the size of <b>rate</b></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and the latter contains demand rate ugens, they must all be wrapped into Functions for being used more than once.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 1.<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>dir </b>- Determines the playback direction of half waveset groups.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Must be +1 or -1, a demand rate or other ugens returning <b>dir </b>values or a SequenceableCollection of such.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If in this case the overall multichannel size determined by <b>sndBuf </b>or<b> bufMix </b>is larger than the size of <b>dir</b></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and the latter contains demand rate ugens, they must all be wrapped into Functions for being used more than once.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 1.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>interpl </b>- Determines the interpolation type for the BufRd ugens.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Must equal 1 (no), 2 (linear) or 4 (cubic) or a SequenceableCollection of these numbers.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 4.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>overlapSize </b>- Determines the maximum overlap of half waveset groups.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This is a fixed number or a SequenceableCollection thereof determining the size of internally used</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>multichannel signals for overlappings. If this number is too low the synthesis fails.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>See Ex. 3 for estimating a sufficiently large value.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 10.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>length </b>- Determines the number of triggers before release of the overall asr envelope.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Can be a Sequenceable Collection too. Overruled by <b>maxTime</b> if this is reached before.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to inf.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>maxTime </b>- Determines the time before release of the overall asr envelope.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Can be a Sequenceable Collection too. Overruled by <b>length</b> if this is reached before.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to inf.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>att </b>- Attack time of overall asr envelope or SequenceableCollection thereof.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 0.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>rel </b>- Release time of overall asr envelope or SequenceableCollection thereof. <span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 0.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>curve </b>- Curve of overall asr envelope or SequenceableCollection thereof. <span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to -4.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>doneAction </b>- Done action of overall asr envelope or SequenceableCollection thereof. <span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 0.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p11"><br></p>
+<p class="p14"><b>Examples</b></p>
+<p class="p15"><br></p>
+<p class="p16">// See also the examples of ZeroXBufRd help. Most features work in the same way,</p>
+<p class="p16">// this help file focusses rather on the differences.</p>
+<p class="p4"><br></p>
+<p class="p15"><br></p>
+<p class="p14"><b>Ex.1) Basic usage</b></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p16">// prepare two short buffers for audio and zero crossing data</p>
+<p class="p16">// the size of needed zeroX data space can be roughly estimated</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17">b = <span class="s6">Buffer</span>.alloc(s, 256);</p>
+<p class="p17">z = <span class="s6">Buffer</span>.alloc(s, 32);</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p16">// analyse a short snippet of modulation</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17">x = {</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="s7">var</span> src = <span class="s6">SinOsc</span>.ar(<span class="s6">SinOsc</span>.ar(1200, 0, 1000, 100)) * <span class="s6">SinOsc</span>.ar(700) - 0.1;</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="s6">ZeroXBufWr</span>.ar(src, b, z, startWithZeroX: 0, doneAction: 2);</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>Silent<span class="s2">.ar</span></p>
+<p class="p17">}.play</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// check the waveform</p>
+<p class="p4"><br></p>
+<p class="p17">b.plot</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// It's important to note that the maximum trigger rate should be below control rate,</p>
+<p class="p16">// otherwise sequencing with demand rate ugens is messed up.</p>
+<p class="p16">// This limitation can be circumvented by rebooting the server with a lower blockSize.</p>
+<p class="p4"><br></p>
+<p class="p16">// demand rate ugens in TZeroXBufRd should always use inf as repeats arg</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17"><span class="s8">~maxTrigRate</span> = s.sampleRate / s.options.blockSize;</p>
+<p class="p4"><br></p>
+<p class="p17">x = {</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>TZeroXBufRd<span class="s2">.ar(</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b, z,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig: <span class="s6">Impulse</span>.ar(<span class="s6">MouseX</span>.kr(10, <span class="s8">~maxTrigRate</span>)),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zeroX: <span class="s6">Dseq</span>([2, 3], <span class="s9">inf</span>),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rate: 0.2</p>
+<p class="p17"><span class="Apple-tab-span">	</span>) * 0.1</p>
+<p class="p17">}.play</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p17">s.scope</p>
+<p class="p4"><br></p>
+<p class="p17">x.release</p>
+<p class="p4"><br></p>
+<p class="p16">// In this example waveforms are slightly crossing the x axis.</p>
+<p class="p16">// This comes from the fact that buffer values at zero crossing positions are not equal zero,</p>
+<p class="p16">// but just of a different sign than the sample before.</p>
+<p class="p16">// The effect is also explained in ZeroXBufRd's help Ex.7.</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17">{</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>TZeroXBufRd<span class="s2">.ar(</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b, z,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig: <span class="s6">Impulse</span>.ar(150),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zeroX: <span class="s6">Dseq</span>([2, 3], <span class="s9">inf</span>),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rate: 0.2</p>
+<p class="p17"><span class="Apple-tab-span">	</span>) * 0.2</p>
+<p class="p17">}.plot(0.03)</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// To get cleaner waveforms it's therefore recommended to adjust zero crossings in the buffer.</p>
+<p class="p16">// This can also be done while analysis by using the flag 'adjustZeroXs' in ZeroXBufWr.</p>
+<p class="p4"><br></p>
+<p class="p17">b.adjustZeroXs(z)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// smoother result</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17">{</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>TZeroXBufRd<span class="s2">.ar(</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b, z,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig: <span class="s6">Impulse</span>.ar(150),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zeroX: <span class="s6">Dseq</span>([2, 3], <span class="s9">inf</span>),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rate: 0.2</p>
+<p class="p17"><span class="Apple-tab-span">	</span>) * 0.2</p>
+<p class="p17">}.plot(0.03)</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// mul and dir can be used in the same way as with ZeroXBufRd</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17">x = {</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>TZeroXBufRd<span class="s2">.ar(</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b, z,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig: <span class="s6">Impulse</span>.ar(<span class="s6">MouseX</span>.kr(30, <span class="s8">~maxTrigRate</span>)),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zeroX: <span class="s6">Dseq</span>([2, 3], <span class="s9">inf</span>) + <span class="s6">LFDNoise0</span>.ar(10).range(0, 5),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mul: <span class="s6">Dseq</span>([0.05, 0.1, 0.35], <span class="s9">inf</span>),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rate: 0.5,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>dir: <span class="s6">Dseq</span>([1, -1], <span class="s9">inf</span>),</p>
+<p class="p17"><span class="Apple-tab-span">	</span>)</p>
+<p class="p17">}.play</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p17">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// unlike with ZeroXBufRd with rate there's no restriction for using<span class="Apple-converted-space"> </span></p>
+<p class="p16">// combinations of demand rate and normal ugens</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17">x = {</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>TZeroXBufRd<span class="s2">.ar(</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b, z,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig: <span class="s6">Impulse</span>.ar(<span class="s6">MouseX</span>.kr(30, <span class="s8">~maxTrigRate</span>)),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zeroX: <span class="s6">Dseq</span>([2, 3], <span class="s9">inf</span>),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>mul: <span class="s6">Dseq</span>([0.05, 0.1, 0.35], <span class="s9">inf</span>),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rate: <span class="s6">Dseq</span>([0.2, 0.5, 1], <span class="s9">inf</span>) * <span class="s6">SinOsc</span>.ar(5).range(0.8, 1.2),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>dir: <span class="s6">Dseq</span>([1, -1], <span class="s9">inf</span>),</p>
+<p class="p17"><span class="Apple-tab-span">	</span>)</p>
+<p class="p17">}.play</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p17">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// power arg</p>
+<p class="p19">// be careful with this arg moving away from 1 !<span class="Apple-converted-space"> </span></p>
+<p class="p19">// high power values can result in loud signals if the source has values outside [-1, 1] and</p>
+<p class="p19">// small power values can also become loud with source values near zero</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17">x = {</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>TZeroXBufRd<span class="s2">.ar(</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b, z,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig: <span class="s6">Impulse</span>.ar(<span class="s6">MouseX</span>.kr(30, <span class="s8">~maxTrigRate</span>)),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zeroX: <span class="s6">Dseq</span>([2, 3], <span class="s9">inf</span>),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>power: <span class="s6">MouseY</span>.kr(0.3, 2),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rate: 0.2,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>dir: <span class="s6">Dseq</span>([1, 1, 1, -1], <span class="s9">inf</span>),</p>
+<p class="p17"><span class="Apple-tab-span">	</span>).tanh * 0.3</p>
+<p class="p17">}.play</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p17">x.release</p>
+<p class="p20"><br></p>
+<p class="p4"><br></p>
+<p class="p14"><b>Ex.2) The 'xNum' and 'xRep' args</b></p>
+<p class="p4"><br></p>
+<p class="p16">// needs Buffers from Ex.1</p>
+<p class="p4"><br></p>
+<p class="p16">// With ZeroXBufRd repetitions of (groups of) half wavesets can easily be defined</p>
+<p class="p16">// with passing appropriate demand rate ugens to the zeroX arg.</p>
+<p class="p16">// With TZeroXBufRd the situation is different as the use of an external trigger</p>
+<p class="p16">// opens the freedom to specify the sequences of such groups independently.</p>
+<p class="p4"><br></p>
+<p class="p16">// The following plots show the options in the case of non-overlapping groups.</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// Half waveset and full waveset at indices 2 and 3</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17">{</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>TZeroXBufRd<span class="s2">.ar(</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b, z,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig: <span class="s6">Impulse</span>.ar(100),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>xNum: <span class="s6">Dseq</span>([1, 2], <span class="s9">inf</span>),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zeroX: <span class="s6">Dseq</span>([2, 3], <span class="s9">inf</span>),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rate: 0.2</p>
+<p class="p17"><span class="Apple-tab-span">	</span>);</p>
+<p class="p17">}.plot(0.03)</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p16">// Repeated half wavesets</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17">{</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>TZeroXBufRd<span class="s2">.ar(</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b, z,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig: <span class="s6">Impulse</span>.ar(50),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>xRep: 3,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zeroX: <span class="s6">Dseq</span>([2, 3], <span class="s9">inf</span>),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rate: 0.2</p>
+<p class="p17"><span class="Apple-tab-span">	</span>);</p>
+<p class="p17">}.plot(0.05)</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// Sequencing half waveset number and repetitions</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17">{</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>TZeroXBufRd<span class="s2">.ar(</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b, z,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig: <span class="s6">Impulse</span>.ar(50),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>xNum: <span class="s6">Dseq</span>([1, 2, 3], <span class="s9">inf</span>),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>xRep: <span class="s6">Dseq</span>([3, 2, 1], <span class="s9">inf</span>),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zeroX: <span class="s6">Dseq</span>([2, 3], <span class="s9">inf</span>),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rate: 0.2</p>
+<p class="p17"><span class="Apple-tab-span">	</span>);</p>
+<p class="p17">}.plot(0.14)</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14"><b>Ex.3) The 'overlapSize' arg</b></p>
+<p class="p4"><br></p>
+<p class="p20"><br></p>
+<p class="p16">// TZeroXBufRd enables overlappings of half wavesets, the maximum number of</p>
+<p class="p16">// overlaps is given with the non-modulatable arg 'overlapSize' which defaults to 10.</p>
+<p class="p16">// So if waveset groups are too long and/or the trigger rate is too high</p>
+<p class="p16">// groups will be cut and the synthesis, according to the other passed args, fails.</p>
+<p class="p20"><br></p>
+<p class="p16">// Supposed constant values, the minimum necessary overlapSize can be calculated</p>
+<p class="p16">// by the formula:</p>
+<p class="p4"><br></p>
+<p class="p16">// ceiling((wavesetGroupSampleNum * trigRate) / (sampleRate * rate))</p>
+<p class="p4"><br></p>
+<p class="p16">// where wavesetGroupSampleNum means the number of samples of a group,</p>
+<p class="p16">// which consists of xNum * xRep half wavesets.</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// It's the user's responsibility to care for a sufficiently large overlapSize,</p>
+<p class="p16">// resp. sufficiently low trigger rates, xNum and xRep args as well as not too low playback rates.</p>
+<p class="p16">// With recorded sounds it might be necessary to estimate the largest half wavesets</p>
+<p class="p16">// by analysis in the language.</p>
+<p class="p4"><br></p>
+<p class="p16">// An easy way to reduce the maximum and average half waveset length is<span class="Apple-converted-space"> </span></p>
+<p class="p16">// repeating the zeroX analysis with a LeakDC or high pass filter applied.</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// Buffers from Ex.1</p>
+<p class="p16">// We suppose a sample rate of 44100</p>
+<p class="p4"><br></p>
+<p class="p17">b.loadToFloatArray(action: { <span class="s7">|b|</span> v = b })</p>
+<p class="p4"><br></p>
+<p class="p17">z.loadToFloatArray(action: { <span class="s7">|b|</span> w = b })</p>
+<p class="p4"><br></p>
+<p class="p16">// zero crossing analysis data</p>
+<p class="p4"><br></p>
+<p class="p17">w</p>
+<p class="p4"><br></p>
+<p class="p16">// with zeroX = 1 and xNum = 7 we have a chunk of 194 samples</p>
+<p class="p4"><br></p>
+<p class="p17">w[8] - w[1]</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// according to the above formula, with a trigger rate of 500 and</p>
+<p class="p16">// a playback rate of 0.5 the minimal necessary overlapSize is 5</p>
+<p class="p4"><br></p>
+<p class="p17">194 * 500 / (44100 * 0.5)</p>
+<p class="p4"><br></p>
+<p class="p17">-&gt; 4.3990929705215</p>
+<p class="p4"><br></p>
+<p class="p16">// check with overlapSizes of 5 (or higher),</p>
+<p class="p16">// it's the same and sounding smooth,</p>
+<p class="p16">// with overlapSize = 4 the result is erroneous, resp. distorted</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17">x = {</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>TZeroXBufRd<span class="s2">.ar(</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b, z,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig: <span class="s6">Impulse</span>.ar(500),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zeroX: 1,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>xNum: 7,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rate: 0.5,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>overlapSize: 5,</p>
+<p class="p17"><span class="Apple-tab-span">	</span>) * 0.1</p>
+<p class="p17">}.play</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p17">s.scope</p>
+<p class="p4"><br></p>
+<p class="p17">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14"><b>Ex.4) Multichannel usage and the 'bufMix' arg</b></p>
+<p class="p21"><br></p>
+<p class="p16">// This is very simliar to the conventions of ZeroXBufRd,</p>
+<p class="p16">// buffers can be switched per trigger.</p>
+<p class="p20"><br></p>
+<p class="p16">// Without passing a bufMix arg the size of the returned signal is determined by the buffer input.<span class="Apple-converted-space"> </span></p>
+<p class="p16">// It may be a single channel buffer or an array of single channel buffers,<span class="Apple-converted-space"> </span></p>
+<p class="p16">// in correspondence with the analysis buffer(s) - multichannel buffers are not allowed.<span class="Apple-converted-space"> </span></p>
+<p class="p16">// If bufMix is passed, it determines the size of the returned signal,<span class="Apple-converted-space"> </span></p>
+<p class="p16">// its components can be demand rate or other ugens to control switching between buffers per half waveset groups.</p>
+<p class="p20"><br></p>
+<p class="p16">// Note: buffer switching can become CPU-demanding with a lot of Buffers<span class="Apple-converted-space"> </span></p>
+<p class="p16">// as for fast switching it is necessary to play all in parallel</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p16">// boot with extended resources</p>
+<p class="p17">s = <span class="s6">Server</span>.local;</p>
+<p class="p17"><span class="s6">Server</span>.default = s;</p>
+<p class="p17">s.options.numWireBufs = 256;<span class="Apple-converted-space"> </span></p>
+<p class="p17">s.options.memSize = 8192 * 32;<span class="Apple-converted-space"> </span></p>
+<p class="p17">s.reboot;</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// prepare 3 buffers</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17">b = { <span class="s6">Buffer</span>.alloc(s, 1000, 1) } ! 3;</p>
+<p class="p17">z = { <span class="s6">Buffer</span>.alloc(s, 100, 1) } ! 3;</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p16">// fill with basic waveforms</p>
+<p class="p17">(</p>
+<p class="p17">{</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="s7">var</span> src = [</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">SinOsc</span>.ar(400),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">LFTri</span>.ar(400),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">SinOsc</span>.ar(400) ** 10</p>
+<p class="p17"><span class="Apple-tab-span">	</span>];</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="s6">ZeroXBufWr</span>.ar(src, b, z, startWithZeroX: 1, doneAction: 2);</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>Silent<span class="s2">.ar</span></p>
+<p class="p17">}.play</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p17">s.scope</p>
+<p class="p4"><br></p>
+<p class="p16">// play 2 channels with sine and triangle, where</p>
+<p class="p16">// triangle is alternating between half and full waveset</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17">x = {</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>TZeroXBufRd<span class="s2">.ar(</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b, z,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig: <span class="s6">Impulse</span>.ar(100),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>xNum: [2, <span class="s6">Dseq</span>([1, 2], <span class="s9">inf</span>)],</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zeroX: 0,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>bufMix: [0, 1]</p>
+<p class="p17"><span class="Apple-tab-span">	</span>) * 0.1</p>
+<p class="p17">}.play</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p17">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// sequencing repetitions</p>
+<p class="p16">// if both channels should get the same sequence wrap demand rate ugen into a Function</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17">x = {</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>TZeroXBufRd<span class="s2">.ar(</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b, z,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig: <span class="s6">Impulse</span>.ar(100),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>xNum: 1,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>xRep: { <span class="s6">Dseq</span>((1..5), <span class="s9">inf</span>) },</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zeroX: 0,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>bufMix: [0, 1],</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rate: 0.7</p>
+<p class="p17"><span class="Apple-tab-span">	</span>) * 0.1</p>
+<p class="p17">}.play</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p17">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// overlapping groups</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17">x = {</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>TZeroXBufRd<span class="s2">.ar(</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b, z,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig: <span class="s6">Impulse</span>.ar(100),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>xNum: 1,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>xRep: [<span class="s6">Dseq</span>((1..15), <span class="s9">inf</span>), <span class="s6">Dseq</span>((15..1), <span class="s9">inf</span>)],</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zeroX: 0,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>bufMix: [0, 1],</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rate: <span class="s6">MouseX</span>.kr(0.2, 3),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>overlapSize: 10</p>
+<p class="p17"><span class="Apple-tab-span">	</span>) * 0.1</p>
+<p class="p17">}.play</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p17">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// estimate the maximum xRep for the given overlapSize,</p>
+<p class="p16">// in the above example (suppose samplerate 44100):</p>
+<p class="p16">// as the buffers have been generated with freq = 400,</p>
+<p class="p16">// we can roughly estimate the half wavesets with 55 samples.</p>
+<p class="p4"><br></p>
+<p class="p16">// According to the formula of Ex. 2</p>
+<p class="p4"><br></p>
+<p class="p17">55 * xRep * 100 / (44100 * 0.2) = 10</p>
+<p class="p4"><br></p>
+<p class="p17">xRep = (44100 * 0.2) * 10 / (55 * 100)</p>
+<p class="p4"><br></p>
+<p class="p17">-&gt; 16.036363636364</p>
+<p class="p4"><br></p>
+<p class="p16">// so with xRep values up to 17 we get a bit of distortion besides the aliasing (hardly audible),</p>
+<p class="p16">// it gets stronger with lower overlapSize and disappears with higher values</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17">x = {</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>TZeroXBufRd<span class="s2">.ar(</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b, z,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig: <span class="s6">Impulse</span>.ar(100),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>xNum: 1,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>xRep: [<span class="s6">Dseq</span>((1..17), <span class="s9">inf</span>), <span class="s6">Dseq</span>((17..1), <span class="s9">inf</span>)],</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zeroX: 1,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>bufMix: [0, 1],</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rate: 0.2,</p>
+<p class="p16"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>overlapSize: 10 <span class="Apple-converted-space">  </span></span>// check with higher and lower values</p>
+<p class="p17"><span class="Apple-tab-span">	</span>) * 0.1</p>
+<p class="p17">}.play</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p17">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// alternating buffers in one channel</p>
+<p class="p17">(</p>
+<p class="p17">x = {</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>TZeroXBufRd<span class="s2">.ar(</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b, z,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig: <span class="s6">Impulse</span>.ar(100),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>xNum: 2,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>xRep: 1,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zeroX: 1,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>bufMix: <span class="s6">Dseq</span>([0, 1], <span class="s9">inf</span>),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rate: 0.6,</p>
+<p class="p17"><span class="Apple-tab-span">	</span>) * 0.1</p>
+<p class="p17">}.play</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p17">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// various sequences in both channels with switched waveforms</p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17">x = {</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span>TZeroXBufRd<span class="s2">.ar(</span></p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b, z,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig: <span class="s6">Impulse</span>.ar(200),</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>xNum: [<span class="s6">Dseq</span>([1, 2], <span class="s9">inf</span>), <span class="s6">Dseq</span>([2, 1], <span class="s9">inf</span>)],</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>xRep: [<span class="s6">Dseq</span>([1, 2], <span class="s9">inf</span>), <span class="s6">Dseq</span>([2, 1], <span class="s9">inf</span>)],</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zeroX: 0,</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>bufMix: [<span class="s6">Dseq</span>([0, 1, 2], <span class="s9">inf</span>), <span class="s6">Dseq</span>([1, 2, 0], <span class="s9">inf</span>)],</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rate: <span class="s6">MouseX</span>.kr(0.2, 2),</p>
+<p class="p17"><span class="Apple-tab-span">	</span>) * 0.1</p>
+<p class="p17">}.play</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p17">x.release</p>
+<p class="p15"><br></p>
+<p class="p9"><br></p>
+<p class="p14"><b>Ex.5) The overall envelope</b></p>
+<p class="p21"><br></p>
+<p class="p16">// This works also like for ZeroXBufRd, 'length' refers to the maximum number of triggers for half waveset groups.</p>
+<p class="p20"><span class="Apple-converted-space"> </span></p>
+<p class="p16">// The finishing of a TZeroXBufRd is not detemined by finite demand rate ugens but by an overall envelope,<span class="Apple-converted-space"> </span></p>
+<p class="p16">// its release section is triggered by a maximum number of half wavesets ('length') or a maximum time.<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p16">// Buffers from Ex.4</p>
+<p class="p4"><br></p>
+<p class="p17">{ <span class="s6">TZeroXBufRd</span>.ar(b[0], z[0], trig: <span class="s6">Impulse</span>.ar(500), rate: 1, length: 10, rel: 0.01) }.plot(0.05)</p>
+<p class="p4"><br></p>
+<p class="p17">{ T<span class="s6">ZeroXBufRd</span>.ar(b[0], z[0], trig: <span class="s6">Impulse</span>.ar(500),<span class="Apple-converted-space">  </span>rate: 1, maxTime: 0.02, rel: 0.01) }.plot(0.05)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// envelopes can be differentiated</p>
+<p class="p4"><br></p>
+<p class="p17">{ <span class="s6">TZeroXBufRd</span>.ar(b[0..1], z[0..1], trig: <span class="s6">Impulse</span>.ar(500), rate: 1, maxTime: [0.01, 0.005], rel: [0.005, 0.02]) }.plot(0.03)</p>
+<p class="p4"><br></p>
+<p class="p17">{ <span class="s6">TZeroXBufRd</span>.ar(b[0..1], z[0..1], trig: <span class="s6">Impulse</span>.ar(500), rate: 1, length: [7, 2], rel: [0.005, 0.02]) }.plot(0.03)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// there should be only one doneAction 2 in this case</p>
+<p class="p4"><br></p>
+<p class="p17">{ <span class="s6">TZeroXBufRd</span>.ar(b[0..1], z[0..1], trig: <span class="s6">Impulse</span>.ar(500), rate: 1, maxTime: [0.01, 0.005], rel: [0.05, 0.5], doneAction: [0, 2]) }.play</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p17">(</p>
+<p class="p17">b.do(<span class="s6">_</span>.free);</p>
+<p class="p17">z.do(<span class="s6">_</span>.free);</p>
+<p class="p17">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14"><b>Ex.6) Simultaneous writing and reading</b></p>
+<p class="p9"><br></p>
+<p class="p9"><br></p>
+<p class="p22">// The reading of half wavesets can start before analysis is finished,</p>
+<p class="p22">// if TZeroXBufRd is carefully used in with<span class="s2"> </span>a bit of delay.</p>
+<p class="p22">// A bit more delicate than with ZeroXBufRd because of the independent trigger.</p>
+<p class="p9"><br></p>
+<p class="p9"><br></p>
+<p class="p22">// prepare buffers</p>
+<p class="p9"><br></p>
+<p class="p23">(</p>
+<p class="p23">p = <span class="s6">Platform</span>.resourceDir +/+ <span class="s10">"sounds/a11wlk01.wav"</span>;</p>
+<p class="p23">b = <span class="s6">Buffer</span>.read(s, p);</p>
+<p class="p23">)</p>
+<p class="p9"><br></p>
+<p class="p23">(</p>
+<p class="p23">z = <span class="s6">Buffer</span>.alloc(s, b.duration * 44100 / 5, 1);</p>
+<p class="p23">s.scope;</p>
+<p class="p23">)</p>
+<p class="p9"><br></p>
+<p class="p22">// Simultaneous writing and reading is easier with ZeroXBufRd<span class="Apple-converted-space"> </span></p>
+<p class="p22">// as the trigger deltas are given by the source then.</p>
+<p class="p9"><br></p>
+<p class="p23">(</p>
+<p class="p23">{</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="s7">var</span> src = <span class="s6">PlayBuf</span>.ar(1, b, <span class="s6">BufRateScale</span>.ir(b));</p>
+<p class="p22"><span class="s2"><span class="Apple-tab-span">	</span></span>// write zero crossings, but no need to overwrite sound buffer</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="s6">ZeroXBufWr</span>.ar(src, b, z, startWithZeroX: 1, writeSndBuf: 0);</p>
+<p class="p24"><span class="s2"><span class="Apple-tab-span">	</span></span>DelayL<span class="s2">.ar(</span></p>
+<p class="p24"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>TZeroXBufRd<span class="s2">.ar(</span></p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>b, z,</p>
+<p class="p22"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// indicating stereo</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>bufMix: [0, 0],</p>
+<p class="p22"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// one trigger for both channels</p>
+<p class="p22"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// sufficiently slow progress for the given source</p>
+<p class="p22"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// (can not be guaranteed for an arbitrary signal)</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig: <span class="s6">TDuty</span>.ar(<span class="s6">Dstutter</span>(5, <span class="s6">Dseq</span>([1, 5, 10], <span class="s9">inf</span>)) * <span class="s6">ControlDur</span>.ir),</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>xNum: 1,</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>xRep: 2,</p>
+<p class="p22"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// stereo, drate ugens must be wrapped</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>zeroX: { <span class="s6">Dseries</span>() },</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rate: { <span class="s6">Dwhite</span>(0.5, 0.7) },<span class="Apple-converted-space"> </span></p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>maxTime: 7,</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rel: 1,</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>doneAction: 2</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>),</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.1,</p>
+<p class="p23"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.1</p>
+<p class="p23"><span class="Apple-tab-span">	</span>);</p>
+<p class="p23">}.play</p>
+<p class="p23">)</p>
+<p class="p9"><br></p>
+<p class="p23">(</p>
+<p class="p23">b.free;</p>
+<p class="p23">z.free;</p>
+<p class="p23">)</p>
+<p class="p9"><br></p>
+<p class="p22">// It's of course unproblematic – and still quasi realtime – to fully a analyse<span class="Apple-converted-space"> </span></p>
+<p class="p22">// a snippet of sound with ZeroXBufWr before freely using TZeroXBufRd in the same synth</p>
+<p class="p4"><br></p>
+<p class="p9"><br></p>
+<p class="p14"><b>Ex.7) Granulation with movement through a buffer</b></p>
+<p class="p21"><br></p>
+<p class="p22">// See Buffer Granulation tutorial, Ex. 1h</p>
+<p class="p9"><br></p>
+</body>
+</html>

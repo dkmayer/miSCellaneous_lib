@@ -1,0 +1,334 @@
+CLASS:: Fb1_Hopf
+summary:: Hopf pseudo ugen
+categories:: Libraries>miSCellaneous>Nonlinear
+related:: Overviews/miSCellaneous, Guides/Introduction_to_miSCellaneous, Classes/Fb1, Classes/GFIS, Classes/Fb1_ODE, Classes/Fb1_ODEdef, Classes/Fb1_ODEintdef, Classes/Fb1_MSD, Classes/Fb1_SD, Classes/Fb1_Lorenz, Classes/Fb1_HopfA, Classes/Fb1_HopfAFDC, Classes/Fb1_VanDerPol, Classes/Fb1_Duffing 
+
+
+DESCRIPTION::
+
+
+Fb1_ODE wrapper for the Hopf ODE system with external f:
+
+v'(t) = (mu - (v(t)^2 + w(t)^2)) * v(t) - (theta * w(t)) + f(t)
+
+w'(t) = (mu - (v(t)^2 + w(t)^2)) * w(t) + (theta * v(t)) 
+
+It returns a 2-channel signal. See link::Classes/Fb1_ODE:: for general information about Fb1 ODE integrator UGens.
+
+
+strong::HISTORY AND CREDITS: :: Big credit to David Pirrò from IEM Graz for pointing me to the symplectic integration methods, which are essential for audifying ODEs, as they help to ensure numeric stability in the long run (e.g. to avoid drifts of oscillations that are mathematically expected to be regular). See the chapter on integration in his dissertation link::#[4]::, pp 135-146. You might also want check David Pirròs optimized ODE compiler named Henri link::#[5]::. Big credit also to Nathaniel Virgo who brought up the buffering strategy used in Fb1, which is Fb1_ODE's working horse.
+
+
+warning::
+Especially with self-defined ODEs the usage of this class is – inherently – highly experimental. Be careful with amplitudes, as always with feedback it can become loud! Sudden blowups might result form the mathematical characteristics of the ODE systems or they might come from parameter changes on which ODEs can react extremely sensitive to, they can also stem from numerical accumulation effects. It is highly recommended to take precautionary measures, e.g. by limiting/distorting operators (tanh, clip, softclip, distort) with the compose option (See link::Classes/Fb1_ODE#Examples 5#Fb1_ODE Examples 5::) and/or external limiting and/or using MasterFX from the JITLibExtensions quark. 
+::
+
+note::
+The convenience of direct definition of the ODE relation comes with the price of a large number of UGens involved. You might want to allow a higher number of UGens with the server option numWireBufs. For a nice workflow I'd recommended to take reduced blockSizes (e.g. 1, 2, 4, 8, 16) while experimenting as compile time is shorter, but once you have finished the design of a SynthDef it might pay going back to blocksize 32 or 64 for runtime efficiency, especially if many kr UGens are involved.  
+::
+
+
+anchor::[1]::
+anchor::[2]::
+anchor::[3]::
+anchor::[4]::
+anchor::[5]::
+
+subsection::References
+
+numberedList::
+## Righetti, Ludovic; Buchli, Jonas; Ijspeert, Auke Jan (2009): "Adaptive Frequency Oscillators and Applications". The Open Cybernetics and Systemics Journal, 3, 64-69. https://www.researchgate.net/publication/41666931_Adaptive_Frequency_Oscillators_and_Applications_Open_Access Summary: https://biorob.epfl.ch/research/research-dynamical/page-36365-en-html 	
+## Nachstedt, Timo; Tetzlaff, Christian; Manoonpong, Poramate (2017): "Fast Dynamical Coupling Enhances Frequency Adaptation of Oscillators for Robotic Locomotion Control". Frontiers in Neurorobotics. Published online 2017 Mar 21 https://www.frontiersin.org/articles/10.3389/fnbot.2017.00014/full
+## Trefethen, Lloyd N.; Birkisson Ásgeir; Driscoll, Tobin A. (2017): Exploring ODEs. SIAM - Society for Industrial and Applied Mathematics. Free download from: https://people.maths.ox.ac.uk/trefethen/Exploring.pdf
+## Pirrò, David (2017). Composing Interactions. Dissertation. Institute of Electronic Music and Acoustics, University of Music and Performing Arts Graz. Free download from: https://pirro.mur.at/media/pirro_david_composing_interactions_print.pdf
+## https://git.iem.at/davidpirro/henri
+::
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new Fb1_Hopf ar object.
+
+
+argument::f
+Defaults to 0.
+
+
+argument::mu
+Defaults to 1.
+
+
+argument::theta
+Defaults to 1.
+
+
+
+argument::tMul
+Time multiplier, which determines velocity of proceeding in the dynamic system. The default value 1 means that the step delta of time equals 1 / sample duration. For getting audible oscillations you might, depending on the ODE definition, have to pass much higher values. Can also be a kr / ar UGen and might also be negative.
+
+
+argument::t0
+Initial time. Expects Number. Defaults to 0.
+
+
+argument::y0
+Initial value of the ODE. Expects array of size 2. Defaults to #[1, 1].
+
+
+argument::intType
+Integration type. Expects one of the Symbols, for which procedures are stored with Fb1_ODEintdef. The use of symplectic procedures (with prefix 'sym') is highly recommended. Defaults to \sym2. For more accurate integration you can try symplectic procedures of higher order like \sym4, \sym8 etc. Families of integration procedures:	
+list::
+## Symplectic: \sym2, \sym2_d, \sym4, \sym4_d, \sym6, \sym6_d, \sym8, \sym8_d, \sym12, \sym12_d, \sym16, \sym16_d, \sym32, \sym32_d, \sym64, \sym64_d
+## Euler: \eu, \eu_d, \eum, \eum_d, \eui, \eui_d
+## Prediction-Evaluation-Correction: \pec, \pece, \pecec, \pecece
+## Runge-Kutta: \rk3, \rk3_d, \rk3h, \rk3h_d, \rk4, \rk4_d
+## Adams-Bashforth: \ab2, \ab3, \ab4, \ab5, \ab6
+## Adams-Bashforth-Moulton: \abm21, \abm22, \abm32, \abm33, \abm43, \abm44, \abm54, \abm55, \abm65, \abm66
+::
+
+
+argument::compose
+Operator(s) / Function(s) to be applied to the system value on a per-sample base. This of course blurs the numeric procedure but can be used for containing or in a creative way. Can be an operator Symbol, a Function or an arbitrarily mixed SequenceableCollection thereof. The Functions are in any case expected to take an array (the system state) as first argument. If only one Function is given it must output an array of same (system) size. Within a SequenceableCollection a Function must output a value of size 0. Within a SequenceableCollection an operator Symbol is applied only to the corresponding component. A Function can optionally take a second argument which is for ar UGens passed via strong::composeArIn::.
+
+
+argument::composeArIn
+ar UGen or SequenceableCollection thereof or a SequenceableCollection that can contain both. This is the way to use ar UGens within a Function passed to compose. UGens are passed to the Function's second argument.
+
+
+argument::dt0
+First time delta in seconds to be used for the language-side calculation of first values of a multi-step strong::intType:: procedure. This will mostly be irrelevant as (single-step) symplectic procedures are to be preferred. In case of a multi-step procedure a dt0 value will be derived from the default server's properties (sample duration * strong::tMul::).
+
+
+argument::argList0
+Initial argList value(s) to be used for the language-side calculation of first values of a multi-step strong::intType:: procedure. This will mostly be irrelevant as (single-step) symplectic procedures are to be preferred. If no UGens are passed to strong::argList::, values will be assumed from passed strong::argList:: Numbers.
+
+
+argument::init_intType
+Integration type for language-side calculation of first values of a multi-step strong::intType:: procedure. This will mostly be irrelevant as (single-step) symplectic procedures are to be preferred. Defaults to \sym8.
+
+
+argument::withOutScale
+Boolean. Determines if the Fb1_ODEdef's default scaling values for integration and differential signals should be applied to the output. Defaults to true.
+warning:: strong::withOutScale:: does not implement a general safety net functionality, strong::withOutScale::'s default value true does by no means say that output is limited. The default scaling values of predefined Fb1_ODEdefs are average assumptions and can, under different circumstances, always lead to high out levels.
+::
+
+argument::withDiffChannels
+Boolean. Determines if channel(s) with differential value(s) should be returned. This is only applicable with integration types with a sizeFactor == 2, which means that for every sample the values of the differential are buffered. As by default this is not the case for all predefined numeric procedures, there exist variants with appendix '_d', e.g. \sym2_d. Defaults to false.
+
+
+argument::withTimeChannel
+Boolean. Determines if accumulated time is output in an additional channel. 
+warning:: with constant strong::tMul:: it produces an ascending DC which is not affected by strong::leakDC:: if this is set to true. Might especially be of interest if time is modulated. Defaults to false.
+::
+
+argument::blockSize
+Integer, this should be the server blockSize. If no Integer is passed, the current default server's blockSize is assumed (in contrast to Fb1). So explicitely passing a blockSize should only be necessary in special cases, e.g. when compiling before booting. However for a pleasant workflow for ar usage it's recommended to use Fb1_ODE with a reduced server blockSize in order to reduce SynthDef compile time.
+
+
+argument::graphOrderType
+0, 1 or 2. Determines if topological order of generated BufRd and BufWr instances in the SynthDef graph is forced by additional UGens.
+list::
+##Type 0: forced graph order is turned off.
+##Type 1 (default): graph order is forced by summation and <!.
+##Type 2: graph order is forced by <! operators only.
+::
+Default 1 is recommended, but with CPU-intense SynthDefs it might be worth trying it with the value 0. This saves a lot of UGens though there might be exceptional cases with different results. Type 2 can shorten the SynthDef compilation time for certain graphs with a large number of UGens, which can be lengthy with type 1. However, CPU usage doesn't directly correspond to the number of UGens.
+
+
+argument::leakDC
+Boolean. Determines if a LeakDC is applied to the output (except time channel). Defaults to true.
+
+
+argument::leakCoef
+Number, the strong::leakDC:: coefficient. Defaults to 0.995.
+
+
+
+
+method::ar
+
+Equivalent to link::#*new::.
+
+
+
+
+method::kr
+
+Creates a new Fb1_Hopf kr object.
+
+
+argument::f
+Defaults to 0.
+
+
+argument::mu
+Defaults to 1.
+
+
+argument::theta
+Defaults to 1.
+
+
+
+argument::tMul
+Time multiplier, which determines velocity of proceeding in the dynamic system. The default value 1 means that the step delta of time equals 1 / control duration. For getting audible oscillations you might, depending on the ODE definition, have to pass much higher values. Can also be a kr UGen and might also be negative.
+
+
+argument::t0
+Initial time. Expects Number. Defaults to 0.
+
+
+argument::y0
+Initial value of the ODE. Expects array of size 2. Defaults to #[1, 1].
+
+
+argument::intType
+Integration type. Expects one of the Symbols, for which procedures are stored with Fb1_ODEintdef. The use of symplectic procedures (with prefix 'sym') is highly recommended. Defaults to \sym4. For more accurate integration you can try symplectic procedures of higher order like \sym6, \sym8 etc. Families of integration procedures:	
+list::
+## Symplectic: \sym2, \sym2_d, \sym4, \sym4_d, \sym6, \sym6_d, \sym8, \sym8_d, \sym12, \sym12_d, \sym16, \sym16_d, \sym32, \sym32_d, \sym64, \sym64_d
+## Euler: \eu, \eu_d, \eum, \eum_d, \eui, \eui_d
+## Prediction-Evaluation-Correction: \pec, \pece, \pecec, \pecece
+## Runge-Kutta: \rk3, \rk3_d, \rk3h, \rk3h_d, \rk4, \rk4_d
+## Adams-Bashforth: \ab2, \ab3, \ab4, \ab5, \ab6
+## Adams-Bashforth-Moulton: \abm21, \abm22, \abm32, \abm33, \abm43, \abm44, \abm54, \abm55, \abm65, \abm66
+::
+
+
+argument::compose
+Operator(s) / Function(s) to be applied to the system value on a per-control-block base. This of course blurs the numeric procedure but can be used for containing or in a creative way. Can be an operator Symbol, a Function or an arbitrarily mixed SequenceableCollection thereof. The Functions are in any case expected to take an array (the system state) as first argument. If only one Function is given it must output an array of same (system) size. Within a SequenceableCollection a Function must output a value of size 0. Within a SequenceableCollection an operator Symbol is applied only to the corresponding component. 
+
+
+argument::dt0
+First time delta in seconds to be used for the language-side calculation of first values of a multi-step strong::intType:: procedure. This will mostly be irrelevant as (single-step) symplectic procedures are to be preferred. In case of a multi-step procedure a dt0 value will be derived from the default server's properties (control duration * strong::tMul::).
+
+
+argument::argList0
+Initial argList value(s) to be used for the language-side calculation of first values of a multi-step strong::intType:: procedure. This will mostly be irrelevant as (single-step) symplectic procedures are to be preferred. If no UGens are passed to strong::argList::, values will be assumed from passed strong::argList:: Numbers.
+
+
+argument::init_intType
+Integration type for language-side calculation of first values of a multi-step strong::intType:: procedure. This will mostly be irrelevant as (single-step) symplectic procedures are to be preferred. Defaults to \sym8.
+
+
+argument::withOutScale
+Boolean. Determines if the Fb1_ODEdef's default scaling values for integration and differential signals should be applied to the output. Defaults to true.
+warning:: strong::withOutScale:: does not implement a general safety net functionality, strong::withOutScale::'s default value true does by no means say that output is limited. The default scaling values of predefined Fb1_ODEdefs are average assumptions and can, under different circumstances, always lead to high out levels.
+::
+
+argument::withDiffChannels
+Boolean. Determines if channel(s) with differential value(s) should be returned. This is only applicable with integration types with a sizeFactor == 2, which means that for every sample the values of the differential are buffered. As by default this is not the case for all predefined numeric procedures, there exist variants with appendix '_d', e.g. \sym2_d. Defaults to false.
+
+
+argument::withTimeChannel
+Boolean. Determines if accumulated time is output in an additional channel. 
+warning:: with constant strong::tMul:: it produces an ascending DC which is not affected by strong::leakDC:: if this is set to true. Might especially be of interest if time is modulated. Defaults to false.
+::
+
+argument::graphOrderType
+0, 1 or 2. Determines if topological order of generated BufRd and BufWr instances in the SynthDef graph is forced by additional UGens.
+list::
+##Type 0: forced graph order is turned off.
+##Type 1 (default): graph order is forced by summation and <!.
+##Type 2: graph order is forced by <! operators only.
+::
+Default 1 is recommended, but with CPU-intense SynthDefs it might be worth trying it with the value 0. This saves a lot of UGens though there might be exceptional cases with different results. Type 2 can shorten the SynthDef compilation time for certain graphs with a large number of UGens, which can be lengthy with type 1. However, CPU usage doesn't directly correspond to the number of UGens.
+
+
+argument::leakDC
+Boolean. Determines if a LeakDC is applied to the output (except time channel). Defaults to true.
+
+
+argument::leakCoef
+Number, the strong::leakDC:: coefficient. Defaults to 0.995.
+
+
+
+
+
+
+
+section::Examples
+
+code::
+// reboot with reduced blockSize
+
+(
+s = Server.local;
+Server.default = s;
+s.options.blockSize = 8;
+s.reboot;
+)
+
+// In the source code of Fb1_ODEdef.sc the corresponding Fb1_ODEdef looks like this:
+// the Function brackets within the array are not absolutely necessary, 
+// but compile process is faster.
+
+// don't evaluate, already stored
+
+Fb1_ODEdef(\Hopf, { |t, y, f = 0, mu = 1, theta = 1|
+	var u, v;
+	u = y[0] * y[0] + (y[1] * y[1]);
+	v = mu - u;
+	[
+		{ v * y[0] - (theta * y[1]) + f },
+		{ v * y[1] + (theta * y[0]) },
+	]
+}, 0, [1, 1], 0.3, 0.3);  // scaling as standard params lead to high level output
+
+
+
+// change param mu and static external force (f = mu = 0: harmonic oscillation)
+
+x = { Fb1_Hopf(MouseX.kr(0, 1).poll, MouseY.kr(1.5, 5).poll, 1, 200 * 2pi) * 0.2 }.play
+
+x.release
+
+
+// f fed with a SinOsc with frequency coupled to tMul by an integer factor,
+// mu movement can tilt over the waveform
+
+(
+SynthDef(\hopf, { |out, freqFactor = 1,
+	srcAmp = 1, mu = 1, theta = 1, tMul = 1, amp = 0.05|
+	var sig;
+	sig = Fb1_Hopf.ar(
+		SinOsc.ar(tMul / freqFactor) * srcAmp,
+		mu.lag(1), theta, tMul
+	);
+	Out.ar(out, Limiter.ar(sig[0..1]) * amp.lag(1))
+}, metadata: (
+	specs: (
+		freqFactor: [5, 30, \lin, 1, 18],
+		srcAmp: [5, 100, \lin, 0, 27],
+		mu: [0, 50, \lin, 0, 25],
+		theta: [0.1, 7, \lin, 0, 3.8],
+		tMul: [200, 1000, \lin, 0, 450],
+		amp: [0.01, 0.07, \db, 0, 0.05]
+	)
+)).add;
+
+\hopf.sVarGui.gui
+)
+
+
+// focussing on the tilt effect:
+// LFO crossing a critical boundary of Hopf's mu parameter
+
+(
+x = {
+	var freq = LFDNoise3.kr(0.2).exprange(200, 700), sig;
+	sig = Fb1_Hopf.ar(
+		f: SinOsc.ar(freq) * 30,
+		mu: SinOsc.ar(SinOsc.ar(0.1, -pi/2).exprange(0.2, 20), -pi/2).range(5, 30).poll,
+		theta: 1,
+		tMul: freq
+	);
+	Limiter.ar(sig[0..1]) * 0.1 * EnvGen.ar(Env.asr(0.1, curve: 3))
+}.play
+)
+
+x.release
+::
+

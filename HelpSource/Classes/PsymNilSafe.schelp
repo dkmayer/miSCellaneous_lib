@@ -1,0 +1,55 @@
+CLASS::PsymNilSafe
+summary::Psym variant that avoids hangs if all referenced patterns return nil
+categories:: Libraries>miSCellaneous>Other patterns
+related:: Overviews/miSCellaneous, Classes/Psym, Tutorials/PLx_and_live_coding_with_Strings
+
+
+DESCRIPTION::
+This adapts an idea of James Harkins' PnNilSafe (ddwPatterns quark) for Psym. If all patterns in the Dictinonary return nil, then Psym's embedInStream can produce an infinite loop, as it never yields. PnNilSafe can't be wrapped around Psym, but the check with logical time can be built into Psym itself. The wrapping into PsymNilSafe can shortly be written by applying link::Classes/Pattern#-symplay:: instead of link::Classes/Pattern#-play::. See link::Tutorials/PLx_and_live_coding_with_Strings:: for more examples.
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PsymNilSafe object. strong::pattern:: expects a pattern of Symbols, strong::dict:: the lookup dictionary and strong::defaults:: to the current Environment. strong::maxNull:: is the number of events with delta = 0 after which PsymNilSafe's method 'embedInStream' yields and thus stops a potentially endless loop. strong::maxNull:: defaults to 128.
+
+
+INSTANCEMETHODS::
+
+method::maxNull
+
+Getter and setter for PsymNilSafe's variable maxNull.
+
+
+
+
+SECTION::Example
+
+code::
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+(
+x = Pbind(\midinote, Pseries(60, 1, 10), \dur, 0.5).asStream;
+y = Pbind(\midinote, Pseries(90, -1, 10), \dur, 0.5).asStream;
+
+z = Pseq([2, 3, 1, 2], 1).asStream;
+
+~a = Pfuncn({ x.next(()) }, { z.next });
+~b = Pfuncn({ y.next(()) }, { z.next });
+
+PsymNilSafe(Pseq("ab", inf)).trace.play;
+
+// shorter with method 'symplay':
+// trace indicates all events with delta = 0 (maxNull = 128) in the post window
+// Pseq("ab", inf).trace.symplay
+
+
+// ATTENTION: with Psym the example leads to a SC hang !
+// Psym(Pseq("ab", inf), currentEnvironment).trace.play
+)
+::
+

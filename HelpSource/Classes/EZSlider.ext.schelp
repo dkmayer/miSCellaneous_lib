@@ -1,0 +1,7 @@
+
+INSTANCEMETHODS::
+
+private:: miSC_colorize
+
+private:: miSC_adaptToControlStep, miSC_mode, miSC_mode_
+

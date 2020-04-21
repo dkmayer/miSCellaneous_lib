@@ -1,0 +1,227 @@
+CLASS:: MemoRoutine
+summary:: Routine-like object which stores last values
+categories::Libraries>miSCellaneous>PSx stream patterns, Streams-Patterns-Events>PSx stream patterns
+related:: Overviews/miSCellaneous, Tutorials/PSx_stream_patterns, Classes/Routine, Classes/PS, Classes/PSdup, Classes/PSrecur 
+
+
+DESCRIPTION::
+
+
+A MemoRoutine behaves like a Routine, though it is not defined as a subclass of it. It stores last values, the maximum buffer size can be defined. MemoRoutine is internally used by PSx and related Pattern classes, which therefore also remember their last value(s). 
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a MemoRoutine instance with the given Function.
+
+argument::func
+Function to instantiate the Routine with.
+
+argument::stackSize 
+Call stack depth, defaults to 512.
+
+argument::bufSize
+Number of last values to store, defaults to 1.
+
+argument::copyItems 
+Determines if and how to copy items, which are returned by method next 
+(run, value, resume) and which are either non-Sets or member of Sets, into the buffer. 
+Takes Integer 0 (or false or Symbol \false), 1 (or true or Symbol \true) or 2 (or Symbol \deep). 
+Other values are interpreted as 0. Defaults to 0.
+
+0: storage of original item 
+
+1: storage of copied item
+
+2: storage of deepCopied item
+
+argument::copySets 
+Determines if to copy Sets (and hence Events), 
+which are returned by method next (run, value, resume), into the buffer. 
+Takes Integer 0 (or false or Symbol \false), 1 (or true or Symbol \true). 
+Other values are interpreted as 0. Defaults to 1.
+
+0: storage of original Set 
+
+1: storage of copied Set
+            
+note::
+
+The distinction of copying items and sets makes sense in the case of event streams. Per default Events are copied (strong::copySets:: == 1), not their values (strong::copyItems:: == 0). By playing Events those are used to store additional data (synth ids, msgFuncs …) which is mostly not of interest when refering to the event stream, e.g. with PSx patterns which use MemoRoutine - copied Events will not contain this additional data. If values of Events or values returned directly by the stream (being no kind of Sets) are unstructured then copying makes no sense, this is the normal case, so strong::copyItems:: defaults to 0. When going to alter the ouput, you might want to set strong::copyItems:: to 1 for a MemoRoutine returning simple arrays or 2 for nested arrays (deepCopy). For deepCopying Events you'd have to set strong::copySets:: to 1 and strong::copyItems:: to 2 (an option strong::copySets:: == 2 doesn't exist as it would be contradictory in combination with strong::copyItems:: < 2).
+
+::
+
+
+INSTANCEMETHODS::
+
+
+method::next
+
+argument::inval
+Same conventions with method yield as with aRoutine.next.
+
+
+method::value
+Same as next.
+
+method::resume
+Same as next.
+
+method::run
+Same as next.
+
+method::lastValue
+Last value.
+
+method::lastValues
+Instance variable getter method for array of stored last values.
+
+method::at
+Returns ith item of array of last values (keep in mind reversed order: last value first).
+
+method::bufSize
+Size of array of last values.
+
+method::reset
+Resets the MemoRoutine by resetting its Routine.
+
+method::stop
+Stops the MemoRoutine by stopping its Routine.
+
+method::count
+Instance variable getter and setter methods.
+Counts each call of next / value / resume / run. 
+
+method::copyItems
+Instance variable getter and setter methods. 
+If used directly the Integer copy code must be passed (see above).
+
+method::copySets
+Instance variable getter and setter methods. 
+If used directly the Integer copy code must be passed (see above).
+
+method::routine
+Instance variable getter and setter methods. 
+
+
+
+            
+EXAMPLES::
+
+code::
+
+(
+// a MemoRoutine
+
+m = MemoRoutine(
+    { |inval| 1000.do { |i| inval = i.yield } },
+    bufSize: 50
+);
+)
+
+m.nextN(5);    
+
+
+// get last value
+
+m.lastValue;
+
+m[0];
+
+
+// get last values, order is from last to earlier
+
+m.lastValues;
+
+
+// get value before last value
+
+m[1];
+
+
+
+// get more values
+
+m.nextN(100);    
+
+
+
+// first values are lost now
+
+m.lastValues;
+
+
+// as loop in m is restricted you might call .all
+// as stop is indicated by the return of nil, 
+// the array lastValues contains nil as first item
+
+m.all;
+
+m.lastValues;
+
+
+
+// Per default a MemoRoutine is just storing the last values,
+// with structured data types this can cause surprises 
+
+(
+// a MemoRoutine
+
+m = MemoRoutine(
+    { |inval| var a = [[2,1], [4,3]]; 1000.do { inval = a.choose.yield } },
+    bufSize: 50
+);
+)
+
+// generate some values
+
+m.nextN(10);
+
+// apply a method on last values
+
+(
+x = m.lastValue;
+x.sort;
+)
+
+// as sort is destructive one of MemoRoutine's arrays is altered now !
+
+m.nextN(10);
+
+
+
+// to avoid such you can simply do .copy.sort which doesn't alter lastValues,
+// but you can also store copied values in the buffer by passing a flag with
+// instantiation of the MemoRoutine
+
+(
+// a MemoRoutine which stores copied arrays
+
+m = MemoRoutine(
+    { |inval| var a = [[2,1], [4,3]]; 1000.do { inval = a.choose.yield } },
+    bufSize: 100,
+    copyItems: 1 // 1, true or \true for copy, 2 or \deep for deepCopy
+);
+)
+
+m.nextN(10);
+
+(
+x = m.lastValue;
+x.sort;
+)
+
+// order not altered with next items
+
+m.nextN(10);
+
+// however the concerned array stored as item in lastValues remains altered
+
+m[10];
+
+
+
+::
+ 
