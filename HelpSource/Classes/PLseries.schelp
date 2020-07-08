@@ -1,0 +1,92 @@
+CLASS:: PLseries   
+summary:: dynamic scope Pseries variant
+categories::Libraries>miSCellaneous>PLx suite, Streams-Patterns-Events>PLx suite
+related:: Overviews/miSCellaneous, Classes/Pseries, Classes/PLgeom, Tutorials/PLx_suite, Tutorials/Event_patterns_and_Functions, Classes/VarGui, Tutorials/VarGui_shortcut_builds 
+
+
+DESCRIPTION::
+
+
+Takes Symbol args for later reference by the Streams, which will read from variables in the Environments of their instantiation. See link::Tutorials/PLx_suite::. 
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PLseries object.
+
+argument::start
+Symbol or Pseries start arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Defaults to 0.
+
+argument::step
+Symbol or Pseries step arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Can be dynamically replaced by Patterns or Streams. Defaults to 1.
+
+argument::length
+Symbol or Pseries length arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Defaults to inf.
+
+argument::envir
+Dictionary or one of the Symbols 
+\top, \t (topEnvironment), \current, \c (currentEnvironment).
+Dictionary to be taken for variable reference. Defaults to \current.
+
+
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+        
+        
+// definition for future reference in arbitrary Environments
+
+(
+p = Pbind(
+    \midinote, PLseries(0, \step) % 24 + 60,
+    \dur, 0.1
+);
+)
+
+// prepare Environments
+
+(
+e = (step: 1);
+f = e.copy;
+)
+
+
+// run
+
+
+e.use { x = p.play(quant: 0.1) };
+
+f.use { y = p.play(quant: 0.1) };
+
+
+// replace
+
+f.step = 2;
+
+e.step = Pwhite(0.5, 1.5);
+
+f.step = Pwhite(1, -3);
+
+
+
+y.stop;
+
+x.stop;
+
+::
+

@@ -1,0 +1,678 @@
+
+
+TITLE::Event patterns and array args 
+summary::setting and passing arrays and envelopes via patterns
+categories:: Libraries>miSCellaneous>General Tutorials, Streams-Patterns-Events
+related:: Overviews/miSCellaneous, Guides/Introduction_to_miSCellaneous
+
+
+DESCRIPTION::
+
+This tutorial covers some use cases of array args, especially passing arrays to synths with patterns.
+
+
+anchor::Ex.1:: 
+SECTION::Ex.1:	Alternative writing of arrayed args in SynthDefs
+
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+
+// SynthDef with array of overtone weights,
+// weights can additionally be influenced with a dampExp arg unequal to 0, 
+// see examples below.
+
+(
+// The standard way to define array args: 
+// when appearing within the list of args, a literal Array must be used,
+// shortcut (1..8) generates an Array with Integers from 1 to 8
+
+SynthDef(\array_1a, { |out = 0, freq = 440, otAmps = #[1,1,1,1,1,1,1,1], dampExp = 0,
+	att = 0.01, rel = 0.6, amp = 0.1, gate = 1, freqLag = 0.02, otLag = 0.02|
+	var sig, env, freqs, amps;
+	freqs = (freq * (1..8)).clip(20, 20000).lag(freqLag);
+	amps = ((otAmps / ((1..8) ** dampExp)).normalizeSum * amp).lag(otLag);
+	sig = SinOsc.ar(freqs, 0, amps);
+	env = EnvGen.ar(Env.asr(att, 1, rel), gate, doneAction: 2);
+	Out.ar(out, Splay.ar(sig) * env)
+}).add
+)
+
+// Note that SynthDef \array_1a uses the array arg's size (8) at two further places (arrays (1..8)).
+// As a literal Array, by its nature, requires the explicit writing of its items,
+// this becomes arkward with larger arrays and/or rewriting the SynthDef with other sizes.
+// For those reasons the use of NamedControl turns out to be very convenient with array args,
+// it also gives an easy way of lagging.
+
+
+(
+// Alternative to SynthDef \array_1a using NamedControl:
+// Although a NamedControl can be written at any position within the SynthDef,
+// it's a useful convention to invent it directly after the args list
+// by assigning it to a variable of the same name (so code with literal Array args can be reused easily).
+// With NamedControl the array size can now also be written as a variable,
+// which allows to define SynthDefs with different array sizes on the fly.
+// Also note NamedControl's shortcuts aSymbol.kr / aSymbol.kr
+// which make its use even more comfortable.
+
+// define size for SynthDef
+n = 8;
+
+// define SynthDef
+// shortcut 1!n (short for 1.dup(n)) generates an Array of size n filled with 1.
+
+SynthDef(\array_1b, { |out = 0, freq = 440, dampExp = 0,
+	att = 0.01, rel = 0.6, amp = 0.1, gate = 1, freqLag = 0.02, otLag = 0.02|
+	var otAmps = NamedControl.kr(\otAmps, 1!n); // shortcut: otAmps = \otAmps.kr(1!n);
+	var sig, env, freqs, amps;
+	freqs = (freq * (1..n)).clip(20, 20000).lag(freqLag);
+	amps = ((otAmps / ((1..n) ** dampExp)).normalizeSum * amp).lag(otLag);
+	sig = SinOsc.ar(freqs, 0, amps);
+	env = EnvGen.ar(Env.asr(att, 1, rel), gate, doneAction: 2);
+	Out.ar(out, Splay.ar(sig) * env)
+}).add
+)
+
+
+// As array sizes of SynthDefs are fixed you might want to define for a number
+// of Integers and name the SynthDefs appropriately.
+// Here's such a "SynthDef factory":
+// we get SynthDefs of names \array_1b_1, ..., \array_1b_16 with corresponding array sizes,
+// see Ex.3b for a use case.
+
+(
+(1..16).do { |n|
+	var name = \array_1b ++ \_ ++ n;
+	SynthDef(name, { |out = 0, freq = 440, dampExp = 0,
+		att = 0.01, rel = 0.6, amp = 0.1, gate = 1, freqLag = 0.02, otLag = 0.02|
+		var otAmps = NamedControl.kr(\otAmps, 1!n); // shortcut: otAmps = \otAmps.kr(1!n);
+		var sig, env, freqs, amps;
+		freqs = (freq * (1..n)).clip(20, 20000).lag(freqLag);
+		amps = ((otAmps / ((1..n) ** dampExp)).normalizeSum * amp).lag(otLag);
+		sig = SinOsc.ar(freqs, 0, amps);
+		env = EnvGen.ar(Env.asr(att, 1, rel), gate, doneAction: 2);
+		Out.ar(out, Splay.ar(sig) * env)
+	}).add
+}
+)	
+
+::
+
+
+SECTION::2. Setting array args and array fields of a running synth
+
+
+anchor::Ex.2a::  
+subsection::Ex.2a:   Setting array args of a running synth
+
+code::
+
+// start Synth, SynthDefs \array_1a, \array_1b and \array_1b_8 are equivalent
+
+x = Synth(\array_1a, [freq: 300, amp: 0.2])
+
+
+// only odd partials (clarinet-like)
+
+x.set(\otAmps, [1, 0, 1, 0, 1, 0, 1, 0])
+
+
+// emphasize one partial
+
+x.set(\otAmps, [1, 0, 1, 0, 1, 5, 1, 0])
+
+
+// only lower ones
+
+x.set(\otAmps, [1, 1, 1, 1, 0, 0, 0, 0])
+
+
+// default again
+
+x.set(\otAmps, [1, 1, 1, 1, 1, 1, 1, 1])
+
+
+
+// force lower partials with dampExp > 0
+
+x.set(\dampExp, 1.5)
+
+
+// force higher partials with dampExp < 0
+
+x.set(\dampExp, -1.5)
+
+
+// default again
+
+x.set(\dampExp, 0)
+
+
+// release
+
+x.release
+
+::
+
+
+
+anchor::Ex.2b::  
+subsection::Ex.2b:   Setting array args of a running synth with Pbind of event type \set
+
+
+For many use cases Pmono (see link::#Ex.2c::) is the most practical solution as it doesn't require explicit starting of a synth. However sometimes it is necessary to access the running synth itself, then a Pbind with event type \set is a good choice.
+
+
+code::
+
+
+// start Synth silently
+
+x = Synth(\array_1a, [freq: 200, amp: 0])
+
+
+// Pbind of event type set:
+// args to be set must be listed.
+// Note that the array arg requires double brackets (syntactic distinction from setting multiple nodes)
+
+(
+p = Pbind(
+	\dur, 0.2,
+	\type, \set,
+	\id, x,
+	\args, #[freq, amp, dampExp, otAmps], // must be given explicitely
+	\midinote, Pwhite(45.0, 70), // for midinote freq must be set
+	\amp, 0.3,
+	\dampExp, Pwhite(0, 3),
+	\otAmps, [[2, 1, 3, 2, 1, 2, 2, 1]] // double brackets for array arg !
+).play
+)
+
+(
+// stop EventStreamPlayer and release Synth
+
+p.stop;
+x.release;
+)
+
+
+
+// start Synth silently
+
+x = Synth(\array_1a, [freq: 200, amp: 0]);
+
+
+// Sequencing the array arg:
+// rising spectral shape, falling fundamental
+
+(
+// Array for Pseq, we need an array of doubly bracketed arrays or
+// ref'd arrays as in Ex. 2c.
+
+o = [
+	[[1, 1, 0, 0, 0, 0, 0, 0]],
+	[[1, 0, 1, 0, 0, 0, 0, 0]],
+	[[1, 1, 0, 1, 0, 0, 0, 0]],
+	[[1, 0, 1, 0, 1, 0, 0, 0]],
+	[[1, 1, 0, 1, 0, 1, 0, 0]],
+	[[1, 0, 1, 0, 1, 0, 1, 0]],
+	[[1, 0, 0, 1, 0, 1, 0, 1]]
+];
+
+p = Pbind(
+	\dur, 0.2,
+	\type, \set,
+	\id, x,
+	\args, #[freq, amp, otAmps], // must be given explicitely
+	\midinote, Pn(Plazy { Pseq((70..50)) / rrand(1, 1.2) }), 
+	\amp, 0.3,
+	\otAmps, Pseq(o, 30) 
+).play
+)
+
+(
+// stop EventStreamPlayer and release Synth
+
+p.stop;
+x.release;
+)
+
+
+
+
+::
+
+
+anchor::Ex.2c::  
+subsection::Ex.2c:   Setting array args of a running synth with Pmono
+
+
+Rewriting second example of 2b, shorter with Pmono. Instead of doubly bracketed arrays you can choose Refs of Arrays also. Note that this alternative is not valid for a single nested Array as in the first example of link::#Ex.2b:: .
+
+code::
+
+(
+o = [
+	`[1, 1, 0, 0, 0, 0, 0, 0],
+	`[1, 0, 1, 0, 0, 0, 0, 0],
+	`[1, 1, 0, 1, 0, 0, 0, 0],
+	`[1, 0, 1, 0, 1, 0, 0, 0],
+	`[1, 1, 0, 1, 0, 1, 0, 0],
+	`[1, 0, 1, 0, 1, 0, 1, 0],
+	`[1, 0, 0, 1, 0, 1, 0, 1]
+];
+
+p = Pmono(\array_1a,
+	\dur, 0.2,
+	\midinote, Pn(Plazy { Pseq((70..50)) / rrand(1, 1.2) }), 
+	\amp, 0.3,
+	\otAmps, Pseq(o, 30) 
+).play
+)
+
+
+// stop EventStreamPlayer from Pmono (synth is released also)
+
+p.stop;
+
+::
+
+
+anchor::Ex.2d::  
+subsection::Ex.2d:   Setting i-th fields of a running synth
+
+
+code::
+
+// start Synth
+
+x = Synth(\array_1a, [freq: 200, amp: 0.3])
+
+
+// by default otAmps equals [1, 1, 1, 1, 1, 1, 1, 1]
+
+// Since SC 3.6.x there exists method seti for setting single elements of arrays:
+// turn off high overtones
+
+x.seti(\otAmps, 7, 0)
+
+x.seti(\otAmps, 6, 0)
+
+x.seti(\otAmps, 5, 0)
+
+
+x.release;
+
+
+// With older SC versions you can use the following helper functions to achieve the same.
+// This requires that the SynthDef has been added in order to have control arg info in SynthDescLib.
+
+(
+~getCtlIndex = { |defName, argName, index| 
+    var x = SynthDescLib.global.at(defName.asSymbol).controls 
+        .collect({|x| x.name.asSymbol }).indexOf(argName.asSymbol); 
+    x !? { x + index }; 
+}; 
+
+~setiID = { |server, defname, nodeID, key, index, value| 
+    server.sendMsg(15, nodeID, ~getCtlIndex.(defname, key, index), value); 
+}; 
+
+
+~seti = { |node, key, index, value| 
+    ~setiID.(node.server, node.defName, node.nodeID, key, index, value); 
+}; 
+)
+
+
+// start Synth
+
+x = Synth(\array_1a, [freq: 200, amp: 0.5])
+
+
+// turn off high overtones
+
+~seti.(x, \otAmps, 7, 0)
+
+~seti.(x, \otAmps, 6, 0)
+
+~seti.(x, \otAmps, 5, 0)
+
+x.release;
+
+
+::
+
+
+
+anchor::Ex.2e::  
+subsection::Ex.2e:   Setting i-th fields of a running synth with patterns
+
+
+For SC versions before invention of method seti use helper functions from link::#Ex.2d:: in Pbind.
+
+code::
+
+// start Synth
+
+x = Synth(\array_1a, [freq: 200, amp: 0.3])
+
+
+// sequence setting of single fields
+// As this is currently not integrated with Pmono or event type \set
+// it must be done explicitely. Method 'makeBundle' with server latency arg
+// ensures that array field setting is done in parallel to
+// other settings triggered by the event.
+
+(
+// continously subtract and add 7 overtones
+
+p = Pbind(
+	\type, \rest,
+	\dur, 0.2,
+	\otAmp, Pstutter(7, Pseq([0,1], inf)),
+	\amp, 0.3,
+	\i, Pn(Pshuf((1..7))),
+//	use Function ~seti (2d) for SC versions without method seti:
+	\do, Pfunc { |e| s.makeBundle(s.latency, { ~seti.(x, \otAmps, e.i, e.otAmp) }) }
+//	for newer SC versions with method seti you can use this line instead:
+//	\do, Pfunc { |e| s.makeBundle(s.latency, { x.seti(\otAmps, e.i, e.otAmp) }) } 
+   ).trace.play
+)
+
+// stop player and synth
+
+(
+p.stop;
+x.release;
+)
+
+
+// This approach can be extended by setting more than one field per event.
+// In some cases this might be a reasonable alternative to setting whole arrays
+// of running synths (2b, 2c), which requires more OSC traffic.
+
+// start Synth from Ex. 1 with 16 overtones
+
+x = Synth(\array_1b_16, [freq: 100, amp: 0.3])
+
+(
+// lists for bookkeeping of substracted and added overtones
+a = (1..16).asList;
+b = List[];
+
+// Function to shovel indices from list to list
+
+f = { |list1, list2|
+	var x = list1.choose;
+	list1.remove(x);
+	list2.add(x);
+	x
+};
+
+// continously subtract and add 5 x 3 overtones
+
+p = Pbind(
+	\type, \rest,
+	\dur, 0.2,
+	\otAmp, Pstutter(5, Pseq([0,1], inf)),
+	\amp, 0.3,
+	// shoveling indices from a to b and back, outputting sorted index tripels
+	\i, Pseq([
+		Pfinval(5, Pclump(3, Pfunc { f.(a, b) } )),
+		Pfinval(5, Pclump(3, Pfunc { f.(b, a) } ))
+	], inf).collect(_.sort),
+//	use Function ~seti (2d) for SC versions without method seti:
+	\do, Pfunc { |e| s.makeBundle(s.latency, { e.i.do { |j| ~seti.(x, \otAmps, j, e.otAmp) } }) }   
+//	for newer SC versions with method seti you can use this line instead:
+//	\do, Pfunc { |e| s.makeBundle(s.latency, { e.i.do { |j| x.seti(\otAmps, j, e.otAmp) } }) } 
+).trace.play
+)
+
+// stop player and synth
+
+(
+p.stop;
+x.release;
+)
+
+::
+
+
+anchor::Ex.2f::  
+subsection::Ex.2f:   Alternatives with demand ugens
+
+
+
+Besides from passing arrays, array sequencing can be done within synths by demand ugens. This is saving OSC bandwidth, especially with large arrays and short durations, for more complicated sequencing tasks coding might be harder than with patterns.
+
+
+code::
+
+(
+// array sequencing within SynthDef
+
+q = [
+	[1, 1, 0, 0, 0, 0, 0, 0],
+	[1, 0, 1, 0, 0, 0, 0, 0],
+	[1, 1, 0, 1, 0, 0, 0, 0],
+	[1, 0, 1, 0, 1, 0, 0, 0],
+	[1, 1, 0, 1, 0, 1, 0, 0],
+	[1, 0, 1, 0, 1, 0, 1, 0],
+	[1, 0, 0, 1, 0, 1, 0, 1]
+];
+
+// duration will have to be passed with a key unequal to reserved keyword \dur
+
+SynthDef(\array_1c, { |out = 0, freq = 440, dampExp = 0, duration = 0.2,
+	att = 0.01, rel = 0.6, amp = 0.1, gate = 1, freqLag = 0.02, otLag = 0.02|
+	var otAmps, sig, env, freqs, amps, arr;
+	otAmps = Demand.kr(Impulse.kr(1 / duration), 0, Dseq(q, inf));
+	freqs = (freq * (1..8)).clip(20, 20000).lag(freqLag);
+	amps = ((otAmps / ((1..8) ** dampExp)).normalizeSum * amp).lag(otLag);
+	sig = SinOsc.ar(freqs, 0, amps);
+	env = EnvGen.ar(Env.asr(att, 1, rel), gate, doneAction: 2);
+	Out.ar(out, Splay.ar(sig) * env)
+}).add;
+
+// SynthDef for complete server-side sequencing 
+// takes midiseq as array arg
+
+SynthDef(\array_1d, { |out = 0, dampExp = 0, duration = 0.2, divLo = 1, divHi = 1.2,
+	att = 0.01, rel = 0.6, amp = 0.3, gate = 1, freqLag = 0.02, otLag = 0.02|
+	var midiseq = \midiseq.kr((70..50));
+	var trig, otAmps, sig, env, freq, freqs, amps, arr;
+	trig = Impulse.kr(1 / duration);
+	otAmps = Demand.kr(trig, 0, Dseq(q, inf));
+	freq = Demand.kr(trig, 0, Dseq(midiseq, inf) / 
+		Dstutter(midiseq.size, Dwhite(divLo, divHi))).midicps;
+	freqs = (freq * (1..8)).clip(20, 20000).lag(freqLag);
+	amps = ((otAmps / ((1..8) ** dampExp)).normalizeSum * amp).lag(otLag);
+	sig = SinOsc.ar(freqs, 0, amps);
+	env = EnvGen.ar(Env.asr(att, 1, rel), gate, doneAction: 2);
+	Out.ar(out, Splay.ar(sig) * env)
+}).add
+)
+
+(
+// equivalent to Ex 2c
+// still using a pattern for non-array sequencing
+
+p = Pmono(\array_1c,
+	\dur, 0.2,
+	\duration, Pkey(\dur),
+	\midinote, Pn(Plazy { Pseq((70..50)) / rrand(1, 1.2) }), 
+	\amp, 0.3
+).play
+)
+
+p.stop;
+
+
+// equivalent, now all done by synth
+
+x = Synth(\array_1d)
+
+
+// set midi sequence 
+
+x.set(\midiseq, (50..70))
+
+x.set(\midiseq, (70..50))
+
+x.set(\midiseq, (70..50).scramble)
+
+x.release
+
+
+::
+
+
+SECTION::3. Sequencing synths with array args by Pbind
+
+
+anchor::Ex.3a::  
+subsection::Ex.3a:   Sequencing synths of same definition with array args by Pbind
+
+
+code::
+
+// Using a Pbind with array args is straightforward,
+// it's just important to remember that arrays must be in 
+// double brackets (or wrapped into Refs). 
+// Written explicitely it looks a bit odd as you end up with 
+// three brackets at begin and end:
+// Pseq([[[1, 1, 0, 0, 0, 0, 0, 0]], ... , [[1, 0, 0, 1, 0, 1, 0, 1]]], 100)
+
+
+(
+// Array o from definitions in Ex. 2b / 2c.
+
+o = [
+	[[1, 1, 0, 0, 0, 0, 0, 0]],
+	[[1, 0, 1, 0, 0, 0, 0, 0]],
+	[[1, 1, 0, 1, 0, 0, 0, 0]],
+	[[1, 0, 1, 0, 1, 0, 0, 0]],
+	[[1, 1, 0, 1, 0, 1, 0, 0]],
+	[[1, 0, 1, 0, 1, 0, 1, 0]],
+	[[1, 0, 0, 1, 0, 1, 0, 1]]
+];
+
+// generating multiple nodes per event is also no problem,
+// arrays from o are sent to both nodes here:
+
+p = Pbind(
+	\instrument, \array_1a, 
+	\dur, 0.2,
+	\amp, 0.3,
+	\stepsPerOctave, 5,
+	\octave, 4,
+	\note, Pstutter(7, Pn(Pshuf((0..4)))) + [0, -4], 
+	\otAmps, Pseq(o, 100)
+).trace.play
+)
+
+p.stop;
+
+::
+
+
+anchor::Ex.3b::  
+subsection::Ex.3b:   Sequencing synths with different array arg sizes by Pbind
+
+
+By using the Array o in the last examples we did a kind of zeropadding: setting unused elements to zero. When altering one running synth (as with event type \set or Pmono) one can only save OSC messages if less than all fields are changed, see link::#Ex. 2e:: . When continuously generating new synths – as with 'normal' Pbind of type \note – there is another alternative: using SynthDefs of dedicated array arg sizes per event. This is the use case of a "SynthDef factory" as described in link::#Ex.1:: .
+
+
+
+code::
+
+
+(
+// needs SynthDefs from "factory" in Ex. 1
+
+q = [
+	[[1, 1, 1]],
+	[[1, 1, 1, 1, 1]],
+	[[1, 0, 1, 0, 1, 0, 1, 0, 1]],
+	[[1, 1, 0, 1, 0, 1, 0, 1, 0, 1]]
+];
+
+p = Pbind(
+	\otAmps, Pn(Pshuf(q), 100),
+	\size, Pkey(\otAmps).collect { |x| x[0].size.asSymbol },
+	\instrument, Pkey(\size).collect { |x| \array_1b_ ++ x }, // SynthDef depends on chosen otAmp array
+	\dur, 0.2,
+	\amp, 0.3,
+	\stepsPerOctave, 7,
+	\octave, 4,
+	\note, Pstutter(3, Pn(Pshuf((0..4)))) + Pn(Pshuf([[0, 2], [0, 4, 8], [0, -3, -5, -8]])) 
+).trace.play
+)
+
+p.stop;
+
+::
+
+anchor::Ex.4:: 
+SECTION::Ex.4	Sequencing synths with envelope array args by Pbind
+
+Env objects have a representation in a special Array format – which you can get with anEnv.asArray – the task of passing Env data to synths can thus be reduced to the task of passing Arrays in this special format. Nevertheless direct passing of Envs is possible also.
+
+
+code::
+
+(
+// NamedControl is recommended in that case as a literal Array of special format would be impractical.
+// Define a SynthDef with maximum envelope size you expect to pass
+
+SynthDef(\envArray_1, { |out = 0, freq = 440, amp = 0.1, timeScale = 1, gate = 1|
+	var sig, env, envArray, envSig;
+	envArray = Env([0, 1, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0]).asArray; // works also without '.asArray'
+	env = \env.kr(envArray);  // shortcut for NamedControl.kr(\env, envArray)
+	envSig = EnvGen.kr(env, gate, timeScale: timeScale, doneAction: 2); 
+	sig = Saw.ar([freq, freq * 2.01], amp); 
+	Out.ar(out, sig * envSig)
+}).add
+)
+
+// Pbind uses event type \on to avoid setting gate to 0 and receiving messages "node not found",
+// synths are ended by envelopes anyway.
+
+
+( 
+p = Pbind( 
+	\type, Pshuf([\on, \on, \rest], inf), 
+	\instrument, \envArray_1, 
+	\dur, Pn(Pshuf([1, 1/2, 1/2]), 30), 
+	\midinote, Pn(Pshuf((40..80))) + Pn(Pshuf([[0.5, 11.5], [0, 4], [0, -7], [-0.5, -9.5]])),
+	
+	// envData contains env types, determined by levels and times.
+	// Times are only relations, within the synthdef they are scaled by the timeScale arg.
+	\envData, Pn(Pshuf([ 
+		[[0, 1, 0], [1, 1]], 
+		[[0, 1, 1/4, 1, 0], [1, 1, 1, 1]], 
+		[[0, 1, 1/4, 1, 1/4, 1, 0], [1, 1, 1, 1, 1, 1]]
+	])),
+	
+	// *x splits the envData array into levels and times, Env is converted in to an Array automatically
+	\env, Pkey(\envData).collect { |x| Env(*x) }, 
+	
+	// when wanting to pass the Array explicitely it would require
+	// wrapping into an additional Array which is necessary for passing:
+	// \env, Pkey(\envData).collect { |x| [Env(*x).asArray] }, 
+	
+	\timeScale, Pfunc { |e| e.dur / e.envData[1].sum } 
+).trace.play; 
+) 
+
+p.stop;
+
+::
+

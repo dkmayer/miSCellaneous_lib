@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; min-height: 16.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #042eee}
+span.s5 {color: #0326cb}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>PSVunion<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>Sieve pattern for union of integer generators with point output</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Psieve</b></p>
+<p class="p4"><br></p>
+<p class="p1">Pattern for union of integer generators with point output. Corresponds to Sieve's method 'union'.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>See also: </b><a href="Sieves and Psieve patterns.html"><span class="s4">Sieves and Psieve patterns</span></a>, <a href="Sieve.html"><span class="s4">Sieve</span></a>, <a href="PSVunion_i.html"><span class="s3">PSVunion_i</span></a>, <a href="PSVunion_o.html"><span class="s3">PSVunion_o</span></a>, <a href="PSVunion_oi.html"><span class="s3">PSVunion_oi</span></a>, <a href="PSVsect.html"><span class="s3">PSVsect</span></a>, <a href="PSVsect_i.html"><span class="s3">PSVsect_i</span></a>, <a href="PSVsect_o.html"><span class="s3">PSVsect_o</span></a>, <a href="PSVsect_oi.html"><span class="s3">PSVsect_oi</span></a>, <a href="PSVsymdif.html"><span class="s3">PSVsymdif</span></a>, <a href="PSVsymdif_i.html"><span class="s3">PSVsymdif_i</span></a>, <a href="PSVsymdif_o.html"><span class="s3">PSVsymdif_o</span></a>, <a href="PSVsymdif_oi.html"><span class="s3">PSVsymdif_oi</span></a>, <a href="PSVdif.html"><span class="s3">PSVdif</span></a>, <a href="PSVdif_i.html"><span class="s3">PSVdif_i</span></a>, <a href="PSVdif_o.html"><span class="s3">PSVdif_o</span></a>, <a href="PSVdif_oi.html"><span class="s3">PSVdif_oi</span></a>, <a href="PSVop.html"><span class="s3">PSVop</span></a>, <a href="PSVop_i.html"><span class="s3">PSVop_i</span></a>, <a href="PSVop_o.html"><span class="s3">PSVop_o</span></a>, <a href="PSVop_oi.html"><span class="s3">PSVop_oi</span></a><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new (genList, maxLength, limit)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new PSVunion object.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>genList </b>- An array of generators.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Allowed generators: Integers, Streams or Patterns producing intervals or Sieves itself.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Integers and Stream/Pattern output must be strictly positive.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Integers as generators produce zero and its positive multiples.</p>
+<p class="p10"><br></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>maxLength </b>- Integer. Maximum number of items, which the stream will return.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to inf.</p>
+<p class="p10"><br></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>limit </b>- Integer. Limit up to which integers can be returned by the stream.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If no limit is passed, returned integers might go up to default limit 65536.</p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p11"><b>Examples</b></p>
+<p class="p12"><br></p>
+<p class="p4"><br></p>
+<p class="p13">p = <span class="s5">PSVunion</span>([3, 5], 10)</p>
+<p class="p4"><br></p>
+<p class="p13">p.asStream.nextN(15)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">a = <span class="s5">Sieve</span>(7, 30)</p>
+<p class="p4"><br></p>
+<p class="p13">q = <span class="s5">PSVunion</span>([a, 100], 10)</p>
+<p class="p4"><br></p>
+<p class="p13">q.asStream.all</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">r = <span class="s5">PSVunion</span>([a, 100], limit: 1000)</p>
+<p class="p4"><br></p>
+<p class="p13">r.asStream.all</p>
+<p class="p4"><br></p>
+</body>
+</html>

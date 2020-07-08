@@ -1,0 +1,4 @@
+
+INSTANCEMETHODS::
+
+private:: miSC_getReceiver, miSC_getParent, miSC_getFunc, miSC_getEnvironment

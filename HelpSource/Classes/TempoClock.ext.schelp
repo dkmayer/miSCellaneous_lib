@@ -1,0 +1,4 @@
+
+INSTANCEMETHODS::
+
+private:: miSC_getPhaseFromNextTimeOnGrid, miSC_getPhaseFromTimeToNextBeat

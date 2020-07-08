@@ -1,0 +1,475 @@
+CLASS:: Fb1_ODEdef
+summary:: container for ordinary differential equation definitions
+categories:: Libraries>miSCellaneous>Nonlinear
+related:: Overviews/miSCellaneous, Guides/Introduction_to_miSCellaneous, Classes/Fb1, Classes/GFIS, Classes/Fb1_ODE, Classes/Fb1_ODEintdef, Classes/Fb1_MSD, Classes/Fb1_SD, Classes/Fb1_Lorenz, Classes/Fb1_Hopf, Classes/Fb1_HopfA, Classes/Fb1_HopfAFDC, Classes/Fb1_VanDerPol, Classes/Fb1_Duffing 
+
+
+DESCRIPTION::
+
+
+To be used to define ODE systems that can then be audified with Fb1_ODE. See link::Classes/Fb1_ODE:: for general information about Fb1 ODE integrator UGens.
+
+strong::HISTORY AND CREDITS: :: Big credit to David Pirrò from IEM Graz for pointing me to the symplectic integration methods, which are essential for audifying ODEs, as they help to ensure numeric stability in the long run (e.g. to avoid drifts of oscillations that are mathematically expected to be regular). See the chapter on integration in his dissertation link::#[2]::, pp 135-146. You might also want check David Pirròs optimized ODE compiler named Henri link::#[3]::. Big credit also to Nathaniel Virgo who brought up the buffering strategy used in Fb1, which is Fb1_ODE's working horse.
+
+
+warning::
+Especially with self-defined ODEs the usage of this class is – inherently – highly experimental. Be careful with amplitudes, as always with feedback it can become loud! Sudden blowups might result form the mathematical characteristics of the ODE systems or they might come from parameter changes on which ODEs can react extremely sensitive to, they can also stem from numerical accumulation effects. It is highly recommended to take precautionary measures, e.g. by limiting/distorting operators (tanh, clip, softclip, distort) with the compose option (See link::Classes/Fb1_ODE#Examples 5#Fb1_ODE Examples 5::) and/or external limiting and/or using MasterFX from the JITLibExtensions quark. 
+::
+
+note::
+Fb1_ODE in its plain form (without strong::tMul:: modulation, use of strong::compose:: etc.) produces audio data as a numerical integration of an ODE initial value problem, defined by Fb1_ODEdef and a numerical procedure, defined by Fb1_ODEintdef. This of course supposes well-defined ODE systems and it should be kept in mind that the Fb1_ODE framework doesn't perform any mathematical checks regarding the principal existence and uniqueness of a solution of a given Fb1_ODEdef. 
+::
+
+note::
+The convenience of direct definition of the ODE relation comes with the price of a large number of UGens involved. You might want to allow a higher number of UGens with the server option numWireBufs. For a nice workflow I'd recommended to take reduced blockSizes (e.g. 1, 2, 4, 8, 16) while experimenting as compile time is shorter, but once you have finished the design of a SynthDef it might pay going back to blocksize 32 or 64 for runtime efficiency, especially if many kr UGens are involved.  
+::
+
+
+anchor::[1]::
+anchor::[2]::
+anchor::[3]::
+
+
+subsection::References
+
+numberedList::
+## Trefethen, Lloyd N.; Birkisson Ásgeir; Driscoll, Tobin A. (2017): Exploring ODEs. SIAM - Society for Industrial and Applied Mathematics. Free download from: https://people.maths.ox.ac.uk/trefethen/Exploring.pdf
+## Pirrò, David (2017). Composing Interactions. Dissertation. Institute of Electronic Music and Acoustics, University of Music and Performing Arts Graz. Free download from: https://pirro.mur.at/media/pirro_david_composing_interactions_print.pdf
+## https://git.iem.at/davidpirro/henri
+::
+
+
+CLASSMETHODS::
+
+private:: initClass
+
+
+
+method::new
+
+Creates a new Fb1_ODEdef object.
+
+
+argument::name
+The name of the ODE, expects a Symbol. Default Fb1_ODEdefs cannot be overwritten.
+
+
+argument::function
+The implementation of the function F which describes the ODE given as Y'(t) = F(t, Y(t)) where Y, F can be a single-valued or vector-valued. It must take time as first and a system state (possibly an array) as second parameter and optional further args that can also be arrays. The system state is expected to have the size of the system (given by strong::y0::'s size), the function's return value must also equal this size. If the system size is greater than 1 the components of the output array should be rather written as Functions, as this optimizes the compile process with symplectic integration procedures, it isn't compulsory though. See examples below and in the source file Fb1_ODEdef.sc.
+
+
+argument::t0
+Number. Default initial time value. 
+
+
+argument::y0
+Default initial value of the ODE. Expects number or array and determines the size of the system, strong::function::'s second arg and return value must be of same size.
+
+
+argument::outScale
+Number that determines the default multiplier for the integration signal produced by Fb1_ODE when the latter's strong::withOutScale:: flag is set to true (default). Defaults to 1. Especially thought for systems like Lorenz which produce high levels with standard parameters, then it makes sense to set strong::outScale:: to a value smaller than 1.
+warning:: strong::outScale:: / strong::diffOutScale:: / strong::withOutScale:: do not implement a general safety net functionality, strong::withOutScale:: 's default value true does by no means say that output is limited. The default scaling values of predefined Fb1_ODEdefs are average assumptions and can, under different circumstances, always lead to high out levels.
+::
+
+
+argument::diffOutScale
+Number that determines the default multiplier for the differential signal produced by Fb1_ODE when the latter's strong::withOutScale:: flag is set to true (default). Defaults to 1. Especially thought for systems like Lorenz which produce high levels with standard parameters, then it makes sense to set strong::outScale:: to a value smaller than 1.
+warning:: strong::outScale:: / strong::diffOutScale:: / strong::withOutScale:: do not implement a general safety net functionality, strong::withOutScale::'s default value true does by no means say that output is limited. The default scaling values of predefined Fb1_ODEdefs are average assumptions and can, under different circumstances, always lead to high out levels.
+::
+
+
+
+
+method::at
+
+Returns the Fb1_ODEdef instance of the Symbol strong::key:: if it exists.
+
+argument::key
+Symbol. 
+
+
+method::keys
+
+Returns an array of all keys of currently stored Fb1_ODEdefs.
+
+
+method::postAll
+
+Posts all keys of currently stored Fb1_ODEdefs.
+
+
+method::remove
+
+Removes the Fb1_ODEdef of the Symbol strong::key:: from the Dictionary.
+
+argument::key
+Symbol. 
+
+
+method::reset
+
+Removes all Fb1_ODEdefs other than the predefined ones from the Dictionary.
+
+
+
+
+INSTANCEMETHODS::
+
+
+private:: initFb1_ODEdef, value, compose, makeFirstOutInit, makeOutInit, getIntSize, dispatchIntFunc 
+
+
+
+method::next
+
+Method for language-side integration, gives next value based on previous data.
+
+
+argument::intType
+Integration type. Expects one of the Symbols, for which procedures are stored with Fb1_ODEintdef. The use of symplectic procedures (with prefix 'sym', like 'sym2') is highly recommended. For more accurate integration you can try symplectic procedures of higher order like \sym4, \sym8 etc.	Multi-step procedures are not implemented, remaining:	
+
+list::		
+## Symplectic: \sym2, \sym2_d, \sym4, \sym4_d, \sym6, \sym6_d, \sym8, \sym8_d, \sym12, \sym12_d, \sym16, \sym16_d, \sym32, \sym32_d, \sym64, \sym64_d
+## Euler: \eu, \eu_d, \eum, \eum_d, \eui, \eui_d
+## Prediction-Evaluation-Correction: \pec, \pece, \pecec, \pecece
+## Runge-Kutta: \rk3, \rk3_d, \rk3h, \rk3h_d, \rk4, \rk4_d 
+::
+
+argument::t
+Previous time, expects Number.
+
+
+argument::y
+Previous state, expects Number or Array of system size.
+
+
+argument::dt
+Number. Time delta. 
+
+
+argument::args
+List of additional args to be passed to Fb1_ODEdef's function. 
+
+
+
+method::nextN
+
+Method for language-side integration, gives an array of next strong::n:: values (arrays) based on previous data. Last values (arrays) are stored at last position. For intTypes with sizeFactor 2 the differential is included. See Examples.	
+
+
+argument::n
+Integer. Number of next values (resp. value arrays) to be calculated.	
+
+
+argument::intType
+Integration type. Expects one of the Symbols, for which procedures are stored with Fb1_ODEintdef. The use of symplectic procedures (with prefix 'sym', like 'sym2') is highly recommended. For more accurate integration you can try symplectic procedures of higher order like \sym4, \sym8 etc.	Multi-step procedures are not implemented, remaining:	
+
+list::		
+## Symplectic: \sym2, \sym2_d, \sym4, \sym4_d, \sym6, \sym6_d, \sym8, \sym8_d, \sym12, \sym12_d, \sym16, \sym16_d, \sym32, \sym32_d, \sym64, \sym64_d
+## Euler: \eu, \eu_d, \eum, \eum_d, \eui, \eui_d
+## Prediction-Evaluation-Correction: \pec, \pece, \pecec, \pecece
+## Runge-Kutta: \rk3, \rk3_d, \rk3h, \rk3h_d, \rk4, \rk4_d 
+::
+
+argument::t
+Previous time, expects Number.
+
+
+argument::y
+Previous state, expects Number or Array of system size.
+
+
+argument::dt
+Number. Time delta. 
+
+
+argument::args
+List of additional args to be passed to Fb1_ODEdef's function. 
+
+
+argument::withTime
+Boolean. Determines if integrated time should be included. Defaults to false.
+
+
+argument::includeStart
+Boolean. Determines if start value(s) should be included. Defaults to true.
+
+
+method::name
+Getter for the Fb1_ODEdef's name.
+
+
+method::function
+Getter for the Fb1_ODEdef's function.
+
+
+method::name
+Getter for the Fb1_ODEdef's name.
+
+
+method::t0
+Getter for the Fb1_ODEdef's t0.
+
+
+method::y0
+Getter for the Fb1_ODEdef's y0.
+
+
+method::outScale
+Getter for the Fb1_ODEdef's outScale.
+
+
+method::diffOutScale
+Getter for the Fb1_ODEdef's diffOutScale.
+
+
+method::size
+Getter for the Fb1_ODEdef's system size.
+
+
+
+
+
+
+section::Examples 1: Defining new ODEs
+
+code::
+// reboot with reduced blockSize
+
+(
+s = Server.local;
+Server.default = s;
+s.options.blockSize = 8;
+s.reboot;
+)
+::
+
+
+
+anchor::Ex. 1a::
+subsection::Ex. 1a: Extending the harmonic oscillator
+
+
+code::
+// This seems to be an interesting strategy.
+// We can e.g. try to multiply one of its equations with a term near 1,
+// so start with rather small k and investigate
+
+// y'(t) = w(t)
+// w'(t) = -y(t) * (1 + (k * w(t)))
+
+ 
+(
+Fb1_ODEdef(\harmonic_ext_1, { |t, y, k|
+	[
+		y[1], 
+		y[0].neg * (1 + (k * y[1]))
+	]
+}, 0, [0, 1], 1, 1); 
+)
+
+
+// brassy sound
+
+(
+x = {
+	var sig = Fb1_ODE.ar(\harmonic_ext_1,
+		[1], 1500, 0, [0, 1],
+	) * 0.1;
+	sig
+}.play
+)
+
+x.release
+
+
+// with oscillating k the system tends to become unstable
+// but with softclip per sample it can be kept 
+// (see chapter 'compose' option in Fb1_ODE help)
+
+(
+x = {
+	var sig = Fb1_ODE.ar(\harmonic_ext_1,
+		// k oscillates between 1 and 3
+		[SinOsc.ar(50).lincurve(-1, 1, 1, 3, 2)],
+		1500, 0, [0, 1],
+		compose: \softclip
+	) * 0.1;
+	sig
+}.play
+)
+
+x.release
+
+
+// an oscillation between 1 and higher values totally changes the spectrum
+
+(
+x = {
+	var sig = Fb1_ODE.ar(\harmonic_ext_1,
+		// k oscillates between 1 and 10
+		[SinOsc.ar(50).lincurve(-1, 1, 1, 10, 2)],
+		1500, 0, [0, 1],
+		compose: \softclip
+	) * 0.1;
+	sig
+}.play
+)
+
+x.release
+
+
+// play with the two states
+
+(
+x = {
+	var sig = Fb1_ODE.ar(\harmonic_ext_1,
+		// upper oscillation bound for k oscillates itself between 2 and 15
+		[SinOsc.ar(50).lincurve(-1, 1, 1, SinOsc.ar(SinOsc.ar(0.2).exprange(0.2, 15)).range(2, 15), 2)],
+		1500, 0, [0, 1],
+		compose: \softclip
+	) * 0.1;
+	sig
+}.play
+)
+
+x.release
+::
+
+
+
+
+anchor::Ex. 1b::
+subsection::Ex. 1b: Extending exponential decay
+
+
+code::
+// exponential decay is described by the equation
+// y'(t) = -y(t)
+
+// an oscillating decay can e.g. be got by
+// y'(t) = -y(t) * sin(t)
+// the analytic solution includes a log of the sine,
+// so we get more partials
+
+
+(
+Fb1_ODEdef(\exp_decay_raw, { |t, y|
+	y.neg * sin(t)
+}, 0, 1, 1, 1);
+)
+
+
+(
+x = {
+	var sig = Fb1_ODE.ar(\exp_decay_raw,
+		tMul: 100 * 2pi,
+		compose: \softclip
+	) ! 2;
+	Line.kr(dur: 10, doneAction: 2);
+	sig
+}.play
+)
+
+x.release
+
+
+// multiplication with a second sine with multiplied time leads to strange and interesting results
+
+(
+Fb1_ODEdef(\exp_decay_extended, { |t, y, k|
+	y.neg * (sin(t) * sin(k * t))
+}, 0, 1, 1, 1);
+)
+
+
+
+// ATTENTION: danger of blowup, can be reduced with softclip composition per sample
+// constant values lead to ring modulation-like effects ...
+
+(
+x = {
+	var sig = Fb1_ODE.ar(\exp_decay_extended,
+		[2.7], 100 * 2pi, 0, 1,
+		compose: \softclip
+	);
+	Line.kr(dur: 10, doneAction: 2);
+	sig ! 2
+}.play
+)
+
+x.release
+
+
+// ... whereas modulations produce more complex changing spectra
+(
+x = {
+	var sig = Fb1_ODE.ar(\exp_decay_extended,
+		[SinOsc.ar(120).range(3, 3.01)], 100 * 2pi, 0, 1,
+		compose: \softclip
+	);
+	Line.kr(dur: 10, doneAction: 2);
+	sig ! 2
+}.play
+)
+
+x.release
+
+
+// for decorrelated stereo we can expand to two independent equations
+// k should be of size 2
+
+(
+Fb1_ODEdef(\exp_decay_extended_2, { |t, y, k|
+	[
+		y[0].neg * (sin(t) * sin(k[0] * t)),
+		y[1].neg * (sin(t) * sin(k[1] * t))
+	]
+}, 0, [1, 1], 1, 1);
+)
+
+(
+x = {
+	var sig = Fb1_ODE.ar(\exp_decay_extended_2,
+		[SinOsc.ar(120).range([3, 3.01], [3.01, 3.02])], 100 * 2pi, 0, [1, 1],
+		compose: \softclip
+	);
+	Line.kr(dur: 10, doneAction: 2);
+	sig
+}.play
+)
+
+x.release
+::
+
+
+
+anchor::Ex. 2::
+section::Ex. 2: Language-side integration
+
+
+code::
+// Possible though not optimized.
+// For longer sections it's probably better to employ Fb1 ODE solvers, 
+// store audio in a buffer and load it into a float array,
+// for quick tests it might be useful though. 
+
+// integrate begin of a Lorenz system, last array is last state, so flop for plot
+
+(
+a = Fb1_ODEdef.at(\Lorenz).nextN(
+	n: 1000,
+	intType: \sym2,
+	t: 0, 
+	y: [1, 1, 1],
+	dt: 1/100,
+	args: [30, 12, 2]
+);
+
+a.flop.plot
+)
+::
+
+
+
+

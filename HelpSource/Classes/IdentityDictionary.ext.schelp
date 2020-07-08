@@ -1,0 +1,6 @@
+
+INSTANCEMETHODS::
+
+private::miSC_checkFxOrder, miSC_fxOrderWarnString, miSC_keysValuesEvery, miSC_keysValuesAny, miSC_putAppend, miSC_removeDrop, miSC_getPredecessors, miSC_getSuccessors, miSC_getTopoOrder, miSC_getFxOrders
+
+private::miSC_replaceKeys

@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #042eee}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #cd1c00}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #008300}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #0000ee}
+span.s5 {color: #00afff}
+span.s6 {text-decoration: underline ; color: #042eee}
+span.s7 {text-decoration: underline ; color: #01beff}
+span.s8 {text-decoration: underline ; color: #0078ff}
+span.s9 {color: #0016d2}
+span.s10 {color: #0326cb}
+span.s11 {color: #008300}
+span.s12 {color: #0433ff}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>PSdup<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>Pattern which returns last values from other patterns via PSx</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: PS / PStream</b></p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s2"><b>See also: </b><a href="MemoRoutine.html"><span class="s4">MemoRoutine</span></a></span><span class="s5">, <a href="PSx stream patterns.html"><span class="s6">PSx stream patterns</span></a>,</span><span class="s2"> <a href="PS.html"><span class="s7">PS</span></a></span><span class="s5">,</span><span class="s2"> <a href="PSrecur.html"><span class="s8">PSrecur</span></a></span><span class="s5">,</span><span class="s2"> <a href="PSloop.html"><span class="s8">PSloop</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">PSdup uses the storage functionality of other PSx patterns. To track a value stream or event stream from a pattern you'd have to wrap the pattern into a PSx.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p6"><b>Creation / Class Methods</b></p>
+<p class="p7"><br></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>*new (psxPat, length, bufSize, copyItems, copySets)</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new PSdup object.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>psxPat </b>- Source pattern, must be a PSx pattern.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>length </b>- Number of output items, may be pattern or stream, defaults to inf.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>bufSize </b>- Size of buffer to store last values, defaults to 1.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>copyItems </b>- Determines if and how to copy the last items from <b>psxPat</b>'s<b> </b>buffer</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>which are either non-Sets or member of Sets.<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Takes Integer 0 (or false or Symbol \false), 1 (or true or Symbol \true) or 2 (or Symbol \deep).<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Other values are interpreted as 0. Defaults to 0.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0: original item<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1: copy item</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2: deepCopy item</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>copySets </b>- Determines if and how to copy the last items from <b>psxPat's </b>buffer</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>which are Sets.<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Takes Integer 0 (or false or Symbol \false), 1 (or true or Symbol \true).<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Other values are interpreted as 0. Defaults to 1.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0: original Set<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1: copy Set</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>NOTE 1: </b>The distinction of copying items and sets makes sense in the case of event streams.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Per default Events are copied (<b>copySets </b>== 1), not their values (<b>copyItems </b>== 0).<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>By playing Events those are used to store additional data (synth ids, msgFuncs …)<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>which is mostly not of interest when refering to the event stream, e.g. with PSx patterns which use<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>MemoRoutine - copied Events will not contain this additional data.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If values of Events or values returned directly by the stream (being no kind of Sets) are unstructured<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>then copying makes no sense, this is the normal case, so <b>copyItems </b>defaults to 0.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>When going to alter the ouput, you might want to set <b>copyItems </b>to 1 for a PSx returning<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>simple arrays or 2 for nested arrays (deepCopy). For deepCopying Events you'd have to set</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>copySets </b>to 1 and <b>copyItems</b> to 2 (an option <b>copySets </b>== 2 doesn't exist as</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>it would be contradictory in combination with <b>copyItems </b>&lt; 2).</p>
+<p class="p11"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>NOTE 2: </b>Copy options concern copying into PSdup's buffer as well as<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the output of a Stream derived from the PSdup. When such a Stream is outputting copies<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>this prevents unintended altering of items stored in the buffer of <b>psxPat</b>. On the other hand</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>storing copies in PSdup's buffer prevents these from being altered unintendedly.</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p6"><b>Instance Methods</b></p>
+<p class="p7"><br></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>psxPat, psxPat_(value)</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Instance variable getter and setter methods.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><br></p>
+<p class="p12"><br></p>
+<p class="p13"><b>Examples</b></p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">s = <span class="s9">Server</span>.local;</p>
+<p class="p14"><span class="s9">Server</span>.default = s;</p>
+<p class="p14">s.boot;</p>
+<p class="p14">)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p15">// copying of value patterns</p>
+<p class="p15">// PSdup needs a PSx as input, as its value storage is used,</p>
+<p class="p15">// so it's easiest to wrap the original pattern into a PS</p>
+<p class="p7"><br></p>
+<p class="p14">(</p>
+<p class="p14">p = <span class="s10">PS</span>(<span class="s10">Pseries</span>());</p>
+<p class="p14">q = <span class="s10">PSdup</span>(p);</p>
+<p class="p4"><br></p>
+<p class="p16">// PSx patterns have a state and, in this regard, behave like Streams.</p>
+<p class="p16">// However, like other Patterns, for generating they must be made to Streams<span class="Apple-converted-space"> </span></p>
+<p class="p16">// which are the objects actually returning items.<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p14">x = p.asStream;</p>
+<p class="p14">y = q.asStream;</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p16">// y follows x (as in the array left is evaluated before right)<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">a = [];</p>
+<p class="p14">10.do { a = a.add([x.next, y.next]) };</p>
+<p class="p14">a;</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p16">// get values from original Pattern / Stream</p>
+<p class="p4"><br></p>
+<p class="p14">x.nextN(10)</p>
+<p class="p4"><br></p>
+<p class="p16">// now y copies the last value of x resp. p</p>
+<p class="p4"><br></p>
+<p class="p14">y.nextN(10)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p15">// data sharing with event patterns</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">p = <span class="s10">Pbind</span>(</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s11">\midinote</span>, <span class="s10">Pwhite</span>(60, 90) + <span class="s10">PLrand</span>([0, 0, [0, -3]]),</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s11">\dur</span>, <span class="s10">PLrand</span>([0.2, 0.4]),</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s11">\amp</span>, <span class="s10">PLrand</span>([0.07, 0.12, 0.2]),</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s11">\type</span>, <span class="s10">Pfunc</span> { 0.1.coin.if { <span class="s11">\rest</span> }{ <span class="s11">\note</span> } },</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s11">\pan</span>, 1</p>
+<p class="p14">);</p>
+<p class="p4"><br></p>
+<p class="p14">q = <span class="s10">PS</span>(p);</p>
+<p class="p4"><br></p>
+<p class="p16">// use PSdup as base for alterings</p>
+<p class="p16">// it takes the last event stored in PS(p)</p>
+<p class="p4"><br></p>
+<p class="p14">r = <span class="s10">Pbindf</span>(<span class="s10">Padd</span>(<span class="s11">\midinote</span>, <span class="s10">PLrand</span>([1,2,4,5]), <span class="s10">PSdup</span>(q)), <span class="s11">\pan</span>, -1);</p>
+<p class="p4"><br></p>
+<p class="p16">// as in general with event stream data sharing it's recommended to invent a small delta<span class="Apple-converted-space"> </span></p>
+<p class="p16">// between streams, here this is extended to a clear echo<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p14">t = <span class="s10">Ptpar</span>([0, q, 0.1, r]).trace.play;</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">t.stop;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p15">// data sharing with event patterns, more voices<span class="Apple-converted-space"> </span></p>
+<p class="p7"><br></p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">p = <span class="s10">Pbind</span>(</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s11">\midinote</span>, <span class="s10">Pwhite</span>(50.0, 65),</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s11">\dur</span>, <span class="s10">PLrand</span>([0.7, 0.9, 1.2]),</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s11">\amp</span>, <span class="s10">PLrand</span>([0.1, 0.15, 0.2]),</p>
+<p class="p17"><span class="s2"><span class="Apple-tab-span">	</span></span>\legato<span class="s2">, 0.1</span></p>
+<p class="p14">);</p>
+<p class="p4"><br></p>
+<p class="p14">q = <span class="s10">PS</span>(p);</p>
+<p class="p4"><br></p>
+<p class="p16">// make pattern maker Function for parametrized alterings</p>
+<p class="p4"><br></p>
+<p class="p14">f = { <span class="s12">|div, add|</span> <span class="s10">Padd</span>(<span class="s11">\midinote</span>, add, <span class="s10">Pmul</span>(<span class="s11">\dur</span>, 1 / div, <span class="s10">PSdup</span>(q))) };</p>
+<p class="p14">d = 0.001;</p>
+<p class="p4"><br></p>
+<p class="p14">t = <span class="s10">Ptpar</span>([</p>
+<p class="p14"><span class="Apple-tab-span">	</span>0, q,<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>d, f.(2, 5 + <span class="s10">PLrand</span>([0, [0, 12.05]])),</p>
+<p class="p14"><span class="Apple-tab-span">	</span>d*2, f.(4, 7 + <span class="s10">PLrand</span>([0, [0, 12.1]])),</p>
+<p class="p14"><span class="Apple-tab-span">	</span>d*3, f.(8, 10 + <span class="s10">PLrand</span>([0, [0, 12.2]]))</p>
+<p class="p14">]).play</p>
+<p class="p14">)<span class="Apple-tab-span">	</span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14">t.stop;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+</body>
+</html>

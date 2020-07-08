@@ -1,0 +1,26 @@
+
+INSTANCEMETHODS::
+
+private:: miSC_specAsArray, miSC_defNameAsArray
+
+
+method:: pfuncPbinds
+See link::Classes/Symbol#-pfuncPbinds::, link::Tutorials/VarGui_shortcut_builds::
+
+method:: sVarGuiSpecs
+See link::Classes/Symbol#-sVarGuiSpecs::, link::Tutorials/VarGui_shortcut_builds::
+
+
+method:: pVarGuiSpecs
+See link::Classes/Symbol#-pVarGuiSpecs::, link::Tutorials/VarGui_shortcut_builds::
+
+
+
+method:: sVarGui
+See link::Classes/Symbol#-sVarGui::, link::Tutorials/VarGui_shortcut_builds::
+
+
+method:: pVarGui
+See link::Classes/Symbol#-pVarGui::, link::Tutorials/VarGui_shortcut_builds::
+
+

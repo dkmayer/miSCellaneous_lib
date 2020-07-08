@@ -1,0 +1,1343 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 27.0px; text-indent: -27.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 15.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #de0005; min-height: 12.0px}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c09; min-height: 12.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c09}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00; min-height: 12.0px}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c08; min-height: 12.0px}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #de0007; min-height: 12.0px}
+p.p19 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p20 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0433ff}
+p.p21 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #737373}
+p.p22 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 15.0px Helvetica; min-height: 18.0px}
+p.p23 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #008300}
+p.p24 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0326cb}
+p.p25 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ff7c00}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #042eee}
+span.s5 {color: #0326cb}
+span.s6 {color: #434ccb}
+span.s7 {color: #008300}
+span.s8 {color: #0433ff}
+span.s9 {color: #cd1c00}
+span.s10 {color: #737373}
+span.s11 {color: #ff7c00}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Sieves and Psieve patterns<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>list building and sequencing based on Xenakis' sieves</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>See also: </b><a href="Sieve.html"><span class="s3">Sieve</span></a>, <a href="PSPdiv.html"><span class="s4">PSPdiv</span></a></span><span class="s4">,</span><span class="s2"> <a href="PSVunion.html"><span class="s3">PSVunion</span></a>, <a href="PSVunion_i.html"><span class="s3">PSVunion_i</span></a>, <a href="PSVunion_o.html"><span class="s3">PSVunion_o</span></a>, <a href="PSVunion_oi.html"><span class="s3">PSVunion_oi</span></a>, <a href="PSVsect.html"><span class="s3">PSVsect</span></a>, <a href="PSVsect_i.html"><span class="s3">PSVsect_i</span></a>, <a href="PSVsect_o.html"><span class="s3">PSVsect_o</span></a>, <a href="PSVsect_oi.html"><span class="s3">PSVsect_oi</span></a>, <a href="PSVsymdif.html"><span class="s3">PSVsymdif</span></a>, <a href="PSVsymdif_i.html"><span class="s3">PSVsymdif_i</span></a>, <a href="PSVsymdif_o.html"><span class="s3">PSVsymdif_o</span></a>, <a href="PSVsymdif_oi.html"><span class="s3">PSVsymdif_oi</span></a>, <a href="PSVdif.html"><span class="s3">PSVdif</span></a>, <a href="PSVdif_i.html"><span class="s3">PSVdif_i</span></a>, <a href="PSVdif_o.html"><span class="s3">PSVdif_o</span></a>, <a href="PSVdif_oi.html"><span class="s3">PSVdif_oi</span></a>, <a href="PSVop.html"><span class="s3">PSVop</span></a>, <a href="PSVop_i.html"><span class="s3">PSVop_i</span></a>, <a href="PSVop_o.html"><span class="s3">PSVop_o</span></a>, <a href="PSVop_oi.html"><span class="s3">PSVop_oi</span></a><span class="Apple-converted-space"> </span></span></p>
+<p class="p2"><br></p>
+<p class="p1">Iannis Xenakis proposed sieves as integer-based generators for rhythms, pitches and other musical parameters. For an overview of history and implementations, including his own development in Python, see Christopher Ariza's article [3].</p>
+<p class="p2"><br></p>
+<p class="p1">This SC implementation comes in two variants, with the class Sieve and Psieve patterns. Both variants include the usual sieve operations, which are based on set theory and applied to integers: union, intersection, symmetric difference and difference (complement can be defined by difference). These operations are defined for an arbitrary number of arguments as well as binary operators (Sieve). Psieve as an abstract superclass of all sieve patterns integrates sieve sequences into the pattern framework whereas Sieve is defined for calculating sieves as lists, in other words Psieve patterns are the "lazy evaluation" variant of "eager evaluation" Sieve operations. Of course you can produce sieves as lists also with Psieve patterns but for calculating very large sieves beforehand you might want to prefer Sieve, as its operations are slightly faster. For using sieves in a realtime situation the overhead of Psieve patterns will mostly be irrelevant.</p>
+<p class="p1">Why sieves + patterns? Not only can the ouput of sieve calculations be used in enclosing patterns – e.g. for scaling or arbitrary mapping into the continous domain –, Sieve and Psieve patterns also accept Patterns (which must be defined to produce integers) themselves as input for sieve operations, which opens a wide field for experimentation – in the case of Psieve patterns this even allows realtime control of sieve parameters and/or sieve stream output, also the logical operations can be exchanged on the fly. In one regard this is a contradiction to Xenakis' idea of sieves as an "outside-time" structure, on the other hand Xenakis, as Roads pointed out ([4], p.168), always tended to use generative procedures very freely and this also becomes explicit, when he describes "hyperbolae" (transformations) of sieves and suggests "... transformations of the logical operations in some fashion, using the laws of logic and mathematics, or arbitrarily." ([1], p.66). Patterns involve a wide range of such possibilities and provide a comfortable interface to be applied dynamically.<span class="Apple-converted-space"> </span></p>
+<p class="p1">Psieve patterns as well as Sieves can work in two modes, regarding sieves as sequences (resp. lists) of 'intervals' with an offset, or as 'points', meaning the ascending numbers itself (the wording of 'sums' and 'differences' would also be nearby, but here 'difference' is already used for set operations, so I leaned on Xenakis' terms). For efficiency reasons only one representation of a Sieve is current at a time, the default result mode is 'points'. However all operations exist in alternative result mode variants and of course Sieves can also be converted anytime. For calculus of Sieves there exist corresponding binary operators as shortcuts.</p>
+<p class="p1">Characteristics of sieves are closely bound to relations of numbers by prime factors, roughly said: more complexity and longer periodicity is following from merging moduls that have fewer prime factors in common. However for the sake of keeping classes light-weight, dealing with period lengths etc. is not implemented within the sieve classes itself. See [1] and [3] for some number-theoretical considerations, you might also want to check Xenakis' original examples and hints. Useful integer operations (prime numbers, factoring) are contained in SC main and can help you to easily carry through your own experiments, some extensions of built-in lcm-algorithm are contained (4b). A thorough investigation of the symmetric structures generated is out of the scope of this package, however some observations on symmetry types and basic analysis tools are included (3). Last but not least: plotting the intervals can give a good impression of sieve characteristics.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><b>References</b></p>
+<p class="p2"><br></p>
+<p class="p4">[1]<span class="Apple-tab-span">	</span>Xenakis, Iannis (1990). “Sieves” <i>Perspectives of New Music</i> 28(1): 58-78.</p>
+<p class="p4">[2]<span class="Apple-tab-span">	</span>Xenakis, Iannis (1992). <i>Formalized Music</i>. Hillsdale, NY: Pendragon Press, 2nd Revised edition.</p>
+<p class="p4">[3]<span class="Apple-tab-span">	</span>Ariza, Christopher (2005). "The Xenakis Sieve as Object: A New Model and a Complete Implementation" <i>Computer Music Journal</i> 29(2): 40-60.</p>
+<p class="p4">[4]<span class="Apple-tab-span">	</span>Roads, Curtis (2015). <i>Composing Electronic Music</i>. <i>A New Aesthetic.</i> Oxford University Press.</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6"><b><span class="s3">1) The Sieve class</span></b></p>
+<p class="p7"><br></p>
+<p class="p8"><b>1a) Basic generation from Integers, modes 'intervals' and 'points'</b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10">// define a simple sieve with multiples of 3, 5 and 7, 0 is included</p>
+<p class="p10">// as no limit is given, the result goes up to the default limit of 65536</p>
+<p class="p10">// per default result is given in mode 'points'</p>
+<p class="p11"><br></p>
+<p class="p12">a = <span class="s5">Sieve</span>.union(3, 5, 7)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// a limit is passed as Ref object as last arg</p>
+<p class="p11"><br></p>
+<p class="p12">a = <span class="s5">Sieve</span>.union(3, 5, 7, `30)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// convert to 'intervals': same Sieve object and new List that has one item less,</p>
+<p class="p10">// the slot 'offset' is set accordingly (here it equals 0)</p>
+<p class="p10">// the offset in mode 'points' is always nil</p>
+<p class="p11"><br></p>
+<p class="p12">a.toIntervals</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// convert back</p>
+<p class="p11"><br></p>
+<p class="p12">a.toPoints</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// access for arbitrary further use</p>
+<p class="p11"><br></p>
+<p class="p12">a.list</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// generate a Sieve from an Integer, it contains one point<span class="Apple-converted-space"> </span></p>
+<p class="p11"><br></p>
+<p class="p12">a = 5.toSieve.dump;</p>
+<p class="p11"><br></p>
+<p class="p10">// it's interval representation is an empty list</p>
+<p class="p11"><br></p>
+<p class="p12">a.toIntervals.dump</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// calculate with 'intervals' from the beginning</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Sieve</span>.union_i(3, 5, 7, `30)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p8"><b>1b) Generation from Patterns, Streams and Sieves</b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10">// Instead of Integers producing their multiples you can pass Patterns or Streams.</p>
+<p class="p10">// It's assumed that Patterns/Streams produce Integers interpreted as intervals</p>
+<p class="p10">// (if it's defined to produce 'points' it can e.g. be wrapped into a Pdiff).</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Sieve</span>.union(<span class="s5">Pseq</span>([1, 10], <span class="s6">inf</span>), 5, 7, `30)</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Sieve</span>.union({ loop { rrand(1,10).yield } }.r, 5, 7, `30)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// compare with result from the pattern alone</p>
+<p class="p10">// a union with one argument just returns its resulting elements.</p>
+<p class="p10">// As pattern arguments are interpreted as intervals, 0 is included</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Sieve</span>.union(<span class="s5">Pseq</span>([1, 10], <span class="s6">inf</span>), `30)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// a Sieve can itself be passed to generate a new one,</p>
+<p class="p10">// the mode of the passed sieve is taken into account</p>
+<p class="p11"><br></p>
+<p class="p12">a = <span class="s5">Sieve</span>.union(5, 7, `30);</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Sieve</span>.union(a, 3, `30)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p8"><b>1c) Elementary sieve operations</b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10">// beneath union: intersection, symmetric difference, difference</p>
+<p class="p10">// note that order of arguments only plays a role with difference</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// intersection: only integers produced by all generators</p>
+<p class="p10">// symmetric difference: only integers produced by one of the generators</p>
+<p class="p10">// difference: only integers produced by the first generator, but by none of the others</p>
+<p class="p11"><br></p>
+<p class="p10">// 'generator' here refers to allowed sieve operator args<span class="Apple-converted-space"> </span></p>
+<p class="p10">// (Integers as modul generators, Patterns/Streams or Sieves itself)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// proof of concept, evaluate in order</p>
+<p class="p11"><br></p>
+<p class="p12">a = <span class="s5">Sieve</span>.union(3, 5, 6, `100)</p>
+<p class="p11"><br></p>
+<p class="p10">// collect all pairwise intersections</p>
+<p class="p11"><br></p>
+<p class="p12">(</p>
+<p class="p10"><span class="s2">b = </span><span class="s5">Sieve</span><span class="s2">.sect(3, 5, `100); </span>// intersection with moduls: multiples of smallest common multiple</p>
+<p class="p12">c = <span class="s5">Sieve</span>.sect(5, 6, `100);</p>
+<p class="p10"><span class="s2">d = </span><span class="s5">Sieve</span><span class="s2">.sect(3, 6, `100); </span>// multiples of 6 itself</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p10">// calculate the symmetric difference ...</p>
+<p class="p11"><br></p>
+<p class="p12">e = <span class="s5">Sieve</span>.symdif(3, 5, 6, `100)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// ... it equals the difference of a, b, c and d ...</p>
+<p class="p11"><br></p>
+<p class="p12">f = <span class="s5">Sieve</span>.dif(a, b, c, d, `100)</p>
+<p class="p11"><br></p>
+<p class="p12">e == f</p>
+<p class="p11"><br></p>
+<p class="p10">// ... which equals the difference of a and the union of b, c and d</p>
+<p class="p11"><br></p>
+<p class="p12">g = <span class="s5">Sieve</span>.dif(a, <span class="s5">Sieve</span>.union(b, c, d, `100))</p>
+<p class="p11"><br></p>
+<p class="p12">e == g</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p8"><b>1d) Offset methods</b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10">// for passing individual offsets there exist dedicated methods with suffixes '_o' and '_oi'</p>
+<p class="p10">// offsets args are passed after the generating items</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// one generating number with offset</p>
+<p class="p10">// producing, mathematically spoken, a part of the residual class 2 modulo 3</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Sieve</span>.union_o(3, 2, `30)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// several generating numbers with offsets, passed pairwise</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Sieve</span>.union_o(3, 2, 5, 1, 7, 4, `30)</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Sieve</span>.union_oi(3, 2, 5, 1, 7, 4, `30)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// the shift operation adds an offset, it changes the receiver</p>
+<p class="p11"><br></p>
+<p class="p12">a = <span class="s5">Sieve</span>.union(5, 7, `30);</p>
+<p class="p11"><br></p>
+<p class="p12">a.shift(100)</p>
+<p class="p11"><br></p>
+<p class="p12">a.shiftTo(0)</p>
+<p class="p11"><br></p>
+<p class="p10">// as operators</p>
+<p class="p11"><br></p>
+<p class="p12">a &gt;&gt; 100</p>
+<p class="p11"><br></p>
+<p class="p12">a &gt;&gt;! 10</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p8"><b>1e) Sieve operations defined as instance methods</b></p>
+<p class="p5"><br></p>
+<p class="p10">// all operations and shortcuts defined above can be applied to instances</p>
+<p class="p11"><br></p>
+<p class="p12">(</p>
+<p class="p12">a = <span class="s5">Sieve</span>.union(3, 5, `1000);</p>
+<p class="p12">b = <span class="s5">Sieve</span>.union(4, 7, `1000);</p>
+<p class="p12">c = <span class="s5">Sieve</span>.union(6, 8, `1000);</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p10">// Note that large periods are already resulting from simple combinations of</p>
+<p class="p10">// elementary operations and few prime factors.</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// by default plot shows intervals</p>
+<p class="p11"><br></p>
+<p class="p12">symdif(a, b, c).plot</p>
+<p class="p11"><br></p>
+<p class="p12">dif(a, b, c).plot</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p13"><br></p>
+<p class="p11"><br></p>
+<p class="p8"><b>1f) Sieve operations defined as binary operators</b></p>
+<p class="p14"><br></p>
+<p class="p15">// instantiation with 'new': second arg limit doesn't need to be a Ref</p>
+<p class="p12">(</p>
+<p class="p12">a = <span class="s5">Sieve</span>(6, 60);</p>
+<p class="p12">b = <span class="s5">Sieve</span>(8, 60);</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p10">// union</p>
+<p class="p16"><br></p>
+<p class="p12">union(a,b)</p>
+<p class="p12">a|b</p>
+<p class="p11"><br></p>
+<p class="p12">union_i(a,b)</p>
+<p class="p12">a|*b</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// intersection</p>
+<p class="p16"><br></p>
+<p class="p12">sect(a,b)</p>
+<p class="p12">a&amp;b</p>
+<p class="p11"><br></p>
+<p class="p12">sect_i(a,b)</p>
+<p class="p12">a&amp;*b</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// symmetric difference</p>
+<p class="p16"><br></p>
+<p class="p12">symdif(a,b)</p>
+<p class="p12">a--b</p>
+<p class="p11"><br></p>
+<p class="p12">symdif_i(a,b)</p>
+<p class="p12">a--*b</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// difference, only elementary operation where order plays a role</p>
+<p class="p16"><br></p>
+<p class="p12">dif(a,b)</p>
+<p class="p12">a-b</p>
+<p class="p11"><br></p>
+<p class="p12">dif_i(a,b)</p>
+<p class="p12">a-*b</p>
+<p class="p11"><br></p>
+<p class="p12">dif(b,a)</p>
+<p class="p12">b-a</p>
+<p class="p11"><br></p>
+<p class="p12">dif_i(b,a)</p>
+<p class="p12">b-*a</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// Efficiency hint: for an operation with a number of args, especially with large Sieves,</p>
+<p class="p10">// it is more efficient to use the core class or instance methods than to concatenate binary operators:</p>
+<p class="p10">// doing the latter means stepping through the list/range with each binary operation</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p8"><b>1g) Segments of Sieves</b></p>
+<p class="p17"><br></p>
+<p class="p10">// These operations result in new Sieve objects of mode 'points'</p>
+<p class="p11"><br></p>
+<p class="p12">a = <span class="s5">Sieve</span>.union(3, 5, 7, `30)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// lo bound</p>
+<p class="p11"><br></p>
+<p class="p12">a.segmentGreaterEqual(7)</p>
+<p class="p11"><br></p>
+<p class="p12">a &gt;=! 7</p>
+<p class="p11"><br></p>
+<p class="p12">a.segmentGreater(7)</p>
+<p class="p11"><br></p>
+<p class="p12">a &gt;! 7</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// hi bound</p>
+<p class="p11"><br></p>
+<p class="p12">a.segmentLessEqual(10)</p>
+<p class="p11"><br></p>
+<p class="p12">a &lt;=! 10</p>
+<p class="p11"><br></p>
+<p class="p12">a.segmentLess(10)</p>
+<p class="p11"><br></p>
+<p class="p12">a &lt;! 10</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// lo &amp; hi bound</p>
+<p class="p11"><br></p>
+<p class="p12">a.segmentBetweenEqual(10, 20)</p>
+<p class="p11"><br></p>
+<p class="p12">a &lt;&gt;=! [10, 20]</p>
+<p class="p11"><br></p>
+<p class="p12">a.segmentBetween(10, 20)</p>
+<p class="p11"><br></p>
+<p class="p12">a &lt;&gt;! [10, 20]</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p18"><br></p>
+<p class="p8"><b>1h) Conversion to Sieves from Arrays<span class="Apple-converted-space"> </span></b></p>
+<p class="p19"><br></p>
+<p class="p10">// Conversion from arbitrary SequenceableCollection to Sieve:</p>
+<p class="p10">// per default it's assumed that receiver and result are thought to be in mode 'points'</p>
+<p class="p10">// but source and target mode can be passed as args 'fromMode' and 'toMode'</p>
+<p class="p11"><br></p>
+<p class="p12">a = [1, 5, 17, 33, 37, 43, 57, 60, 61, 62, 63, 75, 89, 92, 97];</p>
+<p class="p11"><br></p>
+<p class="p12">a.toSieve</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// define result mode, add offset</p>
+<p class="p11"><br></p>
+<p class="p12">a.toSieve(toMode: <span class="s7">\intervals</span>, addOffset: 100)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// define interval meaning of receiver</p>
+<p class="p10">// default offset zero</p>
+<p class="p11"><br></p>
+<p class="p12">a.toSieve(<span class="s7">\intervals</span>)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// same with offset 1, abbreviations for mode selection</p>
+<p class="p11"><br></p>
+<p class="p12">a.toSieve(<span class="s7">\i</span>, <span class="s7">\p</span>, 1)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// if Integers are regarded as points, they must be ascending ...</p>
+<p class="p11"><br></p>
+<p class="p12">a.reverse.toSieve</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// ... but intervals can be descending ...</p>
+<p class="p11"><br></p>
+<p class="p12">a.reverse.toSieve(<span class="s7">\i</span>)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// ... however they must be positive</p>
+<p class="p11"><br></p>
+<p class="p12">(a.reverse ++ -1).toSieve(<span class="s7">\i</span>)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// It's possible to disable the checks preformed with conversion (flag 'withCheck'),</p>
+<p class="p10">// but this only makes sense in a context where a large number of</p>
+<p class="p10">// speed-critical conversions on well-prepared data has to be done.</p>
+<p class="p10">// Otherwise it's always useful to perform those checks as</p>
+<p class="p10">// sieve operations on wrong data (e.g. unordered lists) will fail or hang.</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p8"><b>1i) Copying and transformation of Sieves by arbitrary array operations<span class="Apple-converted-space"> </span></b></p>
+<p class="p19"><br></p>
+<p class="p10">// It would be possible to define Sieve as subclass of List but there exist many</p>
+<p class="p10">// methods for List which don't make any sense for sieves, even worse: they can consequently</p>
+<p class="p10">// result in disfunctionality of standard operations defined for Sieves as List subclasses.</p>
+<p class="p10">// This could be overcome with additional checks for these standard operations, a bloating which</p>
+<p class="p10">// can be avoided if we try to keep only "proper sieves" as Sieve objects,</p>
+<p class="p10">// thus by default dedicated wrappers for arbitrary transformations include checks.</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12">a = Sieve.union_o(3, 1, 7, 2, `30)</p>
+<p class="p11"><br></p>
+<p class="p10">// simple deep copy ...</p>
+<p class="p11"><br></p>
+<p class="p12">b = a.copy</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// ... lists are equal but not identical</p>
+<p class="p11"><br></p>
+<p class="p12">a.list == b.list</p>
+<p class="p12">a.list === b.list</p>
+<p class="p11"><br></p>
+<p class="p10">// as expected sieves are equal</p>
+<p class="p11"><br></p>
+<p class="p12">a == b</p>
+<p class="p11"><br></p>
+<p class="p10">// but also a converted Sieve is equal</p>
+<p class="p11"><br></p>
+<p class="p12">a == b.toPoints</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// mode (intervals) and offset are taken over from original Sieve</p>
+<p class="p10">// new array is inserted and checked if it contains proper (ascending) integers</p>
+<p class="p11"><br></p>
+<p class="p12">a.copyWith([2, 17, 29, 31, 35, 53])</p>
+<p class="p11"><br></p>
+<p class="p12">a.copyWith([2, 2, 3, 5, 1, 10])</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// if the receiver is of mode 'intervals', the array of above can be passed</p>
+<p class="p11"><br></p>
+<p class="p12">b = a.copy.toIntervals</p>
+<p class="p11"><br></p>
+<p class="p12">b.copyWith([2, 2, 3, 5, 1, 10])</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// main workhorse for transformations, note that offset is kept while intervals reversed</p>
+<p class="p11"><br></p>
+<p class="p12">c = b.copyApplyTo(<span class="s7">\reverse</span>)</p>
+<p class="p11"><br></p>
+<p class="p12">c.toPoints</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12">b.copyApplyTo(<span class="s7">\mirror</span>).plot</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// as with method 'applyTo' arbitrary Functions can be passed</p>
+<p class="p11"><br></p>
+<p class="p12">b.copyApplyTo { <span class="s8">|x|</span> x * x * x ++ (1..10).mirror<span class="Apple-converted-space">  </span>}</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// partial application</p>
+<p class="p11"><br></p>
+<p class="p12">b.copyApplyTo(<span class="s5">_</span> ++ [7, 5, 1])</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p6"><b><span class="s3">2) Psieve patterns</span></b></p>
+<p class="p5"><br></p>
+<p class="p8"><b>2a) Basic generation from Integers, output modes 'intervals' and 'points'</b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10">// Psieve patterns use the prefix PSV followed by the name of elementary</p>
+<p class="p10">// sieve operations, as used with the Sieve class, and optional suffixes.</p>
+<p class="p10">// In comparison with Sieve more arguments are taken, so</p>
+<p class="p10">// the generating arguments and offsets are to be passed within an array.</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">PSVunion</span>([3, 5, 7]).asStream.nextN(20)</p>
+<p class="p11"><br></p>
+<p class="p10">// intervals</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">PSVunion_i</span>([3, 5, 7]).asStream.nextN(20)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// other operations</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">PSVsect</span>([3, 5, 7]).asStream.nextN(20)</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">PSVsymdif</span>([3, 5, 7]).asStream.nextN(20)</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">PSVdif</span>([3, 5, 7]).asStream.nextN(20)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// offsets, offsets + interval output</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">PSVunion_o</span>([3, 2, 5, 4]).asStream.nextN(20)</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">PSVunion_oi</span>([3, 2, 5, 4]).asStream.nextN(20)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">PSVdif_o</span>([3, 2, 5, 4]).asStream.nextN(20)</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">PSVdif_oi</span>([3, 2, 5, 4]).asStream.nextN(20)</p>
+<p class="p11"><br></p>
+<p class="p12">...</p>
+<p class="p11"><br></p>
+<p class="p10">// maxLength defines the maximum number of items -</p>
+<p class="p10">// in case of a randomly generating item or a low summation limit</p>
+<p class="p10">// the overall stream might have to end earlier.</p>
+<p class="p11"><br></p>
+<p class="p12">b = <span class="s5">PSVunion</span>([7, 17, 29], 30).asStream</p>
+<p class="p11"><br></p>
+<p class="p12">b.all</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// if the summation limit is set, maxLength might not be reached</p>
+<p class="p11"><br></p>
+<p class="p12">c = <span class="s5">PSVunion</span>([7, 17, 29], 30, 100).asStream</p>
+<p class="p11"><br></p>
+<p class="p12">d = c.all</p>
+<p class="p11"><br></p>
+<p class="p12">d.size</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p8"><b>2b) Generation from Patterns, Streams and Sieves</b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10">// distorted periodicity by union with random sieve</p>
+<p class="p11"><br></p>
+<p class="p12">a = ({ rrand(0, 1000) } ! 50).asSet.asArray.sort.toSieve</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">PSVunion_i</span>([4, 7, a]).asStream.nextN(100).plot</p>
+<p class="p11"><br></p>
+<p class="p10">// compare</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">PSVunion_i</span>([4, 7]).asStream.nextN(100).plot</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// distorted periodicity by union with random patterns</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">PSVunion_i</span>([4, 7, <span class="s5">Pn</span>(<span class="s5">Pshuf</span>([2, 5, 9])) ]).asStream.nextN(100).plot</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">PSVunion_i</span>([4, 7, <span class="s5">Pwhite</span>(3, 5) ]).asStream.nextN(100).plot</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p8"><b>2c) Sequencing logical operations</b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10">// This is done by PSVop patterns, which take a Symbol or a pattern of Symbols,</p>
+<p class="p10">// refering to the elementary logical operators.</p>
+<p class="p10">// The stream of operations is forwarded with every integer point,<span class="Apple-converted-space"> </span></p>
+<p class="p10">// which has to be stepped through.</p>
+<p class="p11"><br></p>
+<p class="p10">// helper function for plotting</p>
+<p class="p11"><br></p>
+<p class="p12">p = { <span class="s8">|x, n = 200|</span> x.asStream.nextN(n).plot };</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// plain standard operations, all elementary PSV patterns can be written with PSVop</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">PSVop</span>([5, 9], <span class="s7">\u</span>).asStream.nextN(20) <span class="s9">// union</span></p>
+<p class="p12"><span class="s5">PSVop</span>([5, 9], <span class="s7">\d</span>).asStream.nextN(20) <span class="s9">// difference</span></p>
+<p class="p12"><span class="s5">PSVop</span>([5, 9], <span class="s7">\sd</span>).asStream.nextN(20) <span class="s9">// symmetric difference</span></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// some operator loops</p>
+<p class="p11"><br></p>
+<p class="p12">p.(<span class="s5">PSVop_i</span>([5, 9], <span class="s5">Pseq</span>([<span class="s7">\u</span>, <span class="s7">\sd</span>], <span class="s6">inf</span>)))</p>
+<p class="p12">p.(<span class="s5">PSVop_i</span>([5, 9], <span class="s5">Pseq</span>([<span class="s7">\u</span>, <span class="s7">\s</span>], <span class="s6">inf</span>)))</p>
+<p class="p12">p.(<span class="s5">PSVop_i</span>([5, 9], <span class="s5">Pseq</span>([<span class="s7">\u</span>, <span class="s7">\d</span>], <span class="s6">inf</span>)))</p>
+<p class="p12">p.(<span class="s5">PSVop_i</span>([5, 9], <span class="s5">Pseq</span>([<span class="s7">\u</span>, <span class="s7">\d</span>, <span class="s7">\sd</span>], <span class="s6">inf</span>)))</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// random operator changes</p>
+<p class="p11"><br></p>
+<p class="p12">p.(<span class="s5">PSVop_i</span>([5, 9], <span class="s5">Pn</span>(<span class="s5">Pshuf</span>([<span class="s7">\u</span>, <span class="s7">\d</span>]))))</p>
+<p class="p12">p.(<span class="s5">PSVop_i</span>([5, 9], <span class="s5">Prand</span>([<span class="s7">\u</span>, <span class="s7">\d</span>], <span class="s6">inf</span>)))</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// change of difIndex:</p>
+<p class="p11"><br></p>
+<p class="p12">p.(<span class="s5">PSVop_i</span>([5, 2, 3], <span class="s7">\d</span>))</p>
+<p class="p12">p.(<span class="s5">PSVop_i</span>([5, 9], <span class="s5">Prand</span>([<span class="s7">\u</span>, <span class="s7">\d</span>], <span class="s6">inf</span>)))</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// "subtract" from index 0: multiples of 5, not divided by 7, 9, and 12</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">PSVdif</span>([5, 7, 9, 12]).asStream.nextN(30)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// same as intervals, plotted</p>
+<p class="p11"><br></p>
+<p class="p12">p.(<span class="s5">PSVdif_i</span>([5, 7, 9, 12]))</p>
+<p class="p11"><br></p>
+<p class="p10">// written with PSVop</p>
+<p class="p11"><br></p>
+<p class="p12">p.(<span class="s5">PSVop_i</span>([5, 7, 9, 12], <span class="s7">\d</span>, 0))</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// also changing the positions other than the first is equivalent</p>
+<p class="p11"><br></p>
+<p class="p12">p.(<span class="s5">PSVdif_i</span>([5, 7, 9, 12]))</p>
+<p class="p11"><br></p>
+<p class="p12">p.(<span class="s5">PSVop_i</span>([5, 12, 7, 9], <span class="s7">\d</span>, 0))</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// but "subtracting" from another number is different</p>
+<p class="p11"><br></p>
+<p class="p12">p.(<span class="s5">PSVdif_i</span>([12, 9, 7, 5]))</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// you can write the same with PSVop and difIndex without swapping the elements</p>
+<p class="p11"><br></p>
+<p class="p12">p.(<span class="s5">PSVop_i</span>([5, 12, 7, 9], <span class="s7">\d</span>, 1))</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// you can generate more complicated periods by more refined series of difIndices ...</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12">p.(<span class="s5">PSVop_i</span>([4, 7], <span class="s7">\d</span>, 0))</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12">p.(<span class="s5">PSVop_i</span>([4, 7], <span class="s7">\d</span>, <span class="s5">PLseq</span>([0, 0, 1])))</p>
+<p class="p11"><br></p>
+<p class="p12">p.(<span class="s5">PSVop_i</span>([4, 7], <span class="s7">\d</span>, <span class="s5">PLseq</span>([0, 0, 1, 0, 0, 0, 1])))</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// ... or combination of dynamic operator changes and difIndex changes.</p>
+<p class="p10">// difIndices are only forwarded when operator 'difference' is current</p>
+<p class="p11"><br></p>
+<p class="p12">p.(<span class="s5">PSVop_i</span>([4, 7], <span class="s5">PLseq</span>([<span class="s7">\d</span>, <span class="s7">\d</span>, <span class="s7">\u</span>]), <span class="s5">PLseq</span>([0, 0, 1])))</p>
+<p class="p11"><br></p>
+<p class="p16"><br></p>
+<p class="p8"><b>2d) Using Sieves in other than Psieve patterns</b></p>
+<p class="p9"><br></p>
+<p class="p10">// Period lengths of intervals of basic Sieves are related to prime factors and<span class="Apple-converted-space"> </span></p>
+<p class="p10">// least common multiples (see Ref. [1] and [3] for a more detailled description)</p>
+<p class="p11"><br></p>
+<p class="p10">// So when using intervals of those basic structures it is not necessary to<span class="Apple-converted-space"> </span></p>
+<p class="p10">// sum up to large numbers, which is what Sieve methods with suffix '_i' and</p>
+<p class="p10">// corresponding Psieve patterns internally do, as they are not checking for periodicity.</p>
+<p class="p10">// Instead we can calculate the list of intervals beforehand and use it at will.</p>
+<p class="p10">// Also 'beforehand' doesn't exclude realtime use: it's easy to write a Function that</p>
+<p class="p10">// generates Sieves and derives Patterns from it, which, with placeholder patterns,</p>
+<p class="p10">// can be exchanged on the fly</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// choose factors and calculate lcm (see 3b),</p>
+<p class="p10">// as a summation limit it determines one period of intervals</p>
+<p class="p11"><br></p>
+<p class="p12">a = [5, 6, 8];</p>
+<p class="p11"><br></p>
+<p class="p12">m = a.lcmByGcd;</p>
+<p class="p11"><br></p>
+<p class="p10">// calculate one period of intervals, plot the symmetric structure</p>
+<p class="p11"><br></p>
+<p class="p12">x = <span class="s5">Sieve</span>.union_i(5, 6, 8, `m);</p>
+<p class="p11"><br></p>
+<p class="p12">x.plot;</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// sieve loop without counting high</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Pseq</span>(x.list, 5).asStream.all.plot</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// second Sieve</p>
+<p class="p11"><br></p>
+<p class="p12">(</p>
+<p class="p12">b = [20, 17];</p>
+<p class="p12">n = b.lcmByGcd;</p>
+<p class="p12">v = b ++ `n;</p>
+<p class="p12">y = <span class="s5">Sieve</span>.union_i(*v);</p>
+<p class="p12">y.plot;</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p10">// make list for use with arbitrary Patterns</p>
+<p class="p11"><br></p>
+<p class="p12">z = x.list ++ y.list;</p>
+<p class="p11"><br></p>
+<p class="p12">z.plot;</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// alternating sieves</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Pseq</span>(z, 3).asStream.all.plot;</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// sequencing random segments of random length</p>
+<p class="p10">// this is done with Pindex, an ascending index list of random length and a random offset</p>
+<p class="p11"><br></p>
+<p class="p10">//<span class="Apple-converted-space">  </span>Function for Plazy</p>
+<p class="p11"><br></p>
+<p class="p12">q = { <span class="s5">Pindex</span>(z, <span class="s5">Pseq</span>((0..rrand(10, 20))) + z.size.rand) }</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Pn</span>(<span class="s5">Plazy</span>(q), 30).asStream.all.plot;</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// sequencing randomly repeated random segments of random length</p>
+<p class="p11"><br></p>
+<p class="p12">q = { <span class="s5">Pindex</span>(z, <span class="s5">Pseq</span>(((0..rrand(10, 20)) ! rrand(1, 5)).flat) + z.size.rand) }</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Pn</span>(<span class="s5">Plazy</span>(q), 20).asStream.all.plot;</p>
+<p class="p11"><br></p>
+<p class="p16"><br></p>
+<p class="p6"><b><span class="s3">3) Periodicity of intervals with elementary operations</span></b></p>
+<p class="p5"><br></p>
+<p class="p8"><b>3a) Periodicity of intervals with elementary operations</b></p>
+<p class="p5"><br></p>
+<p class="p10">// For 'union' and no offsets one period of intervals is given with summation limit</p>
+<p class="p10">// equal to the least common multiple (lcm) of the generating numbers.</p>
+<p class="p10">// (if one number divides another, the larger one can be dropped)</p>
+<p class="p11"><br></p>
+<p class="p10">// The period length (number of intervals per period) is thus lesser than the lcm.</p>
+<p class="p10">// A symmetric structure is produced, for 'union' the period is equal to its mirror,<span class="Apple-converted-space"> </span></p>
+<p class="p10">// in other words the produced sequence is a concatenation of symmetric segments</p>
+<p class="p11"><br></p>
+<p class="p10">// With 3, 7 and 8 lcm equals 168</p>
+<p class="p11"><br></p>
+<p class="p12">a = <span class="s5">Sieve</span>.union_i(3, 7, 8, `168)</p>
+<p class="p11"><br></p>
+<p class="p12">a.plot</p>
+<p class="p11"><br></p>
+<p class="p10">// number of intervals per period</p>
+<p class="p11"><br></p>
+<p class="p12">a.size</p>
+<p class="p11"><br></p>
+<p class="p10">// For symmetric difference and difference lcm also plays a role,</p>
+<p class="p10">// but it's a bit different.</p>
+<p class="p10">// As (offset 0) 0 is not included, the interval sequence doesn't really start from there,</p>
+<p class="p10">// so<span class="Apple-converted-space">  </span>with limit = lcm the period is incomplete (although the segment is already symmetric)</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Sieve</span>.symdif_i(3, 7, 8, `168).plot</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// To get the full picture take twice lcm as limit:</p>
+<p class="p10">// the interval in the middle was not included before !</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Sieve</span>.symdif_i(3, 7, 8, `(168 * 2)).plot</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// you can get the continuation to symmetry (begin = end)</p>
+<p class="p10">// with a real start point as offset:</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Sieve</span>.symdif_oi(3, -3, 7, 0, 8, 0, `(168 + 3)).plot;</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Sieve</span>.dif_oi(3, -3, 7, 0, 8, 0, `(168 + 3)).plot;</p>
+<p class="p12"><span class="s5">Sieve</span>.dif_oi(7, -7, 3, 0, 8, 0, `(168 + 7)).plot;</p>
+<p class="p12"><span class="s5">Sieve</span>.dif_oi(8, -8, 3, 0, 7, 0, `(168 + 8)).plot;</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// In other words in the latter cases the produced sequence is a<span class="Apple-converted-space"> </span></p>
+<p class="p10">// concatenation of symmetric segments, in which begin/end points are merged.</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p8"><b>3b) Types of symmetry</b></p>
+<p class="p5"><br></p>
+<p class="p10">// Symmetric structures in periodic series occur as different types,</p>
+<p class="p10">// depending if the period length is even or odd.</p>
+<p class="p16"><br></p>
+<p class="p10">// Definition:<span class="Apple-converted-space"> </span></p>
+<p class="p10">// Lets's call a period 'symmetric' iff it's equaling its reverse.</p>
+<p class="p10">// Lets's call a period 'quasi-symmetric' iff the continuation with its first element is symmetric.</p>
+<p class="p16"><br></p>
+<p class="p10">// If a sequence contains a symmetric or quasisymmetric period, there exists a</p>
+<p class="p10">// symmetric or quasisymmetric period starting in its middle (or just right from it when odd),<span class="Apple-converted-space"> </span></p>
+<p class="p10">// let denote it its 'coperiod'.</p>
+<p class="p16"><br></p>
+<p class="p10">// Statements (formal proof omitted, but rather straightforward):<span class="Apple-converted-space"> </span></p>
+<p class="p16"><br></p>
+<p class="p10">// (1) If the period length is even, a symmetric</p>
+<p class="p10">// period corresponds to a symmetric coperiod and a quasisymmteric period</p>
+<p class="p10">// corresponds to a quasisymmteric coperiod.</p>
+<p class="p10">// (2) If the period length is odd, a symmetric</p>
+<p class="p10">// period corresponds to a quasisymmteric coperiod.</p>
+<p class="p10">// (3) Only a period of identic elements can be symmetric and quasi-symmetric at the same time.</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p8"><b>3c) Analysis tools</b></p>
+<p class="p5"><br></p>
+<p class="p10">// Method 'checkSymmetricPeriods' applies to Arrays resp. intervals of Sieves</p>
+<p class="p10">// and checks for periods and possible symmetries.</p>
+<p class="p10">// It returns an array with 4 items:</p>
+<p class="p10">// (1) the sequence clumped in (quasi-)symmetric (or asymmetric) chunks</p>
+<p class="p10">// (2) the index offset of the first (quasi-)symmetric period</p>
+<p class="p10">// (3) a symbol indicating if the period length is even or odd</p>
+<p class="p10">// (4) an array of Booleans indicating the completeness of the clumped chunks (incomplete periods can be of any type)</p>
+<p class="p5"><br></p>
+<p class="p10">// Some important points here:</p>
+<p class="p10">// (1) 'checkSymmetricPeriods' searches for smallest periods and its (possible) symmetry</p>
+<p class="p10">// (2) 'checkSymmetricPeriods' is supposing that no prefix items are introducing</p>
+<p class="p10">// a periodicity, thus a sequence like<span class="Apple-converted-space">  </span>7, 8, 9, 1, 2, 3, 2, 1, 2, 3, 2, 1 ...</p>
+<p class="p10">// will be regarded as non-periodic (this e.g. happens when offsets are far apart!).</p>
+<p class="p10">// (3) In the case of odd quasi-symmetric periods the symmetric coperiod is searched for</p>
+<p class="p10">// and preferred (if it's in the range)<span class="Apple-converted-space"> </span></p>
+<p class="p10">// (4) To get meaningful results for sieves and its elementary operations –</p>
+<p class="p10">// due to (1) and (3) – it is recommended to check sufficiently large sieves,</p>
+<p class="p10">// e.g. set the limit to three times the lcm of the generators.</p>
+<p class="p16"><br></p>
+<p class="p10">// make a Sieve with generating prime Integers 3, 7, 8</p>
+<p class="p10">// regard a section of three time the expected period length</p>
+<p class="p16"><br></p>
+<p class="p12">(</p>
+<p class="p12">a = <span class="s5">Sieve</span>.symdif_i(3, 7, 10, `(210 * 3));</p>
+<p class="p12">a.plot;</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p10">// store analysis data</p>
+<p class="p12">b = a.checkSymmetricPeriods</p>
+<p class="p11"><br></p>
+<p class="p10">// clumped sequence (long)</p>
+<p class="p12">b[0]</p>
+<p class="p11"><br></p>
+<p class="p10">// symmetry types of chunks and completions, the first relevant period is at position 1 and quasisymmetric</p>
+<p class="p12">b[1..2]</p>
+<p class="p11"><br></p>
+<p class="p10">// 'checkCharacteristicPeriod' returns an array with first characteristic period,<span class="Apple-converted-space"> </span></p>
+<p class="p10">// index offset, length type (even or odd) and symmetry type</p>
+<p class="p11"><br></p>
+<p class="p12">a.checkCharacteristicPeriod</p>
+<p class="p11"><br></p>
+<p class="p10">// you can plot it directly, compare with the sieve plot, where period starts at index 41</p>
+<p class="p11"><br></p>
+<p class="p12">a.plotCharacteristicPeriod</p>
+<p class="p11"><br></p>
+<p class="p5"><br></p>
+<p class="p8"><b>3d) Symmetry types of elementary operations without offset</b></p>
+<p class="p11"><br></p>
+<p class="p10">// Some observations of types occuring, no proof.</p>
+<p class="p10">// Connections between types and used numbers are not obvious here:</p>
+<p class="p10">// all symmetry types of an operator occur with tuples of coprime and not-coprime numbers</p>
+<p class="p11"><br></p>
+<p class="p10">// union:</p>
+<p class="p11"><br></p>
+<p class="p10">// symmetric odd period</p>
+<p class="p12">(</p>
+<p class="p12">a = <span class="s5">Sieve</span>.union_i(3, 7, `42);</p>
+<p class="p12">a.plot;</p>
+<p class="p12">a.plotCharacteristicPeriod;</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p10">// symmetric even period</p>
+<p class="p12">(</p>
+<p class="p12">a = <span class="s5">Sieve</span>.union_i(4, 9, `72);</p>
+<p class="p12">a.plot;</p>
+<p class="p12">a.plotCharacteristicPeriod;</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// symdif:</p>
+<p class="p11"><br></p>
+<p class="p10">// symmetric odd period</p>
+<p class="p12">(</p>
+<p class="p12">a = <span class="s5">Sieve</span>.symdif_i(8, 9, `216);</p>
+<p class="p12">a.plot;</p>
+<p class="p12">a.plotCharacteristicPeriod;</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p10">// quasi-symmetric even period</p>
+<p class="p12">(</p>
+<p class="p12">a = <span class="s5">Sieve</span>.symdif_i(7, 9, `189);</p>
+<p class="p12">a.plot;</p>
+<p class="p12">a.plotCharacteristicPeriod;</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p10">// dif:</p>
+<p class="p11"><br></p>
+<p class="p10">// symmetric odd period</p>
+<p class="p12">(</p>
+<p class="p12">a = <span class="s5">Sieve</span>.dif_i(5, 6, `90);</p>
+<p class="p12">a.plot;</p>
+<p class="p12">a.plotCharacteristicPeriod;</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// quasi-symmetric even period</p>
+<p class="p12">(</p>
+<p class="p12">a = <span class="s5">Sieve</span>.dif_i(6, 10, `90);</p>
+<p class="p12">a.plot;</p>
+<p class="p12">a.plotCharacteristicPeriod;</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p8"><b>3e) Symmetry types of elementary operations with offset</b></p>
+<p class="p11"><br></p>
+<p class="p10">// If generators are coprime all is quite straight: offsets will not change the</p>
+<p class="p10">// sum of the period equal to the least common multiple but will only cause a shift.</p>
+<p class="p10">// This was elaborated by Xenakis in [1]</p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p10">// Things become more complicated when generators have prime factors in common:</p>
+<p class="p10">// still period sums are preserved, but symmetry types can change;</p>
+<p class="p10">// asymmetric periods occur. One and the same tuple of generators can cause</p>
+<p class="p10">// different combinations of period types with different offsets.</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// Here's a little helper Function to analyze characteristics of different offsets</p>
+<p class="p10">// for a given choice of generating integers</p>
+<p class="p11"><br></p>
+<p class="p12">(</p>
+<p class="p20"><span class="s2">f = { </span>|operator = \union_i ...generators|</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s8">var</span> sieve, types, allGens, lcm, data, input, offsets;</p>
+<p class="p10"><span class="s2"><span class="Apple-tab-span">	</span></span>//collect all offset combinations</p>
+<p class="p12"><span class="Apple-tab-span">	</span>offsets = (generators.collect { <span class="s8">|i|</span> (0..i-1) }).allTuples;</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="Apple-tab-span">	</span>offsets.collect { <span class="s8">|offset|</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>lcm = lcmByGcd(*generators);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>input = [operator] ++ [generators, offset].flop.flat ++ <span class="s5">Ref</span>(lcm * 4);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sieve = <span class="s5">Sieve</span>.perform(*input);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>data = sieve.checkCharacteristicPeriod;</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>([operator, offset] ++ (data.drop(1)) ++</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[<span class="s10">"lcm "</span> ++ lcm.asInteger] ++ [<span class="s10">"periodSum "</span> ++ data.first.sum]).postln;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>};</p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span>""</p>
+<p class="p12">}</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p10">// this pair of generators gives three different types: odd asym, odd sym, even sym</p>
+<p class="p12">f.(<span class="s7">\union_oi</span>, 8, 12)</p>
+<p class="p11"><br></p>
+<p class="p10">// check:</p>
+<p class="p10">// odd asymmetric</p>
+<p class="p12"><span class="s5">Sieve</span>.union_oi(8, 0, 12, 1, `48).plot;</p>
+<p class="p11"><br></p>
+<p class="p10">// odd symmetric</p>
+<p class="p12"><span class="s5">Sieve</span>.union_oi(8, 0, 12, 2, `48).plot;</p>
+<p class="p11"><br></p>
+<p class="p10">// even symmetric</p>
+<p class="p12"><span class="s5">Sieve</span>.union_oi(8, 0, 12, 4, `48).plot;</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// odd sym, even sym, even asym</p>
+<p class="p12">f.(<span class="s7">\union_oi</span>, 12, 20)</p>
+<p class="p11"><br></p>
+<p class="p10">// odd asym, even sym</p>
+<p class="p12">f.(<span class="s7">\union_oi</span>, 15, 20)</p>
+<p class="p11"><br></p>
+<p class="p10">// odd sym, even asym</p>
+<p class="p12">f.(<span class="s7">\union_oi</span>, 9, 15)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// More types result from more fixed generators with varying offsets</p>
+<p class="p10">// here: odd sym, odd asym, even sym, even asym</p>
+<p class="p11"><br></p>
+<p class="p12">f.(<span class="s7">\union_oi</span>, 8, 10, 12)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// Also note that trivial genrator combinations for union without offset (when dividing each other),</p>
+<p class="p10">// bring different results with offsets</p>
+<p class="p11"><br></p>
+<p class="p10">// sequence of equal intervals (2)</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Sieve</span>.union_i(2, 6, 12, `48)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// asymmetric periods with same generators and offsets</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Sieve</span>.union_oi(2, 0, 6, 5, 12, 1, `48).plot;</p>
+<p class="p11"><br></p>
+<p class="p10">// Under same assumption of generators with prime factors in common, a</p>
+<p class="p10">// similar enrichment of symmetry types occurs with operators 'dif' and 'symdif'</p>
+<p class="p10">// when offsets are used. In contrast to 'union' but as with 'dif' and 'symdif'</p>
+<p class="p10">// without offsets, quasisymmteric periods occur.</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// changing of symmetry types can also be done by looped sequencing of logical operations</p>
+<p class="p11"><br></p>
+<p class="p10">// symmetric period produced by operator 'union'</p>
+<p class="p11"><br></p>
+<p class="p12">a = <span class="s5">PSVop_i</span>([6, 5, 7], <span class="s7">\u</span>).iter.nextN(500).toSieve(<span class="s7">\i</span>, <span class="s7">\i</span>);</p>
+<p class="p11"><br></p>
+<p class="p12">a.plotCharacteristicPeriod;</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// altered, here still symmetric with logical sequence</p>
+<p class="p11"><br></p>
+<p class="p12">a = <span class="s5">PSVop_i</span>([6, 5, 7], <span class="s5">Pseq</span>([<span class="s7">\u</span>, <span class="s7">\d</span>, <span class="s7">\sd</span>, <span class="s7">\d</span>], <span class="s6">inf</span>)).iter.nextN(500).toSieve(<span class="s7">\i</span>, <span class="s7">\i</span>);</p>
+<p class="p11"><br></p>
+<p class="p12">a.plotCharacteristicPeriod;</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p6"><b><span class="s3">4) Troubleshooting</span></b></p>
+<p class="p22"><br></p>
+<p class="p8"><b>4a) Critical inputs, limits</b></p>
+<p class="p5"><br></p>
+<p class="p10">// Due to the definition of sieves there are input combinations which</p>
+<p class="p10">// might result in massive looping without any result.</p>
+<p class="p11"><br></p>
+<p class="p10">// Default settings are chosen in a way that this shouldn't result in hangs immediately,</p>
+<p class="p10">// nevertheless it's the users's responsibility to choose meaningful input values.</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// E.g. here we demand multiples of 3 which, at the same time, shouldn't be multiples of 3 ...</p>
+<p class="p10">// The result nil is given not before the limit of 65536 is reached by summation,</p>
+<p class="p10">// benchmarking indicates that.</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">PSVdif</span>([3, 3], 10).asStream.next</p>
+<p class="p11"><br></p>
+<p class="p12">{ <span class="s5">PSVdif</span>([3, 3], 10).asStream.next }.bench</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Sieve</span>.dif(3, 3)</p>
+<p class="p11"><br></p>
+<p class="p12">{ <span class="s5">Sieve</span>.dif(3, 3) }.bench</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// similar here, no intersection</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">PSVsect_o</span>([3, 0, 3, 1], 10).asStream.next</p>
+<p class="p11"><br></p>
+<p class="p12">{ <span class="s5">PSVsect_o</span>([3, 0, 3, 1], 10).asStream.next }.bench</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Sieve</span>.sect_o(3, 3)</p>
+<p class="p11"><br></p>
+<p class="p12">{ <span class="s5">Sieve</span>.sect_o(3, 3) }.bench</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// Another critical operation is intersection with larger coprime numbers</p>
+<p class="p11"><br></p>
+<p class="p12">nthPrime(70)</p>
+<p class="p12">-&gt; 353</p>
+<p class="p11"><br></p>
+<p class="p12">nthPrime(71)</p>
+<p class="p12">-&gt; 359</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12">a = <span class="s5">PSVsect</span>([353, 359]).asStream;</p>
+<p class="p11"><br></p>
+<p class="p10">// first intersection at 0, but no further one (below global limit 65536)</p>
+<p class="p11"><br></p>
+<p class="p12">a.nextN(2)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// you can set the limit, but it's a rather inefficient way to<span class="Apple-converted-space"> </span></p>
+<p class="p10">// generate just a series of equal intervals ...<span class="Apple-converted-space"> </span></p>
+<p class="p11"><br></p>
+<p class="p12">a = <span class="s5">PSVsect</span>([353, 359], limit: 2 ** 30).asStream;</p>
+<p class="p11"><br></p>
+<p class="p12">a.nextN(20)</p>
+<p class="p11"><br></p>
+<p class="p12">{ a.nextN(20) }.bench</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// The largest Integer with 32 bit is 2 ** 31 - 1.</p>
+<p class="p10">// You can set 'limit' with Sieves and Psieve patterns (for instances and globally)</p>
+<p class="p10">// up to 2 ** 31 - 1 - maxGeneratingInteger.</p>
+<p class="p10">// This ensures that the threshold check doesn't exceed the Integer range.</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// So if you're sure about useful inputs</p>
+<p class="p10">// you can set a high global limit for calculus with large numbers and/or long streams</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Psieve</span>.limit = 2 ** 31 - 536892</p>
+<p class="p11"><br></p>
+<p class="p12">{ a = <span class="s5">PSVunion</span>([253630, 536891]).asStream.nextN(10000) }.bench</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// reset global limit</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Psieve</span>.limit = 65536</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// Note that Psieve is a bit more flexible as Sieve in this regard</p>
+<p class="p10">// it allows to set summation limit and maxLength.</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Sieve</span>.limit = 2 ** 31 - 536892</p>
+<p class="p11"><br></p>
+<p class="p12">{ a = <span class="s5">Sieve</span>.union(253630, 536891) }.bench</p>
+<p class="p11"><br></p>
+<p class="p12">a.list.size</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// reset global limit</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s5">Sieve</span>.limit = 65536</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p8"><b>4b) Calculating least common multiples</b></p>
+<p class="p11"><br></p>
+<p class="p10">// For calculating period lengths the related operations of greatest common divisor</p>
+<p class="p10">// and least common multiple are relevant (e.g. see Ref. [1])</p>
+<p class="p11"><br></p>
+<p class="p10">// Up to SC 3.7.2 built-in method 'lcm' fails for large Integers,</p>
+<p class="p10">// though this has been fixed in 3.8:</p>
+<p class="p11"><br></p>
+<p class="p12">lcm(248214, 1027542)</p>
+<p class="p11"><br></p>
+<p class="p12">-&gt; 6696095</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// A prime factor analysis shows:</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12">a = [248214, 1027542].collect(<span class="s5">_</span>.factors)</p>
+<p class="p11"><br></p>
+<p class="p12">-&gt; [ [ 2, 3, 41, 1009 ], [ 2, 3, 41, 4177 ] ]</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// Thus the result would have to be</p>
+<p class="p11"><br></p>
+<p class="p12">2.0 * 3 * 41 * 1009 * 4177</p>
+<p class="p11"><br></p>
+<p class="p12">-&gt; 1036789878</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// Why is 2.0 needed above ?<span class="Apple-converted-space"> </span></p>
+<p class="p10">// The result of an Integer multiplication is an Integer,<span class="Apple-converted-space"> </span></p>
+<p class="p10">// thus crossing the int32 limit is silent and can easily be overlooked</p>
+<p class="p11"><br></p>
+<p class="p12">3768562 * 876876</p>
+<p class="p11"><br></p>
+<p class="p12">-&gt; 1731721688</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12">3768562.0 * 876876</p>
+<p class="p11"><br></p>
+<p class="p12">-&gt; 3304561572312</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// The methods lcmByFactors and lcmByGcd contain the relevant threshold checkes,</p>
+<p class="p10">// they are much slower than 'lcm' but reliable also with large Integers.</p>
+<p class="p10">// 'lcmByFactors' returns an array with lcm as first item, an array with prime factors</p>
+<p class="p10">// of lcm as second item and an array of receiver's and all arguments' prime factors.<span class="Apple-converted-space"> </span></p>
+<p class="p10">// Alternatively the least common multiple can be calculated<span class="Apple-converted-space"> </span></p>
+<p class="p10">// via the greatest common divisor, this is done by method 'lcmByGcd'</p>
+<p class="p11"><br></p>
+<p class="p12">lcmByFactors(248214, 1027542)</p>
+<p class="p12">lcmByGcd(248214, 1027542)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// if calculation exceeds the int32 limit a warning is given, the result is a float</p>
+<p class="p11"><br></p>
+<p class="p12">lcmByFactors(135630546, 429496729)</p>
+<p class="p12">lcmByGcd(135630546, 429496729)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// also more args can be passed (all are integers &lt; 2 * 31),</p>
+<p class="p10">// as lcmByGcd uses gcd internally, this might fail with more than 2</p>
+<p class="p10">// large numbers, whereas lcmByFactors still finds the result</p>
+<p class="p11"><br></p>
+<p class="p12">lcmByGcd(135630546, 429496729, 610337457)</p>
+<p class="p12">lcmByFactors(135630546, 429496729, 610337457)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p6"><b><span class="s3">5) Audio examples</span></b></p>
+<p class="p22"><br></p>
+<p class="p10">// synthdefs to play with</p>
+<p class="p11"><br></p>
+<p class="p12">(</p>
+<p class="p20"><span class="s5">SynthDef</span><span class="s2">(</span><span class="s7">\noise_grain</span><span class="s2">, { </span>|out = 0, freq = 400, att = 0.005, rel = 0.1, rq = 0.1, amp = 0.1|</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s8">var</span> sig = { <span class="s5">WhiteNoise</span>.ar } ! 2;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>sig = <span class="s5">BPF</span>.ar(sig, freq, rq) *</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">EnvGen</span>.ar(<span class="s5">Env</span>.perc(att, rel, amp), doneAction: 2) *</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(rq ** -1) * (250 / (freq ** 0.8));</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s5">OffsetOut</span>.ar(out, sig);</p>
+<p class="p12">}).add;</p>
+<p class="p11"><br></p>
+<p class="p20"><span class="s5">SynthDef</span><span class="s2">(</span><span class="s7">\sin_grain</span><span class="s2">, { </span>|out = 0, freq = 400, att = 0.005, rel = 0.1, amp = 0.1|</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s8">var</span> sig = { <span class="s5">SinOsc</span>.ar(freq, <span class="s5">Rand</span>(0, 2pi)) } ! 2;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>sig = sig * <span class="s5">EnvGen</span>.ar(<span class="s5">Env</span>.perc(att, rel, amp), doneAction: 2);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s5">OffsetOut</span>.ar(out, sig);</p>
+<p class="p12">}).add;</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p20"><span class="s5">SynthDef</span><span class="s2">(</span><span class="s7">\saw_grain</span><span class="s2">, { </span>|out = 0, freq = 400, att = 0.005, rel = 0.1, amp = 0.1|</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s8">var</span> sig = { <span class="s5">VarSaw</span>.ar(freq, <span class="s5">Rand</span>(0, 1)) } ! 2;</p>
+<p class="p12"><span class="Apple-tab-span">	</span>sig = sig * <span class="s5">EnvGen</span>.ar(<span class="s5">Env</span>.perc(att, rel, amp), doneAction: 2);</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s5">OffsetOut</span>.ar(out, sig);</p>
+<p class="p12">}).add;</p>
+<p class="p12">)</p>
+<p class="p16"><br></p>
+<p class="p8"><b>5a) Applying sieve intervals to (micro) rhythms</b></p>
+<p class="p16"><br></p>
+<p class="p12">(</p>
+<p class="p10">// rhythm by sieve intervals</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s11">~delta</span> = 0.05;</p>
+<p class="p12"><span class="s11">~rhy</span> = <span class="s5">PSVunion_i</span>([4, 6, 7]);</p>
+<p class="p11"><br></p>
+<p class="p12">p = <span class="s5">Pbind</span>(</p>
+<p class="p23"><span class="s2"><span class="Apple-converted-space">    </span></span>\instrument<span class="s2">, </span>\noise_grain<span class="s2">,</span></p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s7">\dur</span>, <span class="s5">PL</span>(<span class="s7">\rhy</span>) * <span class="s5">PL</span>(<span class="s7">\delta</span>),</p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s7">\att</span>, 0.01,</p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s7">\rel</span>, 0.05,</p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s7">\amp</span>, 0.1,</p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s7">\midinote</span>, <span class="s5">Pwhite</span>(50, 90),</p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s7">\rq</span>, 0.1</p>
+<p class="p12">).play</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// change to micro rhythms</p>
+<p class="p11"><br></p>
+<p class="p12">(</p>
+<p class="p12"><span class="s11">~delta</span> = 0.01;</p>
+<p class="p12"><span class="s11">~rhy</span> = <span class="s5">PSVsymdif_i</span>([4, 6]);</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p10">// test with different data</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s11">~rhy</span> = <span class="s5">PSVsymdif_i</span>([4, 6, 9])</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s11">~rhy</span> = <span class="s5">PSVsymdif_i</span>([6, 9, 2])</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s11">~rhy</span> = <span class="s5">PSVsymdif_i</span>([9, 2])</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s11">~rhy</span> = <span class="s5">PSVsymdif_i</span>([3, 4])</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s11">~rhy</span> = <span class="s5">PSVsymdif_i</span>([3, 4, 7])</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12">p.stop</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p8"><b>5b) Sequentially generating new sieve patterns for rhythm and pitch</b></p>
+<p class="p16"><br></p>
+<p class="p12">(</p>
+<p class="p10">// rhythm by sieve intervals</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s11">~delta</span> = 0.1;</p>
+<p class="p12"><span class="s11">~rhy</span> = <span class="s5">PSVunion_i</span>([4, 6, 7]);</p>
+<p class="p11"><br></p>
+<p class="p10">// some more params for live change</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s11">~rel</span> = 0.05;</p>
+<p class="p12"><span class="s11">~midi</span> = <span class="s5">Pwhite</span>(50, 90);</p>
+<p class="p12"><span class="s11">~rq</span> = 0.1;</p>
+<p class="p11"><br></p>
+<p class="p12">q = <span class="s5">Pbind</span>(</p>
+<p class="p23"><span class="s2"><span class="Apple-converted-space">    </span></span>\instrument<span class="s2">, </span><span class="s5">Prand</span><span class="s2">([</span>\noise_grain<span class="s2">, </span>\sin_grain<span class="s2">], </span><span class="s6">inf</span><span class="s2">),</span></p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s7">\dur</span>, <span class="s5">PL</span>(<span class="s7">\rhy</span>) * <span class="s5">PL</span>(<span class="s7">\delta</span>),</p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s7">\att</span>, 0.005,</p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s7">\rel</span>, <span class="s5">PL</span>(<span class="s7">\rel</span>),</p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s7">\amp</span>, 0.1,</p>
+<p class="p23"><span class="s2"><span class="Apple-converted-space">    </span></span>\midinote<span class="s2">, </span><span class="s5">PL</span><span class="s2">(</span>\midi<span class="s2">),</span></p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s7">\rq</span>, <span class="s5">PL</span>(<span class="s7">\rq</span>)</p>
+<p class="p12">).play</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// turn to micro rhythm</p>
+<p class="p12">(</p>
+<p class="p12"><span class="s11">~delta</span> = 0.01;</p>
+<p class="p11"><br></p>
+<p class="p10">// instead of Pn + Plazy also Pspawner with method .seq could be used</p>
+<p class="p24"><span class="s11">~rhy</span><span class="s2"> = </span>Pn<span class="s2">(</span>Plazy<span class="s2"> {</span></p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s8">var</span> r = { rrand(2, 30) } ! 2;</p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s10">"rhythm generators: "</span>.post; r.sort.postln;</p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s5">PSVsymdif_i</span>(r, rrand(20, 30))</p>
+<p class="p12">});</p>
+<p class="p11"><br></p>
+<p class="p10">// numbers generated by PSVsymdif_i are used above and below a central pitch</p>
+<p class="p24"><span class="s11">~midi</span><span class="s2"> = </span>Pn<span class="s2">(</span>Plazy<span class="s2"> {</span></p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s8">var</span> r = { rrand(2, 10) } ! 2;</p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s10">"pitch generators: "</span>.post; r.sort.postln;</p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s5">PSVsymdif_i</span>(r, rrand(10, 20)) * <span class="s5">PLseq</span>([1, -1]) + rrand(50, 95)</p>
+<p class="p12">});</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p10">// sequencing rq and release time</p>
+<p class="p12"><span class="s11">~rq</span> = <span class="s5">Pstutter</span>(<span class="s5">Pwhite</span>(2, 5), <span class="s5">PLseq</span>([0.005, 0.01, 0.1]));</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s11">~rel</span> = <span class="s5">Pstutter</span>(<span class="s5">Pwhite</span>(2, 5), <span class="s5">Pn</span>(<span class="s5">Pshuf</span>([0.05, 0.1, 0.2])));</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p12">q.stop;</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p8"><b>5c) Sequencing instrumental variation with sieves</b></p>
+<p class="p11"><br></p>
+<p class="p10">// start with sin grains</p>
+<p class="p12">(</p>
+<p class="p12"><span class="s11">~delta</span> = 0.15;</p>
+<p class="p12"><span class="s11">~rhy</span> = 1;</p>
+<p class="p12"><span class="s11">~rel</span> = 0.04;</p>
+<p class="p12"><span class="s11">~midi</span> = 70;</p>
+<p class="p25">~instrument<span class="s2"> = </span><span class="s7">\sin_grain</span><span class="s2">;</span></p>
+<p class="p12"><span class="s11">~rq</span> = 0.01;</p>
+<p class="p12"><span class="s11">~amp</span> = 0.1;</p>
+<p class="p25">~type<span class="s2"> = </span><span class="s7">\note</span><span class="s2">;</span></p>
+<p class="p11"><br></p>
+<p class="p12">r = <span class="s5">Pbind</span>(</p>
+<p class="p23"><span class="s2"><span class="Apple-converted-space">    </span></span>\instrument<span class="s2">, </span><span class="s5">PL</span><span class="s2">(</span>\instrument<span class="s2">),</span></p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s7">\dur</span>, <span class="s5">PL</span>(<span class="s7">\rhy</span>) * <span class="s5">PL</span>(<span class="s7">\delta</span>),</p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s7">\att</span>, 0.015 * <span class="s5">Pwhite</span>(0.8, 1.2),</p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s7">\rel</span>, <span class="s5">PL</span>(<span class="s7">\rel</span>),</p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s7">\amp</span>, <span class="s5">PL</span>(<span class="s7">\amp</span>),</p>
+<p class="p23"><span class="s2"><span class="Apple-converted-space">    </span></span>\midinote<span class="s2">, </span><span class="s5">PL</span><span class="s2">(</span>\midi<span class="s2">),</span></p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s7">\rq</span>, <span class="s5">PL</span>(<span class="s7">\rq</span>),</p>
+<p class="p23"><span class="s2"><span class="Apple-converted-space">    </span></span>\type<span class="s2">, </span><span class="s5">PL</span><span class="s2">(</span>\type<span class="s2">)</span></p>
+<p class="p12">).play</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p10">// define variation with sieve</p>
+<p class="p12">(</p>
+<p class="p25">~instrument<span class="s2"> = </span><span class="s5">Pstutter</span><span class="s2">(</span></p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s5">PSVunion_i</span>([5, 7, 13]),</p>
+<p class="p23"><span class="s2"><span class="Apple-converted-space">    </span></span><span class="s5">PLseq</span><span class="s2">([</span>\saw_grain<span class="s2">, </span>\noise_grain<span class="s2">, </span>\sin_grain<span class="s2">, </span>\noise_grain<span class="s2">])</span></p>
+<p class="p12">)</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p10">// pitch sequence based on sieve</p>
+<p class="p12">(</p>
+<p class="p12"><span class="s11">~midi</span> = <span class="s5">Pstutter</span>(<span class="s5">Pwhite</span>(2, 5), <span class="s5">PSVunion_i</span>([10, 8, 17])) * <span class="s5">PLseq</span>([1, -1]) + 80;</p>
+<p class="p12"><span class="s11">~rel</span> = 0.45;</p>
+<p class="p12"><span class="s11">~amp</span> = 0.06;</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p10">// transpositions</p>
+<p class="p12">(</p>
+<p class="p12"><span class="s11">~midi</span> = <span class="s5">Pstutter</span>(<span class="s5">Pwhite</span>(2, 5), <span class="s5">PSVunion_i</span>([10, 8, 17])) * <span class="s5">PLseq</span>([1, -1]) +</p>
+<p class="p12"><span class="Apple-converted-space">    </span>80 + <span class="s5">Pstutter</span>(<span class="s5">Pwhite</span>(10, 20), <span class="s5">Pwhite</span>(-5, 5));</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p10">// microtonal transpositions and added fifths</p>
+<p class="p12">(</p>
+<p class="p12"><span class="s11">~midi</span> = <span class="s5">Pstutter</span>(<span class="s5">Pwhite</span>(2, 5), <span class="s5">PSVunion_i</span>([10, 8, 17])) * <span class="s5">PLseq</span>([1, -1]) + 80 +</p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s5">Pstutter</span>(<span class="s5">Pwhite</span>(10, 20), <span class="s5">Pwhite</span>(-10.0, 5)) +</p>
+<p class="p12"><span class="Apple-converted-space">    </span><span class="s5">Prand</span>([0, [0, 7]], <span class="s6">inf</span>);</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p10">// interfering curves generated by 'union'</p>
+<p class="p12">(</p>
+<p class="p12"><span class="s11">~midi</span> = [55, 62] + <span class="s5">PSVunion_oi</span>([55, 0, 57, 1, 58, 2, 59, 3]);</p>
+<p class="p11"><br></p>
+<p class="p12"><span class="s11">~rel</span> = <span class="s5">Pstutter</span>(<span class="s5">Pwhite</span>(2, 5), <span class="s5">Pn</span>(<span class="s5">Pshuf</span>([0.05, 0.05, 0.1, 0.5])));</p>
+<p class="p12">)</p>
+<p class="p11"><br></p>
+<p class="p12">r.stop</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+</body>
+</html>

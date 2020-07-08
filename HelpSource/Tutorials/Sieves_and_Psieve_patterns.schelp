@@ -1,0 +1,1347 @@
+TITLE::Sieves and Psieve patterns
+summary::list building and sequencing based on Xenakis' sieves
+categories:: Libraries>miSCellaneous>Sieves and Psieve Patterns, Streams-Patterns-Events>Sieves and Psieve Patterns
+related:: Overviews/miSCellaneous, Guides/Introduction_to_miSCellaneous, Classes/Sieve, Classes/Psieve, Classes/PSPdiv, Classes/PSVunion, Classes/PSVunion_i, Classes/PSVunion_o, Classes/PSVunion_oi, Classes/PSVsect, Classes/PSVsect_i, Classes/PSVsect_o, Classes/PSVsect_oi, Classes/PSVsymdif, Classes/PSVsymdif_i, Classes/PSVsymdif_o, Classes/PSVsymdif_oi, Classes/PSVdif, Classes/PSVdif_i, Classes/PSVdif_o, Classes/PSVdif_oi, Classes/PSVop, Classes/PSVop_i, Classes/PSVop_o, Classes/PSVop_oi 
+
+
+DESCRIPTION::
+
+Iannis Xenakis proposed sieves as integer-based generators for rhythms, pitches and other musical parameters. For an overview of history and implementations, including his own development in Python, see Christopher Ariza's article link::#[3]::.
+
+This SC implementation comes in two variants, with the class Sieve and Psieve patterns. Both variants include the usual sieve operations, which are based on set theory and applied to integers: union, intersection, symmetric difference and difference (complement can be defined by difference). These operations are defined for an arbitrary number of arguments as well as binary operators (Sieve). Psieve as an abstract superclass of all sieve patterns integrates sieve sequences into the pattern framework whereas Sieve is defined for calculating sieves as lists, in other words Psieve patterns are the "lazy evaluation" variant of "eager evaluation" Sieve operations. Of course you can produce sieves as lists also with Psieve patterns but for calculating very large sieves beforehand you might want to prefer Sieve, as its operations are slightly faster. For using sieves in a realtime situation the overhead of Psieve patterns will mostly be irrelevant.
+
+Why sieves + patterns? Not only can the ouput of sieve calculations be used in enclosing patterns – e.g. for scaling or arbitrary mapping into the continous domain –, Sieve and Psieve patterns also accept Patterns (which must be defined to produce integers) themselves as input for sieve operations, which opens a wide field for experimentation – in the case of Psieve patterns this even allows realtime control of sieve parameters and/or sieve stream output, also the logical operations can be exchanged on the fly. In one regard this is a contradiction to Xenakis' idea of sieves as an "outside-time" structure, on the other hand Xenakis, as Roads pointed out (link::#[1]::, p.168), always tended to use generative procedures very freely and this also becomes explicit, when he describes "hyperbolae" (transformations) of sieves and suggests "... transformations of the logical operations in some fashion, using the laws of logic and mathematics, or arbitrarily." (link::#[3]::, p.66). Patterns involve a wide range of such possibilities and provide a comfortable interface to be applied dynamically. 
+
+Psieve patterns as well as Sieves can work in two modes, regarding sieves as sequences (resp. lists) of 'intervals' with an offset, or as 'points', meaning the ascending numbers itself (the wording of 'sums' and 'differences' would also be nearby, but here 'difference' is already used for set operations, so I leaned on Xenakis' terms). For efficiency reasons only one representation of a Sieve is current at a time, the default result mode is 'points'. However all operations exist in alternative result mode variants and of course Sieves can also be converted anytime. For calculus of Sieves there exist corresponding binary operators as shortcuts.
+
+Characteristics of sieves are closely bound to relations of numbers by prime factors, roughly said: more complexity and longer periodicity is following from merging moduls that have fewer prime factors in common. However for the sake of keeping classes light-weight, dealing with period lengths etc. is not implemented within the sieve classes itself. See link::#[1]:: and link::#[3]:: for some number-theoretical considerations, you might also want to check Xenakis' original examples and hints. Useful integer operations (prime numbers, factoring) are contained in SC main and can help you to easily carry through your own experiments, some extensions of built-in lcm-algorithm are contained (link::#4b::). A thorough investigation of the symmetric structures generated is out of the scope of this package, however some observations on symmetry types (link::#3b::) and basic analysis tools are included (link::#3c::). Last but not least: plotting the intervals can give a good impression of sieve characteristics.
+anchor::[1]::
+anchor::[2]::
+anchor::[3]::
+anchor::[4]::
+
+subsection::References
+
+numberedList::
+## Xenakis, Iannis (1990). "Sieves" Perspectives of New Music 28(1): 58-78.
+## Xenakis, Iannis (1992). Formalized Music. Hillsdale, NY: Pendragon Press, 2nd Revised edition.
+## Ariza, Christopher (2005). "The Xenakis Sieve as Object: A New Model and a Complete Implementation" Computer Music Journal 29(2): 40-60.
+## Roads, Curtis (2015). Composing Electronic Music. A New Aesthetic. Oxford University Press.
+
+::
+
+
+SECTION::1) The Sieve class
+
+subsection::1a) Basic generation from Integers, modes 'intervals' and 'points'
+
+code::
+// define a simple sieve with multiples of 3, 5 and 7, 0 is included
+// as no limit is given, the result goes up to the default limit of 65536
+// per default result is given in mode 'points'
+
+a = Sieve.union(3, 5, 7)
+
+
+// a limit is passed as Ref object as last arg
+
+a = Sieve.union(3, 5, 7, `30)
+
+
+// convert to 'intervals': same Sieve object and new List that has one item less,
+// the slot 'offset' is set accordingly (here it equals 0)
+// the offset in mode 'points' is always nil
+
+a.toIntervals
+
+
+// convert back
+
+a.toPoints
+
+
+// access for arbitrary further use
+
+a.list
+
+
+// generate a Sieve from an Integer, it contains one point 
+
+a = 5.toSieve.dump;
+
+// it's interval representation is an empty list
+
+a.toIntervals.dump
+
+
+// calculate with 'intervals' from the beginning
+
+Sieve.union_i(3, 5, 7, `30)
+::
+
+
+subsection::1b) Generation from Patterns, Streams and Sieves
+
+code::
+// Instead of Integers producing their multiples you can pass Patterns or Streams.
+// It's assumed that Patterns/Streams produce Integers interpreted as intervals
+// (if it's defined to produce 'points' it can e.g. be wrapped into a Pdiff).
+
+Sieve.union(Pseq([1, 10], inf), 5, 7, `30)
+
+Sieve.union({ loop { rrand(1,10).yield } }.r, 5, 7, `30)
+
+
+// compare with result from the pattern alone
+// a union with one argument just returns its resulting elements.
+// As pattern arguments are interpreted as intervals, 0 is included
+
+Sieve.union(Pseq([1, 10], inf), `30)
+
+
+// a Sieve can itself be passed to generate a new one,
+// the mode of the passed sieve is taken into account
+
+a = Sieve.union(5, 7, `30);
+
+Sieve.union(a, 3, `30)
+::
+
+
+subsection::1c) Elementary sieve operations
+
+code::
+// beneath union: intersection, symmetric difference, difference
+// note that order of arguments only plays a role with difference
+
+
+// intersection: only integers produced by all generators
+// symmetric difference: only integers produced by one of the generators
+// difference: only integers produced by the first generator, but by none of the others
+
+// 'generator' here refers to allowed sieve operator args 
+// (Integers as modul generators, Patterns/Streams or Sieves itself)
+
+
+// proof of concept, evaluate in order
+
+a = Sieve.union(3, 5, 6, `100)
+
+// collect all pairwise intersections
+
+(
+b = Sieve.sect(3, 5, `100); // intersection with moduls: multiples of smallest common multiple
+c = Sieve.sect(5, 6, `100);
+d = Sieve.sect(3, 6, `100); // multiples of 6 itself
+)
+
+// calculate the symmetric difference ...
+
+e = Sieve.symdif(3, 5, 6, `100)
+
+
+// ... it equals the difference of a, b, c and d ...
+
+f = Sieve.dif(a, b, c, d, `100)
+
+e == f
+
+// ... which equals the difference of a and the union of b, c and d
+
+g = Sieve.dif(a, Sieve.union(b, c, d, `100))
+
+e == g
+::
+
+
+subsection::1d) Offset methods
+
+code::
+// for passing individual offsets there exist dedicated methods with suffixes '_o' and '_oi'
+// offsets args are passed after the generating items
+
+
+// one generating number with offset
+// producing, mathematically spoken, a part of the residual class 2 modulo 3
+
+Sieve.union_o(3, 2, `30)
+
+
+// several generating numbers with offsets, passed pairwise
+
+Sieve.union_o(3, 2, 5, 1, 7, 4, `30)
+
+Sieve.union_oi(3, 2, 5, 1, 7, 4, `30)
+
+
+
+// the shift operation adds an offset, it changes the receiver
+
+a = Sieve.union(5, 7, `30);
+
+a.shift(100)
+
+a.shiftTo(0)
+
+// as operators
+
+a >> 100
+
+a >>! 10
+::
+
+
+subsection::1e) Sieve operations defined as instance methods
+
+code::
+// all operations and shortcuts defined above can be applied to instances
+
+(
+a = Sieve.union(3, 5, `1000);
+b = Sieve.union(4, 7, `1000);
+c = Sieve.union(6, 8, `1000);
+)
+
+// Note that large periods are already resulting from simple combinations of
+// elementary operations and few prime factors.
+
+
+// by default plot shows intervals
+
+symdif(a, b, c).plot
+
+dif(a, b, c).plot
+::
+
+
+
+subsection::1f) Sieve operations defined as binary operators
+
+code::
+// instantiation with 'new': second arg limit doesn't need to be a Ref
+(
+a = Sieve(6, 60);
+b = Sieve(8, 60);
+)
+
+// union
+
+union(a,b)
+a|b
+
+union_i(a,b)
+a|*b
+
+
+// intersection
+
+sect(a,b)
+a&b
+
+sect_i(a,b)
+a&*b
+
+
+// symmetric difference
+
+symdif(a,b)
+a--b
+
+symdif_i(a,b)
+a--*b
+
+
+// difference, only elementary operation where order plays a role
+
+dif(a,b)
+a-b
+
+dif_i(a,b)
+a-*b
+
+dif(b,a)
+b-a
+
+dif_i(b,a)
+b-*a
+
+
+// Efficiency hint: for an operation with a number of args, especially with large Sieves,
+// it is more efficient to use the core class or instance methods than to concatenate binary operators:
+// doing the latter means stepping through the list/range with each binary operation
+::
+
+subsection::1g) Segments of Sieves
+
+code::
+// These operations result in new Sieve objects of mode 'points'
+
+a = Sieve.union(3, 5, 7, `30)
+
+
+// lo bound
+
+a.segmentGreaterEqual(7)
+
+a >=! 7
+
+a.segmentGreater(7)
+
+a >! 7
+
+
+// hi bound
+
+a.segmentLessEqual(10)
+
+a <=! 10
+
+a.segmentLess(10)
+
+a <! 10
+
+
+// lo & hi bound
+
+a.segmentBetweenEqual(10, 20)
+
+a <>=! [10, 20]
+
+a.segmentBetween(10, 20)
+
+a <>! [10, 20]
+::
+
+
+subsection::1h) Conversion to Sieves from Arrays 
+
+code::
+// Conversion from arbitrary SequenceableCollection to Sieve:
+// per default it's assumed that receiver and result are thought to be in mode 'points'
+// but source and target mode can be passed as args 'fromMode' and 'toMode'
+
+a = [1, 5, 17, 33, 37, 43, 57, 60, 61, 62, 63, 75, 89, 92, 97];
+
+a.toSieve
+
+
+
+// define result mode, add offset
+
+a.toSieve(toMode: \intervals, addOffset: 100)
+
+
+// define interval meaning of receiver
+// default offset zero
+
+a.toSieve(\intervals)
+
+
+// same with offset 1, abbreviations for mode selection
+
+a.toSieve(\i, \p, 1)
+
+
+
+// if Integers are regarded as points, they must be ascending ...
+
+a.reverse.toSieve
+
+
+// ... but intervals can be descending ...
+
+a.reverse.toSieve(\i)
+
+
+// ... however they must be positive
+
+(a.reverse ++ -1).toSieve(\i)
+
+
+// It's possible to disable the checks preformed with conversion (flag 'withCheck'),
+// but this only makes sense in a context where a large number of
+// speed-critical conversions on well-prepared data has to be done.
+// Otherwise it's always useful to perform those checks as
+// sieve operations on wrong data (e.g. unordered lists) will fail or hang.
+::
+
+
+subsection::1i) Copying and transformation of Sieves by arbitrary array operations 
+
+code::
+// It would be possible to define Sieve as subclass of List but there exist many
+// methods for List which don't make any sense for sieves, even worse: they can consequently
+// result in disfunctionality of standard operations defined for Sieves as List subclasses.
+// This could be overcome with additional checks for these standard operations, a bloating which
+// can be avoided if we try to keep only "proper sieves" as Sieve objects,
+// thus by default dedicated wrappers for arbitrary transformations include checks.
+
+
+a = Sieve.union_o(3, 1, 7, 2, `30)
+
+// simple deep copy ...
+
+b = a.copy
+
+
+// ... lists are equal but not identical
+
+a.list == b.list
+a.list === b.list
+
+// as expected sieves are equal
+
+a == b
+
+// but also a converted Sieve is equal
+
+a == b.toPoints
+
+
+
+// mode (intervals) and offset are taken over from original Sieve
+// new array is inserted and checked if it contains proper (ascending) integers
+
+a.copyWith([2, 17, 29, 31, 35, 53])
+
+a.copyWith([2, 2, 3, 5, 1, 10])
+
+
+
+
+// if the receiver is of mode 'intervals', the array of above can be passed
+
+b = a.copy.toIntervals
+
+b.copyWith([2, 2, 3, 5, 1, 10])
+
+
+
+// main workhorse for transformations, note that offset is kept while intervals reversed
+
+c = b.copyApplyTo(\reverse)
+
+c.toPoints
+
+
+b.copyApplyTo(\mirror).plot
+
+
+// as with method 'applyTo' arbitrary Functions can be passed
+
+b.copyApplyTo { |x| x * x * x ++ (1..10).mirror  }
+
+
+// partial application
+
+b.copyApplyTo(_ ++ [7, 5, 1])
+::
+
+
+SECTION::2) Psieve patterns
+
+subsection::2a) Basic generation from Integers, modes 'intervals' and 'points'
+
+
+code::
+// Psieve patterns use the prefix PSV followed by the name of elementary
+// sieve operations, as used with the Sieve class, and optional suffixes.
+// In comparison with Sieve more arguments are taken, so
+// the generating arguments and offsets are to be passed within an array.
+
+
+PSVunion([3, 5, 7]).asStream.nextN(20)
+
+// intervals
+
+PSVunion_i([3, 5, 7]).asStream.nextN(20)
+
+
+// other operations
+
+PSVsect([3, 5, 7]).asStream.nextN(20)
+
+PSVsymdif([3, 5, 7]).asStream.nextN(20)
+
+PSVdif([3, 5, 7]).asStream.nextN(20)
+
+
+
+// offsets, offsets + interval output
+
+PSVunion_o([3, 2, 5, 4]).asStream.nextN(20)
+
+PSVunion_oi([3, 2, 5, 4]).asStream.nextN(20)
+
+
+PSVdif_o([3, 2, 5, 4]).asStream.nextN(20)
+
+PSVdif_oi([3, 2, 5, 4]).asStream.nextN(20)
+
+...
+
+// maxLength defines the maximum number of items -
+// in case of a randomly generating item or a low summation limit
+// the overall stream might have to end earlier.
+
+b = PSVunion([7, 17, 29], 30).asStream
+
+b.all
+
+
+// if the summation limit is set, maxLength might not be reached
+
+c = PSVunion([7, 17, 29], 30, 100).asStream
+
+d = c.all
+
+d.size
+
+::
+
+
+subsection::2b) Generation from Patterns, Streams and Sieves
+
+
+code::
+// distorted periodicity by union with random sieve
+
+a = ({ rrand(0, 1000) } ! 50).asSet.asArray.sort.toSieve
+
+PSVunion_i([4, 7, a]).asStream.nextN(100).plot
+
+// compare
+
+PSVunion_i([4, 7]).asStream.nextN(100).plot
+
+
+
+// distorted periodicity by union with random patterns
+
+PSVunion_i([4, 7, Pn(Pshuf([2, 5, 9])) ]).asStream.nextN(100).plot
+
+PSVunion_i([4, 7, Pwhite(3, 5) ]).asStream.nextN(100).plot
+::
+
+
+subsection::2c) Sequencing logical operations
+
+
+code::
+// This is done by PSVop patterns, which take a Symbol or a pattern of Symbols,
+// refering to the elementary logical operators.
+// The stream of operations is forwarded with every integer point, 
+// which has to be stepped through.
+
+// helper function for plotting
+
+p = { |x, n = 200| x.asStream.nextN(n).plot };
+
+
+// plain standard operations, all elementary PSV patterns can be written with PSVop
+
+PSVop([5, 9], \u).asStream.nextN(20) // union
+PSVop([5, 9], \d).asStream.nextN(20) // difference
+PSVop([5, 9], \sd).asStream.nextN(20) // symmetric difference
+
+
+// some operator loops
+
+p.(PSVop_i([5, 9], Pseq([\u, \sd], inf)))
+p.(PSVop_i([5, 9], Pseq([\u, \s], inf)))
+p.(PSVop_i([5, 9], Pseq([\u, \d], inf)))
+p.(PSVop_i([5, 9], Pseq([\u, \d, \sd], inf)))
+
+
+// random operator changes
+
+p.(PSVop_i([5, 9], Pn(Pshuf([\u, \d]))))
+p.(PSVop_i([5, 9], Prand([\u, \d], inf)))
+
+
+
+// change of difIndex:
+
+p.(PSVop_i([5, 2, 3], \d))
+p.(PSVop_i([5, 9], Prand([\u, \d], inf)))
+
+
+// "subtract" from index 0: multiples of 5, not divided by 7, 9, and 12
+
+PSVdif([5, 7, 9, 12]).asStream.nextN(30)
+
+
+// same as intervals, plotted
+
+p.(PSVdif_i([5, 7, 9, 12]))
+
+// written with PSVop
+
+p.(PSVop_i([5, 7, 9, 12], \d, 0))
+
+
+// also changing the positions other than the first is equivalent
+
+p.(PSVdif_i([5, 7, 9, 12]))
+
+p.(PSVop_i([5, 12, 7, 9], \d, 0))
+
+
+
+// but "subtracting" from another number is different
+
+p.(PSVdif_i([12, 9, 7, 5]))
+
+
+// you can write the same with PSVop and difIndex without swapping the elements
+
+p.(PSVop_i([5, 12, 7, 9], \d, 1))
+
+
+
+// you can generate more complicated periods by more refined series of difIndices ...
+
+
+p.(PSVop_i([4, 7], \d, 0))
+
+
+p.(PSVop_i([4, 7], \d, PLseq([0, 0, 1])))
+
+p.(PSVop_i([4, 7], \d, PLseq([0, 0, 1, 0, 0, 0, 1])))
+
+
+// ... or combination of dynamic operator changes and difIndex changes.
+// difIndices are only forwarded when operator 'difference' is current
+
+p.(PSVop_i([4, 7], PLseq([\d, \d, \u]), PLseq([0, 0, 1])))
+::
+
+
+
+subsection::2d) Using Sieves in other than Psieve patterns
+
+code::
+// Period lengths of intervals of basic Sieves are related to prime factors and 
+// least common multiples ([1] and [3] for a more detailled description)
+
+// So when using intervals of those basic structures it is not necessary to 
+// sum up to large numbers, which is what Sieve methods with suffix '_i' and
+// corresponding Psieve patterns internally do, as they are not checking for periodicity.
+// Instead we can calculate the list of intervals beforehand and use it at will.
+// Also 'beforehand' doesn't exclude realtime use: it's easy to write a Function that
+// generates Sieves and derives Patterns from it, which, with placeholder patterns,
+// can be exchanged on the fly
+
+
+// choose factors and calculate lcm (see 3b),
+// as a summation limit it determines one period of intervals
+
+a = [5, 6, 8];
+
+m = a.lcmByGcd;
+
+// calculate one period of intervals, plot the symmetric structure
+
+x = Sieve.union_i(5, 6, 8, `m);
+
+x.plot;
+
+
+// sieve loop without counting high
+
+Pseq(x.list, 5).asStream.all.plot
+
+
+// second Sieve
+
+(
+b = [20, 17];
+n = b.lcmByGcd;
+v = b ++ `n;
+y = Sieve.union_i(*v);
+y.plot;
+)
+
+// make list for use with arbitrary Patterns
+
+z = x.list ++ y.list;
+
+z.plot;
+
+
+// alternating sieves
+
+Pseq(z, 3).asStream.all.plot;
+
+
+// sequencing random segments of random length
+// this is done with Pindex, an ascending index list of random length and a random offset
+
+//  Function for Plazy
+
+q = { Pindex(z, Pseq((0..rrand(10, 20))) + z.size.rand) }
+
+Pn(Plazy(q), 30).asStream.all.plot;
+
+
+// sequencing randomly repeated random segments of random length
+
+q = { Pindex(z, Pseq(((0..rrand(10, 20)) ! rrand(1, 5)).flat) + z.size.rand) }
+
+Pn(Plazy(q), 20).asStream.all.plot;
+::
+
+
+
+SECTION::3) Periodicity of intervals with elementary operations
+
+subsection::3a) Periodicity of intervals with elementary operations
+
+code::
+// For 'union' and no offsets one period of intervals is given with summation limit
+// equal to the least common multiple (lcm) of the generating numbers.
+// (if one number divides another, the larger one can be dropped)
+
+// The period length (number of intervals per period) is thus lesser than the lcm.
+// A symmetric structure is produced, for 'union' the period is equal to its mirror, 
+// in other words the produced sequence is a concatenation of symmetric segments
+
+// With 3, 7 and 8 lcm equals 168
+
+a = Sieve.union_i(3, 7, 8, `168)
+
+a.plot
+
+// number of intervals per period
+
+a.size
+
+// For symmetric difference and difference lcm also plays a role,
+// but it's a bit different.
+// As (offset 0) 0 is not included, the interval sequence doesn't really start from there,
+// so  with limit = lcm the period is incomplete (although the segment is already symmetric)
+
+Sieve.symdif_i(3, 7, 8, `168).plot
+
+
+// To get the full picture take twice lcm as limit:
+// the interval in the middle was not included before !
+
+Sieve.symdif_i(3, 7, 8, `(168 * 2)).plot
+
+
+
+// you can get the continuation to symmetry (begin = end)
+// with a real start point as offset:
+
+Sieve.symdif_oi(3, -3, 7, 0, 8, 0, `(168 + 3)).plot;
+
+Sieve.dif_oi(3, -3, 7, 0, 8, 0, `(168 + 3)).plot;
+Sieve.dif_oi(7, -7, 3, 0, 8, 0, `(168 + 7)).plot;
+Sieve.dif_oi(8, -8, 3, 0, 7, 0, `(168 + 8)).plot;
+
+
+// In other words in the latter cases the produced sequence is a 
+// concatenation of symmetric segments, in which begin/end points are merged.
+::
+
+
+subsection::3b) Types of symmetry
+anchor::3b:: 
+
+Symmetric structures in periodic series occur as different types, depending if the period length is even or odd.
+
+DEFINITION:
+
+numberedList::
+##Lets's call a period 'symmetric' iff it's equaling its reverse.
+##Lets's call a period 'quasi-symmetric' iff the continuation with its first element is symmetric.
+##If a sequence contains a symmetric or quasisymmetric period, there exists a symmetric or quasisymmetric period starting in its middle (or just right from it when odd), 
+let denote it its 'coperiod'.
+::
+
+
+STATEMENTS (formal proof omitted, but rather straightforward):
+
+numberedList::
+##If the period length is even, a symmetric period corresponds to a symmetric coperiod and a quasisymmteric period corresponds to a quasisymmteric coperiod.
+##If the period length is odd, a symmetric period corresponds to a quasisymmteric coperiod.
+##Only a period of identic elements can be symmetric and quasi-symmetric at the same time.
+::
+
+subsection::3c) Analysis tools
+anchor::3c::
+code::
+// Method 'checkSymmetricPeriods' applies to Arrays resp. intervals of Sieves
+// and checks for periods and possible symmetries.
+// It returns an array with 4 items:
+// (1) the sequence clumped in (quasi-)symmetric (or asymmetric) chunks
+// (2) the index offset of the first (quasi-)symmetric period
+// (3) a symbol indicating if the period length is even or odd
+// (4) an array of Booleans indicating the completeness of the clumped chunks (incomplete periods can be of any type)
+
+// Some important points here:
+// (1) 'checkSymmetricPeriods' searches for smallest periods and its (possible) symmetry
+// (2) 'checkSymmetricPeriods' is supposing that no prefix items are introducing
+// a periodicity, thus a sequence like  7, 8, 9, 1, 2, 3, 2, 1, 2, 3, 2, 1 ...
+// will be regarded as non-periodic (this e.g. happens when offsets are far apart!).
+// (3) In the case of odd quasi-symmetric periods the symmetric coperiod is searched for
+// and preferred (if it's in the range) 
+// (4) To get meaningful results for sieves and its elementary operations –
+// due to (1) and (3) – it is recommended to check sufficiently large sieves,
+// e.g. set the limit to three times the lcm of the generators.
+
+// make a Sieve with generating prime Integers 3, 7, 8
+// regard a section of three time the expected period length
+
+(
+a = Sieve.symdif_i(3, 7, 10, `(210 * 3));
+a.plot;
+)
+
+// store analysis data
+b = a.checkSymmetricPeriods
+
+// clumped sequence (long)
+b[0]
+
+// symmetry types of chunks and completions, the first relevant period is at position 1 and quasisymmetric
+b[1..2]
+
+// 'checkCharacteristicPeriod' returns an array with first characteristic period, 
+// index offset, length type (even or odd) and symmetry type
+
+a.checkCharacteristicPeriod
+
+// you can plot it directly, compare with the sieve plot, where period starts at index 41
+
+a.plotCharacteristicPeriod
+::
+
+
+subsection::3d) Symmetry types of elementary operations without offset
+
+code::
+// Some observations of types occuring, no proof.
+// Connections between types and used numbers are not obvious here:
+// all symmetry types of an operator occur with tuples of coprime and not-coprime numbers
+
+// union:
+
+// symmetric odd period
+(
+a = Sieve.union_i(3, 7, `42);
+a.plot;
+a.plotCharacteristicPeriod;
+)
+
+// symmetric even period
+(
+a = Sieve.union_i(4, 9, `72);
+a.plot;
+a.plotCharacteristicPeriod;
+)
+
+
+// symdif:
+
+// symmetric odd period
+(
+a = Sieve.symdif_i(8, 9, `216);
+a.plot;
+a.plotCharacteristicPeriod;
+)
+
+// quasi-symmetric even period
+(
+a = Sieve.symdif_i(7, 9, `189);
+a.plot;
+a.plotCharacteristicPeriod;
+)
+
+// dif:
+
+// symmetric odd period
+(
+a = Sieve.dif_i(5, 6, `90);
+a.plot;
+a.plotCharacteristicPeriod;
+)
+
+
+// quasi-symmetric even period
+(
+a = Sieve.dif_i(6, 10, `90);
+a.plot;
+a.plotCharacteristicPeriod;
+)
+::
+
+
+subsection::3e) Symmetry types of elementary operations with offset
+
+code::
+// If generators are coprime all is quite straight: offsets will not change the
+// sum of the period equal to the least common multiple but will only cause a shift.
+// This was elaborated by Xenakis in [1]
+
+
+// Things become more complicated when generators have prime factors in common:
+// still period sums are preserved, but symmetry types can change;
+// asymmetric periods occur. One and the same tuple of generators can cause
+// different combinations of period types with different offsets.
+
+
+// Here's a little helper Function to analyze characteristics of different offsets
+// for a given choice of generating integers
+
+(
+f = { |operator = \union_i ...generators|
+	var sieve, types, allGens, lcm, data, input, offsets;
+	//collect all offset combinations
+	offsets = (generators.collect { |i| (0..i-1) }).allTuples;
+
+	offsets.collect { |offset|
+		lcm = lcmByGcd(*generators);
+		input = [operator] ++ [generators, offset].flop.flat ++ Ref(lcm * 4);
+		sieve = Sieve.perform(*input);
+		data = sieve.checkCharacteristicPeriod;
+		([operator, offset] ++ (data.drop(1)) ++
+			["lcm " ++ lcm.asInteger] ++ ["periodSum " ++ data.first.sum]).postln;
+	};
+	""
+}
+)
+
+// this pair of generators gives three different types: odd asym, odd sym, even sym
+f.(\union_oi, 8, 12)
+
+// check:
+// odd asymmetric
+Sieve.union_oi(8, 0, 12, 1, `48).plot;
+
+// odd symmetric
+Sieve.union_oi(8, 0, 12, 2, `48).plot;
+
+// even symmetric
+Sieve.union_oi(8, 0, 12, 4, `48).plot;
+
+
+// odd sym, even sym, even asym
+f.(\union_oi, 12, 20)
+
+// odd asym, even sym
+f.(\union_oi, 15, 20)
+
+// odd sym, even asym
+f.(\union_oi, 9, 15)
+
+
+// More types result from more fixed generators with varying offsets
+// here: odd sym, odd asym, even sym, even asym
+
+f.(\union_oi, 8, 10, 12)
+
+
+
+// Also note that trivial genrator combinations for union without offset (when dividing each other),
+// bring different results with offsets
+
+// sequence of equal intervals (2)
+
+Sieve.union_i(2, 6, 12, `48)
+
+
+// asymmetric periods with same generators and offsets
+
+Sieve.union_oi(2, 0, 6, 5, 12, 1, `48).plot;
+
+// Under same assumption of generators with prime factors in common, a
+// similar enrichment of symmetry types occurs with operators 'dif' and 'symdif'
+// when offsets are used. In contrast to 'union' but as with 'dif' and 'symdif'
+// without offsets, quasisymmteric periods occur.
+
+
+// changing of symmetry types can also be done by looped sequencing of logical operations
+
+// symmetric period produced by operator 'union'
+
+a = PSVop_i([6, 5, 7], \u).iter.nextN(500).toSieve(\i, \i);
+
+a.plotCharacteristicPeriod;
+
+
+// altered, here still symmetric with logical sequence
+
+a = PSVop_i([6, 5, 7], Pseq([\u, \d, \sd, \d], inf)).iter.nextN(500).toSieve(\i, \i);
+
+a.plotCharacteristicPeriod;
+::
+
+
+SECTION::4) Troubleshooting
+
+subsection::4a) Critical inputs, limits
+
+code::
+// Due to the definition of sieves there are input combinations which
+// might result in massive looping without any result.
+
+// Default settings are chosen in a way that this shouldn't result in hangs immediately,
+// nevertheless it's the users's responsibility to choose meaningful input values.
+
+
+// E.g. here we demand multiples of 3 which, at the same time, shouldn't be multiples of 3 ...
+// The result nil is given not before the limit of 65536 is reached by summation,
+// benchmarking indicates that.
+
+PSVdif([3, 3], 10).asStream.next
+
+{ PSVdif([3, 3], 10).asStream.next }.bench
+
+Sieve.dif(3, 3)
+
+{ Sieve.dif(3, 3) }.bench
+
+
+
+// similar here, no intersection
+
+PSVsect_o([3, 0, 3, 1], 10).asStream.next
+
+{ PSVsect_o([3, 0, 3, 1], 10).asStream.next }.bench
+
+Sieve.sect_o(3, 3)
+
+{ Sieve.sect_o(3, 3) }.bench
+
+
+// Another critical operation is intersection with larger coprime numbers
+
+nthPrime(70)
+-> 353
+
+nthPrime(71)
+-> 359
+
+
+a = PSVsect([353, 359]).asStream;
+
+// first intersection at 0, but no further one (below global limit 65536)
+
+a.nextN(2)
+
+
+// you can set the limit, but it's a rather inefficient way to 
+// generate just a series of equal intervals ... 
+
+a = PSVsect([353, 359], limit: 2 ** 30).asStream;
+
+a.nextN(20)
+
+{ a.nextN(20) }.bench
+
+
+// The largest Integer with 32 bit is 2 ** 31 - 1.
+// You can set 'limit' with Sieves and Psieve patterns (for instances and globally)
+// up to 2 ** 31 - 1 - maxGeneratingInteger.
+// This ensures that the threshold check doesn't exceed the Integer range.
+
+
+// So if you're sure about useful inputs
+// you can set a high global limit for calculus with large numbers and/or long streams
+
+Psieve.limit = 2 ** 31 - 536892
+
+{ a = PSVunion([253630, 536891]).asStream.nextN(10000) }.bench
+
+
+// reset global limit
+
+Psieve.limit = 65536
+
+
+// Note that Psieve is a bit more flexible as Sieve in this regard
+// it allows to set summation limit and maxLength.
+
+Sieve.limit = 2 ** 31 - 536892
+
+{ a = Sieve.union(253630, 536891) }.bench
+
+a.list.size
+
+
+// reset global limit
+
+Sieve.limit = 65536
+::
+
+
+subsection::4b) Calculating least common multiples
+anchor::4b::
+code::
+// For calculating period lengths the related operations of greatest common divisor
+// and least common multiple are relevant (e.g. see [1])
+
+// Up to SC 3.7.2 built-in method 'lcm' fails for large Integers,
+// though this has been fixed in 3.8:
+
+lcm(248214, 1027542)
+
+-> 6696095
+
+
+// A prime factor analysis shows:
+
+
+a = [248214, 1027542].collect(_.factors)
+
+-> [ [ 2, 3, 41, 1009 ], [ 2, 3, 41, 4177 ] ]
+
+
+// Thus the result has to be
+
+2.0 * 3 * 41 * 1009 * 4177
+
+-> 1036789878
+
+
+// Why is 2.0 needed above ? 
+// The result of an Integer multiplication is an Integer, 
+// thus crossing the int32 limit is silent and can easily be overlooked
+
+3768562 * 876876
+
+-> 1731721688
+
+
+3768562.0 * 876876
+
+-> 3304561572312
+
+
+// The methods lcmByFactors and lcmByGcd contain the relevant threshold checkes,
+// they are much slower than 'lcm' but reliable also with large Integers.
+// 'lcmByFactors' returns an array with lcm as first item, an array with prime factors
+// of lcm as second item and an array of receiver's and all arguments' prime factors. 
+// Alternatively the least common multiple can be calculated 
+// via the greatest common divisor, this is done by method 'lcmByGcd'
+
+lcmByFactors(248214, 1027542)
+lcmByGcd(248214, 1027542)
+
+
+// if calculation exceeds the int32 limit a warning is given, the result is a float
+
+lcmByFactors(135630546, 429496729)
+lcmByGcd(135630546, 429496729)
+
+
+// also more args can be passed (all are integers < 2 * 31),
+// as lcmByGcd uses gcd internally, this might fail with more than 2
+// large numbers, whereas lcmByFactors still finds the result
+
+lcmByGcd(135630546, 429496729, 610337457)
+lcmByFactors(135630546, 429496729, 610337457)
+
+::
+
+anchor::5:: 
+SECTION::5) Audio examples
+
+code::
+
+// synthdefs to play with
+(
+SynthDef(\noise_grain, { |out = 0, freq = 400, att = 0.005, rel = 0.1, rq = 0.1, amp = 0.1|
+	var sig = { WhiteNoise.ar } ! 2;
+	sig = BPF.ar(sig, freq, rq) *
+		EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2) *
+		(rq ** -1) * (250 / (freq ** 0.8));
+	OffsetOut.ar(out, sig);
+}).add;
+
+SynthDef(\sin_grain, { |out = 0, freq = 400, att = 0.005, rel = 0.1, amp = 0.1|
+	var sig = { SinOsc.ar(freq, Rand(0, 2pi)) } ! 2;
+	sig = sig * EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2);
+	OffsetOut.ar(out, sig);
+}).add;
+
+
+SynthDef(\saw_grain, { |out = 0, freq = 400, att = 0.005, rel = 0.1, amp = 0.1|
+	var sig = { VarSaw.ar(freq, Rand(0, 1)) } ! 2;
+	sig = sig * EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2);
+	OffsetOut.ar(out, sig);
+}).add;
+)
+::
+
+
+subsection::5a) Applying sieve intervals to (micro) rhythms
+
+code::
+(
+// rhythm by sieve intervals
+
+~delta = 0.05;
+~rhy = PSVunion_i([4, 6, 7]);
+
+p = Pbind(
+	\instrument, \noise_grain,
+	\dur, PL(\rhy) * PL(\delta),
+	\att, 0.01,
+	\rel, 0.05,
+	\amp, 0.1,
+	\midinote, Pwhite(50, 90),
+	\rq, 0.1
+).play
+)
+
+
+// change to micro rhythms
+
+(
+~delta = 0.01;
+~rhy = PSVsymdif_i([4, 6]);
+)
+
+// test with different data
+
+~rhy = PSVsymdif_i([4, 6, 9])
+
+~rhy = PSVsymdif_i([6, 9, 2])
+
+~rhy = PSVsymdif_i([9, 2])
+
+~rhy = PSVsymdif_i([3, 4])
+
+~rhy = PSVsymdif_i([3, 4, 7])
+
+
+p.stop
+::
+
+
+anchor::5b:: 
+subsection::5b) Sequentially generating new sieve patterns for rhythm and pitch
+
+code::
+(
+// rhythm by sieve intervals
+
+~delta = 0.1;
+~rhy = PSVunion_i([4, 6, 7]);
+
+// some more params for live change
+
+~rel = 0.05;
+~midi = Pwhite(50, 90);
+~rq = 0.1;
+
+q = Pbind(
+	\instrument, Prand([\noise_grain, \sin_grain], inf),
+	\dur, PL(\rhy) * PL(\delta),
+	\att, 0.005,
+	\rel, PL(\rel),
+	\amp, 0.1,
+	\midinote, PL(\midi),
+	\rq, PL(\rq)
+).play
+)
+
+
+// turn to micro rhythm
+(
+~delta = 0.01;
+
+// instead of Pn + Plazy also Pspawner with method .seq could be used
+~rhy = Pn(Plazy {
+	var r = { rrand(2, 30) } ! 2;
+	"rhythm generators: ".post; r.sort.postln;
+	PSVsymdif_i(r, rrand(20, 30))
+});
+
+// numbers generated by PSVsymdif_i are used above and below a central pitch
+~midi = Pn(Plazy {
+	var r = { rrand(2, 10) } ! 2;
+	"pitch generators: ".post; r.sort.postln;
+	PSVsymdif_i(r, rrand(10, 20)) * PLseq([1, -1]) + rrand(50, 95)
+});
+
+
+// sequencing rq and release time
+~rq = Pstutter(Pwhite(2, 5), PLseq([0.005, 0.01, 0.1]));
+
+~rel = Pstutter(Pwhite(2, 5), Pn(Pshuf([0.05, 0.1, 0.2])));
+)
+
+q.stop;
+::
+
+
+
+anchor::5c:: 
+subsection::5c) Sequencing instrumental variation with sieves
+
+code::
+(
+~delta = 0.15;
+~rhy = 1;
+~rel = 0.04;
+~midi = 70;
+~instrument = \sin_grain;
+~rq = 0.01;
+~amp = 0.1;
+~type = \note;
+
+r = Pbind(
+	\instrument, PL(\instrument),
+	\dur, PL(\rhy) * PL(\delta),
+	\att, 0.015 * Pwhite(0.8, 1.2),
+	\rel, PL(\rel),
+	\amp, PL(\amp),
+	\midinote, PL(\midi),
+	\rq, PL(\rq),
+	\type, PL(\type)
+).play
+)
+
+// define variation with sieve
+(
+~instrument = Pstutter(
+	PSVunion_i([5, 7, 13]),
+	PLseq([\saw_grain, \noise_grain, \sin_grain, \noise_grain])
+)
+)
+
+// pitch sequence based on sieve
+(
+~midi = Pstutter(Pwhite(2, 5), PSVunion_i([10, 8, 17])) * PLseq([1, -1]) + 80;
+~rel = 0.45;
+~amp = 0.06;
+)
+
+// transpositions
+(
+~midi = Pstutter(Pwhite(2, 5), PSVunion_i([10, 8, 17])) * PLseq([1, -1]) +
+	80 + Pstutter(Pwhite(10, 20), Pwhite(-5, 5));
+)
+
+// microtonal transpositions and added fifths
+(
+~midi = Pstutter(Pwhite(2, 5), PSVunion_i([10, 8, 17])) * PLseq([1, -1]) + 80 +
+	Pstutter(Pwhite(10, 20), Pwhite(-10.0, 5)) +
+	Prand([0, [0, 7]], inf);
+)
+
+// interfering curves generated by 'union'
+(
+~midi = [55, 62] + PSVunion_oi([55, 0, 57, 1, 58, 2, 59, 3]);
+
+~rel = Pstutter(Pwhite(2, 5), Pn(Pshuf([0.05, 0.05, 0.1, 0.5])));
+)
+
+r.stop
+::
+
+

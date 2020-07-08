@@ -1,0 +1,85 @@
+CLASS::PlaceAll
+summary::Arbitrarily nested embedding of subarrays
+categories::Libraries>miSCellaneous>Other patterns
+related:: Overviews/miSCellaneous, Classes/Place, Classes/Ppatlace
+
+
+DESCRIPTION::
+
+
+PlaceAll is integrating Ppatlace and Place (taking items as well as Patterns) and allows an arbitrary depth of nesting arrays.
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PlaceAll object.
+
+argument::list
+Array which may contain subarrays. Leaves of the array tree may be Patterns, Streams or other Items to be embedded.
+
+argument::repeats
+Number of list loops. Defaults to 1.
+
+argument::offset
+List index offset. Defaults to 0.
+
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+        
+(
+p = Pbind(
+    \midinote, PlaceAll([[60, 61], 70, [80, [81, 81.5], 82]], inf),
+    \dur, 0.2
+);
+
+x = p.play;
+)
+
+x.stop;
+
+
+// to distinguish subarrays from arrays to be taken as output use Refs, 
+// as wrapping in another array wouldn't do
+
+(
+p = Pbind(
+    \midinote, PlaceAll([[60, 61], 70, [80, `[81, 81.5], 82]], inf),
+    \dur, 0.2
+);
+
+x = p.play;
+) 
+
+
+x.stop;
+
+
+// Items may also be Patterns or Streams
+
+(
+p = Pbind(
+    \midinote, PlaceAll([[60, 61], 70, [80, Pwhite(84.0, 89), 82]], inf),
+    \dur, 0.2
+);
+
+x = p.play;
+) 
+
+
+x.stop;
+ 
+
+
+:: 
+ 
+ 

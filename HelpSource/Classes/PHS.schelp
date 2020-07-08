@@ -1,0 +1,196 @@
+CLASS:: PHS
+summary:: defines Pbind(s) for using synth values of a HS
+categories::Libraries>miSCellaneous>HS and HSpar, Streams-Patterns-Events>HS and HSpar
+related:: Overviews/miSCellaneous, Guides/Guide_to_HS_and_HSpar, Tutorials/HS_with_VarGui, Classes/PHS, Classes/PHSuse, Classes/PHSplayer, Classes/PHSusePlayer 
+
+
+DESCRIPTION::
+Defines Pbind(s) which, when played, can use values of a synth derived from link::Classes/HS::'s synth definition.
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PHS object.
+
+argument::helpSynth
+A HS object.
+
+argument::helpSynthArgs
+Collection of key / value pairs for the HS synth.
+
+argument::... pbindArgs
+dur1, pbindData1, ... , durN, pbindDataN
+
+where strong::dur:: is duration value or pattern / stream of durations for corresponding Pbind(s)
+and strong::pbindData:: is a collection of Pbind pairs or a collection of Pbind pair collections,
+defining possibly several Pbinds with the same event timing. 
+
+INSTANCEMETHODS::
+
+method::play
+
+A link::Classes/PHSplayer:: object is instantiated and started using the TempoClock strong::clock::. 
+Quant or SimpleNumber strong::quant:: lets the player step into the quantization as soon as possible, 
+with respect to the necessary latency. The PHSplayer can be stopped and resumed with several options.
+
+
+method::newPaused
+
+VarGui support, see link::Tutorials/HS_with_VarGui:: for examples.
+
+Return a new paused Synth derived from HS's ugenFunc definition, which may be passed to a VarGui object. 
+VarGui will automatically detect that the Synth origins from a HS definition and gui functionality wil be adapted.
+
+argument::args
+Collection of key / value pairs for the HS synth.
+
+argument::latency 
+SimpleNumber (seconds). 
+
+
+
+method::asTask
+
+VarGui support, see link::Tutorials/HS_with_VarGui:: for examples.
+
+Returns a wrapper Task, which may be passed to a VarGui object. 
+Playing and stopping the wrapper Task invokes playing and 
+stopping behaviour of the underlying PHSplayer, per default also taking control over 
+playing and stopping the help synth.
+
+argument::clock
+TempoClock.
+
+argument::quant
+Quant or SimpleNumber.
+
+argument::hsStop
+Boolean. Determines if help synth will stop together with PHSplayer. Defaults to false.
+
+argument::hsPlay
+Boolean. Determines if help synth will resume together with PHSplayer. Defaults to true.
+
+argument::newEnvir
+Boolean. Determines if Task will be played in a newly generated environment. Defaults to true.
+This option especially becomes important when PHS's strong::pbindData:: contains functional code with 
+environmental variables.
+
+argument::removeCtrWithCmdPeriod
+Boolean. Defaults to true. 
+Determines if notification of PHSplayer will be stopped with CmdPeriod.
+
+
+
+
+
+
+
+EXAMPLES::
+
+code::
+
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+
+// define a HS with args
+
+h = HS(s, { |freq = 0.5, dev = 10, center = 65| LFDNoise3.kr(freq, dev, center) });
+
+
+// two Pbinds with different event timing reading from one help synth 
+
+(
+p = PHS(h, nil, // default help synth args
+    Prand([0.4, 0.2],inf), [ \midinote, Pkey(\val), \amp, 0.08  ],
+    0.1, [ \midinote, Pkey(\val) + 9.5 + Pxrand([0, 2, 5],inf), \amp, 0.06 ]
+).play;
+)
+
+// stop player and free HS, ready to be played again with the same or another PHS
+
+p.free;
+
+
+// now with synth args
+
+(
+p = PHS(h, [\freq, 2, \dev, 20], // more oscillation
+    Prand([0.4, 0.2],inf), [ \midinote, Pkey(\val) - [0, 5, 10], \amp, 0.06 ],
+    0.1, [ \midinote, Pkey(\val) + 9.5 + Pxrand([0, 4, 7],inf), \amp, 0.06 ]
+).play;
+)
+
+
+// stop player and free HS
+
+p.free;
+
+
+// let PHS define two Pbinds with same event timing, one mostly pausing
+
+(
+p = PHS(h, [], 0.16, 
+    [ [ \midinote, Pkey(\val), \amp, 0.1], 
+      [ \midinote, Pkey(\val) + [-7, 4, 7],
+        \amp, Pwrand([0.04, 0.08], [0.8, 0.2], inf),
+        \type, Pkey(\val).collect { |x| x.asInteger.even.if { \note }{ \rest } } ] 
+    ]
+).play;
+)
+
+
+// stop player and free HS
+
+p.free;
+::
+
+Order of execution: three Pbinds defined, scheduling slightly time-shifted internally, 
+so references can be established.
+
+Printout of variables which may be used within a PHS definition, 
+code::timeGrains:: is just a time ID, depending on granularity, not used for scheduling.
+code::demandIndex:: indicates the index of the stream of durations, 
+posted code::demandIndex:: = 1, as two pbinds are using duration stream #0. 
+
+code::
+(
+p = PHS(h, [], 
+    0.16, 
+    [ [ \midinote, Pkey(\val) + Pseq([0,2], inf), \amp, 0.06], 
+      [ \midinote, Pkey(\val) + [-7, 4, 7],
+        \amp, Pwrand([0.06,0.1], [0.8,0.2], inf),
+        // "random" appearance of middle voice chords depending on synth values 
+        \type, Pkey(\val).collect { |x| ~middle = x.asInteger.even.if { \note }{ \rest } } ] 
+    ],
+    Pseq([0.32, 0.16], inf), 
+    [ [ \midinote, Pkey(\val) + [15, 20, 25],
+        \legato, 0.2,
+        \amp, 0.025,
+        // upper voice is playing in case of middle voice rest 
+        \type, Pkey(\val).collect { |x| (~middle == \rest).if { \note }{ \rest } },
+        \post, Pfunc { |e| e.use {
+            "demandIndex: ".post; ~demandIndex.postln;
+            "timeGrains: ".post; ~timeGrains.postln;
+            "dur: ".post; ~dur.postln;
+            "val: ".post; ~val.postln;
+            "================================".postln;
+            }
+        }
+    ] ]
+).play;
+)
+
+
+// stop player and free HS
+
+p.free;
+
+::
+

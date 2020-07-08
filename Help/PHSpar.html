@@ -1,0 +1,415 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000bf2}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0076ff; min-height: 14.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p16 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p17 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #bf0000}
+p.p18 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #000000}
+p.p19 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #0000bf}
+p.p20 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p21 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p22 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #606060}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #006dff}
+span.s5 {text-decoration: underline ; color: #006fff}
+span.s6 {text-decoration: underline ; color: #0087ff}
+span.s7 {text-decoration: underline ; color: #0072ff}
+span.s8 {color: #0075ff}
+span.s9 {color: #0073ff}
+span.s10 {color: #0076ff}
+span.s11 {text-decoration: underline ; color: #0061ff}
+span.s12 {text-decoration: underline ; color: #0074ff}
+span.s13 {color: #0000bf}
+span.s14 {color: #007300}
+span.s15 {color: #bf0000}
+span.s16 {color: #606060}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>PHSpar (PHelpSynthPar)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>defines Pbind(s) for using synth values of a HSpar</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: </b><a href="PHSparUse.html"><span class="s4">PHSparUse</span></a> <b>(PHelpSynthParUse)</b></p>
+<p class="p4"><br></p>
+<p class="p1">Defines Pbind(s) which, when played, can use values of synths derived from <a href="HSpar.html"><span class="s5">HSpar</span></a>'s synth definitions.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>See also:</b> <a href="Working with HS and HSpar.html"><span class="s3">Working with HS and HSpar</span></a></span><span class="s6">,</span><span class="s2"> <a href="HS with VarGui.html"><span class="s7">HS with VarGui</span></a></span><span class="s8">,</span><span class="s9"> <a href="HSpar.html"><span class="s5">HSpar</span></a>,</span><span class="s2"> <a href="PHSparUse.html"><span class="s4">PHSparUse</span></a>,</span><span class="s10"> <a href="PHSparPlayer.html"><span class="s11">PHSparPlayer</span></a></span><span class="s2">, <a href="PHSusePlayer.html"><span class="s3">PHSusePlayer</span></a></span></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6"><b>Some Important Issues</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2">See <a href="Working with HS and HSpar.html"><span class="s3">Working with HS and HSpar</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p6"><b>Creation / Class Methods</b></p>
+<p class="p7"><br></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>*new (helpSynthPar, switchDur, switchIndex, helpSynthArgs, pbindArgs, hsIndices, switchOn, switchOff, set, hsStartIndices)</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new <b>PHSpar</b> object.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>helpSynthPar </b>- A HSpar object.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>switchDur </b>-<b> </b>Duration value or pattern / stream of durations determining the times of HSpar synth switches.<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>switchIndex </b>-<b> </b>Index or pattern / stream of indices determining HSpar's synth definition to switch to.<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 0.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>helpSynthArgs</b> - Collection of Pbind pair collections (size = number of <b>helpSynthPar</b>'s help synths),<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>defining synth args to be set at switch times.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>pbindArgs </b>- Collection of the form <b>[</b> <b>dur1, pbindData1, ... , durN, pbindDataN ] </b>, with</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>dur i </b>- Duration value or pattern / stream of durations for corresponding Pbind(s).</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>pbindData i </b>- A collection of Pbind pairs or a collection of Pbind pair collections,<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>defining possibly several Pbinds with same event timing.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>hsIndices</b> - Per default values are taken from the currently switched help synth.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Explicitely given <b>hsIndices </b>allow reference to values of other help synths from the<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>corresponding Pbind(s). See the examples below.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Expects a collection of valid hsIndex values resp. patterns / streams of valid hsIndex values.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A valid hsIndex value is a valid help synth index or a collection of valid help synth indices.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The collection's size must equal <b>N, </b>the number of <b>pbindArgs</b>'s<b> </b>event timings.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>switchOn</b> - Boolean or pattern / stream of booleans, determining if switched help synths should be resumed.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to false.<span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>switchOff </b>- Boolean or pattern / stream of booleans, determining if help synths, which are left at a switch, should be paused.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to false.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>set </b>- Boolean or pattern / stream of booleans, determining if next synth input values, defined in <b>helpSynthArgs</b>, should be<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>taken for setting the synth. The first help synth args are always set. Defaults to true.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>hsStartIndices </b>- A valid help synth index, a collection of valid help synth indices or one of the symbols: \all, \none.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Determines which help synths should be started at the beginning in addition to the one of the first switch index.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Help synths of other than first switch index are played with default args.<span class="Apple-converted-space"> </span></p>
+<p class="p11"><br></p>
+<p class="p9"><br></p>
+<p class="p12"><b>VarGui support</b></p>
+<p class="p13"><br></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>These two methods should be used when combining HSpar / PHSpar with VarGui, see <a href="HS with VarGui.html"><span class="s12">HS with VarGui</span></a> for examples.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>newPaused(args, latency)</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Return a collection of new paused Synth(s) derived from HSpar's ugenFunc definition(s), which may be passed to a VarGui object.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>VarGui will automatically detect the origin from a HSpar definition and gui functionality wil be adapted.</p>
+<p class="p9"><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>args</b> - Collection of collection(s) of key / value pairs for the HSpar synth(s).</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>latency </b>- SimpleNumber (seconds).<span class="Apple-converted-space"> </span></p>
+<p class="p13"><br></p>
+<p class="p13"><br></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>asTask(clock, quant, hsStop, hsPlay, switchStop, newEnvir, removeCtrWithCmdPeriod)</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Returns a wrapper Task, which may be passed to a VarGui object.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Playing and stopping the wrapper Task invokes playing and<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>stopping behaviour of the underlying PHSparPlayer, per default also taking control over<span class="Apple-converted-space"> </span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>playing and stopping the help synth(s). See <a href="HS with VarGui.html"><span class="s12">HS with VarGui</span></a> for examples.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>clock </b>- TempoClock.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>quant</b> - Quant or SimpleNumber.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>hsStop </b>- Boolean, Integer or SequenceableCollection of Integers determining help synth indices.<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Determines if help synth(s) will stop together with PHSparPlayer. Defaults to false.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>hsPlay </b>- Boolean, Integer or SequenceableCollection of Integers determining help synth indices.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Determines if help synth(s) will resume together with PHSparPlayer. Defaults to true.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>switchStop </b>- Boolean. Determines if switching will stop together with PHSparPlayer. Defaults to true.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>newEnvir </b>- Boolean. Determines if Task will be played in a newly generated environment. Defaults to true.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This option especially becomes important when PHSpar's <b>pbindData</b> contains functional code with<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>environmental variables.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>removeCtrWithCmdPeriod </b>- Boolean. Defaults to true.<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Determines if notification of PHSparPlayer will be stopped with CmdPeriod.</p>
+<p class="p9"><br></p>
+<p class="p9"><br></p>
+<p class="p12"><b>Examples</b></p>
+<p class="p14"><br></p>
+<p class="p15">(</p>
+<p class="p15">s = <span class="s13">Server</span>.local;</p>
+<p class="p15"><span class="s13">Server</span>.default = s;</p>
+<p class="p15">s.boot;</p>
+<p class="p15">)</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p17">// define a HSpar with two help synth definitions<span class="Apple-converted-space"> </span></p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p18">(</p>
+<p class="p19"><span class="s2">h = </span>HSpar<span class="s2">(s, [ { </span>|freq = 1, dev = 5, center = 65|</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">LFDNoise3</span>.kr(freq, dev, center) },</p>
+<p class="p20"><span class="s2"><span class="Apple-tab-span">	</span>{ </span>|freq = 1, dev = 5, center = 75, addFreq = 0.1, addDev = 5|</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">LFTri</span>.kr(freq, 0, dev, center) + <span class="s13">SinOsc</span>.kr(addFreq, 0, addDev) }<span class="Apple-converted-space"> </span></p>
+<p class="p15"><span class="Apple-tab-span">	</span>]);</p>
+<p class="p15">)</p>
+<p class="p16"><br></p>
+<p class="p17">// define a PHSpar to switch between these two</p>
+<p class="p17">// reference to currently switched help synth via ~val</p>
+<p class="p17">// note that pbindArgs, different from PHS, have to be given as collection</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p18">(</p>
+<p class="p18">p = <span class="s13">PHSpar</span>(h,<span class="Apple-converted-space"> </span></p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span>3, </span>// switch duration</p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s13">Pseq</span><span class="s2">([0,1],</span><span class="s13">inf</span><span class="s2">), </span>// switch indices</p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span>// center of help synth #0 is reset at every switch, default values for help synth #1 :</p>
+<p class="p15"><span class="Apple-tab-span">	</span>[ [<span class="s14">\center</span>, <span class="s13">Pseq</span>([65, 90], <span class="s13">inf</span>)], <span class="s13">nil</span>],<span class="Apple-converted-space"> </span></p>
+<p class="p15"><span class="Apple-tab-span">	</span>[0.1, [<span class="s14">\midinote</span>, <span class="s13">Pkey</span>(<span class="s14">\val</span>) <span class="s15">/* ~val refers to current switch */</span> + <span class="s13">Pseq</span>([0,1],<span class="s13">inf</span>), <span class="s14">\legato</span>, 0.2 ] ]</p>
+<p class="p15">).play; <span class="Apple-converted-space"> </span></p>
+<p class="p15">)</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p17">// stop and free HSpar</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p18">p.free;<span class="Apple-tab-span">	</span></p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p17">// no need to define a switch pattern (default switch index = 0, default switch duration = inf)</p>
+<p class="p17">// hsIndices value \all causes that all help synth values at corresponding Pbind times are accesible via ~vals</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p18">(</p>
+<p class="p18">p = <span class="s13">PHSpar</span>(h,<span class="Apple-converted-space"> </span></p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span>pbindArgs: [0.1, [</span><span class="s14">\midinote</span><span class="s2">, </span><span class="s13">Pkey</span><span class="s2">(</span><span class="s14">\vals</span><span class="s2">) </span>/* collection, thus played as interval */<span class="s2"> + </span><span class="s13">Pseq</span><span class="s2">([0,1],</span><span class="s13">inf</span><span class="s2">),<span class="Apple-converted-space"> </span></span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s14">\legato</span>, 0.2 ] ],</p>
+<p class="p15"><span class="Apple-tab-span">	</span>hsIndices: [ <span class="s14">\all</span> ]<span class="Apple-converted-space"> </span></p>
+<p class="p15">).play; <span class="Apple-converted-space"> </span></p>
+<p class="p15">)</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p18">p.free;<span class="Apple-tab-span">	</span></p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p17">// this is a bit wasteful as always both help synth values are demanded via the OSCresponder mechanism:</p>
+<p class="p17">// see printed (serverToClient) OSC traffic</p>
+<p class="p16"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p18">(</p>
+<p class="p18">h.postOSC = <span class="s13">true</span>;</p>
+<p class="p16"><br></p>
+<p class="p18">p = <span class="s13">PHSpar</span>(h,<span class="Apple-converted-space"> </span></p>
+<p class="p18"><span class="Apple-tab-span">	</span>pbindArgs: [0.1, [<span class="s14">\midinote</span>, <span class="s13">Pkey</span>(<span class="s14">\vals</span>).collect(<span class="s13">_</span>.at(1)) <span class="s15">/* take only the second */</span> + <span class="s13">Pseq</span>([0,1],<span class="s13">inf</span>), <span class="s14">\legato</span>, 0.2 ] ],</p>
+<p class="p15"><span class="Apple-tab-span">	</span>hsIndices: [ <span class="s14">\all</span> ]<span class="Apple-converted-space"> </span></p>
+<p class="p15">).play; <span class="Apple-converted-space"> </span></p>
+<p class="p15">)</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p18">p.free;<span class="Apple-tab-span">	</span></p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p17">// the index may be determined by hsIndices<span class="Apple-converted-space"> </span></p>
+<p class="p17">// only the needed help synth value is demanded and can be referenced via ~thisVal:</p>
+<p class="p17">// compare printed OSC traffic<span class="Apple-converted-space"> </span></p>
+<p class="p16"><br></p>
+<p class="p18">(</p>
+<p class="p18">p = <span class="s13">PHSpar</span>(h,<span class="Apple-converted-space"> </span></p>
+<p class="p15"><span class="Apple-tab-span">	</span>pbindArgs: [0.1, [<span class="s14">\midinote</span>, <span class="s13">Pkey</span>(<span class="s14">\thisVal</span>) <span class="s15">/* take value determined by hsIndices */</span> + <span class="s13">Pseq</span>([0,1],<span class="s13">inf</span>), <span class="s14">\legato</span>, 0.2 ] ],</p>
+<p class="p15"><span class="Apple-tab-span">	</span>hsIndices: [ 1 ]<span class="Apple-converted-space"> </span></p>
+<p class="p15">).play; <span class="Apple-converted-space"> </span></p>
+<p class="p15">)</p>
+<p class="p16"><br></p>
+<p class="p18">(</p>
+<p class="p18">p.free;<span class="Apple-tab-span">	</span></p>
+<p class="p18">h.postOSC = <span class="s13">false</span>;</p>
+<p class="p18">)</p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p17">// hsIndices may contain patterns</p>
+<p class="p17">// only the needed help synth value is demanded and can be referenced via ~thisVal (or ~theseVals) :</p>
+<p class="p16"><br></p>
+<p class="p18">(</p>
+<p class="p18">p = <span class="s13">PHSpar</span>(h,<span class="Apple-converted-space"> </span></p>
+<p class="p15"><span class="Apple-tab-span">	</span>pbindArgs: [0.1, [<span class="s14">\midinote</span>, <span class="s13">Pkey</span>(<span class="s14">\thisVal</span>) + <span class="s13">Pseq</span>([0,1],<span class="s13">inf</span>), <span class="s14">\legato</span>, 0.2 ] ],</p>
+<p class="p15"><span class="Apple-tab-span">	</span>hsIndices: [ <span class="s13">Prand</span>([0,1], <span class="s13">inf</span>) ]<span class="Apple-converted-space"> </span></p>
+<p class="p15">).play; <span class="Apple-converted-space"> </span></p>
+<p class="p15">)</p>
+<p class="p16"><br></p>
+<p class="p18">p.free;<span class="Apple-tab-span">	</span></p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p17">// hsIndices also accepts collections of indices or patterns thereof, referenced by ~theseVals (which is always a collection)</p>
+<p class="p16"><br></p>
+<p class="p18">(</p>
+<p class="p18">p = <span class="s13">PHSpar</span>(h,<span class="Apple-converted-space"> </span></p>
+<p class="p15"><span class="Apple-tab-span">	</span>pbindArgs: [0.1, [<span class="s14">\midinote</span>, <span class="s13">Pkey</span>(<span class="s14">\theseVals</span>) + <span class="s13">Pseq</span>([0,1],<span class="s13">inf</span>), <span class="s14">\legato</span>, 0.2 ] ],</p>
+<p class="p15"><span class="Apple-tab-span">	</span>hsIndices: [ <span class="s13">Pstutter</span>(<span class="s13">Pwhite</span>(5,10), <span class="s13">Pxrand</span>([0, 1, [0,1]], <span class="s13">inf</span>)) ]<span class="Apple-converted-space"> </span></p>
+<p class="p15">).play; <span class="Apple-converted-space"> </span></p>
+<p class="p15">)</p>
+<p class="p16"><br></p>
+<p class="p18">p.free;<span class="Apple-tab-span">	</span></p>
+<p class="p16"><br></p>
+<p class="p14"><br></p>
+<p class="p14"><br></p>
+<p class="p17">// two Pbinds with different event timing</p>
+<p class="p17">// hsIndices specified for each</p>
+<p class="p16"><br></p>
+<p class="p18">(</p>
+<p class="p17"><span class="s2">p = </span><span class="s13">PHSpar</span><span class="s2">(h,<span class="Apple-tab-span">	</span></span>// "+" wraps collections, so if ~theseVals is an interval then ~midinote consists of the two added sevenths [-5, 5], [0, 10],<span class="Apple-converted-space"> </span></p>
+<p class="p17"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// otherwise ~midinote is a chord of fourths</p>
+<p class="p18"><span class="Apple-tab-span">	</span>pbindArgs: [0.2, [<span class="s14">\midinote</span>, <span class="s13">Pkey</span>(<span class="s14">\theseVals</span>) + [-5, 0, 5,10] , <span class="s14">\legato</span>, 0.2, <span class="s14">\amp</span>, 0.05 ],</p>
+<p class="p18"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.1, [<span class="s14">\midinote</span>, <span class="s13">Pkey</span>(<span class="s14">\thisVal</span>) + <span class="s13">Pseq</span>([0,1],<span class="s13">inf</span>), <span class="s14">\legato</span>, 0.2, <span class="s14">\amp</span>, 0.08 ]],</p>
+<p class="p15"><span class="Apple-tab-span">	</span>hsIndices: [ <span class="s13">Pstutter</span>(<span class="s13">Pwhite</span>(5,10), <span class="s13">Pxrand</span>([0, 1, [0,1]], <span class="s13">inf</span>)), 0]</p>
+<p class="p15">).play; <span class="Apple-converted-space"> </span></p>
+<p class="p15">)</p>
+<p class="p16"><br></p>
+<p class="p18">p.free;<span class="Apple-tab-span">	</span></p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p17">// the switched indices can be referenced via the hsIndices arg by symbol \switch</p>
+<p class="p17">// \all is synonym to [0,1] in the last example</p>
+<p class="p16"><br></p>
+<p class="p18">(</p>
+<p class="p18">p = <span class="s13">PHSpar</span>(h,</p>
+<p class="p17"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s13">Pwhite</span><span class="s2">(0.5, 1.5),</span>// switch duration</p>
+<p class="p17"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s13">Pseq</span><span class="s2">([0,1],</span><span class="s13">inf</span><span class="s2">), </span>// switch indices</p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span>[ [], [] ], <span class="Apple-tab-span">	</span></span>// default values for help synths</p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span>// "+" wraps collections, so if ~theseVals is an interval then ~midinote consists of the two added sevenths [-5, 5], [0, 10],<span class="Apple-converted-space"> </span></p>
+<p class="p17"><span class="s2"><span class="Apple-tab-span">	</span></span>// otherwise ~midinote is a chord of fourths<span class="Apple-converted-space"> </span></p>
+<p class="p18"><span class="Apple-tab-span">	</span>[ 0.2, [<span class="s14">\midinote</span>, <span class="s13">Pkey</span>(<span class="s14">\theseVals</span>) + [-5, 0, 5,10] , <span class="s14">\legato</span>, 0.2, <span class="s14">\amp</span>, 0.05 ],</p>
+<p class="p15"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span>  </span>0.1, [<span class="s14">\midinote</span>, <span class="s13">Pkey</span>(<span class="s14">\thisVal</span>) + <span class="s13">Pseq</span>([0,1],<span class="s13">inf</span>), <span class="s14">\legato</span>, 0.2, <span class="s14">\amp</span>, 0.08 ] ],</p>
+<p class="p21"><span class="s2"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span>[ </span><span class="s13">Pstutter</span><span class="s2">(</span><span class="s13">Pwhite</span><span class="s2">(5,10), </span><span class="s13">Pxrand</span><span class="s2">([0, 1, </span><span class="s14">\all</span><span class="s2">], </span><span class="s13">inf</span><span class="s2">)), </span><span class="s14">\switch</span><span class="s2"> </span>/* single line switches between trill and arpeggio */<span class="s2">]</span></p>
+<p class="p15">).play; <span class="Apple-converted-space"> </span></p>
+<p class="p15">)</p>
+<p class="p16"><br></p>
+<p class="p18">p.free;</p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p17">//////////////////////////////////////////////////////////////////////////////////</p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p21">// HSpar with two help synth definitions</p>
+<p class="p16"><br></p>
+<p class="p18">(</p>
+<p class="p18">h = <span class="s13">HSpar</span>(s, [<span class="Apple-converted-space"> </span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span>{ </span>|start = 90, end = 60, dur = 10, add = 0|</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">XLine</span>.kr(start, end, dur) + add; },</p>
+<p class="p20"><span class="s2"><span class="Apple-tab-span">	</span>{ </span>|freq = 0.3, dev = 15, center = 60, phase = 0, add = 0|</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s13">LFTri</span>.kr(freq, phase, dev, center + add); }</p>
+<p class="p15"><span class="Apple-tab-span">	</span>]);</p>
+<p class="p15">)</p>
+<p class="p14"><br></p>
+<p class="p14"><br></p>
+<p class="p21">// switch between two help synths</p>
+<p class="p21">// both help synths are run from the start (default hsStartIndices = true)</p>
+<p class="p21">// help synths of switch index are paused when index is left (switchOff: true) and<span class="Apple-converted-space"> </span></p>
+<p class="p21">// resumed when index is given (switchOn: true)</p>
+<p class="p21">// movement downwards needs more than 10 seconds defined by XLine</p>
+<p class="p14"><br></p>
+<p class="p18">(</p>
+<p class="p18">p = <span class="s13">PHSpar</span>(h,<span class="Apple-converted-space"> </span></p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s13">Pwhite</span><span class="s2">(0.3,1.0), </span>// switch duration</p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s13">Pseq</span><span class="s2">([0,1], </span><span class="s13">inf</span><span class="s2">), </span>// switch indices,</p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span>// distinguish help synth values by reference to ~switchIndex</p>
+<p class="p15"><span class="Apple-tab-span">	</span>pbindArgs: [0.12, [<span class="s14">\midinote</span>, <span class="s13">Pkey</span>(<span class="s14">\val</span>) + <span class="s13">Pkey</span>(<span class="s14">\switchIndex</span>).collect(switch(<span class="s13">_</span>, 0, [0,2.5], 1, [0,7])), <span class="s14">\legato</span>, 0.2 ] ],</p>
+<p class="p15"><span class="Apple-tab-span">	</span>switchOn: <span class="s13">true</span>,</p>
+<p class="p15"><span class="Apple-tab-span">	</span>switchOff: <span class="s13">true</span></p>
+<p class="p15">).play; <span class="Apple-converted-space"> </span></p>
+<p class="p15">)</p>
+<p class="p14"><br></p>
+<p class="p18">p.free;</p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p14"><br></p>
+<p class="p21">// never pause help synth #0, always pause #1</p>
+<p class="p21">// end value of help synth #0 reached after 10 seconds</p>
+<p class="p14"><br></p>
+<p class="p18">(</p>
+<p class="p18">p = <span class="s13">PHSpar</span>(h,<span class="Apple-converted-space"> </span></p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s13">Pwhite</span><span class="s2">(0.3,1.0), </span>// switch duration</p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s13">Pseq</span><span class="s2">([0,1], </span><span class="s13">inf</span><span class="s2">), </span>// switch indices,</p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span>// distinguish help synth values by reference to ~switchIndex</p>
+<p class="p15"><span class="Apple-tab-span">	</span>pbindArgs: [0.12, [<span class="s14">\midinote</span>, <span class="s13">Pkey</span>(<span class="s14">\val</span>) + <span class="s13">Pkey</span>(<span class="s14">\switchIndex</span>).collect(switch(<span class="s13">_</span>, 0, [0,2.5], 1, [0,7])), <span class="s14">\legato</span>, 0.2 ] ],</p>
+<p class="p15"><span class="Apple-tab-span">	</span>switchOn: <span class="s13">true</span>,</p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span>switchOff: </span><span class="s13">Pseq</span><span class="s2">([</span><span class="s13">false</span><span class="s2">, </span><span class="s13">true</span><span class="s2">], </span><span class="s13">inf</span><span class="s2">)<span class="Apple-tab-span">	</span></span>// next pause value with next switch index</p>
+<p class="p15">).play; <span class="Apple-converted-space"> </span></p>
+<p class="p15">)</p>
+<p class="p14"><br></p>
+<p class="p18">p.free;</p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p14"><br></p>
+<p class="p21">// hsStartIndices: define which help synths should be run from the beginning (only #1)</p>
+<p class="p21">// help synth #0 is run when switched first (switchOn: true)<span class="Apple-converted-space"> </span></p>
+<p class="p21">// movement downwards starts after 5 seconds</p>
+<p class="p14"><br></p>
+<p class="p18">(</p>
+<p class="p18">p = <span class="s13">PHSpar</span>(h,<span class="Apple-converted-space"> </span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s13">Pseq</span>([5, <span class="s13">Pwhite</span>(0.3,1.0, <span class="s13">inf</span>)]), <span class="s15">// switch duration</span></p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s13">Pseq</span><span class="s2">([1,0], </span><span class="s13">inf</span><span class="s2">), </span>// switch indices,</p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span>// distinguish help synth values by reference to ~switchIndex</p>
+<p class="p15"><span class="Apple-tab-span">	</span>pbindArgs: [0.12, [<span class="s14">\midinote</span>, <span class="s13">Pkey</span>(<span class="s14">\val</span>) + <span class="s13">Pkey</span>(<span class="s14">\switchIndex</span>).collect(switch(<span class="s13">_</span>, 0, [0,2.5], 1, [0,7])), <span class="s14">\legato</span>, 0.2 ] ],</p>
+<p class="p15"><span class="Apple-tab-span">	</span>switchOn: <span class="s13">true</span>,</p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span>hsStartIndices: 1<span class="Apple-tab-span">	</span></span>// \none (except the switched) or [1] would also do</p>
+<p class="p15">).play; <span class="Apple-converted-space"> </span></p>
+<p class="p15">)</p>
+<p class="p14"><br></p>
+<p class="p18">p.free;</p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p14"><br></p>
+<p class="p21">// set: determines whether new values should be polled from the streams (defined in helpSynthArgs) at switch time</p>
+<p class="p21">// here only at every second switch a new add value (register change) is set</p>
+<p class="p14"><br></p>
+<p class="p18">(</p>
+<p class="p18">p = <span class="s13">PHSpar</span>(h,<span class="Apple-converted-space"> </span></p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s13">Pwhite</span><span class="s2">(0.3, 0.5, </span><span class="s13">inf</span><span class="s2">), </span>// switch duration</p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s13">Pseq</span><span class="s2">([0,1], </span><span class="s13">inf</span><span class="s2">), </span>// switch indices,</p>
+<p class="p15"><span class="Apple-tab-span">	</span>[ [<span class="s14">\add</span>, <span class="s13">Pseq</span>([0, 10.5, 21], <span class="s13">inf</span>) ], [<span class="s14">\add</span>, <span class="s13">Pseq</span>([0, 10.5, 21], <span class="s13">inf</span>), <span class="s14">\dev</span>, 5] ],<span class="Apple-converted-space">  </span><span class="s15">// helpSynthArgs</span></p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span>// distinguish help synth values by reference to ~switchIndex</p>
+<p class="p15"><span class="Apple-tab-span">	</span>pbindArgs: [0.12, [<span class="s14">\midinote</span>, <span class="s13">Pkey</span>(<span class="s14">\val</span>) + <span class="s13">Pkey</span>(<span class="s14">\switchIndex</span>).collect(switch(<span class="s13">_</span>, 0, [0,2.5], 1, [0,7])), <span class="s14">\legato</span>, 0.2 ] ],</p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span>set: </span><span class="s13">Pstutter</span><span class="s2">(2, </span><span class="s13">Pseq</span><span class="s2">([</span><span class="s13">true</span><span class="s2">, </span><span class="s13">false</span><span class="s2">], </span><span class="s13">inf</span><span class="s2">))<span class="Apple-converted-space">  </span></span>// next set value with next switch index</p>
+<p class="p15">).play; <span class="Apple-converted-space"> </span></p>
+<p class="p15">)</p>
+<p class="p14"><br></p>
+<p class="p18">p.free;</p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p21">// now things quite mixed up</p>
+<p class="p14"><br></p>
+<p class="p21">// basic pitches chosen by index sequence defined in hsIndices, reference by Pkey(\theseVals)</p>
+<p class="p21">// switchIndex only determines the added interval</p>
+<p class="p21">// if theseVals contains only one value the determined interval is based on this value ([a] + [x, y] = [a + x, a + y]),<span class="Apple-converted-space"> </span></p>
+<p class="p21">// otherwise it is just added to the interval of theseVals ([a, b] + [x, y] = [a + x, b + y]) <span class="Apple-converted-space"> </span></p>
+<p class="p14"><br></p>
+<p class="p21">// printout of variables which may be used within a PHSpar definition</p>
+<p class="p21">// timeGrains is just a time ID, depending on granularity, not used for scheduling</p>
+<p class="p14"><br></p>
+<p class="p15">(</p>
+<p class="p18">p = <span class="s13">PHSpar</span>(h,<span class="Apple-converted-space"> </span></p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s13">Pwhite</span><span class="s2">(0.3,1.0), </span>// switch duration</p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s13">Pseq</span><span class="s2">([0,1], </span><span class="s13">inf</span><span class="s2">), </span>// switch indices,</p>
+<p class="p21"><span class="s2"><span class="Apple-tab-span">	</span></span>// distinguish added interval by reference to ~switchIndex</p>
+<p class="p15"><span class="Apple-tab-span">	</span>pbindArgs: [0.12, [</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s14">\midinote</span>, <span class="s13">Pkey</span>(<span class="s14">\theseVals</span>) + <span class="s13">Pkey</span>(<span class="s14">\switchIndex</span>).collect(switch(<span class="s13">_</span>, 0, [0, 2.5], 1, [0, 7])) ,<span class="Apple-converted-space"> </span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s14">\legato</span>, 0.2,</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s14">\post</span>, <span class="s13">Pfunc</span> {<span class="s13">|e|</span> e.use {</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s16">"demandIndex: "</span>.post; ~demandIndex.postln;</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s16">"timeGrains: "</span>.post; ~timeGrains.postln;</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s16">"dur: "</span>.post; ~dur.postln;</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s16">"switchIndex: "</span>.post; ~switchIndex.postln;</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s16">"vals: "</span>.post; ~vals.postln;</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s16">"val: "</span>.post; ~val.postln;</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s16">"theseIndices: "</span>.post; ~theseIndices.postln;</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s16">"theseVals: "</span>.post; ~theseVals.postln;</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s16">"thisVal: "</span>.post; ~thisVal.postln;</p>
+<p class="p22"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>"================================"<span class="s2">.postln;</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>}</p>
+<p class="p15"><span class="Apple-tab-span">	</span>]],</p>
+<p class="p15"><span class="Apple-tab-span">	</span>hsIndices: [ <span class="s13">Pstutter</span>(<span class="s13">Pwhite</span>(5,10), <span class="s13">Pxrand</span>([ 0, 1, <span class="s14">\all</span> ], <span class="s13">inf</span>)) ]</p>
+<p class="p15">).play; <span class="Apple-converted-space"> </span></p>
+<p class="p15">)</p>
+<p class="p14"><br></p>
+<p class="p18">p.free;</p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+</body>
+</html>

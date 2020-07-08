@@ -1,0 +1,97 @@
+CLASS:: HSpar
+summary:: object for use of synth values in the language by event patterns
+categories::Libraries>miSCellaneous>HS and HSpar, Streams-Patterns-Events>HS and HSpar
+related:: Overviews/miSCellaneous, Guides/Guide_to_HS_and_HSpar, Tutorials/HS_with_VarGui, Classes/PHSpar, Classes/PHSparUse, Classes/PHSparPlayer, Classes/PHSusePlayer
+
+DESCRIPTION::
+To be used in connection with link::Classes/PHSpar:: / link::Classes/PHSparUse:: to play event patterns using synth values. Holds synth definitions, keeps track of OSC traffic when PHSpar / PHSparUse are played. For using a singular help synth see link::Classes/HS:: and related.
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new HSpar object.
+
+argument::server
+Must be running server.
+
+argument::ugenFuncs
+Collection of functions that define the synths.
+ 
+argument::demandLatency
+Latency of help synths in seconds. Default value 0.15. 
+
+argument::respondLatency
+Time in seconds, given to the response to be received by the client on time. Default value 0.15.
+
+argument::postOSC
+Boolean for posting of (server to client) OSC messages. Defaults to false.
+
+argument::granularity
+Time grains per second, quantization for bookkeeping. Defaults to 200.
+
+argument::inputCheck
+Boolean for checking input data. Defaults to true.
+
+
+EXAMPLES::
+
+code::
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+// define a HSpar with two help synth definitions 
+
+(
+h = HSpar(s, [ { |freq = 1, dev = 10, center = 70|
+        LFDNoise3.kr(freq, dev, center) },
+    { |freq = 1, dev = 5, center = 70, addFreq = 0.1, addDev = 5|
+        LFTri.kr(freq, 0, dev, center) + SinOsc.kr(addFreq, 0, addDev) } 
+    ]);
+)
+
+// define a PHSpar to switch between these two
+
+(
+p = PHSpar(h, 
+    Pwhite(2.5, 3), // switch duration
+    Pseq([0,1],inf), // switch indices
+    // helpSynthArgs:  always default values for help synth #0, always set help synth #1
+    [nil, [\freq, 1.2, \center, Pwhite(60, 80)] ], 
+    // pbindArgs:  different from PHS, they have to be given as collection; ~val refers to current switch
+    [0.1, [\midinote, Pkey(\val) + [0, 5], \legato, 0.2, \amp, [0.1, 0.07]]] 
+).play;  
+)
+
+// stop and free HSpar by player
+
+p.free;
+
+
+
+/////////////////////////////////////////////////
+
+
+// HSpar with only one help synth
+
+h = HSpar(s, [ { |freq = 1, dev = 5, center = 65| LFDNoise3.kr(freq, dev, center) } ] );
+
+
+// to be used for setting synth args
+
+(
+p = PHSpar(h,
+    Pwhite(0.15, 0.35, inf), // switch durations
+    0, // switch index
+    [[\center, Pwhite(65, 80)]], // set args
+    [0.1, [\midinote, Pkey(\val) + Pseq([[0,-7], -2],inf), \legato, 0.3, \amp, 0.05 ]]
+).play           
+)
+
+// stop and free HSpar by player
+
+p.free;
+::

@@ -1,0 +1,22 @@
+
+INSTANCEMETHODS::
+
+method:: asESP
+Abbreviation for asEventStreamPlayer
+
+
+method::on
+See link::Tutorials/Other_event_and_pattern_shortcuts::. Plays an Event. If strong::dur:: isn't specified it is set to inf.
+
+method::off
+See link::Tutorials/Other_event_and_pattern_shortcuts::. Releases the Event's node. 
+
+argument::releaseTime
+SimpleNumber for release time. Defaults to nil (default release time of event mechanism).
+
+
+method::eventShortcuts
+
+Wraps the receiver into a Pcollect with a Function that replaces according to EventShortcuts if it's turned on. This can be useful in cases where a pattern's method embedInStream changes keys of Events before applying the event type function, that employs the normal replacement mechanism of EventShortcuts. Then the mapping can be done inside/before. Normally you wouldn't need to call that method explicitely. See also link::Classes/EventShortcuts::, link::Classes/Event#-eventShortcuts::, link::Classes/SequenceableCollection#-eventShortcuts:: and link::Tutorials/PLx_and_live_coding_with_Strings::
+
+

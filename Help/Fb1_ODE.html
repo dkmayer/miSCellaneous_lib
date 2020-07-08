@@ -1,0 +1,1129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; min-height: 16.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00; min-height: 12.0px}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0326cb}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #008300}
+p.p19 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0433ff}
+p.p20 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {font: 9.0px Monaco}
+span.s5 {color: #0326cb}
+span.s6 {color: #008300}
+span.s7 {color: #0433ff}
+span.s8 {color: #434ccb}
+span.s9 {color: #cd1c00}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Fb1_ODE<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>general ordinary differential equation integrator pseudo ugen</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="../miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: UGen</b></p>
+<p class="p4"><br></p>
+<p class="p1">Pseudo ugen for integrating / audifying ordinary (systems of) differential equations with initial values in realtime, based on the Fb1 single sample feedback class. It makes use of Fb1_ODEdef and Fb1_ODEintdef, containers for ODEs and numerical solution methods, which provide an interface for adding new ODE systems or integration methods interactively. There exists a huge number of ODE models in different areas, e.g. have a look at the SIAM publication <i>Exploring ODEs</i> [1], it approaches the topic from an experimental point of view, which is quite related to the demands of practical audification / synthesis / processing. And of course it's fun to define your own ODEs, see this help file and Fb1_ODEdef.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>HISTORY AND CREDITS:</b> Big credit to David Pirrò from IEM Graz for pointing me to the symplectic integration methods, which are essential for audifying ODEs, as they help to ensure numeric stability in the long run (e.g. to avoid drifts of oscillations that are mathematically expected to be regular). See the chapter on integration in his dissertation [2], pp 135-146. You might also want check David Pirròs optimized ODE compiler named Henri [3]. Big credit also to Nathaniel Virgo who brought up the buffering strategy used in Fb1, which is Fb1_ODE's working horse. <span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>WARNING: </b>Especially with self-defined ODEs the usage of this class is – inherently – highly experimental. Be careful with amplitudes, as always with feedback it can become loud! Sudden blowups might result form the mathematical characteristics of the ODE systems or they might come from parameter changes on which ODEs can react extremely sensitive to, they can also stem from numerical accumulation effects. It is highly recommended to take precautionary measures, e.g. by limiting/distorting operators (tanh, clip, softclip, distort) with the <b>compose</b> option (See Ex.5) and/or external limiting and/or using MasterFX from the JITLibExtensions quark.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>Fb1_ODE in its plain form (without <b>tMul</b> modulation, use of <b>compose</b> etc.) produces audio data as a numerical integration of an ODE initial value problem, defined by Fb1_ODEdef and a numerical procedure, defined by Fb1_ODEintdef. This of course supposes well-defined ODE systems and it should be kept in mind that the Fb1_ODE framework doesn't perform any mathematical checks regarding the principal existence and uniqueness of a solution of a given Fb1_ODEdef.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>The convenience of direct definition of the ODE relation comes with the price of a large number of UGens involved. You might want to allow a higher number of UGens with the server option numWireBufs. For a nice workflow I'd recommended to take reduced blockSizes (e.g. 1, 2, 4, 8, 16) while experimenting as compile time is shorter, but once you have finished the design of a SynthDef it might pay going back to blocksize 32 or 64 for runtime efficiency, especially if many kr UGens are involved. <span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>See also: </b><a href="Fb1_ODEdef.html"><span class="s3">Fb1_ODEdef</span></a>, <a href="Fb1_ODEintdef.html"><span class="s3">Fb1_ODEintdef</span></a>, <a href="Fb1.html"><span class="s3">Fb1</span></a>, <a href="Fb1_MSD.html"><span class="s3">Fb1_MSD</span></a>, <a href="Fb1_SD.html"><span class="s3">Fb1_SD</span></a>, <a href="Fb1_Lorenz.html"><span class="s3">Fb1_Lorenz</span></a>, <a href="Fb1_Hopf.html"><span class="s3">Fb1_Hopf</span></a>, <a href="Fb1_HopfA.html"><span class="s3">Fb1_HopfA</span></a>, <a href="Fb1_HopfAFDC.html"><span class="s3">Fb1_HopfAFDC</span></a>, <a href="Fb1_VanDerPol.html"><span class="s3">Fb1_VanDerPol</span></a>, <a href="Fb1_Duffing.html"><span class="s3">Fb1_Duffing</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>References:</b></p>
+<p class="p2"><br></p>
+<p class="p1">[1]<span class="Apple-tab-span">	</span>Trefethen, Lloyd N.; Birkisson Ásgeir; Driscoll, Tobin A. (2017):<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><i>Exploring ODEs</i>. SIAM - Society for Industrial and Applied Mathematics.</p>
+<p class="p1"><span class="Apple-tab-span">	</span>Free download from: https://people.maths.ox.ac.uk/trefethen/Exploring.pdf<span class="Apple-tab-span">	</span></p>
+<p class="p1">[2]<span class="Apple-tab-span">	</span>Pirrò, David (2017). <i>Composing Interactions</i>. Dissertation.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>Institute of Electronic Music and Acoustics, University of Music and Performing Arts Graz.</p>
+<p class="p1"><span class="Apple-tab-span">	</span>Free download from: https://pirro.mur.at/media/pirro_david_composing_interactions_print.pdf<span class="Apple-tab-span">	</span></p>
+<p class="p1">[3]<span class="Apple-tab-span">	</span>https://git.iem.at/davidpirro/henri</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new (name, argList, tMul = 1, t0, y0, intType = \sym2, compose, composeArIn, dt0, argList0,<span class="Apple-converted-space"> </span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>init_intType = \sym8, withOutScale = true, withDiffChannels = false, withTimeChannel = false,<span class="Apple-converted-space"> </span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>blockSize, graphOrderType = 1, leakDC = true, leakCoef = 0.995)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Creates a new Fb1_ODE ar object.</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>name </b>- The name of the ODE defined and stored via Fb1_ODEdef.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Can be one of the predefined ODEs, for which wrappers exist, or a self-defined one.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Expects a Symbol.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argList </b>- The argList to be passed to the ODE. Can contain ar or kr UGens and</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>SequenceableCollections thereof.<b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>tMul </b>- Time multiplier, which determines velocity of proceeding in the dynamic system.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The default value 1 means that the step delta of time equals 1 / sample duration.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>For getting audible oscillations you might, depending on the ODE definition, have to pass</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>much higher values. Can also be a kr / ar UGen and might also be negative.<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>t0 </b>- Initial time. Expects Number.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If no value is passed, the default value of the referred Fb1_ODEdef is taken, usually 0.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>y0 </b>- Initial value of the ODE.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Expects number or array of correct size, which is determined by the Fb1_ODEdef.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If no value is passed, the default value of the referred Fb1_ODEdef is taken.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>intType </b>- Integration type.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Expects one of the Symbols, for which procedures are stored with Fb1_ODEintdef.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The use of symplectic procedures (with prefix 'sym') is highly recommended.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to \sym2. For more accurate integration you can try symplectic procedures of</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>higher order like \sym4, \sym8 etc.<span class="Apple-tab-span">	</span>Families of integration procedures:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Symplectic:<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\sym2, \sym2_d, \sym4, \sym4_d, \sym6, \sym6_d, \sym8, \sym8_d,<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\sym12, \sym12_d, \sym16, \sym16_d, \sym32, \sym32_d, \sym64, \sym64_d</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Euler:<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\eu, \eu_d, \eum, \eum_d, \eui, \eui_d</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Prediction-Evaluation-Correction:<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\pec, \pece, \pecec, \pecece</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Runge-Kutta:<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\rk3, \rk3_d, \rk3h, \rk3h_d, \rk4, \rk4_d</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Adams-Bashforth:<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\ab2, \ab3, \ab4, \ab5, \ab6</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Adams-Bashforth-Moulton:<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\abm21, \abm22, \abm32, \abm33, \abm43, \abm44, \abm54, \abm55, \abm65, \abm66<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>compose </b>- Operator(s) / Function(s) to be applied to the system value on a per-sample base.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This of course blurs the numeric procedure but can be used for containing or in a creative way.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Can be an operator Symbol, a Function or an arbitrarily mixed SequenceableCollection thereof.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The Functions are in any case expected to take an array (the system state) as first argument.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If only one Function is given it must output an array of same (system) size.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Within a SequenceableCollection a Function must output a value of size 0.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Within a SequenceableCollection an operator Symbol is applied only to the corresponding component.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A Function can optionally take a second argument which is for ar UGens passed via <b>composeArIn</b>.<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>composeArIn </b>- ar UGen or SequenceableCollection thereof or a SequenceableCollection that can contain both.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This is the way to use ar UGens within a Function passed to <b>compose</b>.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>UGens are passed to the Function's second argument.<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>dt0 </b>- First time delta in seconds to be used for the language-side calculation of<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>first values of a multi-step <b>intType</b> procedure.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This will mostly be irrelevant as (single-step) symplectic procedures are to be preferred.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>In case of a multi-step procedure a dt0 value will be derived from the default server's properties</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(sample duration * <b>tMul</b>).</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argList0 </b>- Initial argList value(s) to be used for the language-side calculation of<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>first values of a multi-step <b>intType</b> procedure.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This will mostly be irrelevant as (single-step) symplectic procedures are to be preferred.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If no UGens are passed to argList, values will be assumed from passed argList Numbers.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>init_intType </b>- Integration type for language-side calculation of first values of a<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>multi-step <b>intType</b> procedure.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This will mostly be irrelevant as (single-step) symplectic procedures are to be preferred.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to \sym8.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>withOutScale </b>- Boolean. Determines if the Fb1_ODEdef's default scaling values for</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>integration and differential signals should be applied to the output.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to true.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>WARNING:</b> <b>withOutScale</b> does not implement a general safety net functionality,<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>withOutScale</b>'s default value true does by no means say that output is limited.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The default scaling values of predefined Fb1_ODEdefs are average assumptions and can,<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>under different circumstances, always lead to high out levels.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>withDiffChannels </b>- Boolean. Determines if channel(s) with differential value(s) should be returned.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This is only applicable with integration types with a sizeFactor == 2, which means that for every sample</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the values of the differential are buffered. As by default this is not the case for all predefined<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>numeric procedures, there exist variants with appendix '_d', e.g. \sym2_d.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to false.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>withTimeChannel </b>- Boolean. Determines if accumulated time is output in an additional channel.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>WARNING:</b> with constant <b>tMul</b> it produces an ascending DC which is not affected by <b>leakDC</b><span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if this is set to true. Might especially be of interest if time is modulated.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to false.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>blockSize </b>- Integer, this should be the server blockSize.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If no Integer is passed, the current default server's blockSize is assumed (in contrast to Fb1).<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>So explicitely passing a blockSize should only be necessary in special cases,</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>e.g. when compiling before booting.<span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>However for a pleasant workflow for ar usage it's recommended to use Fb1_ODE<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>with a reduced server blockSize in order to reduce SynthDef compile time.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>graphOrderType </b>- 0, 1 or 2.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Determines if topological order of generated BufRd and BufWr instances</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>in the SynthDef graph is forced by additional UGens.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Type 0: forced graph order is turned off.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Type 1 (default): graph order is forced by summation and &lt;!.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Type 2: graph order is forced by &lt;! operators only.<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default 1 is recommended, but with CPU-intense SynthDefs it might be worth trying it with the value 0.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This saves a lot of UGens though there might be exceptional cases with different results.<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Type 2 can shorten the SynthDef compilation time for certain graphs with a large number of UGens,</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>which can be lengthy with type 1.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>However, CPU usage doesn't directly correspond to the number of UGens.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>leakDC </b>- Boolean. Determines if a LeakDC is applied to the output (except time channel).</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to true.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>leakCoef </b>- Number, the <b>leakDC </b>coefficient. Defaults to 0.995.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*ar (name, argList, tMul = 1, t0, y0, intType = \sym2, compose, composeArIn, dt0, argList0,<span class="Apple-converted-space"> </span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>init_intType = \sym8, withOutScale = true, withDiffChannels = false, withTimeChannel = false,<span class="Apple-converted-space"> </span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>blockSize, graphOrderType = 1, leakDC = true, leakCoef = 0.995)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Equivalent to <b>*new</b>.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*kr (name, argList, tMul = 1, t0, y0, intType = \sym4, compose, dt0, argList0,<span class="Apple-converted-space"> </span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>init_intType = \sym8, withOutScale = true, withDiffChannels = false, withTimeChannel = false,<span class="Apple-converted-space"> </span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>graphOrderType = 1, leakDC = true, leakCoef = 0.995)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Creates a new Fb1_ODE kr object.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>name </b>- The name of the ODE defined and stored via Fb1_ODEdef.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Can be one of the predefined ODEs, for which wrappers exist, or a self-defined one.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Expects a Symbol.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argList </b>- The argList to be passed to the.<b> </b>Can contain kr UGens and</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>SequenceableCollections of thereof.<b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>tMul </b>- Time multiplier, which determines velocity of proceeding in the dynamic system.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The default value 1 means that the step delta of time equals 1 / control duration.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>For getting usable oscillations you might, depending on the ODE definition, have to pass</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>much higher values. Can also be a kr UGen and might also be negative.<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>t0 </b>- Initial time. Expects Number.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If no value is passed, the default value of the referred Fb1_ODEdef is taken, usually 0.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>y0 </b>- Initial value of the ODE.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Expects number or array of correct size, which is determined by the Fb1_ODEdef.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If no value is passed, the default value of the referred Fb1_ODEdef is taken.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>intType </b>- Integration type.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Expects one of the Symbols, for which procedures are stored with Fb1_ODEintdef.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The use of symplectic procedures (with prefix 'sym') is highly recommended.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to \sym4. For more accurate integration you can try symplectic procedures of</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>higher order like \sym6, \sym8 etc.<span class="Apple-tab-span">	</span>Families of integration procedures:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Symplectic:<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\sym2, \sym2_d, \sym4, \sym4_d, \sym6, \sym6_d, \sym8, \sym8_d,<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\sym12, \sym12_d, \sym16, \sym16_d, \sym32, \sym32_d, \sym64, \sym64_d</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Euler:<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\eu, \eu_d, \eum, \eum_d, \eui, \eui_d</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Prediction-Evaluation-Correction:<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\pec, \pece, \pecec, \pecece</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Runge-Kutta:<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\rk3, \rk3_d, \rk3h, \rk3h_d, \rk4, \rk4_d</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Adams-Bashforth:<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\ab2, \ab3, \ab4, \ab5, \ab6</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Adams-Bashforth-Moulton:<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\abm21, \abm22, \abm32, \abm33, \abm43, \abm44, \abm54, \abm55, \abm65, \abm66<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>compose </b>- Operator(s) / Function(s) to be applied to the system value on a per-sample base.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This of course blurs the numeric procedure but can be used for containing or in a creative way.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Can be an operator Symbol, a Function or an arbitrarily mixed SequenceableCollection thereof.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The Functions are in any case expected to take an array (the system state) as first argument.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If only one Function is given it must output an array of same (system) size.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Within a SequenceableCollection a Function must output a value of size 0.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Within a SequenceableCollection an operator Symbol is applied only to the corresponding component.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>dt0 </b>- First time delta in seconds to be used for the language-side calculation of<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>first values of a multi-step <b>intType</b> procedure.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This will mostly be irrelevant as (single-step) symplectic procedures are to be preferred.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>In case of a multi-step procedure a dt0 value will be assumed from the default server's properties</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(control duration * <b>tMul</b>).</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>argList0 </b>- Initial argList value(s) to be used for the language-side calculation of<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>first values of a multi-step <b>intType</b> procedure.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This will mostly be irrelevant as (single-step) symplectic procedures are to be preferred.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If no UGens are passed to argList, values will be assumed from passed argList Numbers.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>init_intType </b>- Integration type for language-side calculation of first values of a<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>multi-step <b>intType</b> procedure.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This will mostly be irrelevant as (single-step) symplectic procedures are to be preferred.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to \sym8.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>withOutScale </b>- Boolean. Determines if the Fb1_ODEdef's default scaling values for</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>integration and differential signals should be applied to the output.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to true.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>WARNING:</b> <b>withOutScale</b> does not implement a general safety net functionality,<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>withOutScale</b>'s default value true does by no means say that output is limited.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The default scaling values of predefined Fb1_ODEdefs are average assumptions and can,<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>under different circumstances, always lead to high out levels.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>withDiffChannels </b>- Boolean. Determines if channel(s) with differential value(s) should be returned.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This is only applicable with integration types with a sizeFactor == 2, which means that for every sample</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the values of the differential are buffered. As by default this is not the case for all predefined<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>numeric procedures, there exist variants with appendix '_d', e.g. \sym2_d.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to false.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>withTimeChannel </b>- Boolean. Determines if accumulated time is output in an additional channel.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>WARNING:</b> with constant <b>tMul</b> it produces an ascending DC which is not affected by <b>leakDC</b><span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>if this is set to true. Might especially be of interest if time is modulated.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to false.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>graphOrderType </b>- 0, 1 or 2.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Determines if topological order of generated BufRd and BufWr instances</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>in the SynthDef graph is forced by additional UGens.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Type 0: forced graph order is turned off.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Type 1 (default): graph order is forced by summation and &lt;!.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Type 2: graph order is forced by &lt;! operators only.<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default 1 is recommended, but with CPU-intense SynthDefs it might be worth trying it with the value 0.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This saves a lot of UGens though there might be exceptional cases with different results.<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Type 2 can shorten the SynthDef compilation time for certain graphs with a large number of UGens,</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>which can be lengthy with type 1.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>However, CPU usage doesn't directly correspond to the number of UGens.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>leakDC </b>- Boolean. Determines if a LeakDC is applied to the output (except time channel).</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to true.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>leakCoef </b>- Number, the <b>leakDC </b>coefficient. Defaults to 0.995.</p>
+<p class="p8"><br></p>
+<p class="p4"><br></p>
+<p class="p11"><br></p>
+<p class="p12"><b>Examples 1) Proof of concept</b></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// reboot with reduced blockSize</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">s = <span class="s5">Server</span>.local;</p>
+<p class="p14"><span class="s5">Server</span>.default = s;</p>
+<p class="p14">s.options.blockSize = 8;</p>
+<p class="p14">s.reboot;</p>
+<p class="p14">)</p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p12"><b>Ex.1a) The harmonic oscillator</b></p>
+<p class="p15"><br></p>
+<p class="p13">// A sine/cos function is the solution of the second order differential equation</p>
+<p class="p4"><br></p>
+<p class="p13">// y''(t) = -y(t)</p>
+<p class="p4"><br></p>
+<p class="p13">// with the standard substitution ...</p>
+<p class="p16"><br></p>
+<p class="p13">// w(t) = y'(t)</p>
+<p class="p4"><br></p>
+<p class="p13">// ... this can be reformulated as a system of two equations of first order</p>
+<p class="p4"><br></p>
+<p class="p13">// y'(t) = w(t)</p>
+<p class="p13">// w'(t) = -y(t)</p>
+<p class="p4"><br></p>
+<p class="p13">// In general an ODE can be written like this</p>
+<p class="p13">// where Y and F are meant to be a vector-valued functions,</p>
+<p class="p13">// F given and Y to be found</p>
+<p class="p4"><br></p>
+<p class="p13">// Y'(t) = F(t, Y)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// For the corresponding Fb1_ODEdef the Function (F) must take time and - as here we have size 2 -<span class="Apple-converted-space"> </span></p>
+<p class="p13">// an array as arguments plus optional further arguments and<span class="Apple-converted-space"> </span></p>
+<p class="p13">// output an array of same size, which can be implemented by the evaluation of:</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p17">Fb1_ODEdef<span class="s2">(</span><span class="s6">\harmonic</span><span class="s2">, { </span><span class="s7">|t, y|</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>[y[1], y[0].neg]</p>
+<p class="p13"><span class="s2">}, 0, [0, 1], 1, 1); </span>// default init values t0, y0 and scaling factors for output</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p13">// The stereo output is a pair of 90-degree-shifted sine waves.</p>
+<p class="p13">// As one wave length would be 2pi seconds we multiply time by a factor 500 * 2pi to get 500 Hz.</p>
+<p class="p13">// Changed blockSize is detected automatically.</p>
+<p class="p4"><br></p>
+<p class="p14">x = { <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\harmonic</span>, tMul: 500 * 2pi) * 0.1 }.play</p>
+<p class="p4"><br></p>
+<p class="p14">x.release<span class="Apple-tab-span">	</span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// as with Fb1, method 'new' is equivalent to 'ar'</p>
+<p class="p4"><br></p>
+<p class="p14">x = { <span class="s5">Fb1_ODE</span>(<span class="s6">\harmonic</span>, tMul: 500 * 2pi) * 0.1 }.play</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// a default frequency could equivalently also be built into the model</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p18"><span class="s5">Fb1_ODEdef</span><span class="s2">(</span>\harmonic_2<span class="s2">, { </span><span class="s7">|t, y|</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>[y[1], y[0].neg] * 500 * 2pi</p>
+<p class="p13"><span class="s2">}, 0, [0, 1], 1, 1); </span>// default init values t0, y0 and scaling factors for output</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x = { <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\harmonic_2</span>) * 0.1 }.play</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p15"><br></p>
+<p class="p15"><br></p>
+<p class="p12"><b>Ex.1b) Extending the harmonic oscillator to the mass-spring-damper model</b></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13">// The mass-spring-damper model with externally applied force</p>
+<p class="p13">// is described by the second order differential equation</p>
+<p class="p4"><br></p>
+<p class="p13">// y''(t) * mass = f(t) - (dampen * y'(t)) - (spring * y(t))</p>
+<p class="p4"><br></p>
+<p class="p13">// where dampen means the dampening factor and spring the spring stiffness.</p>
+<p class="p13">// Again standard substitution<span class="Apple-converted-space"> </span></p>
+<p class="p16"><br></p>
+<p class="p13">// w(t) = y'(t)</p>
+<p class="p4"><br></p>
+<p class="p13">// leads to the system of two first order equations</p>
+<p class="p4"><br></p>
+<p class="p13">// y'(t) = w(t)</p>
+<p class="p13">// w'(t) = (f(t) - (dampen * w(t)) - (spring * y(t))) / mass</p>
+<p class="p4"><br></p>
+<p class="p13">// In the source code of Fb1_ODEdef.sc the corresponding Fb1_ODEdef looks like this:</p>
+<p class="p13">// the Function brackets within the array are not absolutely necessary,<span class="Apple-converted-space"> </span></p>
+<p class="p13">// but compile process is faster.</p>
+<p class="p4"><br></p>
+<p class="p13">// don't evaluate, already stored</p>
+<p class="p4"><br></p>
+<p class="p19"><span class="s5">Fb1_ODEdef</span><span class="s2">(</span><span class="s6">\MSD</span><span class="s2">, { </span>|t, y, f = 0, mass = 1, spring = 1, dampen = 0|</p>
+<p class="p14"><span class="Apple-tab-span">	</span>[</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ y[1] },</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ f - (dampen * y[1]) - (spring * y[0]) / mass }</p>
+<p class="p14"><span class="Apple-tab-span">	</span>]</p>
+<p class="p14">}, 0, [0, 0], 1, 1);</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// Here the resulting oscillation, which describes the position, is used for FM,</p>
+<p class="p13">// the deflection converges to a value of 0.004, so take no LeakDC.</p>
+<p class="p4"><br></p>
+<p class="p13">// LR difference results from slightly different linear mapping</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span></span>// we need extreme values for fast oscillation</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> f = 0.2, mass = 0.001, spring = 50, dampen = 0.0005,</p>
+<p class="p4"><br></p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// for t0, y0 default values are taken</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\MSD</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[f, mass, spring, dampen],</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>leakDC: <span class="s8">false</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">SinOsc</span>.ar(sig[0].linlin(0, 0.005, [100, 101], 700), 0, 0.1)</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// for audible sound production take a time multiplier and a scaling factor</p>
+<p class="p13">// and get a decaying sine, leakDC now true by default</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> f = 0.2, mass = 0.001, spring = 50, dampen = 0.0005,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\MSD</span>, [f, mass, spring, dampen], tMul: 10);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">Line</span>.kr(dur: 10, doneAction: 2);</p>
+<p class="p14"><span class="Apple-tab-span">	</span>sig[0] * 20</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// as MSD is predefined together with the wrapper class Fb1_MSD</p>
+<p class="p13">// one can equivalently write</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> f = 0.2, mass = 0.001, spring = 50, dampen = 0.0005,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig = <span class="s5">Fb1_MSD</span>.ar(f, mass, spring, dampen, tMul: 10);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">Line</span>.kr(dur: 10, doneAction: 2);</p>
+<p class="p14"><span class="Apple-tab-span">	</span>sig[0] * 20</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><b>Ex.2) Numeric integration type</b></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p13">// For most cases the symmetric symplectic procedures with prefix 'sym' should be used (default 'sym2').</p>
+<p class="p13">// They deliver best results with regard to long-term stability, see links at top.</p>
+<p class="p13">// In case you suspect instability coming from numerics<span class="Apple-converted-space"> </span></p>
+<p class="p13">// you can take symplectic variants of higher order:<span class="Apple-converted-space"> </span></p>
+<p class="p13">// \sym2, \sym4, \sym6, \sym8, \sym12, \sym16, \sym32, \sym64.</p>
+<p class="p20"><br></p>
+<p class="p13">// Note that already a simple harmonic oscillator can fail with a standard procedure</p>
+<p class="p4"><br></p>
+<p class="p13">// This is decaying after a few seconds with classical Runge-Kutta 3rd order !</p>
+<p class="p13">// ATTENTION: with other non-symplectic procedures this can lead to immediate blowups !</p>
+<p class="p13">// Euler variants are especially bad.</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p17">Fb1_ODEdef<span class="s2">(</span><span class="s6">\harmonic</span><span class="s2">, { </span><span class="s7">|t, y|</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>[y[1], y[0].neg]</p>
+<p class="p14">}, 0, [0, 1], 1, 1);<span class="Apple-converted-space"> </span></p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\harmonic</span>,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>tMul: 1000 * 2pi,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>intType: <span class="s6">\rk3</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">Limiter</span>.ar(sig) * 0.1 * <span class="s5">EnvGen</span>.ar(<span class="s5">Env</span>.asr(0.1, curve: 3))</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s4"><br>
+</span><b>Examples 3) Modulations</b></p>
+<p class="p4"><br></p>
+<p class="p13">// All optional arguments of the Fb1_ODE can take UGens at audio or control rate,</p>
+<p class="p13">// tMul can be modulated at both rates as well.</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><b>Ex.3a) Argument modulation</b></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13">// additional oscillation of mass, this is already a quite extreme blurring</p>
+<p class="p13">// operations of such kind can easily result in derailing the oscillaton</p>
+<p class="p4"><br></p>
+<p class="p13">// here it's interesting to hear quite a difference between ar and kr variants</p>
+<p class="p4"><br></p>
+<p class="p13">// ar modulation</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> f = 0.2, mass = 0.001, spring = 50, dampen = 0.0005,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\MSD</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[f, mass * <span class="s5">LFTri</span>.ar(200).range(0.1, 2), spring, dampen],</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>leakDC: <span class="s8">false</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">SinOsc</span>.ar(sig[0].linlin(0, 0.005, [100, 101], 700), 0, 0.1)</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// much less smooth with kr</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> f = 0.2, mass = 0.001, spring = 50, dampen = 0.0005,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\MSD</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[f, mass * <span class="s5">LFTri</span>.kr(200).range(0.1, 2), spring, dampen],</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>leakDC: <span class="s8">false</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">SinOsc</span>.ar(sig[0].linlin(0, 0.005, [100, 101], 700), 0, 0.1)</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// due to Fb1's design, above kr modulator is not interpolated</p>
+<p class="p13">// an interpolated kr variant though gives an even more blurred result<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> f = 0.2, mass = 0.001, spring = 50, dampen = 0.0005,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\MSD</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[f, mass * <span class="s5">K2A</span>.ar(<span class="s5">LFTri</span>.kr(200).range(0.1, 2)), spring, dampen],</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>leakDC: <span class="s8">false</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">SinOsc</span>.ar(sig[0].linlin(0, 0.005, [100, 101], 700), 0, 0.1)</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><b>Ex.3b) Time modulation</b></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// kr modulation of time</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> f = 0.2, mass = 0.001, spring = 50, dampen = 0.0005,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\MSD</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[f, mass, spring, dampen],</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>tMul: <span class="s5">SinOsc</span>.kr(0.6).range(0.5, 1.5),</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>leakDC: <span class="s8">false</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">SinOsc</span>.ar(sig[0].linlin(0, 0.005, [100, 101], 700), 0, 0.1)</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p13">// ar modulation of time</p>
+<p class="p13">// including mainly negative multipliers</p>
+<p class="p13">// questionable physical sense, but can be fun</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> f = 0.2, mass = 0.001, spring = 50, dampen = 0.0005,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\MSD</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[f, mass, spring, dampen],</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>tMul: <span class="s5">SinOsc</span>.ar(5).range(-5, 1.5),</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>leakDC: <span class="s8">false</span>,</p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>withTimeChannel: </span><span class="s8">true</span><span class="s2"> </span>// include time as third channel</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span>sig[2].poll;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">SinOsc</span>.ar(sig[0].linlin(0, 0.005, [100, 101], 700), 0, 0.1);</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p12"><b>Ex.4) Initial values</b></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13">// Initial values - system state y0 at time t0: y(t0) = y0 - are essential for an ODE solution.</p>
+<p class="p13">// In this example with the MSD model (and constant f !) time isn't explicit,</p>
+<p class="p13">// therefore it makes no difference if we start at t = 0 or t = 10, time is only shifted.</p>
+<p class="p4"><br></p>
+<p class="p13">// However the position, described here by y, is time-dependent,</p>
+<p class="p13">// so it makes a difference to start with different values</p>
+<p class="p4"><br></p>
+<p class="p13">// y'(t) = w(t)</p>
+<p class="p13">// w'(t) = (f(t) - (dampen * w(t)) - (spring * y(t))) / mass</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> f = 0.2, mass = 0.001, spring = 50, dampen = 0.0005,</p>
+<p class="p4"><br></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\MSD</span>,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[f, mass, spring, dampen],<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>t0: 10,<span class="Apple-converted-space">  </span></span>// this doesn't make a difference to default 0</p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>y0: [0.2, 0],<span class="Apple-converted-space">  </span></span>// this does ! (compare with default [0, 0])</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>leakDC: <span class="s8">false</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">SinOsc</span>.ar(sig[0].linlin(0, 0.005, [100, 101], 700), 0, 0.1)</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><b>Examples 5) The 'compose' argument</b></p>
+<p class="p4"><br></p>
+<p class="p13">// This allows to build an additional Function into the Fb1 feedback loop.</p>
+<p class="p13">// It is applied to every array of samples that is result and<span class="Apple-converted-space"> </span></p>
+<p class="p13">// next input of the numeric integration procedure.</p>
+<p class="p13">// Obviously then correct integration of the ODE cannot be performed anymore,<span class="Apple-converted-space"> </span></p>
+<p class="p13">// but the option has still its value.<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p20"><br></p>
+<p class="p5"><b>Ex.5a) Handling instable systems</b></p>
+<p class="p20"><br></p>
+<p class="p13">// mass spring damper with extra term y[0] * y[1] -</p>
+<p class="p13">// out of interest, no physical argument for that</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p19"><span class="s5">Fb1_ODEdef</span><span class="s2">(</span><span class="s6">\MSD_2</span><span class="s2">, { </span>|t, y, f = 0, mass = 1, spring = 1, dampen = 0|</p>
+<p class="p14"><span class="Apple-tab-span">	</span>[</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>y[1],<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>f - (dampen * y[1]) - (spring * y[0]) + (y[0] * y[1]) / mass<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>]</p>
+<p class="p14">}, 0, [0, 0], 1, 1);</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// System derails after some seconds and produces nans.</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14">    <span class="s7">var</span> f = 0.5, mass = 0.001, spring = 150, dampen = 0.001;</p>
+<p class="p14">    <span class="s7">var</span> sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\MSD_2</span>, [f, mass, spring, dampen], leakDC: <span class="s8">false</span>).poll;</p>
+<p class="p14">    <span class="s5">LeakDC</span>.ar(<span class="s5">SinOsc</span>.ar(sig[0].linlin(0, 0.006, [50, 50.1], 700), 0, 0.1))</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// Keeping the system alive with clipping at LFO-controlled frequency.</p>
+<p class="p13">// Note that the compose Function is passed an array as size of MSD_2 is 2,</p>
+<p class="p13">// clip2 applied to an array again returns an array which is necessary,</p>
+<p class="p13">// the Function must preserve the system size.</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> f = 0.5, mass = 0.001, spring = 150, dampen = 0.001;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> lfo = <span class="s5">LFDNoise3</span>.kr(2).exprange(0.2, 1500);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\MSD_2</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[f, mass, spring, dampen],<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>leakDC: <span class="s8">false</span>,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>compose: { <span class="s7">|y|</span> y.clip2(lfo) }<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">SinOsc</span>.ar(sig[0].linlin(0, 0.006, [50, 50.1], 700).poll, 0, 0.1)</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p13">// if an operator is passed via a Symbol, it applies to all channels</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> f = 0.5, mass = 0.001, spring = 150, dampen = 0.001;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\MSD_2</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[f, mass, spring, dampen],<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>leakDC: <span class="s8">false</span>,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>compose: <span class="s6">\softclip</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">SinOsc</span>.ar(sig[0].linlin(0, 0.006, [50, 50.1], 700).poll, 0, 0.1)</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p16"><br></p>
+<p class="p14">x.release</p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p5"><b>Ex.5b) Other options of the 'compose' argument</b></p>
+<p class="p20"><br></p>
+<p class="p13">// You might want to pass ar signals to the composition Function.</p>
+<p class="p13">// This has to be done via the composeArIn argument,<span class="Apple-converted-space"> </span></p>
+<p class="p13">// its UGens are then passed as second argument to the compose Function.</p>
+<p class="p4"><br></p>
+<p class="p13">// This somewhat odd way of passing is necessary as feeding ar signals into Fb1 is not trivial</p>
+<p class="p13">// and must also be done via an extra 'in' argument - which in turn is used by Fb1_ODE.</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> f = 0.5, mass = 0.001, spring = 150, dampen = 0.001;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> mod = <span class="s5">SinOsc</span>.ar(<span class="s5">SinOsc</span>.ar(<span class="s5">LFDNoise3</span>.ar(0.1).range(50, 1000)).range(10, 5000), 0, 0.1, 1);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\MSD</span>,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[f, mass, spring, dampen],</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>leakDC: <span class="s8">false</span>,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>compose: { <span class="s7">|y, in|</span> (y * in).tanh },</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>composeArIn: mod</p>
+<p class="p14"><span class="Apple-tab-span">	</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">SinOsc</span>.ar(sig[0].linlin(0, 0.006, [50, 50.1], 700), 0, 0.07)</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// note that above operation is totally different from applying the ring modulation + tanh</p>
+<p class="p13">// after the integration, here the feedback process is much simpler:</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> f = 0.5, mass = 0.001, spring = 150, dampen = 0.001;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> mod = <span class="s5">SinOsc</span>.ar(<span class="s5">SinOsc</span>.ar(<span class="s5">LFDNoise3</span>.ar(0.1).range(50, 1000)).range(10, 5000), 0, 0.1, 1);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> sig = (<span class="s5">Fb1_ODE</span>.ar(<span class="s6">\MSD</span>,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[f, mass, spring, dampen],</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>leakDC: <span class="s8">false</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>) * mod).tanh;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">SinOsc</span>.ar(sig[0].linlin(0, 0.006, [50, 50.1], 700), 0, 0.07)</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// The compose arg can also take an array of Functions and/or operators,</p>
+<p class="p13">// the composeArIn arg can take an array of UGens,</p>
+<p class="p13">// the compose Function(s) can refer to the components of the passed arrays.<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> f = 0.5, mass = 0.001, spring = 150, dampen = 0.001;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> mod = <span class="s5">SinOsc</span>.ar(<span class="s5">SinOsc</span>.ar(<span class="s5">LFDNoise3</span>.ar(0.1 ! 2).range(50, 100)).range(10, 5000), 0, 0.1, 1);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\MSD</span>,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[f, mass, spring, dampen],</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>leakDC: <span class="s8">false</span>,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>compose: [</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ <span class="s7">|y, in|</span> (y[0] * in[0]).softclip },</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ <span class="s7">|y, in|</span> ((y[0] + y[1]) * in[1]).softclip }</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>],</p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>composeArIn: mod </span>// mod is a stereo signal !</p>
+<p class="p14"><span class="Apple-tab-span">	</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">SinOsc</span>.ar(sig[0..1].linlin(0, 0.006, 50, <span class="s5">LFDNoise1</span>.ar(0.1).range(700, 2000)), 0, 0.05)</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// composeArIn's array can contain arrays also</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> f = 0.5, mass = 0.001, spring = 150, dampen = 0.001;</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> mod0 = <span class="s5">Saw</span>.ar(<span class="s5">LFDNoise1</span>.ar(1).exprange(3, 3000), 0.05);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> mod1 = <span class="s5">SinOsc</span>.ar(<span class="s5">SinOsc</span>.ar(<span class="s5">LFDNoise3</span>.ar(1 ! 2).range(1, 20)).range(1, 3000), 0, 0.1, 1);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\MSD</span>,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[f, mass, spring, dampen],</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>leakDC: <span class="s8">false</span>,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>compose: [</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ <span class="s7">|y, in|</span> (y[0] * in[1][0]).softclip },</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ <span class="s7">|y, in|</span> ((y[0] + y[1]) * in[1][1] + in[0]).softclip }</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>],</p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>composeArIn: [mod0, mod1] </span>// mod1 is itself a stereo signal !</p>
+<p class="p14"><span class="Apple-tab-span">	</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">SinOsc</span>.ar(sig[0..1].linlin(0, 0.006, 50, <span class="s5">LFDNoise1</span>.ar(0.1).range(700, 1500)), 0, 0.05);</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><b>Examples 6) Channels with additional information</b></p>
+<p class="p4"><br></p>
+<p class="p5"><b>Ex.6a) The differential channels<span class="Apple-converted-space"> </span></b></p>
+<p class="p16"><span class="Apple-tab-span">	</span></p>
+<p class="p13">// The optional differential channel(s) contain the differential(s) at time t,</p>
+<p class="p13">// in other terms: the value(s) F(t, Y) of the system</p>
+<p class="p13">// Y'(t) = F(t, Y)</p>
+<p class="p4"><br></p>
+<p class="p13">// For many numeric integration methods these values are buffered anyway,</p>
+<p class="p13">// but not for the symplectic procedures.</p>
+<p class="p13">// Therefore there exist variants with suffix '_d' which can be used in that case</p>
+<p class="p4"><br></p>
+<p class="p13">// an oscillation produced by a Hopf ODE (see also Fb1_Hopf)</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p17"><span class="s2"><span class="Apple-tab-span">	</span></span>Fb1_ODE<span class="s2">.ar(</span><span class="s6">\Hopf</span><span class="s2">,</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[1, 2, 1],</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1000,</p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>intType: </span><span class="s6">\sym2_d</span><span class="s2">, </span>// no difference to sym2 in the first two channels</p>
+<p class="p14"><span class="Apple-tab-span">	</span>) * 0.5</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p13">// The system has size two, so with differential we get 4 out channels,</p>
+<p class="p13">// take the differential only, it gives a different sound colour (more partials).</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p17"><span class="s2"><span class="Apple-tab-span">	</span></span>Fb1_ODE<span class="s2">.ar(</span><span class="s6">\Hopf</span><span class="s2">,</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[1, 2, 1],</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1000,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>intType: <span class="s6">\sym2_d</span>,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>withDiffChannels: <span class="s8">true</span>,</p>
+<p class="p14"><span class="Apple-tab-span">	</span>)[2..3] * 0.5</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p13">// The differential channels are basically buffering the slope of the<span class="Apple-converted-space"> </span></p>
+<p class="p13">// original (integration/solution) signal as a by-product,<span class="Apple-converted-space"> </span></p>
+<p class="p13">// slope could also be calculated with the Slope UGen.</p>
+<p class="p13">// Note that we scaled time by a factor 1000, so the result of Slope</p>
+<p class="p13">// has to be divided by the same factor.</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s5">Slope</span>.ar(</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">Fb1_ODE</span>.ar(<span class="s6">\Hopf</span>,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[1, 2, 1],</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1000,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>intType: <span class="s6">\sym2_d</span>,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>withDiffChannels: <span class="s8">true</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)[0..1] * 0.5</p>
+<p class="p14"><span class="Apple-tab-span">	</span>) / 1000</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b>Ex.6b) The time channel</b></p>
+<p class="p16"><span class="Apple-tab-span">	</span></p>
+<p class="p13">// tMul also multiplies the integrated time, so here we proceed with 500 * 2pi per second ...<span class="Apple-tab-span">	</span></p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p17">Fb1_ODEdef<span class="s2">(</span><span class="s6">\harmonic</span><span class="s2">, { </span><span class="s7">|t, y|</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>[y[1], y[0].neg]</p>
+<p class="p14">}, 0, [0, 1], 1, 1);<span class="Apple-converted-space"> </span></p>
+<p class="p14">)</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p14">(</p>
+<p class="p14">x = {<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\harmonic</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>tMul: 500 * 2pi,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>withTimeChannel: <span class="s8">true</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span>sig[2].poll;</p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span>sig[0..1] * 0.1 </span>// don't want to have time as audio output !</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p14">x.release</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p13">// ... whereas here time is scaled by the ODE<span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p14">(</p>
+<p class="p18"><span class="s5">Fb1_ODEdef</span><span class="s2">(</span>\harmonic_2<span class="s2">, { </span><span class="s7">|t, y|</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>[y[1], y[0].neg] * 500 * 2pi</p>
+<p class="p14">}, 0, [0, 1], 1, 1);<span class="Apple-converted-space"> </span></p>
+<p class="p14">)</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p14">(</p>
+<p class="p14">x = {<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\harmonic_2</span>,<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>tMul: 1,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>withTimeChannel: <span class="s8">true</span><span class="Apple-tab-span">	</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span>sig[2].poll;</p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span>sig[0..1] * 0.1 </span>// don't want to have time as audio output !</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p13">// time integration might be of interest with modulations of tMul</p>
+<p class="p4"><span class="Apple-tab-span">	</span></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\harmonic_2</span>,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>tMul: <span class="s5">SinOsc</span>.kr(0.2).exprange(0.2, 2),</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>withTimeChannel: <span class="s8">true</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span>sig[2].poll;</p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span>sig[0..1] * 0.07 </span>// don't want to have time as audio output !</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p16"><br></p>
+<p class="p5"><b>Ex.7) The 'withOutScale' argument</b></p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p13">// It determines if default scaling parameters for the ODE integration signal and differential(s) should be applied</p>
+<p class="p13">// In many cases this doesn't make a difference when the default scaling values equal 1.</p>
+<p class="p4"><br></p>
+<p class="p13">// Certain ODEs though produce a very high amplitude level with usual standard params, like Lorenz.</p>
+<p class="p13">// So it makes sense to scale the output down by default.</p>
+<p class="p4"><br></p>
+<p class="p13">// don't evaluate, already stored</p>
+<p class="p4"><br></p>
+<p class="p19"><span class="s5">Fb1_ODEdef</span><span class="s2">(</span><span class="s6">\Lorenz</span><span class="s2">, { </span>|t, y, s = 10, r = 30, b = 2|</p>
+<p class="p14"><span class="Apple-tab-span">	</span>[</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ (y[1] - y[0]) * s },</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ (r - y[2]) * y[0] - y[1] },</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ (y[0] * y[1]) - (b * y[2]) }</p>
+<p class="p14"><span class="Apple-tab-span">	</span>]</p>
+<p class="p14">}, 0, [1, 1, 1], 0.01, 0.01); <span class="s9">// scaling parameters 0.01</span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// So there's no problem to use Lorenz with standard params as</p>
+<p class="p13">// 'withOutScale' defaults to true</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> s = 10, r = 30, b = 3, tMul = <span class="s5">MouseX</span>.kr(50, 150, 1).poll,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig;</p>
+<p class="p14"><span class="Apple-tab-span">	</span>sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\Lorenz</span>, [s, r, b], tMul);</p>
+<p class="p14"><span class="Apple-tab-span">	</span>sig[0..1]</p>
+<p class="p14">}.play;</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// WARNING: it's not recommended to set 'withOutScale' to false</p>
+<p class="p13">// as in cases like this you get very high levels !</p>
+<p class="p13">// So here we have to reduce the level outside the Fb1_ODE</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> s = 10, r = 30, b = 3, tMul = <span class="s5">MouseX</span>.kr(50, 150, 1).poll,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>sig;</p>
+<p class="p14"><span class="Apple-tab-span">	</span>sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\Lorenz</span>, [s, r, b], tMul, withOutScale: <span class="s8">false</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span>sig[0..1] / 100</p>
+<p class="p14">}.play;</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// WARNING: 'withOutScale' does not implement a general safety net functionality,<span class="Apple-converted-space"> </span></p>
+<p class="p13">// withOutScale's default value true does by no means say that output is limited.<span class="Apple-converted-space"> </span></p>
+<p class="p13">// The default scaling values of predefined Fb1_ODEdefs are average assumptions and can,<span class="Apple-converted-space"> </span></p>
+<p class="p13">// under different circumstances, always lead to high out levels.<span class="Apple-converted-space"> </span></p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p16"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b>Examples 8) ODEs from mechanics</b></p>
+<p class="p20"><br></p>
+<p class="p5"><b>Ex.8a) The driven pendulum</b></p>
+<p class="p16"><br></p>
+<p class="p13">// The driven pendulum is interesting as it's a quite simple model</p>
+<p class="p13">// that includes parameter zones of chaotic behaviour:</p>
+<p class="p13">// http://lampx.tugraz.at/~hadley/physikm/apps/numerical_integration/pendulum.en.php</p>
+<p class="p16"><br></p>
+<p class="p13">// y here denotes the angle</p>
+<p class="p4"><br></p>
+<p class="p13">// y''(t) + (y'(t) / q) + sin(y(t)) = a * cos(omega * t)</p>
+<p class="p4"><br></p>
+<p class="p13">// which translates to</p>
+<p class="p4"><br></p>
+<p class="p13">// y'(t) = w(t)</p>
+<p class="p13">// w'(t) = (-w(t) / q) - sin(y(t)) + (a * cos(omega * t))</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p19"><span class="s5">Fb1_ODEdef</span><span class="s2">(</span><span class="s6">\DrivenPendulum</span><span class="s2">, { </span>|t, y, q = 1, omega = 0, a = 1|</p>
+<p class="p14"><span class="Apple-tab-span">	</span>[</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ y[1] },</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ y[1] / q.neg - sin(y[0]) + (a * cos(omega * t)) }</p>
+<p class="p14"><span class="Apple-tab-span">	</span>]</p>
+<p class="p14">}, 0, [0, 0], 1, 1);</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// move the mouse through a zone of chaotic behaviour between 0.65 and 0.68</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {<span class="Apple-converted-space"> </span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> sig = <span class="s5">Fb1_ODE</span>.ar(<span class="s6">\DrivenPendulum</span>, [2.3, <span class="s5">MouseX</span>.kr(0.65, 0.68).lag(2).poll, 1.6],</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2000,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0, [0, 1],</p>
+<p class="p14"><span class="Apple-tab-span">	</span>);</p>
+<p class="p14"><span class="Apple-tab-span">	</span>sig.poll;</p>
+<p class="p14"><span class="Apple-tab-span">	</span>sig[1] ! 2 * 0.1</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><b>Ex.8b) The reduced two body problem</b></p>
+<p class="p16"><br></p>
+<p class="p13">// Two planets are moving around the common barycenter, thus the system can be simplified</p>
+<p class="p13">// to an ODE which describes the changes of the the relative vector between the masses.</p>
+<p class="p4"><br></p>
+<p class="p13">// E.g. see https://evgenii.com/blog/two-body-problem-simulator</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p18"><span class="s5">Fb1_ODEdef</span><span class="s2">(</span>\TwoBodyReduced<span class="s2">, { </span><span class="s7">|t, y, m1, m2|</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> v = -1 - (m1 / m2);</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> r = y[0..1].squared.sum.sqrt;</p>
+<p class="p14"><span class="Apple-tab-span">	</span>[</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ y[2] },</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ y[3] },</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ v * y[0] / r.cubed },</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ v * y[1] / r.cubed }</p>
+<p class="p14"><span class="Apple-tab-span">	</span>]</p>
+<p class="p14">}, 0, [0, 0, 0, 0], 1, 1);</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p13">// It turns out that this system is numerically very sensitive.</p>
+<p class="p13">// Standard procedures are failing soon: here classical Runge-Kutta 4rth order</p>
+<p class="p13">// leads to a glissando before it collapses.</p>
+<p class="p13">// Even 2nd order symplectic shows movement of wave forms,<span class="Apple-converted-space"> </span></p>
+<p class="p13">// though it keeps frequency and preserves volume<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p13">// here we take only the first two components which represent the plane coordinates</p>
+<p class="p13">// of the difference vector</p>
+<p class="p4"><br></p>
+<p class="p13">// sym8 still shows a slow morphing of wave forms</p>
+<p class="p13">// you can try with \sym64, very inefficient, but even more steady</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> m = [1, 1.5];</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s5">Fb1_ODE</span><span class="s2">.ar(</span>\TwoBodyReduced<span class="s2">, m,</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>100, 0, [0, 0.2, 2, 1],</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>intType: <span class="s6">\sym8</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>)[0..1]</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">s.scope</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p5"><b>Examples 9) ODEs from population dynamics</b></p>
+<p class="p4"><br></p>
+<p class="p5"><b>Ex.9a) The Lotka-Volterra equations</b></p>
+<p class="p4"><br></p>
+<p class="p13">// They describe populations of predators and prey, e.g. foxes and rabbits.</p>
+<p class="p13">// https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// v'(t) = (alpha * v(t)) - (beta * v(t) * w(t))</p>
+<p class="p13">// w'(t) = (delta * v(t) * w(t)) - (gamma * w(t))</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p19"><span class="s5">Fb1_ODEdef</span><span class="s2">(</span><span class="s6">\LotkaVolterra</span><span class="s2">, { </span>|t, y, alpha = 0.1, beta = 0.1,</p>
+<p class="p19"><span class="Apple-tab-span">	</span>gamma = 0.1, delta = 0.1|</p>
+<p class="p14"><span class="Apple-tab-span">	</span>[</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ y[0] * (beta.neg * y[1] + alpha) },</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ y[1].neg * (delta.neg * y[0] + gamma) }</p>
+<p class="p14"><span class="Apple-tab-span">	</span>]</p>
+<p class="p14">}, 0, [1, 1], 1, 1);</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p13">// with standard parameter usage the audio results are brass-like and not spectacular</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s5">Fb1_ODE</span><span class="s2">.ar(</span>\LotkaVolterra<span class="s2">,</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[0.2, <span class="s5">MouseX</span>.kr(0.1, 0.9), <span class="s5">MouseY</span>.kr(0.1, 0.9), 0.8],</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>tMul: 3000</p>
+<p class="p14"><span class="Apple-tab-span">	</span>) * 0.1</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><b>Ex.9b) The Hastings-Powell equations</b></p>
+<p class="p4"><br></p>
+<p class="p13">// This is an extension of the Lotka-Volterra model and</p>
+<p class="p13">// considers the fact that rabbits must eat too.</p>
+<p class="p13">// It is described in the article</p>
+<p class="p4"><br></p>
+<p class="p13">// Alan Hastings and Thomas Powell (1991).<span class="Apple-converted-space"> </span></p>
+<p class="p13">// "Chaos in a Three-Species Food Chain" Ecology 72(3): 896-903</p>
+<p class="p4"><br></p>
+<p class="p13">// and on page 165 of the book "Exploring ODEs"</p>
+<p class="p4"><br></p>
+<p class="p13">// Trefethen, Lloyd N.; Birkisson, Ásgeir; Driscoll, Tobin A. (2017):</p>
+<p class="p13">// Exploring ODEs. SIAM - Society for Industrial and Applied Mathematics</p>
+<p class="p13">// Free download from:</p>
+<p class="p13">// http://people.maths.ox.ac.uk/trefethen/Exploring.pdf</p>
+<p class="p4"><br></p>
+<p class="p13">// We take over initial values and parameters from the example given there:</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p19"><span class="s5">Fb1_ODEdef</span><span class="s2">(</span><span class="s6">\CarrotsRabbitsFoxes</span><span class="s2">, { </span>|t, y, a1 = 5, a2 = 0.1,</p>
+<p class="p19"><span class="Apple-tab-span">	</span>b1 = 0.1, b2 = 2, d1 = 0.4, d2 = 0.01|</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> p = a1 * y[0] / (1 + (b1 * y[0])) * y[1];</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> q = a2 * y[1] / (1 + (b2 * y[1])) * y[2];</p>
+<p class="p14"><span class="Apple-tab-span">	</span>[</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ y[0] * (1 - y[0]) - p }, <span class="s9">// carrots</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ p - q - (d1 * y[1])<span class="Apple-converted-space">  </span>}, <span class="s9">// rabbits</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>{ q - (d2 * y[2])<span class="Apple-converted-space">  </span>} <span class="s9">// foxes</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span>]</p>
+<p class="p14">}, 0, [0.4, 1, 9], 1, 1);</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// In stereo we hear population oscillations of carrots and rabbits,</p>
+<p class="p13">// it takes some fractions of a second at begin after a state is reached.</p>
+<p class="p13">// Check with mouse and see post window:</p>
+<p class="p13">// b1 goes through a zone of chaotic behaviour between 2.5 and 3.5</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">x = {</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s7">var</span> a1 = 5, a2 = 0.1, b1 = <span class="s5">MouseX</span>.kr(2.5, 3.5).poll, b2 = 2,</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d1 = 0.4, d2 = 0.01, tMul = 5000, amp = 0.2;</p>
+<p class="p18"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s5">Fb1_ODE</span><span class="s2">.ar(</span>\CarrotsRabbitsFoxes<span class="s2">,</span></p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>[a1, a2, b1, b2, d1, d2],</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>tMul, 0, [0.4, 1, 9]</p>
+<p class="p14"><span class="Apple-tab-span">	</span>)[0..1] * amp</p>
+<p class="p14">}.play</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.release</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+</body>
+</html>

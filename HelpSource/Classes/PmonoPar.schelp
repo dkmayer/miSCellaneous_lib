@@ -1,0 +1,156 @@
+CLASS:: PmonoPar
+summary:: monophonic event pattern for an arbitrary number of timed setting streams
+categories::Libraries>miSCellaneous>Other patterns
+related:: Overviews/miSCellaneous, Guides/Introduction_to_miSCellaneous, Classes/Pmono, Classes/PpolyPar, Classes/PbindFx
+
+
+DESCRIPTION::
+
+This is similar to Pmono, but allows an arbitrary number of differently timed setting streams in parallel.
+
+strong::History::: PmonoPar and PpolyPar grew out of discussions on sc-users list, based on an example by Jonatan Liljedahl. Thanks to him, Ron Kuivila, user Monsieur and others for their comments on this – I then suggested classes PsetGroup and PsetFxGroup, which internally used Pgroup. Meanwhile I reworked the implementation, but it's still based on groups. I renamed PsetGroup to PmonoPar – as this makes the functionality more clear – and PsetFxGroup to PpolyPar, as it can be used with or without effect synths, the crucial point is the setting of parallel streams.
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PmonoPar object.
+
+argument::setPatternPairs
+SequenceableCollection of SequenceableCollections containing key/value pairs.
+Each of the inner collections represents the data of one synth setting stream.
+Per convention key/value pairs written after a pair with \dur will cause setting, pairs before will not.
+If keys \midinote, \note or \degree are occuring after \dur, they will be converted to a frequency value,
+which will be used for setting the arg 'freq'.
+
+argument::defname
+Symbol or String. Name of the SynthDef to be used for the synth being set.
+Defaults to \default.
+			
+argument::offset
+Number. Offset to be taken for time-shifting synth init and streams. Defaults to 1e-6.
+
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+::
+
+anchor::Ex.1a::  
+subsection::Ex.1a:   PmonoPar with differently timed streams
+
+code::
+
+// per convention keys after \dur are the ones to be set
+// playing ends after end of last stream
+
+(
+p = PmonoPar([
+	[
+		\dur, 1.0,
+		\pan, Pser([-0.9, 0, 0.9], 8)  
+	],[
+		\dur, 0.4,
+		\freq, Pexprand(300, 1000, 24)   
+	],[
+		\dur, 0.2,
+		\amp, Pseq([0.05, 0.3], 30)  
+	]
+]).trace.play;
+)
+::
+
+
+anchor::Ex.1b::  
+subsection::Ex.1b:   Passing values by using the value conversion framework
+
+
+code::
+
+// if \degree, \note or \midinote are occuring after \dur,
+// a frequency value will be calculated according to Event's usual conversion framework
+// and used for setting the arg 'freq'.
+
+(
+p = PmonoPar([
+	[
+		\dur, 1.0,
+		\pan, Pser([-0.9, 0, 0.9], 8)  
+	],[
+		\dur, 0.4,
+		\midinote, Pseq((70..75), 7)
+	],[
+		\dur, 0.2,
+		\amp, Pseq([0.05, 0.3], 30)  
+	]
+]).trace.play;
+)
+
+::
+
+
+anchor::Ex.2::  
+subsection::Ex.2:   Data sharing between streams of PmonoPar
+
+code::
+
+// define two Pbinds of same length, play first
+
+// data sharing with rhythms of coinciding entry points is sure as streams are time-shifted
+
+(
+p = PmonoPar([
+	[
+		\dur, Prand([1, 1, 2]/3, inf).collect(~dur = _).trace,   // or:  .collect { |x| ~dur = x } .trace
+		\amp, Pseq([0.2, 0.05], 15).trace   
+	],[
+		\dur, Pfunc { ~dur / 2 },
+		\midinote, Pshuf((60..85))   
+	]
+]).trace.play;
+)
+
+::
+ 
+ 
+anchor::Ex.3::  
+subsection::Ex.3:   Data sharing between streams of parallel PmonoPars
+ 
+code::
+
+// data sharing between streams of same PmonoPar and streams of second PmonoPar,
+// use of Ptpar ensures that first stream of second PmonoPar comes after first stream of first PmonoPar,
+// consider also PpolyPar for such type of usage
+
+(
+p = PmonoPar([
+	[
+		\dur, Prand([1, 1, 2]/3, 40).collect(~dur = _),
+		\amp, Pseq([0.3, 0.1], 15)   
+	],[
+		\dur, Pfunc { ~dur / 2 },
+		\midinote, Pshuf((50..70))   
+	]
+]);
+
+q = PmonoPar([
+	[
+		\dur, Pfunc { ~dur },
+		\amp, Pseq([0.3, 0.1], 15)   
+	],[
+		\dur, Pfunc { ~dur / 3 },
+		\midinote, Pshuf((75..95), 2)   
+	]
+]);
+
+r = Ptpar([0, p, 1e-5, q]).trace.play
+)
+::
+
+

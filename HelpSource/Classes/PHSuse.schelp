@@ -1,0 +1,127 @@
+CLASS:: PHSuse
+summary:: defines Pbind(s) for using synth values of a HS
+categories::Libraries>miSCellaneous>HS and HSpar, Streams-Patterns-Events>HS and HSpar
+related:: Overviews/miSCellaneous, Guides/Guide_to_HS_and_HSpar, Tutorials/HS_with_VarGui, Classes/HS, Classes/PHS, Classes/PHSplayer, Classes/PHSusePlayer
+
+DESCRIPTION::
+Defines Pbind(s) which, when played, can use values of a synth derived from link::Classes/HS::'s synth definition. Note::Playing a PHSuse is just an option for using an already playing help synth of a HS, which requires link::Classes/PHS:: first. See link::Guides/Guide_to_HS_and_HSpar::, "Working Scheme".
+::
+
+CLASSMETHODS::
+
+method::new
+
+argument::helpSynth
+A HS object.
+
+argument::... pbindArgs
+dur1, pbindData1, ... , durN, pbindDataN
+
+where strong::dur:: is duration value or pattern / stream of durations for corresponding Pbind(s)
+and strong::pbindData:: is a collection of Pbind pairs or a collection of Pbind pair collections,
+defining possibly several Pbinds with the same event timing. 
+
+INSTANCEMETHODS::
+
+method::play
+
+A link::Classes/PHSusePlayer:: object is instantiated and started using the TempoClock strong::clock::. 
+Quant or SimpleNumber strong::quant:: lets the player step into the quantization as soon as possible, 
+with respect to the necessary latency. The PHSusePlayer can be stopped and resumed with options.
+
+
+method::asTask
+
+VarGui support, see link::Tutorials/HS_with_VarGui:: for examples.
+
+Returns a wrapper Task, which may be passed to a VarGui object. 
+Playing and stopping the wrapper Task invokes playing and 
+stopping behaviour of the underlying PHSusePlayer. 
+
+argument::clock
+TempoClock.
+
+argument::quant
+Quant or SimpleNumber.
+
+argument::newEnvir
+Boolean. Determines if Task will be played in a newly generated environment. Defaults to true.
+This option especially becomes important when PHSuse's strong::pbindData:: contains functional code with 
+environmental variables.
+
+argument::removeCtrWithCmdPeriod
+Boolean. Defaults to true. 
+Determines if notification of PHSusePlayer will be stopped with CmdPeriod.
+
+
+
+
+
+EXAMPLES::
+
+code::
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+
+// two Pbinds getting values for pitches from a single HS
+
+h = HS(s, { |freq = 0.5, dev = 10, center = 65| LFDNoise3.kr(freq, dev, center) });
+
+
+// define Pbinds via PHS and PHSuse separately, 
+// choose quant that allows synchronization 
+
+(
+u = PHS(h, nil, // default help synth args
+    0.15, [ \midinote, Pkey(\val) + [-5, 0], \amp, 0.065 ]);
+
+v = PHSuse(h, 0.15, 
+    [ \midinote, 130 - Pkey(\val) + [0, 5], // mirror at center frequency
+      \amp, Pwrand([0.03, 0.07], [0.7, 0.3], inf) ]);
+
+c = TempoClock(1);
+q =0.3;
+)
+
+
+// start first player
+
+x = u.play(c,q);
+
+
+// "stepping in" with second player at (with respect to latency) next possible time on grid
+
+y = v.play(c,q);
+
+
+// stop x, help synth still playing, producing values for y
+
+x.stop;
+
+
+// define and play another PHSuse
+
+(
+w = PHSuse(h, 0.15, 
+    [ \midinote, 130 - Pkey(\val) + [0, 5] + Pwhite(7.0, 10.0), // mirror at center frequency + random add
+      \amp, Pwrand([0.03, 0.07], [0.7, 0.3], inf) ]);
+
+z = w.play(c,q);
+)
+
+
+// resume x 
+
+x.play(c,q);
+
+
+// freeing the PHSplayer also stops all "related" PHSusePlayers and frees the HS
+
+x.free;
+
+
+::

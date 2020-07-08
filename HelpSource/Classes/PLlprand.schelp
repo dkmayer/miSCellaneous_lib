@@ -1,0 +1,91 @@
+CLASS::PLlprand
+summary::dynamic scope Plprand variant
+categories::Libraries>miSCellaneous>PLx suite, Streams-Patterns-Events>PLx suite
+related:: Overviews/miSCellaneous, Classes/Plprand, Classes/PLhprand, Tutorials/PLx_suite, Tutorials/Event_patterns_and_Functions, Classes/VarGui, Tutorials/VarGui_shortcut_builds 
+
+
+DESCRIPTION::
+
+
+Takes Symbol args for later reference by the Streams, which will read from variables in the Environments of their instantiation. See link::Tutorials/PLx_suite::. 
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PLlprand object.
+
+argument::lo
+Symbol or Plprand lo arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Can be dynamically replaced by Patterns or Streams. Defaults to 0.
+
+argument::hi
+Symbol or Plprand hi arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Can be dynamically replaced by Patterns or Streams. Defaults to 1.
+
+argument::length
+Symbol or Plprand length arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Defaults to inf.
+
+argument::envir
+Dictionary or one of the Symbols 
+\top, \t (topEnvironment), \current, \c (currentEnvironment).
+Dictionary to be taken for variable reference. Defaults to \current.
+
+
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+        
+        
+// definition for future reference in arbitrary Environments
+
+p = PLlprand(\lo, \hi);
+
+
+// prepare current Environment
+// PLseq repeats arg defaults to inf
+
+(
+~lo = 60;
+~hi = PLseq((92..62));
+)
+
+
+// run
+
+(
+x = Pbind(
+    \midinote, Ptuple(p!5), 
+    \dur, 0.1,
+    \amp, 0.05
+).play;
+)
+
+
+// replace, converging bounds
+
+(
+~lo = PLseq((40..70) ++ (70!5));
+~hi = 70.5;
+)
+
+x.stop;
+
+::
+
+Compare this example with hi-weighted link::Classes/PLhprand:: 
+
+
+ 

@@ -1,0 +1,556 @@
+CLASS:: GFIS
+summary:: generalized functional iteration synthesis pseudo ugen
+categories:: Libraries>miSCellaneous>Nonlinear
+related:: Overviews/miSCellaneous, Guides/Introduction_to_miSCellaneous, Classes/Fb1
+
+
+DESCRIPTION::
+
+
+The GFIS class implements functional iteration synthesis as pseudo ugen loosely based on the description by Agostino Di Scipio ([1], [2]), who used the abbreviation FIS and pointed to its rich potential. Yari Marimoto has written a plugin implementation of the main sine-map iteration model, which is included in the trnsnd quark under the same name. The GFIS pseudo ugen implementation allows settings which go beyond functional iteration in a strict sense. 
+
+Principle idea of synthesis: given a parametrized nonlinear function, time-variance of init values and/or parameter sets with fixed iteration depth n can produce interesting waveforms. Due to the highly nonlinear dynamics involved, a great amount of unpredictability invites to experiment and exploration – depending on the characteristics of the time-varying signal, results span from brittle noisy textures to drones with rich spectral movements. The cited papers mainly describe strict iteration with sine and mention iterated waveshaping, but as the GFIS class implementation just takes an arbitrary Function it's easy to blur the concept, e.g. by altering the Function and/or the parametrization depending on the iteration level and/or applying iteration on multichannel signals, crossing their data etc. Also interesting – and probably not widely explored – is the use of functional iteration as controller / modulator / engine for other synthesis methods.
+
+
+warning::
+Be careful with amplitudes, in general higher numbers of iteration produce signals with more energy and due to the nonlinear dynamics signals can suddenly become loud! Also go sure that your function doesn't allow blowup with iteration (this at least doesn't happen with the standard examples of the sine map model). 
+::
+
+subsection::References
+
+numberedList::
+## Di Scipio, Agostino (1999). "Synthesis Of Environmental Sound Textures by Iterated Nonlinear Functions" in: Proceedings of the 2nd COST G-6 Workshop on Digital Audio Effects (DAFx99), NTNU, Trondheim, December 9-11, 1999.
+## Di Scipio, Agostino (2001). "Iterated Nonlinear Functions as a Sound-Generating Engine" Leonardo, Vol. 34, No. 3 (2001), pp. 249-254, MIT Press.
+::
+
+
+CLASSMETHODS::
+
+private:: checkInits
+
+method::ar
+
+argument::func
+Function used to establish the iteration by applying it strong::n:: times at build time of the synthdef graph. The Function should take two arguments: the signal and an optional index. It should return the signal used for iteration. The signal can be multichannel, then the Function might take that into account and refer to single channels of the signal arg – but the Function might also ignore it and rely on multichannel expansion, see examples.
+			
+Note that UGens written within strong::func:: are instantiated strong::n:: times, this is usually not what you want for iterating the same parametrical function, with determined signals it's a waste of CPU and for random UGens the result is different. For the strict interpretation of FIS define the parameter signal outside and refer to it from inside strong::func::.
+
+
+argument::init
+Init value for the iteration, can also be a SequenceableCollection.
+
+argument::n
+Integer, the maximum iteration number, it determines how often the Function is used for building the synthdef graph, hence this value is not modulatable. 
+
+
+argument::nOut
+Integer or SequenceableCollection of Integers. An Integer determines the iteration level of the returned signal. That way you can define a maximum iteration number strong::n:: and switch between lower ones, however strong::n:: iterations are permanently calculated. In general switching will cause clicks, so this is an option for testing primarily. A SequenceableCollection of level indices will produce a multichannel signal, which in turn allows defining smooth transitions between signals of different iteration levels.
+
+
+argument::leakDC
+Boolean. Determines if a LeakDC is applied to the output. If the parameter signal doesn't change (which can e.g. happen with a LFDNoise UGen) the result will in general be a DC offset, hence DC leaking is recommended. Defaults to true.
+
+
+argument::leakCoef
+Number, the strong::leakDC:: coefficient. Defaults to 0.995.
+
+method::kr
+
+
+section::Examples 1: The sine map model
+
+These examples use an iterated sine map as described by Agostino Di Scipio. For the sine map sin(r * x) values of r varying between 2 and 4 are interesting. Driven by LFNoise parametrizations as in the first examples we get noise textures.
+
+
+code::
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+::
+
+
+anchor::Ex. 1a::
+subsection::Ex. 1a: Time-varying the factor r
+
+
+
+code::
+(
+y = {
+	var r = LFDNoise3.ar(10).range(3.5, 4);
+	GFIS.ar({ |x| sin(r * x) }, 0.3, 9) * 0.1 ! 2
+}.play
+)
+
+y.release
+
+
+// this is not "classical" FIS:
+// for each iteration a different parametrization is taken !
+// As LFDNoise UGens aren't coupled, pulsations are less unique
+
+(
+y = {
+	GFIS.ar({ |x| sin(LFDNoise3.ar(10).range(3.5, 4) * x) }, 0.3, 9) * 0.1 ! 2
+}.play
+)
+
+y.release
+
+
+
+// less iterations
+
+(
+y = {
+	var r = LFDNoise3.ar(10).range(3.5, 4);
+	GFIS.ar({ |x| sin(r * x) }, 0.3, 7) * 0.1 ! 2
+}.play
+)
+
+y.release
+
+
+
+// different init value
+
+(
+y = {
+	var r = LFDNoise3.ar(10).range(3.5, 4);
+	GFIS.ar({ |x| sin(r * x) }, 0.85, 7) * 0.1 ! 2
+}.play
+)
+
+y.release
+
+
+
+// higher iteration gives sections with more high frequencies in the spectrum
+// even higher numbers soon lead to (interrupted) white noise
+
+(
+y = {
+	var r = LFDNoise3.ar(3).range(3.5, 4);
+	GFIS.ar({ |x| sin(r * x) }, 0.3, 12) * 0.03 ! 2
+}.play
+)
+
+y.release
+
+
+// higher iteration numbers can partially be "equilibrated" with lower r
+// this leads to different sounds, here a more "airy" noise
+
+(
+y = {
+	var r = LFDNoise3.ar(7).range(2.9, 3.1);
+	GFIS.ar({ |x| sin(r * x) }, 0.3, 15) * 0.1 ! 2
+}.play
+)
+
+y.release
+
+
+// granular-like noise burst textures
+
+(
+y = {
+	var r = LFDNoise3.ar(50).range(2.5, 3);
+	GFIS.ar({ |x| sin(r * x) }, 0.3, 15) * 0.1 ! 2
+}.play
+)
+
+y.release
+::
+
+
+anchor::Ex. 1b::
+subsection::Ex. 1b: Time-varying init values
+
+
+code::
+// mono
+
+(
+y = {
+	var i = LFDNoise3.ar(7).range(0.2, 0.9);
+	GFIS.ar({ |x| sin(3.2 * x) }, i, 10) * 0.1 ! 2
+}.play
+)
+
+y.release
+
+
+// stereo init is propagated to a stereo signal
+
+(
+y = {
+	var i = LFDNoise3.ar(7).range(0.2, 0.9) * [1, 1.01];
+	GFIS.ar({ |x| sin(3.2 * x) }, i, 10) * 0.1
+}.play
+)
+
+y.release
+
+::
+
+
+
+
+anchor::Ex. 1c::
+subsection::Ex. 1c: Time-varying init values and factor r
+
+code::
+(
+y = {
+	var i = LFDNoise3.ar(7).range(0.2, 0.9) * [1, 1.01];
+	var r = LFDNoise3.ar(2).range(3.2, 3.6) * [1, 1.01];
+	GFIS.ar({ |x| sin(r * x) }, i, 9) * 0.1
+}.play
+)
+
+y.release	
+::
+
+
+anchor::Ex. 1d::
+subsection::Ex. 1d: Producing pitch by periodically oscillating parameters
+
+code::
+// variants of phase glitter
+// note that here again the "lazy" FIS with different oscillators per iteration is used
+
+(
+y = {
+	var osc = SinOsc.ar(30);
+	GFIS.ar({ |x| sin((osc + LFDNoise3.ar(0.15)).linlin(-2, 2, 3.2, 4) * x) }, [0.5, 0.505], 9) * 0.1
+}.play
+)
+
+y.release
+
+(
+y = {
+	var osc = SinOsc.ar([30, 30.5]);
+	GFIS.ar({ |x| sin((osc + LFDNoise3.ar(0.15)).linlin(-2, 2, 3.2, 4) * x) }, 0.5, 9) * 0.1
+}.play
+)
+
+y.release
+
+
+(
+y = {
+	var osc = SinOsc.ar([30, 30.5]);
+	GFIS.ar({ |x| sin((osc + LFDNoise3.ar(0.15)).linlin(-2, 2, 3.2, 4) * x) }, [0.5, 0.505], 9) * 0.1
+}.play
+)
+
+y.release
+
+
+// harmonics as different oscillation frequencies per iteration
+
+(
+y = {
+	var oscMod = SinOsc.ar(0.1).range(30.01, 30.3);
+	GFIS.ar({ |x, i| 
+		sin((SinOsc.ar([30, oscMod] * (i+1)) + LFDNoise3.ar(0.15)).linlin(-2, 2, 3, 4) * x) 
+	}, [0.5, 0.502], 7) * 0.1
+}.play
+)
+
+y.release
+
+
+
+// Pulse as oscillator
+
+(
+y = {
+	var factors = Demand.ar(
+		TDuty.ar(Dxrand([4, 5, 7], inf)), 
+		0, 
+		Dseq([Dseq([1.3, 1.4], 2), 0.5], inf)
+	).lag(0.7);
+	var osc = Pulse.ar([70, 70 * factors]).lag(0.001);
+	LPF.ar(
+		GFIS.ar({ |x| 
+			sin((osc + LFDNoise3.ar(0.15)).linlin(-2, 2, 3.2, 4) * x) 
+		}, [0.5, 0.505], 9) * 0.1,
+		9000
+	)
+}.play
+)
+
+
+y.release
+
+::
+
+
+anchor::Ex. 2::
+section::Examples 2: The waveshaping model - iteration via buffered data
+
+code::
+// a Buffer can be filled with an arbitrary mathematical function or audio data
+
+// load audio
+
+b = Buffer.read(s, Platform.miSCellaneousDirs[0] +/+ "Sounds" +/+ "kitchen_sounds_1.wav");
+
+
+// load to array
+
+b.loadToFloatArray(action: { |array| a = array; "done".postln });
+
+
+// take short snippet, normalize between 0 and 1
+// that's most practical when we map to buffer index later on
+
+// the sound of the snippet is quite irrelevant
+// more oscillations in general produce more noise with iteration
+// start trying with sine-like forms
+
+d = a[3150..3300].normalize;
+
+d.plot;
+
+
+// fill new buffer for iteration
+
+c = Buffer.loadCollection(s, d)
+::
+
+
+
+
+anchor::Ex. 2a::
+subsection::Ex. 2a: Time-varying init values
+
+code::
+// result of BufRd is used as index for the next BufRd
+// needs Buffer c prepared above
+
+(
+y = {
+	GFIS.ar(
+		{ |x| BufRd.ar(1, c, c.numFrames * x) },
+		(LFDNoise3.ar(3) * [1, 1.1]).range(0.5, 0.51), 7
+	) * 0.2
+}.play
+)
+
+y.release
+::
+
+
+anchor::Ex. 2b::
+subsection::Ex. 2b: Time-varying index deviation
+
+
+code::
+// needs Buffer c prepared above
+
+(
+y = {
+	var add = LFDNoise3.ar(0.3) * [0.05, 0.0505];
+	GFIS.ar(
+		{ |x| BufRd.ar(1, c, c.numFrames * (x + add)) }, 
+		0.5, 7
+	) * 0.2
+}.play
+)
+
+y.release
+::
+
+
+
+anchor::Ex. 2c::
+subsection::Ex. 2c: Time-varying init values and index deviation
+
+
+code::
+// needs Buffer c prepared above
+
+(
+y = {
+	var add = LFDNoise3.ar(0.3) * [0.05, 0.0505];
+	GFIS.ar(
+		{ |x| BufRd.ar(1, c, c.numFrames * (x + add)) }, 
+		(LFDNoise3.ar(0.3) * [1, 1.01]).range(0.5, 0.505), 7
+	) * 0.2
+}.play
+)
+
+y.release
+::
+
+
+anchor::Ex. 3::
+section::Examples 3: GFIS as controller / modulator / engine for other synthesis
+
+This can transfer the instable characteristics to other sound worlds.
+
+
+anchor::Ex. 3a::
+subsection::Ex. 3a: FM 
+
+
+
+code::
+(
+y = {
+	var mod = GFIS.ar({ |x| sin(LFDNoise3.ar(1).range(2.9, 4) * x) }, 0.3, 7);
+	SinOsc.ar(mod * [50, 51] * 70 + 300) * LFDNoise3.ar(2).range(0.2, 0.05)
+}.play
+)
+
+y.release
+::
+
+
+
+anchor::Ex. 3b::
+subsection::Ex. 3b: Buffer modulation phase controlled by GFIS
+
+
+code::
+p = Platform.resourceDir +/+ "sounds/a11wlk01.wav";
+b = Buffer.read(s, p);
+
+(
+y = {
+	var pos = 0.5; // other pos offset will give totally different sounds
+	var osc = GFIS.ar({ |x| sin(LFDNoise3.ar(10).range(3.2, 4) * x) }, 0.3, 6) * 0.1;
+	// GFIS involves a LeakDC, but not BufRd
+	LeakDC.ar(BufRd.ar(1, b, b.numFrames * (osc * [0.0120, 0.0125] * 5 + pos), interpolation: 4)) * 0.1
+}.play
+)
+
+y.release
+::
+
+
+anchor::Ex. 3c::
+subsection::Ex. 3c: Iterated GFIS
+
+
+code::
+// augmentation of nonlinearity:
+// GFIS itself used as time-varying control of another GFIS
+
+b = Buffer.read(s, Platform.miSCellaneousDirs[0] +/+ "Sounds" +/+ "kitchen_sounds_1.wav");
+
+// load to array and fill new buffer for iteration
+
+b.loadToFloatArray(action: { |array| a = array; "done".postln });
+
+d = a[3150..3300].normalize;
+
+c = Buffer.loadCollection(s, d);
+
+
+(
+y = {
+	var r = LFDNoise3.ar(3).range(2.7, 3.4);
+	var add = GFIS.ar({ |x| sin(r * x) }, 0.5, 3) * [0.05, 0.055];
+	GFIS.ar(
+		{ |x| BufRd.ar(1, c, c.numFrames * (x + add)) }, 
+		0.5, 7
+	) * 0.2
+}.play
+)
+
+y.release
+::
+
+
+anchor::Ex. 4::
+section::Ex. 4: The nOut arg
+
+
+
+code::
+// nOut allows for switching between iteration levels up to maximum n
+
+(
+y = {
+	|nOut = 10|
+	GFIS.ar({ |x| sin(LFDNoise1.ar(20).range(3, 3.5) * x) }, [0.2, 0.3], 10, nOut) * 0.1
+}.play
+)
+
+
+y.set(\nOut, 9)
+
+y.set(\nOut, 8)
+
+y.release
+
+
+// it can be passed an array of levels, 
+// the resulting multichannel signal can e.g. be used for crossfaded switching with DXMix
+
+// switch between 3 mono signals and double them
+
+(
+y = {
+	var src = GFIS.ar({ |x| sin(LFDNoise3.ar(30).range(3, 4) * x) }, 0.2, 9, [5, 7, 9]) * 0.1;
+	DXMix.ar(Dseq([0, 1, 2], inf), `src, fadeTime: 0.01, stepTime: 0.02, fadeMode: 1) ! 2
+}.play
+)
+
+y.release;
+
+// switch between 3 stereo signals
+
+(
+y = {
+	var src = GFIS.ar({ |x| sin(LFDNoise3.ar(30).range(3, 4) * x) }, [0.2, 0.21], 9, [5, 7, 9]) * 0.1;
+	DXMix.ar(Dseq([0, 1, 2], inf), `src, fadeTime: 0.01, stepTime: 0.02, fadeMode: 1)
+}.play
+)
+
+y.release;
+::
+
+
+
+anchor::Ex. 5::
+section::Ex. 5: Comparison FIS / GFIS
+
+ code::
+// FIS is contained in the trnsnd quark
+// first example of its helpfile
+
+{ FIS.ar(LinExp.ar(LFTri.ar(0.1), -1, 1, 1, 4), LFNoise2.ar(300).range(0, 1), 3, 0.1) }.play;
+
+// the same with GFIS requires definition of varying params outside func 
+ (
+y = {
+	var r = LinExp.ar(LFTri.ar(0.1), -1, 1, 1, 4);
+	var i = LFNoise2.ar(300).range(0, 1);
+	GFIS.ar({ |x| sin(r * x) }, i, 3, 3, false) * 0.1
+}.play
+)
+
+y.release
+
+// proof of concept, difference is silent as it should
+
+(
+z = {
+	var r = LinExp.ar(LFTri.ar(0.1), -1, 1, 1, 4);
+	var i = LFNoise2.ar(300).range(0, 1);
+	GFIS.ar({ |x| sin(r * x) }, i, 3, 3, false) * 0.1 - FIS.ar(r, i, 3, 0.1)
+}.play
+)
+
+z.release
+::
+
+

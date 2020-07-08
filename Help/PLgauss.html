@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000bf2}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0049ff}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; min-height: 16.0px}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #d00000}
+p.p16 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #d00000}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #006dff}
+span.s5 {text-decoration: underline ; color: #0018ff}
+span.s6 {color: #00a4ff}
+span.s7 {text-decoration: underline ; color: #0049ff}
+span.s8 {text-decoration: underline ; color: #00b3ff}
+span.s9 {color: #0010ca}
+span.s10 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>PLgauss<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>dynamic scope Pgauss variant<span class="Apple-converted-space"> </span></b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Pgauss</b></p>
+<p class="p4"><br></p>
+<p class="p1">Takes Symbol args for later reference by the Streams, which will read from variables in the Environments of their instantiation. See <a href="PLx suite.html"><span class="s4">PLx suite</span></a>.</p>
+<p class="p2"><br></p>
+<p class="p5"><span class="s2"><b>See also:</b> <a href="SC://Pgauss.html"><span class="s5">Pgauss</span></a></span><span class="s6">, <a href="Event patterns and Functions.html"><span class="s7">Event patterns and Functions</span></a>,</span><span class="s2"> <a href="VarGui.html"><span class="s8">VarGui</span></a></span><span class="s6">,</span><span class="s2"> <a href="VarGui shortcut builds.html"><span class="s5">VarGui shortcut builds</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p6"><b>Creation / Class Methods</b></p>
+<p class="p7"><br></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>*new (mean, dev, length, envir)</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new PLgauss object.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>mean </b>- Symbol or Pgauss mean arg. Defaults to 0.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If a Symbol is passed, mean can be assigned to an envir variable later on.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Can be dynamically replaced by Patterns or Streams.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>dev </b>- Symbol or Pgauss dev arg. Defaults to 1.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If a Symbol is passed, dev can be assigned to an envir variable later on.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Can be dynamically replaced by Patterns or Streams.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>length </b>- Symbol or Pgauss length arg. Defaults to inf.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If a Symbol is passed, length can be assigned to an envir variable later on.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>envir </b>- Dictionary or one of the Symbols</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>\top, \t (topEnvironment), \current, \c (currentEnvironment).</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Dictionary to be taken for variable reference. Defaults to \current.</p>
+<p class="p11"><br></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><b>Examples</b></p>
+<p class="p13"><br></p>
+<p class="p14">(</p>
+<p class="p14">s = <span class="s9">Server</span>.local;</p>
+<p class="p14"><span class="s9">Server</span>.default = s;</p>
+<p class="p14">s.boot;</p>
+<p class="p14">)</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p15">// definition for future reference in arbitrary Environments,</p>
+<p class="p15">// Gauss distribution is not bounded, so do clip !</p>
+<p class="p7"><br></p>
+<p class="p16">(</p>
+<p class="p14">p = <span class="s9">Pbind</span>(</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s10">\midinote</span>, <span class="s9">PLgauss</span>(<span class="s10">\mean</span>, <span class="s10">\dev</span>).clip(60, 90),</p>
+<p class="p14"><span class="Apple-tab-span">	</span><span class="s10">\dur</span>, 0.1</p>
+<p class="p14">);</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p17">// prepare current Environment</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">~mean = 75;</p>
+<p class="p14">~dev = 0.3;</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p17">// run</p>
+<p class="p4"><br></p>
+<p class="p14">x = p.play;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p17">// move mean value and distribution</p>
+<p class="p17">// PLseq defaults to repeats = inf</p>
+<p class="p4"><br></p>
+<p class="p14">(</p>
+<p class="p14">~mean = <span class="s9">PLseq</span>((80, 79.75..70.25));</p>
+<p class="p14">~dev = <span class="s9">Pstutter</span>(8, <span class="s9">PLseq</span>([4, 0]));</p>
+<p class="p14">)</p>
+<p class="p4"><br></p>
+<p class="p14">x.stop;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+</body>
+</html>

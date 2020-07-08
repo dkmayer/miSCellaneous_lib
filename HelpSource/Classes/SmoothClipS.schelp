@@ -1,0 +1,65 @@
+CLASS:: SmoothClipS
+summary:: wave shaping / clipping pseudo ugen using sine segments
+categories::Libraries>miSCellaneous>WaveFolding
+related:: Overviews/miSCellaneous, Tutorials/Smooth_Clipping_and_Folding, Classes/SmoothClipQ, Classes/SmoothFoldS, Classes/SmoothFoldQ, Classes/SmoothFoldS2, Classes/SmoothFoldQ2
+
+
+DESCRIPTION::
+
+Wave shaping with sine segments at borders. The strong::amount:: of smoothness can be controlled: 0 means a linear transfer function, 1 a full sine segment, values inbetween a transfer function which consists of a line and a sine segment. For strong::amount:: > 0 the slope of the transfer function equals 0 at the borders.
+
+CLASSMETHODS::
+
+method::ar
+
+argument::in
+input signal.
+
+argument::lo
+lower limit, defaults to -1.
+
+argument::hi
+upper limit, defaults to 1.
+
+argument::amount
+amount of smoothness, must be >= 0 and <= 1, defaults to 0.5.
+
+argument::delta
+Threshold for avoiding zero divisions (which would happen if lo = hi and the border case of strong::amount = 1::). Normally not to be set by the user, except for very small clipping ranges, defaults to 0.00001.
+
+
+method::kr
+
+argument::in
+input signal.
+
+argument::lo
+lower limit, defaults to -1.
+
+argument::hi
+upper limit, defaults to 1.
+
+argument::amount
+amount of smoothness, must be >= 0 and <= 1, defaults to 0.5.
+
+argument::delta
+Threshold for avoiding zero divisions (which would happen if lo = hi and the border case of strong::amount = 1::). Normally not to be set by the user, except for very small clipping ranges, defaults to 0.00001.
+
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+// control smoothness
+
+x = { SmoothClipS.ar(LFTri.ar(300, 0, 0.25), -0.2, 0.2, MouseX.kr(0, 1)) }.scope  
+
+x.release
+::
+

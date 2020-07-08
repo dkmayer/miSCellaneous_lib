@@ -1,0 +1,291 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #cd1c00}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00}
+p.p15 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #dc0000}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+p.p17 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #dc1f00}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {color: #00afff}
+span.s5 {text-decoration: underline ; color: #0078ff}
+span.s6 {color: #0016d2}
+span.s7 {color: #0326cb}
+span.s8 {color: #008300}
+span.s9 {color: #434ccb}
+span.s10 {color: #007300}
+span.s11 {color: #dc0000}
+span.s12 {color: #0000bf}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>PS (PStream, Pstream)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>Pattern that behaves like a Stream<span class="Apple-converted-space"> </span></b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Plazy</b></p>
+<p class="p4"><br></p>
+<p class="p3"><span class="s2"><b>See also: </b><a href="MemoRoutine.html"><span class="s3">MemoRoutine</span></a></span><span class="s4">,</span><span class="s2"> <a href="PSx stream patterns.html"><span class="s3">PSx stream patterns</span></a></span><span class="s4">,</span><span class="s2"> <a href="PSdup.html"><span class="s5">PSdup</span></a></span><span class="s4">,</span><span class="s2"> <a href="PSrecur.html"><span class="s5">PSrecur</span></a></span><span class="s4">,</span><span class="s2"> <a href="PSloop.html"><span class="s5">PSloop</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">In general Patterns are stateless. But e.g. for counted embedding in other Patterns the exception of stream-like behaviour is practical. PS might also be used in cases where Streams must not be passed to certain Patterns.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>Name and implementation of former Pstream has changed with miSCellaneous_v0.9, in compliance with other PSx patterns it's been renamed to PS / PStream, however for backwards compatibility Pstream will still work by subclassing.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new (srcPat, length, bufSize, copyItems, copySets)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new PS object.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>srcPat </b>- Source pattern, might also be event pattern.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>length </b>- Number of output items, may be pattern or stream, defaults to inf.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>bufSize </b>- Size of buffer to store last values, defaults to 1.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>copyItems </b>- Determines if and how to copy items, which are which are either non-Sets or member of Sets.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Takes Integer 0 (or false or Symbol \false), 1 (or true or Symbol \true) or 2 (or Symbol \deep).<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Other values are interpreted as 0. Defaults to 0.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0: original item<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1: copy item</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2: deepCopy item</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>copySets </b>- Determines if to copy Sets (and hence Events).<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Takes Integer 0 (or false or Symbol \false), 1 (or true or Symbol \true).<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Other values are interpreted as 0. Defaults to 1.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0: original Set<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1: copy Set</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>NOTE 1: </b>The distinction of copying items and sets makes sense in the case of event streams.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Per default Events are copied (<b>copySets </b>== 1), not their values (<b>copyItems </b>== 0).<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>By playing Events those are used to store additional data (synth ids, msgFuncs …)<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>which is mostly not of interest when refering to the event stream, e.g. with PSx patterns which use<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>MemoRoutine - copied Events will not contain this additional data.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If values of Events or values returned directly by the stream (being no kind of Sets) are unstructured<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>then copying makes no sense, this is the normal case, so <b>copyItems </b>defaults to 0.</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>When going to alter the ouput, you might want to set <b>copyItems </b>to 1 for a PSx returning<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>simple arrays or 2 for nested arrays (deepCopy). For deepCopying Events you'd have to set</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>copySets </b>to 1 and <b>copyItems</b> to 2 (an option <b>copySets </b>== 2 doesn't exist as</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>it would be contradictory in combination with <b>copyItems </b>&lt; 2).</p>
+<p class="p10"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>NOTE 2: </b>Copy options concern copying into PS's buffer as well as<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the output of a Stream derived from the PS. When such a Stream is outputting copies<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>this prevents unintended altering of items from <b>srcPat</b>. On the other hand</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>storing copies in PS's buffer prevents these from being altered unintendedly.</p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p5"><b>Instance Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>lastValue</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Last value stored in <b>memoRoutine</b></p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>lastValues</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Array of last values stored in <b>memoRoutine</b>, latest value is first in array.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>at (i)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Returns <b>i</b>th item of array of last values stored in <b>memoRoutine</b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>(keep in mind reversed order: last value first)</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>bufSize</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Size of array of last values.</p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>bufSeq(dropNils)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Returns items of the array <b>lastValues, </b>but in the order in which they appeared, i.e.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>latest value is first in array. If <b>dropNils</b> is true (default), nils will be rejected from the array.</p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>srcPat, srcPat_(value)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Instance variable getter and setter methods.<span class="Apple-converted-space"> </span></p>
+<p class="p10"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>length, length_(value)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Instance variable getter and setter methods.<span class="Apple-converted-space"> </span></p>
+<p class="p10"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>lengthStream, lengthStream_(value)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Instance variable getter and setter methods.<span class="Apple-converted-space"> </span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>memoRoutine, memoRoutine_(value)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Instance variable getter and setter methods.<span class="Apple-converted-space"> </span></p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>count, count_(value)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Instance variable getter and setter methods.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Counts each call of next / value / resume / run on the <b>memoRoutine</b>.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If several Streams are derived from one PS each call of next on a derived Stream</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>will be counted by the <b>memoRoutine </b>and thus by the PS.</p>
+<p class="p10"><br></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><b>Examples</b></p>
+<p class="p4"><br></p>
+<p class="p12">(</p>
+<p class="p12">s = <span class="s6">Server</span>.local;</p>
+<p class="p12"><span class="s6">Server</span>.default = s;</p>
+<p class="p12">s.boot;</p>
+<p class="p12">)</p>
+<p class="p6"><br></p>
+<p class="p13">// PS used to store a sequence of 6 events</p>
+<p class="p4"><br></p>
+<p class="p12">(</p>
+<p class="p12">p = <span class="s7">Pbind</span>(</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">Pwhite</span>(60, 90, 6),</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, <span class="s7">Prand</span>([0.2, 0.4], <span class="s9">inf</span>)</p>
+<p class="p12">);</p>
+<p class="p4"><br></p>
+<p class="p14">// As the sequence ends with nil, nil is also stored in the buffer of PStream's MemoRoutine.</p>
+<p class="p14">// Hence to store the whole sequence we must increase the buffer size by 1.</p>
+<p class="p4"><br></p>
+<p class="p12">q = <span class="s7">PS</span>(p, bufSize: 7);</p>
+<p class="p4"><br></p>
+<p class="p12">q.play;</p>
+<p class="p12">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14">// values are shifted, so latest are first</p>
+<p class="p4"><br></p>
+<p class="p12">q.lastValues</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14">// method bufSeq gives items in order in which they appeared, dropping nils by default</p>
+<p class="p4"><br></p>
+<p class="p12">q.bufSeq</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14">// repeat original sequence</p>
+<p class="p4"><br></p>
+<p class="p12"><span class="s7">Pseq</span>(q.bufSeq).play</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p14">// play in reverse order, as Stream has been finished there's also a nil to be dropped</p>
+<p class="p4"><br></p>
+<p class="p12"><span class="s7">Pseq</span>(q.lastValues.drop(1)).play</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p15">// counted embedding of value patterns</p>
+<p class="p15">// PLx variants default to repeats = inf</p>
+<p class="p6"><br></p>
+<p class="p12">(</p>
+<p class="p12">p = <span class="s6">PLseq</span>([<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s6">PS</span>(<span class="s6">PLseq</span>((60..65)), 3),<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s6">PS</span>(<span class="s6">PLseq</span>((80..90)), <span class="s6">Pwhite</span>(2,5))<span class="Apple-converted-space"> </span></p>
+<p class="p12">]);<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p12">x = <span class="s6">Pbind</span>(</p>
+<p class="p16"><span class="s2"><span class="Apple-tab-span">	</span></span>\midinote<span class="s2">, p,</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s10">\dur</span>, 0.1</p>
+<p class="p12">).play;</p>
+<p class="p12">)</p>
+<p class="p4"><br></p>
+<p class="p12">x.stop;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p17"><span class="s11">// </span>counted embedding of<span class="s11"> event patterns</span></p>
+<p class="p4"><br></p>
+<p class="p12">(</p>
+<p class="p12">p = <span class="s6">Pbind</span>(</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s10">\midinote</span>, <span class="s6">PLseq</span>((55..70)) + <span class="s6">Pfunc</span> { [0, [4,5].choose] },</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s10">\dur</span>, 0.2</p>
+<p class="p12">);</p>
+<p class="p4"><br></p>
+<p class="p12">q = <span class="s6">Pbind</span>(</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s10">\midinote</span>, <span class="s6">PLseq</span>((80..100)),</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s10">\dur</span>, 0.05</p>
+<p class="p12">);</p>
+<p class="p4"><br></p>
+<p class="p12">x = <span class="s6">PLseq</span>([</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s6">PS</span>(p, <span class="s6">Pwhite</span>(2,6)),<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s6">PS</span>(q, <span class="s6">Pwhite</span>(2,6))<span class="Apple-converted-space"> </span></p>
+<p class="p12">]).play;</p>
+<p class="p12">)</p>
+<p class="p4"><br></p>
+<p class="p12">x.stop;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p1">Keep in mind that repeated streamifying of a PS is just like resuming a Stream (yes, PS behaves like ... a Stream).</p>
+<p class="p1">For getting a Stream to start at the beginning as defined by the Pattern enclosed by the PS,</p>
+<p class="p1">you'd have to generate a new PS, e.g. by reevaluating its definition or wrapping<span class="Apple-converted-space"> </span></p>
+<p class="p1">it into a Function.</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p12">p = <span class="s12">PS</span>(<span class="s12">Pseries</span>(), 5);</p>
+<p class="p4"><br></p>
+<p class="p18">// evaluate more than once</p>
+<p class="p4"><br></p>
+<p class="p12">p.asStream.all;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p18">// compare</p>
+<p class="p4"><br></p>
+<p class="p12">q = { <span class="s12">PS</span>(<span class="s12">Pseries</span>(), 5) };</p>
+<p class="p4"><br></p>
+<p class="p18">// evaluate more than once</p>
+<p class="p4"><br></p>
+<p class="p12">q.value.asStream.all;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p1">For recursively generating data see PSrecur. Referring to buffered last values of a PS can<span class="Apple-converted-space"> </span></p>
+<p class="p1">easily be done with method .at.</p>
+<p class="p2"><br></p>
+<p class="p4"><br></p>
+<p class="p14">// canonical brown movement</p>
+<p class="p14">// define 3 voices refering to a PS</p>
+<p class="p14">// use separate PS to collect data</p>
+<p class="p14">// plot</p>
+<p class="p4"><br></p>
+<p class="p12">(</p>
+<p class="p12">p = <span class="s7">PS</span>(<span class="s7">Pbrown</span>(65, 90, 2.1), <span class="s9">inf</span>, 16);</p>
+<p class="p12">p.iter.nextN(16);</p>
+<p class="p4"><br></p>
+<p class="p12">q = <span class="s7">Pfunc</span> { p[5] - 7 };</p>
+<p class="p12">r = <span class="s7">Pfunc</span> { p[10] - 14 };</p>
+<p class="p12">t = <span class="s7">Pfunc</span> { p[15] - 21 };</p>
+<p class="p4"><br></p>
+<p class="p12">u = <span class="s7">PS</span>(<span class="s7">Ptuple</span>([p,q,r,t]), bufSize: 100);</p>
+<p class="p4"><br></p>
+<p class="p12">a = <span class="s7">Plotter</span>().superpose_(<span class="s9">true</span>).plotMode_(<span class="s8">\plines</span>);</p>
+<p class="p12">a.value = u.iter.nextN(100).flop</p>
+<p class="p12">)</p>
+<p class="p4"><br></p>
+<p class="p14">// playback stored pitches</p>
+<p class="p4"><br></p>
+<p class="p12">(</p>
+<p class="p12">v = <span class="s7">Pbind</span>(</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">Pseq</span>(u.bufSeq),</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 0.2</p>
+<p class="p12">).trace.play</p>
+<p class="p12">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+</body>
+</html>

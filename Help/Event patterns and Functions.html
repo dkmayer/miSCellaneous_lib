@@ -1,0 +1,338 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000bf2}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #c40000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ff0000; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Arial; min-height: 15.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Helvetica; min-height: 11.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Monaco; min-height: 14.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #0043ff}
+span.s5 {text-decoration: underline ; color: #0088ff}
+span.s6 {color: #007cff}
+span.s7 {text-decoration: underline ; color: #0014fa}
+span.s8 {color: #0009c2}
+span.s9 {color: #007300}
+span.s10 {font: 12.0px Arial}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Event patterns and Functions<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>using event patterns with functional elements</b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>See also:</b> <a href="PLx suite.html"><span class="s4">PLx suite</span></a>, <a href="VarGui.html"><span class="s5">VarGui</span></a></span><span class="s6">,</span><span class="s2"> <a href="VarGui shortcut builds.html"><span class="s3">VarGui shortcut builds</span></a>, <a href="HS with VarGui.html"><span class="s7">HS with VarGui</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">This is a tutorial file about event patterns with functional code. Features concerning scope are regarded along a line from Functions to Streams, Streams of Events and EventStreamPlayers. These general characteristics allow to generate a parametrized family of EventStreamPlayers from a single event pattern definition and are used as a base for controlling EventStreamPlayers with <a href="VarGui.html"><span class="s5">VarGui</span></a>. For a convenience way to generate Patterns with environment-dependent reference see <a href="PLx suite.html"><span class="s4">PLx suite</span></a>.</p>
+<p class="p4"><br></p>
+<p class="p5"><b>Functions in Environments</b></p>
+<p class="p2"><br></p>
+<p class="p1">Environments are a standard way to separate namespaces in SuperCollider. Functions may include <b>environmental variables</b> and then <b>dynamic scope</b> comes into play: variables get the value from the context in which the Function is <b>evaluated. </b>Anyway a specific environment can be linked with the Function, the latter will hold for Streams polled from Patterns with certain functional code<span class="Apple-converted-space">  </span>–<span class="Apple-converted-space">  </span>it's just the environment in which the stream has been generated from the pattern.</p>
+<p class="p2"><br></p>
+<p class="p1">Take a simple Function with one argument and assign it to the <b>interpreter variable</b> f:</p>
+<p class="p2"><br></p>
+<p class="p6">f = { <span class="s8">|x|</span> x*2 + ~a };</p>
+<p class="p2"><br></p>
+<p class="p7">// equivalent:</p>
+<p class="p2"><br></p>
+<p class="p6">f = { <span class="s8">|x|</span> x*2 + currentEnvironment[<span class="s9">\a</span>] };</p>
+<p class="p8"><br></p>
+<p class="p7">// now set the variable in the Environment (context) in which to evaluate the Function later on</p>
+<p class="p2"><br></p>
+<p class="p6">~a = 1;</p>
+<p class="p8"><br></p>
+<p class="p7">// equivalent:</p>
+<p class="p7">// currentEnvironment[\a] = 1;</p>
+<p class="p8"><br></p>
+<p class="p7">// not surprising the result of the following operation:</p>
+<p class="p8"><br></p>
+<p class="p6">f.value(1);<span class="Apple-converted-space"> </span></p>
+<p class="p8"><br></p>
+<p class="p7">// or shorter:<span class="Apple-converted-space"> </span></p>
+<p class="p7">// f.(1)</p>
+<p class="p8"><br></p>
+<p class="p6">-&gt; 3</p>
+<p class="p2"><br></p>
+<p class="p7">// now evaluation in new environment, value taken from there:</p>
+<p class="p8"><br></p>
+<p class="p6">(</p>
+<p class="p6">e = <span class="s8">Environment</span>[<span class="s9">\a</span> -&gt; 5];</p>
+<p class="p6">e.use { f.value(1) };</p>
+<p class="p6">)</p>
+<p class="p8"><br></p>
+<p class="p6">-&gt; 7</p>
+<p class="p8"><br></p>
+<p class="p7">// with inEnvir a new Function is bound to a specific Environment</p>
+<p class="p8"><br></p>
+<p class="p6">(</p>
+<p class="p6">g = f.inEnvir(e);</p>
+<p class="p6">g.(1);</p>
+<p class="p6">)</p>
+<p class="p8"><br></p>
+<p class="p6">-&gt; 7</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p6">f.(1);</p>
+<p class="p8"><br></p>
+<p class="p6">-&gt; 3</p>
+<p class="p9"><br></p>
+<p class="p2"><br></p>
+<p class="p1">So either by evaluating the original Function in different Environments or, equivalently, by deriving new Functions from the original attached to different Environments we create a parametrized family of Functions. The Function's basic behaviour is pretty simple (x*2), in dependance of the context it is just varied (a linear offset is added). With more environmental variables a much greater complexity could be introduced, though possibly obscuring the basic behaviour.</p>
+<p class="p2"><br></p>
+<p class="p1">This priciple can now easily be extended to Streams, Streams of Events and EventStreamPlayers. We define the basic behaviour of an event stream with an event pattern (Pbind), then enrich the event pattern with functional code and can have a huge variety of EventStreamPlayers in different Environments with different parameter sets – all playable and modifiable in realtime (in parallel or independentely) and all polled from one single event pattern definition!<span class="Apple-converted-space">  </span>Step by step:</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Streams in Environments</b></p>
+<p class="p4"><br></p>
+<p class="p1">What happens in the case of a Stream that will repeatedly evaluate a Function?</p>
+<p class="p2"><br></p>
+<p class="p7">// the Pfunc just describes what a Stream, polled from it, should do (evaluate a Function by the method next)</p>
+<p class="p7">// the Pfunc itself is not bound to a specific Environment</p>
+<p class="p2"><br></p>
+<p class="p6">p = <span class="s8">Pfunc</span> { ~a };</p>
+<p class="p8"><br></p>
+<p class="p7">// by making a Stream an Environment (the current) is attached</p>
+<p class="p2"><br></p>
+<p class="p6">(</p>
+<p class="p6">q = p.asStream;</p>
+<p class="p6">~a = 1;</p>
+<p class="p6">q.next;</p>
+<p class="p6">)</p>
+<p class="p8"><br></p>
+<p class="p6">-&gt; 1</p>
+<p class="p2"><br></p>
+<p class="p7">// next value of (Func)Stream demanded in new Environment will be taken from old defining context<span class="Apple-converted-space"> </span></p>
+<p class="p8"><br></p>
+<p class="p6">(</p>
+<p class="p6">~a = 2;</p>
+<p class="p6">e = <span class="s8">Environment</span>[<span class="s9">\a</span> -&gt; 5];</p>
+<p class="p6">e.use { q.next };</p>
+<p class="p6">)</p>
+<p class="p8"><br></p>
+<p class="p6">-&gt; 2</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p7">// vice versa Stream defined in new Environment takes next value from there<span class="Apple-converted-space"> </span></p>
+<p class="p7">// also if evaluated in other Environment</p>
+<p class="p8"><br></p>
+<p class="p6">(</p>
+<p class="p6">r = e.use { p.asStream };</p>
+<p class="p6">r.next;</p>
+<p class="p6">)</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p6">-&gt; 5</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p1">Indeed, Streams derived from the simple Pfunc don't do much here, they just reflect values in the Environment in which they are defined. As with Functions in the first example Pfuncs can be combined with other Patterns to modify their behaviour. So a family of related Streams (common attributes) <span class="s10">can be polled from a single pattern.</span></p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p7">// try above with new pattern<span class="Apple-converted-space"> </span></p>
+<p class="p7">// here the common attributes are: period length = 2, magnitude relation of items = 1:10)<span class="Apple-converted-space"> </span></p>
+<p class="p8"><br></p>
+<p class="p6">p = <span class="s8">Pseq</span>([1,10], <span class="s8">inf</span>) * <span class="s8">Pfunc</span> { ~a };</p>
+<p class="p8"><br></p>
+<p class="p2"><br></p>
+<p class="p1">An even more generalized operation is the use of Pcollect, which defines the following Stream behaviour: Output of the source stream will be taken as input by the collecting stream, as with Pfunc the Function defined in Pcollect will live in the Environment in which the Stream has been polled from the Pattern. The above could also be written like this:</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p6">p = <span class="s8">Pcollect</span>({ <span class="s8">|x|</span> x * ~a }, <span class="s8">Pseq</span>([1,10], <span class="s8">inf</span>));</p>
+<p class="p8"><br></p>
+<p class="p6">p = <span class="s8">Pseq</span>([1,10], <span class="s8">inf</span>).collect({ <span class="s8">|x|</span> x * ~a });</p>
+<p class="p8"><br></p>
+<p class="p7"><span class="s2">p = </span><span class="s8">Pseq</span><span class="s2">([1,10], </span><span class="s8">inf</span><span class="s2">).collect(</span><span class="s8">_</span><span class="s2">*~a);<span class="Apple-tab-span">	</span></span>// short form (partial application), don't overrely on it in more complicated cases</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p1">There is another Pattern engaging Functions, thus allowing to benefit from environment-dependance: Plazy. it evaluates a Function that returns a Pattern to be embedded in a stream. For repeated embedding the Plazy can be wrapped into a Pn. If a generated Pattern repeats infinitely, there will not be any further evaluation. So when using Plazy have a close look at the inner Pattern's repeat arg.</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p7">// with each evaluation of Plazy's Function a new random sequence of length = 2 will be generated and repeated 3 times</p>
+<p class="p7">// maximum range of the whole sequence is controlled by the environmental variable ~a</p>
+<p class="p8"><br></p>
+<p class="p6">(</p>
+<p class="p6">p = <span class="s8">Pn</span>(<span class="s8">Plazy</span> { <span class="s8">Pseq</span>({ rand2(~a) } ! 2, 3) });</p>
+<p class="p6">q = p.asStream;</p>
+<p class="p6">~a = 3;</p>
+<p class="p6">q.nextN(60);</p>
+<p class="p6">)</p>
+<p class="p8"><br></p>
+<p class="p7">// instead of using an Environment we can use an instance of its subclass Event which has handy syntax.<span class="Apple-converted-space"> </span></p>
+<p class="p7">// new empty Event: <span class="Apple-converted-space"> </span></p>
+<p class="p8"><br></p>
+<p class="p6">();</p>
+<p class="p8"><br></p>
+<p class="p7">// new Event with var ~a set, range enlarged: <span class="Apple-converted-space"> </span></p>
+<p class="p8"><br></p>
+<p class="p6">(</p>
+<p class="p6">e = (a: 10);</p>
+<p class="p6">r = e.use { p.asStream };</p>
+<p class="p6">r.nextN(60);</p>
+<p class="p6">)</p>
+<p class="p8"><br></p>
+<p class="p7">// compare, both streams are demanded values in same Environment, but they are attached to different ones</p>
+<p class="p8"><br></p>
+<p class="p6">q.nextN(60);</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p1">This example was still similar to the ones before, basically a loop modified by a factor. But imagine that a Plazy could give out arbitrary new Patterns, the choice itself could depend on an environment-dependant parameter.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Event streams in Environments</b></p>
+<p class="p2"><br></p>
+<p class="p1">One step closer to the sound – let's define an event pattern with single patterns that contain functional code. Again the pattern itself is neutral concerning the relation to Environments ...</p>
+<p class="p2"><br></p>
+<p class="p6">(</p>
+<p class="p6">p = <span class="s8">Pbind</span>(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s9">\dur</span>, <span class="s8">Pfunc</span> { ~a },</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s9">\midinote</span>, <span class="s8">Pfunc</span> { ~b }</p>
+<p class="p6">);</p>
+<p class="p6">)</p>
+<p class="p8"><br></p>
+<p class="p7">// ... but the stream is not neutral. It's bound to the current environment.</p>
+<p class="p8"><br></p>
+<p class="p6">(</p>
+<p class="p6">q = p.asStream;</p>
+<p class="p8"><br></p>
+<p class="p6">~a = 0.5;</p>
+<p class="p6">~b = 60;</p>
+<p class="p6">)</p>
+<p class="p8"><br></p>
+<p class="p7">// define a new Environment – an Event, as syntax is handy.</p>
+<p class="p8"><br></p>
+<p class="p6">e = (a: 1, b: 70);</p>
+<p class="p8"><br></p>
+<p class="p7">// So we have two surrounding Events as variable spaces, in which Streams of Events can live.</p>
+<p class="p7">// Don't be confused by that, the stream-generated Events are a different story.</p>
+<p class="p8"><br></p>
+<p class="p7">// now check a next element of the event stream in the new environment (event).<span class="Apple-converted-space"> </span></p>
+<p class="p7">// The method next must itself be passed an event -</p>
+<p class="p7">// the result stems from the former current event, in which the event stream was generated</p>
+<p class="p8"><br></p>
+<p class="p6">e.use { q.next(()) };</p>
+<p class="p8"><br></p>
+<p class="p6">-&gt; ( <span class="s9">'dur'</span>: 0.5, <span class="s9">'midinote'</span>: 60 )</p>
+<p class="p8"><br></p>
+<p class="p7">// double check - also the second event stream belongs to its defining context</p>
+<p class="p8"><br></p>
+<p class="p6">(</p>
+<p class="p6">e.use { r = p.asStream; };</p>
+<p class="p6">r.next(());</p>
+<p class="p6">)</p>
+<p class="p8"><br></p>
+<p class="p6">-&gt; ( <span class="s9">'dur'</span>: 1, <span class="s9">'midinote'</span>: 70 )</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p5"><b>EventStreamPlayers in Environments</b></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p1">Not much will change by the last transition, EventStreamPlayers are also attached to environments.</p>
+<p class="p2"><br></p>
+<p class="p6">(</p>
+<p class="p6">s = <span class="s8">Server</span>.local;</p>
+<p class="p6"><span class="s8">Server</span>.default = s;</p>
+<p class="p6">s.boot;</p>
+<p class="p6">)</p>
+<p class="p8"><br></p>
+<p class="p6">(</p>
+<p class="p6">p = <span class="s8">Pbind</span>(</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s9">\dur</span>, <span class="s8">Pfunc</span> { ~a },</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="s9">\midinote</span>, <span class="s8">Pfunc</span> { ~b }</p>
+<p class="p6">);</p>
+<p class="p6">)</p>
+<p class="p8"><br></p>
+<p class="p7">// define two Environments (Events) with EventStreamPlayers attached to it</p>
+<p class="p8"><br></p>
+<p class="p6">(</p>
+<p class="p6">e = (a: 0.2, b: 60);</p>
+<p class="p6">f = (a: 0.4, b: 67);</p>
+<p class="p8"><br></p>
+<p class="p6">e.use { q = p.asEventStreamPlayer };</p>
+<p class="p6">f.use { r = p.asEventStreamPlayer };</p>
+<p class="p6">)</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p7">// play the players with different init data in sync</p>
+<p class="p8"><br></p>
+<p class="p6">(</p>
+<p class="p6">q.play(quant: 0.2);</p>
+<p class="p6">r.play(quant: 0.2);</p>
+<p class="p6">)</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p7">// now change envir variables while playing</p>
+<p class="p7">// the stream will take new values at the next evaluation</p>
+<p class="p8"><br></p>
+<p class="p6">f.b = 65;</p>
+<p class="p2"><br></p>
+<p class="p6">e.b = 62;</p>
+<p class="p8"><br></p>
+<p class="p6">(</p>
+<p class="p6">q.stop;</p>
+<p class="p6">r.stop;</p>
+<p class="p6">)</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">The VarGui interface can be used to control running EventStreamPlayers in that way. They may be passed directly, then their attached Environments will be taken for variable setting:<span class="Apple-converted-space"> </span></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p7">// start playing from gui</p>
+<p class="p11"><br></p>
+<p class="p6">(</p>
+<p class="p6">v = <span class="s8">VarGui</span>([[</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\a</span>, [0.2, 0.8, <span class="s9">\lin</span>, 0.2, 0.2],</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\b</span>, [48, 80, <span class="s9">\lin</span>, 1, 58]</p>
+<p class="p6"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\a</span>, [0.2, 0.8, <span class="s9">\lin</span>, 0.2, 0.4],</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\b</span>, [48, 80, <span class="s9">\lin</span>, 1, 67]</p>
+<p class="p6"><span class="Apple-tab-span">	</span>]],</p>
+<p class="p6"><span class="Apple-tab-span">	</span>stream: [q, r], quant: 0.2</p>
+<p class="p6">).gui;</p>
+<p class="p6">)</p>
+<p class="p8"><br></p>
+<p class="p7">// so you could still set from outside</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p6">f.b = 65;<span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p1">But also the event pattern can be passed directly (recommended). Then new separate Environments will be generated automatically,<span class="Apple-converted-space"> </span></p>
+<p class="p1">changing envir variables by accident is very unlikely.</p>
+<p class="p12"><br></p>
+<p class="p11"><br></p>
+<p class="p6">(</p>
+<p class="p6">v = <span class="s8">VarGui</span>({ [</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\a</span>, [0.2, 0.8, <span class="s9">\lin</span>, 0.2, 0.2 * (4.rand + 1) ],</p>
+<p class="p6"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">\b</span>, [48, 80, <span class="s9">\lin</span>, 1, 48.rrand(80) ]</p>
+<p class="p6"><span class="Apple-tab-span">	</span>] } ! 10,<span class="Apple-converted-space"> </span></p>
+<p class="p6"><span class="Apple-tab-span">	</span>stream: p ! 10, quant: 0.2</p>
+<p class="p6">).gui(tryColumnNum: 2);</p>
+<p class="p6">)</p>
+<p class="p8"><br></p>
+<p class="p7">// however, environments are accessible if necessary</p>
+<p class="p8"><span class="Apple-tab-span">	</span></p>
+<p class="p6">v.envirs;</p>
+<p class="p8"><br></p>
+<p class="p8"><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p11"><br></p>
+<p class="p11"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+</body>
+</html>

@@ -1,0 +1,6 @@
+
+INSTANCEMETHODS::
+
+private:: miSC_enumerateIndices, miSC_isGrouping, miSC_collectCopy, miSC_asSet
+
+

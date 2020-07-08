@@ -1,0 +1,423 @@
+CLASS::PLbindef
+summary::wrapper for Pbindef which allows replacement in object prototyping style
+categories:: Libraries>miSCellaneous>PLx suite, Streams-Patterns-Events>PLx suite
+related:: Overviews/miSCellaneous, Tutorials/PLx_suite, Classes/PLbindefPar, Classes/PLbindefEnvironment, Classes/PLbindefParEnvironment, Classes/EventShortcuts, Tutorials/PLx_and_live_coding_with_Strings 
+
+
+DESCRIPTION::
+PLbindef works like a normal Pbindef and, like the latter, uses Pdef's global bookkeeping, but replacement of key streams can be done in object prototyping style with a dedicated PLbindefEnvironment, which also holds player methods. This hybrid Environment is itself assigned to the PLbindef's name in an Environment of choice, by default the current Environment. Setting can thus be done in very condensed syntax, also in combination with link::Classes/EventShortcuts::. For more info on object prototyping see link::Classes/Environment#Using Environments as object prototypes#::.
+
+
+note::
+PLbindefs are registered globally in the same Dictionary as Pdefs, Pbindefs and PLbindefPars. It's recommended to do cleanup with code::remove:: or code::Pdef.removeAll:: after using PLbindef / PLbindefPar as in examples below. Otherwise unwanted or strange behaviour might be caused by leftover sources when playing a new PLbindef / PLbindefPar example with the same key. With SC >= 3.7 occasional posts of the default parent event occur with Pbindef, so also with PLbindef, this doesn't cause problems though.
+::
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PLbindef object or sets sources as with Pbindef.
+
+argument::... args
+First arg should be the name, followed by key/value pairs for the Pbindef. The last arg can be an optional environment which determines where the corresponding PLbindefEnvironment should be stored, by default this is the current Environment at instantiation time.
+
+INSTANCEMETHODS::
+
+private::miSC_setRefEnvir
+private::miSC_updateSourceEnvir
+
+
+method::clear
+
+As with link::Classes/Pdef#-clear::, but in addition remove name entry from strong::refEnvir::.
+
+
+method::sourceEnvir
+
+Getter for PLbindef's PLbindefEnvironment.
+
+
+method::refEnvir
+
+Getter for the Environment where PLbindef's PLbindefEnvironment is associated with PLbindef's key.
+
+
+
+anchor::above::
+SECTION::Examples
+
+code::
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+// synthdefs to play with
+
+(
+SynthDef(\noise_grain, { |out = 0, freq = 400, att = 0.005, rel = 0.1, rq = 0.1, amp = 0.1|
+	var sig = { WhiteNoise.ar } ! 2;
+	sig = BPF.ar(sig, freq, rq) *
+		EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2) *
+		(rq ** -1) * (250 / (freq ** 0.8));
+	OffsetOut.ar(out, sig);
+}).add;
+
+SynthDef(\sin_grain, { |out = 0, freq = 400, att = 0.005, rel = 0.1, amp = 0.1|
+	var sig = { SinOsc.ar(freq, Rand(0, 2pi)) } ! 2;
+	sig = sig * EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2);
+	OffsetOut.ar(out, sig);
+}).add;
+
+SynthDef(\saw_grain, { |out = 0, freq = 400, att = 0.005, rel = 0.1, amp = 0.1|
+	var sig = { VarSaw.ar(freq, Rand(0, 1)) } ! 2;
+	sig = sig * EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2);
+	OffsetOut.ar(out, sig);
+}).add;
+)
+::
+
+
+SUBSECTION::Ex.1) Setting key streams
+
+code::
+// start with a fresh global Dictionary
+
+Pdef.removeAll
+
+// store PLbindef under key \x
+
+(
+PLbindef(\x,
+	\instrument, \sin_grain,
+	\dur, 0.2,
+	\midinote, Pwhite(60, 90)
+)
+)
+
+// PLbindefEnvironment has been made and assigned to the variable ~x in currentEnvironment, check
+
+~x
+
+
+// now the PLbindefEnvironment can also be treated as a player
+
+~x.play
+
+
+// set params while playing
+
+~x.att = Pwhite(0.01, 0.2)
+
+~x.midinote = 75
+
+~x.att = 0.01
+
+~x.dur = 0.02
+
+~x.midinote = Pbrown(60, 90, 1.5)
+
+
+// prototype underscore syntax
+
+~x.midinote_(Pbrown(70, 80, 3))
+
+
+
+// pause
+
+~x.stop
+
+// resume
+
+~x.play
+
+
+
+// use method 'value' for parallel setting
+
+~x.(\dur, 0.05, \midinote, Pwhite(70.0, 72))
+
+
+// sequential underscore setting
+
+~x.dur_(0.07).midinote_(Pwhite(72.0, 74))
+
+
+// Pbindef syntax of setting also still possible
+
+PLbindef(\x, \dur, 0.1, \midinote, Pwhite(80, 81.0))
+
+
+~x.stop
+
+// cleanup
+
+~x.remove
+::
+
+
+
+SUBSECTION::Ex.2) PLbindef with EventShortcuts
+
+Use SynthDefs from link::Classes/PLbindef#above#above::.
+
+code::
+// syntax can be more condensed with EventShortcuts, turn it on, post defaults
+
+EventShortcuts.on
+
+EventShortcuts.postCurrent
+
+
+(
+PLbindef(\u,
+	\i, \saw_grain,
+	\d, 0.2,
+	\m, Pwhite(60, 90)
+)
+)
+
+~u.play
+
+~u.d = 0.1
+
+
+~u.m = Pn(Plazy { Pseries(rrand(50, 70), 1.5, 20) })
+
+~u.m = ~u.m + [0, 4, 7]
+
+~u.i = PLseq([\sin_grain, \saw_grain])
+
+
+~u.a = Pn(Pseries(0.05, 0.01, 20))
+
+~u.m = 70
+
+
+// stop + cleanup in one
+
+~u.remove
+::
+
+
+
+SUBSECTION::Ex.3) PLbindef with VarGui
+
+Use SynthDef from link::Classes/PLbindef#above#above::.
+
+code::
+// start with gui and define pitch sequence with sliders
+
+(
+p = PLbindef(\z,
+	\i, \saw_grain,
+	\d, 0.2,
+	\m, PLseq(\midi)
+);
+
+VarGui([\midi, [50, 90, \lin, 1, 60] ! 7], stream: p).gui;
+)
+
+
+~z.m = PLseq(\midi) + [0, 5, 8]
+
+~z.m = ~z.m + PLseq([-1, 0, 1] * 12)
+
+// stop with gui, then do cleanup
+
+~z.remove
+::
+
+
+SUBSECTION::Ex.4) PLbindef with PbindFx
+
+See also link::Classes/PbindFx#Ex. 7c#Ex.7c: Replacement with Pbindef:: 
+
+code::
+// boot server with extended resources
+
+(
+s.options.numPrivateAudioBusChannels = 1024;
+s.options.memSize = 8192 * 16;
+s.reboot;
+)
+
+(
+SynthDef(\echo, { |out, in, maxEchoDelta = 0.2, echoDelta = 0.1,
+	decayTime = 1, amp = 1, mix = 1|
+	var sig, inSig = In.ar(in, 2);
+	sig = DelayL.ar(
+		CombL.ar(inSig, maxEchoDelta, echoDelta, decayTime, amp),
+		maxEchoDelta,
+		maxEchoDelta - echoDelta
+	);
+	Out.ar(out, (1 - mix) * inSig + (sig * mix));
+}).add;
+
+SynthDef(\wah, { |out, in, resLo = 200, resHi = 5000,
+	cutOffMoveFreq = 0.5, rq = 0.1, amp = 1, mix = 1|
+	var sig, inSig = In.ar(in, 2);
+	sig = RLPF.ar(
+		inSig,
+		LinExp.kr(LFDNoise3.kr(cutOffMoveFreq), -1, 1, resLo, resHi),
+		rq,
+		amp
+	).softclip;
+	Out.ar(out, (1 - mix) * inSig + (sig * mix));
+}).add;
+
+SynthDef(\noise_grain, { |out = 0, freq = 400, att = 0.005, rel = 0.1, rq = 0.1, amp = 0.1|
+	var sig = { WhiteNoise.ar } ! 2;
+	sig = BPF.ar(sig, freq, rq) *
+		EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2) *
+		(rq ** -1) * (250 / (freq ** 0.8));
+	OffsetOut.ar(out, sig);
+}).add;
+
+SynthDef(\sin_grain, { |out = 0, freq = 400, att = 0.005, rel = 0.1, amp = 0.1|
+	var sig = { SinOsc.ar(freq, Rand(0, 2pi)) } ! 2;
+	sig = sig * EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2);
+	OffsetOut.ar(out, sig);
+}).add;
+	
+SynthDef(\saw_grain, { |out = 0, freq = 400, att = 0.005, rel = 0.1, amp = 0.1|
+	var sig = { VarSaw.ar(freq, Rand(0, 1)) } ! 2;
+	sig = sig * EnvGen.ar(Env.perc(att, rel, amp), doneAction: 2);
+	OffsetOut.ar(out, sig);
+}).add;
+)
+
+// prepare EventShortcuts for additional keys
+
+(
+EventShortcuts.addOnBase(\default, \fxs, (
+	dec: \decayTime,
+	cd: \cleanupDelay,
+	cf: \cutOffMoveFreq,
+	fxo: \fxOrder,
+	dta: \echoDelta
+), true);
+
+EventShortcuts.makeCurrent(\fxs);
+
+EventShortcuts.on;
+)
+
+
+(
+// source and fxs passed as PLbindefs
+
+k = [\q, \echo, \wah];
+
+PLbindef(\q,
+	\i, PLrand([\noise_grain, \saw_grain]),
+	\d, 0.25,
+	\m, PLseq([60, 60, 60, 62]),
+	\fxo, PLseq([0, 0, 1, 2]),
+	// echo introduces delay, so do delay if no echo
+	\lag, Pfunc { |e| e.fxo.asArray.includes(1).if { 0 }{ 0.2 } },
+	\a, 0.1,
+	\att, 0.01,
+	\rel, 0.1,
+
+	\cd, Pkey(\att)+ Pkey(\rel) + 0.001
+);
+
+PLbindef(\echo,
+	\fx, \echo,
+	\dta, 0.06,
+	\a, 0.5,
+	\dec, Pwhite(0.3, 1.8),
+	\cd, Pkey(\dec)
+);
+
+PLbindef(\wah,
+	\fx, \wah,
+	\cf, Pwhite(1, 3),
+	\a, 0.5,
+	\cd, 0.01
+);
+
+
+p = PbindFx(*k.collect(PLbindef(_))); // PbindFx(*(k.collect { |x| PLbindef(x) }));
+
+q = p.play;
+)
+
+
+
+// manipulate midinotes
+
+~q.m = ~q.m + PLseq([0, 12, -12])
+
+~q.m = ~q.m + PLrand([0, [0, -4]])
+
+~q.m = ~q.m + PLrand([0, [0, -7]])
+
+
+// rhythm
+
+~q.d = PLshufn([1, 1, 2, 1] / 8)
+
+
+// echo param and fx order sequence
+
+~echo.dta = Pwhite(0.03, 0.08)
+
+~q.fxo = PLseq([0, 0, 1, 2, 1, [1, 2]])
+
+
+
+~q.m = 48
+
+// produce overtone series with echodelta
+
+~echo.dta = 1 / 24.midicps / PLseq((1..16))
+
+
+// this also works in chords ("fx expansion")
+// source is processed twice per event
+
+~echo.dta = 1 / [24, 26.7].midicps / PLseq((1..16))
+
+
+
+// cleanup
+
+q.stop
+
+Pdef.removeAll
+::
+
+
+
+
+
+SUBSECTION::Ex.5) Passing a refEnvir
+
+code::
+// on occasion it might be desirable to control from a dedicated Environment
+
+Pdef.removeAll
+
+(
+PLbindef(\a,
+    \instrument, \sin_grain,
+    \dur, 0.2,
+    \midinote, Pwhite(60, 90),
+	e = ()
+)
+)
+
+e.use { ~a.play }
+
+e[\a].stop
+
+e.a.play
+
+e.a.stop
+
+e.a.remove
+::

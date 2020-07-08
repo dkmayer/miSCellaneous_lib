@@ -1,0 +1,367 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1348.17">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee; -webkit-text-stroke: #0000ee}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+p.p4 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+p.p5 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000; min-height: 14.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; color: #000000; -webkit-text-stroke: #000000}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; -webkit-text-stroke: #000000}
+p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00; -webkit-text-stroke: #cd1c00}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000; min-height: 14.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00; -webkit-text-stroke: #000000}
+p.p13 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; color: #cd1c00; -webkit-text-stroke: #000000}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0326cb; -webkit-text-stroke: #000000}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; -webkit-text-stroke: #cd1c00}
+span.s1 {font: 18.0px Helvetica; font-kerning: none}
+span.s2 {font-kerning: none}
+span.s3 {font-kerning: none; color: #000000; -webkit-text-stroke: 0px #000000}
+span.s4 {text-decoration: underline ; font-kerning: none; color: #0000ee; -webkit-text-stroke: 0px #0000ee}
+span.s5 {font: 9.0px Monaco; font-kerning: none}
+span.s6 {text-decoration: underline ; font-kerning: none; color: #042eee}
+span.s7 {text-decoration: underline ; font-kerning: none; color: #042eee; -webkit-text-stroke: 0px #042eee}
+span.s8 {font-kerning: none; color: #0326cb; -webkit-text-stroke: 0px #0326cb}
+span.s9 {font-kerning: none; -webkit-text-stroke: 0px #000000}
+span.s10 {font-kerning: none; color: #0326cb}
+span.s11 {font-kerning: none; color: #0433ff}
+span.s12 {font-kerning: none; color: #434ccb}
+span.s13 {font-kerning: none; color: #000000}
+span.s14 {font: 9.0px Monaco; font-kerning: none; color: #cd1c00; -webkit-text-stroke: 0px #cd1c00}
+span.s15 {font: 14.0px Helvetica; font-kerning: none; color: #000000}
+span.s16 {font: 14.0px Helvetica; font-kerning: none; color: #000000; -webkit-text-stroke: 0px #000000}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Dwalk<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><span class="s2"><b>demand rate ugen for (random) walks</b></span></p>
+<p class="p1"><span class="s2"><br>
+</span></p>
+<p class="p2"><span class="s3"><b>Part of:</b> <a href="../miSCellaneous.html"><span class="s4">miSCellaneous</span></a></span></p>
+<p class="p1"><span class="s2"><br>
+</span></p>
+<p class="p1"><span class="s2"><b>Inherits from: UGen</b></span></p>
+<p class="p1"><span class="s5"><br>
+</span><span class="s2">Dwalk can be used for general purposes in a way similar to Pwalk, but can also return data in a form, which is especially suited for usage with <a href="../ZeroXBufRd.html"><span class="s6">ZeroXBufRd</span></a>. A sequence of Integers (stepsPerDir) determines the number of consequential additions of numbers (stepWidth) before directional changes. Dwalk returns the current sum and, optionally, the current direction (plus or minus 1).</span></p>
+<p class="p1"><span class="s2"><br>
+</span></p>
+<p class="p1"><span class="s2">For buffer modulation with <a href="../ZeroXBufRd.html"><span class="s6">ZeroXBufRd</span></a> a stepWidth of 1 allows stepping through adjacent segments. There are two ways to achieve smooth directional changes of the read pointer: (1) at zero crossings of the original waveform together with inverting it or (2) at the positions where the waveform changes direction (up/down) or in other words: its slope crosses zero.</span></p>
+<p class="p1"><span class="s2"><br>
+<b>NOTE: </b>For implementational reasons Dwalk doesn't multichannel expand, use duplication of Functions instead.</span></p>
+<p class="p1"><span class="s2"><br>
+</span></p>
+<p class="p1"><span class="s2"><b>NOTE: </b>If withDirs is set to 1 and many values are polled, extended memory size is recommended: a high bufSize is needed for Dunique (as – and especially – with ZeroXBufRd).</span></p>
+<p class="p1"><span class="s2"><br>
+<b>NOTE: </b>Ordinary ugens for stepWidth and steps per direction (via stepsPerDirMulUGen and stepsPerDirAddUGen) should be avoided in combination with ZeroXBufRd.<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s2"><br>
+</span></p>
+<p class="p1"><span class="s2"><b>See also: </b><a href="../ZeroXBufRd.html"><span class="s7">ZeroXBufRd</span></a></span></p>
+<p class="p1"><span class="s2"><br>
+</span></p>
+<p class="p1"><span class="s2"><br>
+</span></p>
+<p class="p3"><span class="s2"><b>Creation / Class Methods</b></span></p>
+<p class="p3"><span class="s2"><br>
+</span></p>
+<p class="p4"><span class="s2"><b><span class="Apple-tab-span">	</span>*new (stepsPerDir = 1, stepWidth = 1, stepMode = 0, start = 0, lo = -inf, hi = inf,</b> <b>startDir = 1, dirChangeMode = 0,<span class="Apple-converted-space"> </span></b></span></p>
+<p class="p4"><span class="s2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>withDirs = 0, stepsPerDirMulUGen = 1, stepsPerDirAddUGen = 0, dUniqueBufSize = 1048576)</b></span></p>
+<p class="p5"><span class="s2"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p4"><span class="s2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new Dwalk object.</span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>stepsPerDir </b>- Integer or demand rate ugen determining the integer number of steps into one direction.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If withDirs equals 0 also an ordinary ugens might be passed. If withDirs equals 1 a Dunique is used internally,</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>in this case for passing an ordinary ugen alone or in combination with a demand rate ugen use<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>stepsPerDirMulUGen </b>or <b>stepsPerDirAddUGen.</b> Defaults to 1.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>stepWidth </b>- Number, demand rate or other ugen determining the step width. Defaults to 1.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>How <b>stepWidth</b> is interpreted in case of a demand rate or other ugen depends on the value of <b>stepMode</b>.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>An ordinary ugens should not be chosen when using Dwalk for ZeroXBufRd.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>stepMode </b>- Determines how <b>stepWidth</b> is interpreted in case of a demand rate or other ugen<b>:</b></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0 – one step width is taken for all steps into one direction</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1 – step width changes per step.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 0.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>start </b>- The start value, which is returned anyway. Defaults to 0.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>lo </b>- Low boundary value, causes clipping. Directional changes apply after clipping.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Might also be demand rate or other ugen, defaults to -inf.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>hi </b>- High boundary value, causes clipping. Directional changes apply after clipping.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Might also be demand rate or other ugen, defaults to inf.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>startDir </b>- The start direction, which is returned anyway. Defaults to 1.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>dirChangeMode </b>- Determines if directional changes should apply immediately (1) or<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>after a repetition of the current value (0, default). The latter corresponds to the convention of</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ZeroXBufRd: if a segment should be played in reverse direction, the index (the zeroX arg)</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>would stay the same whereas the direction (the dir arg) is multiplied with -1.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>withDirs </b>- 0, 1, false or true. Defaults to 0.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Determines if direction values (plus or minus 1) should be returned.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>In this case the result is an array of two demand rate ugens returning<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the summed numbers and the direction values.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If set to 1 a Dunique is used internally and <b>stepsPerDir </b>must not get an ordinary ugen.<span class="Apple-tab-span">	</span><span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>stepsPerDirMulUGen </b>- Ordinary ugen to be multiplied with <b>stepsPerDir</b>.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This option is only necessary in the case that <b>withDirs</b> equals 1 and<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>should not be used in combination with ZeroXBufRd.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The number of steps per direction is calculated by<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>stepsPerDir * stepsPerDirMulUGen + stepsPerDirAddUGen</b>.</span></p>
+<p class="p4"><span class="s2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Defaults to 1.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>stepsPerDirAddUGen </b>- Ordinary ugen to be added to <b>stepsPerDir</b>.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>This option is only necessary in the case that <b>withDirs</b> equals 1 and<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>should not be used in combination with ZeroXBufRd.</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The number of steps per direction is calculated by<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>stepsPerDir * stepsPerDirMulUGen + stepsPerDirAddUGen</b>.</span></p>
+<p class="p4"><span class="s2"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Defaults to 0.<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p4"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>dUniqueBufSize </b>- Determines the buffer size for a Dunique object which has to be used in case</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>that <b>withDirs </b>is set to 1. Defaults to 1048576.<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span></p>
+<p class="p5"><span class="s2"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p7"><span class="s2"><b>Examples</b></span></p>
+<p class="p8"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2">(</span></p>
+<p class="p10"><span class="s2">// boot with extended resources</span></p>
+<p class="p10"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2">s = </span><span class="s8">Server</span><span class="s2">.local;</span></p>
+<p class="p9"><span class="s8">Server</span><span class="s2">.default = s;</span></p>
+<p class="p9"><span class="s2">s.options.memSize = 8192 * 32;<span class="Apple-converted-space"> </span></span></p>
+<p class="p9"><span class="s2">s.reboot;</span></p>
+<p class="p9"><span class="s2">)</span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span></span></p>
+<p class="p4"><span class="s2"><br>
+</span></p>
+<p class="p7"><span class="s2"><b>Ex.1) Basic usage</b></span></p>
+<p class="p5"><span class="s2"><span class="Apple-tab-span">	</span></span></p>
+<p class="p10"><span class="s9">// dirChangeMode == 1 (immediate direction change)</span><span class="s3"><br>
+</span><span class="s2">// note that here we get two resulting sequences (withDirs == 1):</span></p>
+<p class="p10"><span class="s2">// the actual number sequence and the sequence of directions (+-1)</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p12"><span class="s2">// stepsPerDir sequence:<span class="Apple-converted-space"> </span></span></p>
+<p class="p12"><span class="s2">// 1, 2, 3, 1, 2, 3, 1...</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p12"><span class="s2">// step sequence with default stepWidth == 1:<span class="Apple-converted-space"> </span></span></p>
+<p class="p12"><span class="s2">// 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, ...<br>
+</span></p>
+<p class="p12"><span class="s2">// resulting number sequence:<span class="Apple-converted-space"> </span></span></p>
+<p class="p12"><span class="s2">// 0, 1, 0, -1, 0, 1, 2, 1, 2, 3, 2, 1, 0, 1, ...<br>
+</span></p>
+<p class="p9"><span class="s2">(</span></p>
+<p class="p9"><span class="s2">{</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span>var x = Dwalk(Dseq([1, 2, 3], inf), dirChangeMode: 1, withDirs: 1);</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s10">Duty</span><span class="s2">.ar(</span><span class="s10">SampleDur</span><span class="s2">.ir, 0, x)</span></p>
+<p class="p9"><span class="s2">}.plot(0.002)</span></p>
+<p class="p9"><span class="s2">)</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p1"><span class="s2"><br>
+</span></p>
+<p class="p13"><span class="s2">// For usage with ZeroXBufRd the dirChangeMode flag needs to be set to 0 (default)</span></p>
+<p class="p12"><span class="s2">// in order to avoid jumps in the resulting waveform<span class="Apple-converted-space"> </span></span></p>
+<p class="p11"><span class="s2"><span class="Apple-tab-span">	</span></span></p>
+<p class="p10"><span class="s2">// Let's regard how such a sequence looks like</span></p>
+<p class="p9"><span class="s2"><br>
+(</span></p>
+<p class="p9"><span class="s2">{</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span>var x = Dwalk(Dseq([1, 2, 3], inf), withDirs: 1);</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s10">Duty</span><span class="s2">.ar(</span><span class="s10">SampleDur</span><span class="s2">.ir, 0, x)</span></p>
+<p class="p9"><span class="s2">}.plot(0.002)</span></p>
+<p class="p9"><span class="s2">)</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p12"><span class="s2">// It might be counterintuitive that the number sequence starts with two 0s,</span></p>
+<p class="p12"><span class="s2">// but it makes sense if we regard the input and the definition:</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p12"><span class="s2">// stepsPerDir sequence:<span class="Apple-converted-space"> </span></span></p>
+<p class="p12"><span class="s2">// 1, 2, 3, 1, 2, 3, 1...</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p12"><span class="s2">// step sequence with default stepWidth == 1:<span class="Apple-converted-space"> </span></span></p>
+<p class="p12"><span class="s2">// 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, ...<br>
+</span></p>
+<p class="p10"><span class="s2">// The start value (which is always returned) defaults to 0,<span class="Apple-converted-space"> </span></span></p>
+<p class="p10"><span class="s2">// for the next value to return, a directional change in the step sequence is encountered,</span></p>
+<p class="p10"><span class="s2">// because of dirChangeMode 0 again 0 is returned.</span></p>
+<p class="p10"><span class="s2">// The next step is -1, which is no change in direction, thus -1 is effectively added and returned.</span></p>
+<p class="p10"><span class="s2">// Then the direction is changed to 1, so -1 is returned once more – and so on.</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p12"><span class="s2">// resulting number sequence:<span class="Apple-converted-space"> </span></span></p>
+<p class="p12"><span class="s2">// 0, 0, -1, -1, 0, 1, 1, 1, 2, 2, 1, 0, 0, 0, -1, -1, ...<br>
+</span></p>
+<p class="p12"><span class="s2"><br>
+</span></p>
+<p class="p12"><span class="s2">//////////////////////////////////////////////////////////</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p12"><span class="s2">// changing stepWidth with default stepMode 0:</span></p>
+<p class="p12"><span class="s2">// slopes vary, but stay the same within one direction</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2">(</span></p>
+<p class="p9"><span class="s2">{</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s11">var</span><span class="s2"> x = </span><span class="s10">Dwalk</span><span class="s2">(</span><span class="s10">Dseq</span><span class="s2">([1, 2, 3], </span><span class="s12">inf</span><span class="s2">), </span><span class="s10">Dwhite</span><span class="s2">(0.1, 0.5), dirChangeMode: 1);</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s10">Duty</span><span class="s2">.ar(</span><span class="s10">SampleDur</span><span class="s2">.ir, 0, x)</span></p>
+<p class="p9"><span class="s2">}.plot(0.002)</span></p>
+<p class="p9"><span class="s2">)</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p12"><span class="s2">// changing stepWidth with default stepMode 1:</span></p>
+<p class="p12"><span class="s2">// slopes can vary also within one direction</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2">(</span></p>
+<p class="p9"><span class="s2">{</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s11">var</span><span class="s2"> x = </span><span class="s10">Dwalk</span><span class="s2">(</span><span class="s10">Dseq</span><span class="s2">([1, 2, 3], </span><span class="s12">inf</span><span class="s2">), </span><span class="s10">Dwhite</span><span class="s2">(0.1, 0.5), stepMode: 1, dirChangeMode: 1);</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s10">Duty</span><span class="s2">.ar(</span><span class="s10">SampleDur</span><span class="s2">.ir, 0, x)</span></p>
+<p class="p9"><span class="s2">}.plot(0.002)</span></p>
+<p class="p9"><span class="s2">)</span></p>
+<p class="p9"><span class="s2"><br>
+<br>
+</span></p>
+<p class="p12"><span class="s2">// also ordinary ugens might be passed to stepWidth ...</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2">(</span></p>
+<p class="p9"><span class="s2">{</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s11">var</span><span class="s2"> x = </span><span class="s10">Dwalk</span><span class="s2">(</span><span class="s10">Dseq</span><span class="s2">([1, 2, 3], </span><span class="s12">inf</span><span class="s2">), </span><span class="s10">SinOsc</span><span class="s2">.ar(1000).range(0.1, 1), dirChangeMode: 1);</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s10">Duty</span><span class="s2">.ar(</span><span class="s10">SampleDur</span><span class="s2">.ir, 0, x)</span></p>
+<p class="p9"><span class="s2">}.plot(0.003)</span></p>
+<p class="p9"><span class="s2">)</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p12"><span class="s2">// ... or to stepsPerDir, but note that it must be an integer (or will be rounded to one),</span></p>
+<p class="p12"><span class="s2">// quantisation can lead to surprising patterns</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2">(</span></p>
+<p class="p9"><span class="s2">{</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s11">var</span><span class="s2"> x = </span><span class="s10">Dwalk</span><span class="s2">(</span><span class="s10">SinOsc</span><span class="s2">.ar(1000).range(1, 5), dirChangeMode: 1);</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s10">Duty</span><span class="s2">.ar(</span><span class="s10">SampleDur</span><span class="s2">.ir, 0, x)</span></p>
+<p class="p9"><span class="s2">}.plot(0.1)</span></p>
+<p class="p9"><span class="s2">)</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2">(</span></p>
+<p class="p9"><span class="s2">{</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s11">var</span><span class="s2"> x = </span><span class="s10">Dwalk</span><span class="s2">(</span><span class="s10">SinOsc</span><span class="s2">.ar(1001).range(1, 5), dirChangeMode: 1);</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s10">Duty</span><span class="s2">.ar(</span><span class="s10">SampleDur</span><span class="s2">.ir, 0, x)</span></p>
+<p class="p9"><span class="s2">}.plot(0.1)</span></p>
+<p class="p9"><span class="s2">)</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p12"><span class="s2">// special case of an ordinary ugen involved in determining the steps per direction plus withDirs set to 1:</span></p>
+<p class="p12"><span class="s2">// in this case internally a Dunique is used which must not get an ordinary ugen input,</span></p>
+<p class="p12"><span class="s2">// hence the arguments stepsPerDirMulUGen and stepsPerDirAddUGen must be used.</span><span class="s13"><br>
+</span></p>
+<p class="p9"><span class="s2">(</span></p>
+<p class="p9"><span class="s2">{</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s11">var</span><span class="s2"> x = </span><span class="s10">Dwalk</span><span class="s2">(stepsPerDirMulUGen: </span><span class="s10">SinOsc</span><span class="s2">.ar(1000).range(1, 5).round, dirChangeMode: 1, withDirs: 1);</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s10">Duty</span><span class="s2">.ar(</span><span class="s10">SampleDur</span><span class="s2">.ir, 0, x)</span></p>
+<p class="p9"><span class="s2">}.plot(0.1)</span></p>
+<p class="p9"><span class="s2">)</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p3"><span class="s14"><br>
+</span><span class="s2"><b>Ex.2) Stochastic synthesis</b></span></p>
+<p class="p12"><span class="s15"><br>
+</span><span class="s2">// similar to DemandEnvGen Dwalk can be used for stochastic synthesis textures<span class="Apple-converted-space"> </span></span></p>
+<p class="p12"><span class="s2"><br>
+</span></p>
+<p class="p12"><span class="s2">// LeakDC recommended, though it obfuscates the original waveform</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2">(</span></p>
+<p class="p9"><span class="s2">y = {</span></p>
+<p class="p9"><span class="s2"><span class="Apple-converted-space">    </span></span><span class="s11">var</span><span class="s2"> x = {</span></p>
+<p class="p14"><span class="s13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">Dwalk</span><span class="s13">(</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s10">Dstutter</span><span class="s2">(</span><span class="s10">Dwhite</span><span class="s2">(1, 10), </span><span class="s10">Dwhite</span><span class="s2">(5, 50)),</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.01,</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>lo: -1,</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>hi: 1</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>) } ! 2;</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s10">LeakDC</span><span class="s2">.ar(</span><span class="s10">Duty</span><span class="s2">.ar(</span><span class="s10">SampleDur</span><span class="s2">.ir, 0, x)) * 0.5</span></p>
+<p class="p9"><span class="s2">}.play</span></p>
+<p class="p9"><span class="s2">)</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2">y.release</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2">(</span></p>
+<p class="p9"><span class="s2">y = {</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s11">var</span><span class="s2"> x = {</span></p>
+<p class="p14"><span class="s13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">Dwalk</span><span class="s13">(</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s10">Dstutter</span><span class="s2">(</span><span class="s10">Dwhite</span><span class="s2">(3, 10), </span><span class="s10">Drand</span><span class="s2">((1..200), </span><span class="s12">inf</span><span class="s2">)),</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s10">Dstutter</span><span class="s2">(</span><span class="s10">Dstutter</span><span class="s2">(5, </span><span class="s10">Dwhite</span><span class="s2">(1, 30)), </span><span class="s10">Dseq</span><span class="s2">((1..70) ** 2, </span><span class="s12">inf</span><span class="s2">) / 30000),</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>lo: -1,</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>hi: 1</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>) } ! 2;</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s10">LeakDC</span><span class="s2">.ar(</span><span class="s10">Duty</span><span class="s2">.ar(</span><span class="s10">SampleDur</span><span class="s2">.ir, 0, x)) * 0.3</span></p>
+<p class="p9"><span class="s2">}.play</span></p>
+<p class="p9"><span class="s2">)</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2">y.release</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p12"><span class="s2">// glitchy</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2">(</span></p>
+<p class="p9"><span class="s2">y = {</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s11">var</span><span class="s2"> x = {</span></p>
+<p class="p14"><span class="s13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s2">Dwalk</span><span class="s13">(</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s10">Dstutter</span><span class="s2">(</span><span class="s10">Dwhite</span><span class="s2">(3, 10), </span><span class="s10">Drand</span><span class="s2">((1..200), </span><span class="s12">inf</span><span class="s2">)),</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s10">Dstutter</span><span class="s2">(</span><span class="s10">Dstutter</span><span class="s2">(5, </span><span class="s10">Dwhite</span><span class="s2">(1, 30)), </span><span class="s10">Dseq</span><span class="s2">((1..70) ** 2, </span><span class="s12">inf</span><span class="s2">) / 30000),</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>lo: </span><span class="s10">SinOsc</span><span class="s2">.ar(0.1).range(-1, 0),</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>hi: </span><span class="s10">Dstutter</span><span class="s2">(</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s10">Drand</span><span class="s2">([</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s10">Dstutter</span><span class="s2">(</span><span class="s10">Dwhite</span><span class="s2">(10, 15), </span><span class="s10">Drand</span><span class="s2">([</span><span class="s10">Dseq</span><span class="s2">((200..1)), </span><span class="s10">Dseq</span><span class="s2">((150..1))], </span><span class="s12">inf</span><span class="s2">)),</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s10">Dwhite</span><span class="s2">(5000, 40000, 1)</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>], </span><span class="s12">inf</span><span class="s2">),</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s10">Dseq</span><span class="s2">([0, 1], </span><span class="s12">inf</span><span class="s2">)</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>)</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>) } ! 2;</span></p>
+<p class="p9"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s10">LeakDC</span><span class="s2">.ar(</span><span class="s10">Duty</span><span class="s2">.ar(</span><span class="s10">SampleDur</span><span class="s2">.ir, 0, x)) * 0.3</span></p>
+<p class="p9"><span class="s2">}.play</span></p>
+<p class="p9"><span class="s2">)</span></p>
+<p class="p9"><span class="s2"><br>
+</span></p>
+<p class="p9"><span class="s2">y.release</span></p>
+<p class="p15"><span class="s2"><br>
+</span></p>
+<p class="p3"><span class="s14"><br>
+</span><span class="s2"><b>Ex.3) Smooth concatenation of adjacent wavesets</b></span></p>
+<p class="p10"><span class="s16"><br>
+</span><span class="s2">// See ZeroXBufRd help, Ex. 9</span></p>
+<p class="p3"><span class="s2"><br>
+<br>
+</span></p>
+<p class="p3"><span class="s2"><b>Ex.4) Smooth concatenation of adjacent segments restricted by turning points resp. local minima or maxima</b></span></p>
+<p class="p12"><span class="s15"><br>
+</span><span class="s2">// See ZeroXBufRd help, Ex. 10</span></p>
+<p class="p3"><span class="s2"><br>
+</span></p>
+<p class="p7"><span class="s2"><br>
+</span></p>
+</body>
+</html>

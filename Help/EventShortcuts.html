@@ -1,0 +1,322 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0326cb}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #008300}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0433ff}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #006cff}
+span.s5 {text-decoration: underline ; color: #042eee}
+span.s6 {color: #0223bf}
+span.s7 {color: #008300}
+span.s8 {color: #0326cb}
+span.s9 {color: #cd1c00}
+span.s10 {color: #434ccb}
+span.s11 {text-decoration: underline ; color: #0000ee}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>EventShortcuts<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>holds default and user-defined dictionaries of shortcuts for events and event patterns<span class="Apple-converted-space"> </span></b><span class="s1"><b><span class="Apple-tab-span">	</span></b></span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Object</b></p>
+<p class="p4"><br></p>
+<p class="p1">Container for dictionaries of shortcuts for the event framework, which can be defined by the user. Shortcuts might be for event keywords or any other (e.g. synth args). At every time one shortcut dictionary is current, but it's only active if EventShortcuts is turned on. Dictionaries are encapsulated and can only be accessed via copies and posting to prevent unintended changes. For event keywords see James Harkins' Practical Guide to Patterns (especially chapters <a href="sc://PG_07_Value_Conversions.html"><span class="s4">PG_07_Value_Conversions</span></a> and <a href="sc://PG_08_Event_Types_and_Parameters.html"><span class="s4">PG_08_Event_Types_and_Parameters</span></a>).</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>See also:</b> <a href="Other event and pattern shortcuts.html"><span class="s3">Other event and pattern shortcuts</span></a>, <a href="PLx and live coding with Strings.html"><span class="s5">PLx and live coding with Strings</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Some Important Issues</b></p>
+<p class="p2"><br></p>
+<p class="p1">Implementation of shortcuts works like this: if you don't turn EventShortcuts on at all, nothing is changed in the event framework – if you turn it on a mapping function is prepended to every event type function, if this has not been done before in this session and the event type function hasn't been newly defined since last prepending – if you turn it off the prepended function is still there, but does no mapping.<span class="Apple-converted-space"> </span></p>
+<p class="p1">Therfore shortcuts won't work automatically after new definitions of event types. You'd have to turn EventShortcuts on again or apply the method <b>prefixEventTypes</b>. Quite obviously, switching between different shortcut dictionaries might cause a mess while playing (or pausing and resuming) patterns with these shortcuts. But these are exceptional cases, a typical usage would be defining your personal shortcut dictionary (e.g. in the startup file), turning EventShortcuts on and playing therewith, then maybe turning it off and on again on occasion.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>Some pattern classes (e.g. Ppar) don't work correctly with EventShortcuts, but this can be circumvented by applying shortcuts to source event patterns before, see method Pattern::eventShortcuts.</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*add (name, dict, overwrite)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Adds a new named IdentityDictionary of shortcuts.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>name </b>- Symbol or String.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>dict </b>- IdentityDictionary of abbreviations (keys given as Symbols) and original names (values given as Symbols).</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>overwrite </b>- Boolean. Determines if a shortcut dictionary of that name – if existing at all – is overwritten. Defaults to false.</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*addOnBase (baseName, newName, dict, overwrite)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Adds a new named IdentityDictionary of shortcuts based on the copy of an existing one.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>baseName </b>- Symbol or String. Name of the shortcut dictionary to build upon.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>newName </b>- Symbol or String. Name of the new shortcut set.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>dict </b>- IdentityDictionary of new or/and additional abbreviations (keys given as Symbols)<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>and original names (values given as Symbols).</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>overwrite </b>- Boolean. Determines if a shortcut dictionary of that name – if existing at all – is overwritten. Defaults to false.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>Attention: overwrite</b> only determines overwriting of an old dictionary of the same name. It doesn't influence</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the overwriting in the copy of the base dictionary itself, as exactly this is a main aim of the method</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(you might want to replace the association 's'-&gt; 'strum' by 's' -&gt; 'server').</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*remove (name)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Removes a named IdentityDictionary of that name.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>name </b>- Symbol or String.</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*removeAll</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Removes all IdentityDictionaries except \default.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*copyDict (name)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Returns a copy of a shortcut dictionary of that name (if stored).</p>
+<p class="p8"><br></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>name </b>- Symbol or String.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*copyCurrentDict (name)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Returns a copy of the current shortcut dictionary of that name.</p>
+<p class="p8"><br></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>name </b>- Symbol or String.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*copyAllDicts</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Returns an IdentityDictionary of copies of all stored shortcut dictionaries.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*post (name)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Posts the shortcut dictionary of that name (if stored).</p>
+<p class="p8"><br></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>name </b>- Symbol or String.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*postCurrent</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Posts the current shortcut dictionary.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*postAll</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Posts all shortcut dictionaries.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*makeCurrent (name)</b></p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Makes the shortcut dictionary of that name current (if stored).<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>name </b>- Symbol or String.</p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*on</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Turns on the shortcut mechanism, making it ready for events / patterns to be played.</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Also invokes <b>prefixEventTypes</b>.</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*off</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Turns the shortcut mechanism off.</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*prefixEventTypes</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Puts the remapping function before all event type functions. Therefore a newly defined event type won't work</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>with shortcuts before this has been called (directly or via <b>on</b>).</p>
+<p class="p8"><br></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*current</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Returns the Symbol of the current shortcut dictionary.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*dictNames</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Returns the Symbols of all shortcut dictionaries.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*state</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Returns the current state (\on or \off).</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p8"><br></p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><b>Examples</b></p>
+<p class="p6"><br></p>
+<p class="p4"><br></p>
+<p class="p11">(</p>
+<p class="p11">s = <span class="s6">Server</span>.local;</p>
+<p class="p11"><span class="s6">Server</span>.default = s;</p>
+<p class="p11">s.boot;</p>
+<p class="p11">)</p>
+<p class="p6"><br></p>
+<p class="p8"><br></p>
+<p class="p12">// turn shortcuts on</p>
+<p class="p8"><br></p>
+<p class="p13">EventShortcuts<span class="s2">.on</span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p12">// post all, right now only \default exists</p>
+<p class="p4"><br></p>
+<p class="p13">EventShortcuts<span class="s2">.postAll</span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p12">// play an Event with midinote 70</p>
+<p class="p4"><br></p>
+<p class="p11">(m: 70).play</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p12">// play a Pbind</p>
+<p class="p4"><br></p>
+<p class="p11">(</p>
+<p class="p13">Pbind<span class="s2">(</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="s7">\m</span>, <span class="s8">Pwhite</span>(60, 90, 20) + [0, -7],<span class="Apple-tab-span">	</span><span class="s9">// midinote</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="s7">\p</span>, <span class="s8">Pwhite</span>(-1.0, 1), <span class="s9">// pan</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s7">\l</span><span class="s2">, 3, <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// legato</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="s7">\s</span>, 0.1,<span class="Apple-tab-span">	</span><span class="s9">// strum</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="s7">\d</span>, 0.5<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">// dur</span></p>
+<p class="p11">).play</p>
+<p class="p11">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p12">// define new dictionary based on \default with two different shortcuts</p>
+<p class="p4"><br></p>
+<p class="p14"><span class="s8">EventShortcuts</span><span class="s2">.addOnBase(</span>\default<span class="s2">, </span>\mine<span class="s2">, (s: </span>\scale<span class="s2">, t: </span>\ctranspose<span class="s2">))</span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p12">// it isn't current yet, make it<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">EventShortcuts</span>.makeCurrent(<span class="s7">\mine</span>)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p12">// play Pbind with new shortcuts, using key/value notation here</p>
+<p class="p4"><br></p>
+<p class="p11">(</p>
+<p class="p11">p = <span class="s8">Pbind</span>(*[</p>
+<p class="p11"><span class="Apple-tab-span">	</span>de: <span class="s8">Prand</span>([[0, 1, 26, 27], [-6, 4, 10], [0, 8, 14]], <span class="s10">inf</span>),<span class="Apple-tab-span">	</span><span class="s9">// degree</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>t: <span class="s8">Pwhite</span>(0, 1) + <span class="s8">Pwrand</span>([0, -10, 10], [0.9, 0.05, 0.05], 200), <span class="s9">// ctranspose</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>d: 0.2,<span class="Apple-converted-space">  <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s9">// dur</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>s: <span class="s8">Scale</span>.chromatic24<span class="Apple-tab-span">	</span><span class="s9">// scale</span></p>
+<p class="p11">]).play</p>
+<p class="p11">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p12">// define a SynthDef</p>
+<p class="p4"><br></p>
+<p class="p11">(</p>
+<p class="p15"><span class="s8">SynthDef</span><span class="s2">(</span><span class="s7">\test</span><span class="s2">, { </span>|out = 0, freq = 440, width = 0.5, amp = 0.05, gate = 1,<span class="Apple-converted-space"> </span></p>
+<p class="p15"><span class="Apple-tab-span">	</span>att = 0.05, rel = 1, pan = 0|</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="s8">Out</span>.ar(out, <span class="s8">Pan2</span>.ar(<span class="s8">Pulse</span>.ar(freq, width, amp), pan) *<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">EnvGen</span>.ar(<span class="s8">Env</span>.asr(att, 1, rel), gate, doneAction:2)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>)</p>
+<p class="p11">}).add</p>
+<p class="p11">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p12">// you can also define shortcuts for synthdef args<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p11">(</p>
+<p class="p11"><span class="s8">EventShortcuts</span>.addOnBase(<span class="s7">\mine</span>, <span class="s7">\mine</span>, (w: <span class="s7">\width</span>, r: <span class="s7">\rel</span>), <span class="s10">true</span>);</p>
+<p class="p11"><span class="s8">EventShortcuts</span>.makeCurrent(<span class="s7">\mine</span>);</p>
+<p class="p11">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p11">(</p>
+<p class="p13">Pbind<span class="s2">(*[</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span>i: </span><span class="s7">\test</span><span class="s2">, <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// instrument</p>
+<p class="p11"><span class="Apple-tab-span">	</span>n: <span class="s8">Prand</span>([0, 4, 7], <span class="s10">inf</span>), <span class="Apple-tab-span">	</span><span class="s9">// note<span class="Apple-converted-space"> </span></span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>o: <span class="s8">Pwhite</span>(5, 6), <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">// octave</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span>dt: </span><span class="s8">Pwhite</span><span class="s2">(0, 20),<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// detune (in cent)</p>
+<p class="p11"><span class="Apple-tab-span">	</span>l: 0.2,<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">// legato</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>d: 0.2,<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">// dur</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>w: <span class="s8">Pseq</span>((5, 10..40)/100, 4),<span class="Apple-tab-span">	</span><span class="s9">// width (synth arg)</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>r: <span class="s8">Pseq</span>([0.1, 0.5], <span class="s10">inf</span>),<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">// rel (synth arg)</span></p>
+<p class="p11">]).play</p>
+<p class="p11">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p12">// works also with other event patterns: Pmono, PmonoArtic, Pbindef</p>
+<p class="p4"><br></p>
+<p class="p11">(</p>
+<p class="p14"><span class="s8">Pmono</span><span class="s2">(</span>\default<span class="s2">, *[</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>d: 0.03,<span class="Apple-tab-span">	</span><span class="s9">// dur</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>a: 0.3,<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">// amp</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>dt: <span class="s8">Pseq</span>([0, 10], <span class="s10">inf</span>),<span class="Apple-converted-space">  </span><span class="s9">// detune in Hz</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>p: <span class="s8">Pseq</span>((-100, -95..100)/100, 1)<span class="Apple-converted-space">  </span><span class="s9">// pan</span></p>
+<p class="p11">]).play</p>
+<p class="p11">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p12">// further shortcuts for playing events and patterns are collected here: <a href="Other event and pattern shortcuts.html"><span class="s11">Other event and pattern shortcuts</span></a></p>
+<p class="p12">// e.g. you can directly play a Pbind derived from an Array:</p>
+<p class="p4"><br></p>
+<p class="p11">(</p>
+<p class="p11">[</p>
+<p class="p11"><span class="Apple-tab-span">	</span>n: <span class="s8">Pshuf</span>((1..12)), <span class="s9">// note<span class="Apple-converted-space"> </span></span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>d: 0.5, <span class="s9">// dur</span></p>
+<p class="p12"><span class="s2"><span class="Apple-tab-span">	</span>l: 3,<span class="Apple-tab-span">	</span></span>// legato<span class="Apple-converted-space"> </span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>o: <span class="s8">Pwhite</span>(4, 7) <span class="s9">// octave</span></p>
+<p class="p11">].pp</p>
+<p class="p11">)</p>
+<p class="p4"><br></p>
+<p class="p12">// also possible with Pbindef, though you shouldn't change current shortcut</p>
+<p class="p12">// if you still want to refer later on to a Pbindef defined before the change</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">(</p>
+<p class="p13">Pbindef<span class="s2">(</span><span class="s7">\x</span><span class="s2">, *[</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>d: <span class="s8">Prand</span>([1,1,2]/5, <span class="s10">inf</span>), <span class="Apple-tab-span">	</span><span class="s9">// dur</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>m: <span class="s8">Pwhite</span>(50, 80),<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s9">// midinote</span></p>
+<p class="p11"><span class="Apple-tab-span">	</span>ct: <span class="s8">Prand</span>([[0, 4], [0, 5]], <span class="s10">inf</span>) <span class="s9">// ctranspose</span></p>
+<p class="p11">]).play</p>
+<p class="p11">)</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">Pbindef</span>(<span class="s7">\x</span>, <span class="s7">\d</span>, <span class="s8">Prand</span>([1,1,1,2,3]/7, <span class="s10">inf</span>))</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">Pbindef</span>(<span class="s7">\x</span>, <span class="s7">\ct</span>, [0, 5, 8, 13, 16])</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">Pbindef</span>(<span class="s7">\x</span>).stop;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p12">// turns off and ensures that default shortcuts are active when EventShortcuts is<span class="Apple-converted-space"> </span></p>
+<p class="p12">// turned on next time in this session<span class="Apple-converted-space"> </span></p>
+<p class="p4"><br></p>
+<p class="p11">(</p>
+<p class="p13">EventShortcuts<span class="s2">.off;</span></p>
+<p class="p11"><span class="s8">EventShortcuts</span>.makeCurrent(<span class="s7">\default</span>);</p>
+<p class="p11">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+</body>
+</html>

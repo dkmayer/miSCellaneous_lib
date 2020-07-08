@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Helvetica; min-height: 11.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0326cb}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #0000ee}
+span.s5 {color: #00afff}
+span.s6 {text-decoration: underline ; color: #042eee}
+span.s7 {color: #0326cb}
+span.s8 {color: #008300}
+span.s9 {color: #434ccb}
+span.s10 {color: #ff7c00}
+span.s11 {color: #cd1c00}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>PmonoPar<span class="Apple-tab-span">	</span></b></span><b><span class="Apple-tab-span">	</span>monophonic event pattern for an arbitrary number of timed setting streams<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Inherits from: Plazy</b></p>
+<p class="p5"><br></p>
+<p class="p4"><b>See also: </b><a href="Pmono.html"><span class="s4">Pmono</span></a><span class="s5">, <a href="PpolyPar.html"><span class="s6">PpolyPar</span></a>, <a href="PbindFx.html"><span class="s6">PbindFx</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p4">This is similar to Pmono, but allows an arbitrary number of differently timed setting streams in parallel.</p>
+<p class="p2"><br></p>
+<p class="p4"><b>History:</b> PmonoPar and PpolyPar grew out of discussions on sc-users list, based on an example by Jonatan Liljedahl. Thanks to him, Ron Kuivila, user Monsieur and others for their comments on this – I then suggested classes PsetGroup and PsetFxGroup, which internally use Pgroup. Meanwhile I reworked the implementation, but it's still based on groups. I renamed PsetGroup to PmonoPar – as this makes the functionality more clear – and PsetFxGroup to PpolyPar, as it can be used with or without effect synths, the crucial point is the setting of parallel streams.</p>
+<p class="p2"><br></p>
+<p class="p6"><b>Creation / Class Methods</b></p>
+<p class="p7"><br></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span>*new (setPatternPairs, defname, offset)<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p9"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new PmonoPar object.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>setPatternPairs </b>- SequenceableCollection of SequenceableCollections containing key/value pairs.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Each of the inner collections represents the data of one synth setting stream.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Per convention key/value pairs written after a pair with \dur will cause setting, pairs before will not.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If keys \midinote, \note or \degree are occuring after \dur, they will be converted to a frequency value,</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>which will be used for setting the arg 'freq'.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>defname </b>- Symbol or String. Name of the SynthDef to be used for the synth being set.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to \default.</p>
+<p class="p10"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>offset </b>- Number. Offset to be taken for time-shifting synth init and streams. Defaults to 1e-6.</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><br></p>
+<p class="p12"><b>Examples</b></p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p13">s = <span class="s7">Server</span>.local;</p>
+<p class="p13"><span class="s7">Server</span>.default = s;</p>
+<p class="p13">s.boot;</p>
+<p class="p13">)</p>
+<p class="p7"><br></p>
+<p class="p5"><br></p>
+<p class="p12"><b>Ex. 1a:<span class="Apple-tab-span">	</span>PmonoPar with differently timed streams</b></p>
+<p class="p14"><br></p>
+<p class="p15">// per convention keys after \dur are the ones to be set</p>
+<p class="p15">// playing ends after end of last stream</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p16"><span class="s2">p = </span>PmonoPar<span class="s2">([</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 1.0,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\pan</span>, <span class="s7">Pser</span>([-0.9, 0, 0.9], 8) <span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 0.4,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\freq</span>, <span class="s7">Pexprand</span>(300, 1000, 24)<span class="Apple-converted-space">   </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 0.2,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, <span class="s7">Pseq</span>([0.05, 0.3], 30) <span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>]</p>
+<p class="p13">]).trace.play;</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p12"><b>Ex. 1b:<span class="Apple-tab-span">	</span>Passing values by using the value conversion framework</b></p>
+<p class="p14"><br></p>
+<p class="p15">// if \degree, \note or \midinote are occuring after \dur,</p>
+<p class="p15">// a frequency value will be calculated according to Event's usual conversion framework</p>
+<p class="p15">// and used for setting the arg 'freq'.</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p16"><span class="s2">p = </span>PmonoPar<span class="s2">([</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 1.0,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\pan</span>, <span class="s7">Pser</span>([-0.9, 0, 0.9], 8) <span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 0.4,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">Pseq</span>((70..75), 7)</p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, 0.2,</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, <span class="s7">Pseq</span>([0.05, 0.3], 30) <span class="Apple-converted-space"> </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>]</p>
+<p class="p13">]).trace.play;</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p12"><b>Ex. 2:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Data sharing between streams of PmonoPar</b></p>
+<p class="p5"><br></p>
+<p class="p15">// data sharing with rhythms of coinciding entry points is sure as streams are time-shifted</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p16"><span class="s2">p = </span>PmonoPar<span class="s2">([</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, <span class="s7">Prand</span>([1, 1, 2]/3, <span class="s9">inf</span>).collect(<span class="s10">~dur</span> = <span class="s7">_</span>).trace, <span class="Apple-converted-space">  </span><span class="s11">// or:<span class="Apple-converted-space">  </span>.collect { |x| ~dur = x } .trace</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, <span class="s7">Pseq</span>([0.2, 0.05], 15).trace<span class="Apple-converted-space">   </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, <span class="s7">Pfunc</span> { <span class="s10">~dur</span> / 2 },</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">Pshuf</span>((60..85))<span class="Apple-converted-space">   </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>]</p>
+<p class="p13">]).trace.play;</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p12"><b>Ex. 3:<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Data sharing between streams of parallel PmonoPars</b></p>
+<p class="p5"><br></p>
+<p class="p15">// data sharing between streams of same PmonoPar and streams of second PmonoPar,</p>
+<p class="p15">// use of Ptpar ensures that first stream of second PmonoPar comes after first stream of first PmonoPar,</p>
+<p class="p15">// consider also PpolyPar for such type of usage</p>
+<p class="p5"><br></p>
+<p class="p13">(</p>
+<p class="p16"><span class="s2">p = </span>PmonoPar<span class="s2">([</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, <span class="s7">Prand</span>([1, 1, 2]/3, <span class="s9">40</span>).collect(<span class="s10">~dur</span> = <span class="s7">_</span>),</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, <span class="s7">Pseq</span>([0.3, 0.1], 15)<span class="Apple-converted-space">   </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, <span class="s7">Pfunc</span> { <span class="s10">~dur</span> / 2 },</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">Pshuf</span>((50..70))<span class="Apple-converted-space">   </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>]</p>
+<p class="p13">]);</p>
+<p class="p5"><br></p>
+<p class="p16"><span class="s2">q = </span>PmonoPar<span class="s2">([</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>[</p>
+<p class="p16"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\dur</span><span class="s2">, </span>Pfunc { <span class="s10">~dur </span><span class="s2">},</span></p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, <span class="s7">Pseq</span>([0.3, 0.1], 15)<span class="Apple-converted-space">   </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, <span class="s7">Pfunc</span> { <span class="s10">~dur</span> / 3 },</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">Pshuf</span>((75..95), 2)<span class="Apple-converted-space">   </span></p>
+<p class="p13"><span class="Apple-tab-span">	</span>]</p>
+<p class="p13">]);</p>
+<p class="p5"><br></p>
+<p class="p13">r = Ptpar([0, p, 1e-5, q]).trace.play</p>
+<p class="p13">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+</body>
+</html>

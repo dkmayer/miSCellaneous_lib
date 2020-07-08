@@ -1,0 +1,778 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0433ff}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0326cb}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Helvetica; min-height: 11.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #737373}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 16.0px Helvetica}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #008300}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {text-decoration: underline ; color: #042eee}
+span.s5 {color: #0326cb}
+span.s6 {color: #008300}
+span.s7 {color: #0433ff}
+span.s8 {color: #ff7c00}
+span.s9 {color: #737373}
+span.s10 {color: #434ccb}
+span.s11 {color: #cd1c00}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>PLx and live coding with Strings<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>PLx patterns as placeholders for sequencing with letters<span class="Apple-tab-span">	</span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>See also: </b><a href="PLx suite.html"><span class="s3">PLx suite</span></a>, <a href="PsymNilSafe.html"><span class="s4">PsymNilSafe</span></a>, <a href="PLbindef.html"><span class="s3">PLbindef</span></a>, <a href="PLbindefPar.html"><span class="s3">PLbindefPar</span></a>, <a href="EventShortcuts.html"><span class="s4">EventShortcuts</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">Strings and Chars as high-level representations for musical objects can be used for sequencing with very condensed syntax. This is already possible with standard patterns like Pseq etc. – PLx list patterns fit this concept as their referenced Arrays/Strings can be replaced on the fly. Examples below also use EventShortcuts to minimize typing.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>WARNING: </b>Sequencing with infinite Patterns/Streams has always the potential of hangs. E.g. Psym hangs if all referenced pattern return nil (SC 3.7.2). Here convenience method 'symplay' is suggested: it employs PsymNilSafe, its method 'embedInStream' performs a check like in James Harkins' PnNilSafe from ddwPatterns quark (which can't be used directly this case). 'symplay' thus avoids hangs of that type, see Ex. 2b.</p>
+<p class="p2"><br></p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p5">s = <span class="s5">Server</span>.local;</p>
+<p class="p5"><span class="s5">Server</span>.default = s;</p>
+<p class="p5">s.boot;</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p6">// synthdefs to play with, use of EventShortcuts</p>
+<p class="p4"><br></p>
+<p class="p7"><span class="s5">SynthDef</span><span class="s2">(</span><span class="s6">\noise</span><span class="s2">, { </span>|out = 0, freq = 400, att = 0.005, rel = 0.1, rq = 0.1, amp = 0.1|</p>
+<p class="p5"><span class="Apple-converted-space">    </span><span class="s7">var</span> sig = { <span class="s5">WhiteNoise</span>.ar } ! 2;</p>
+<p class="p5"><span class="Apple-converted-space">    </span>sig = <span class="s5">BPF</span>.ar(sig, freq, rq) *</p>
+<p class="p5"><span class="Apple-converted-space">        </span><span class="s5">EnvGen</span>.ar(<span class="s5">Env</span>.perc(att, rel, amp), doneAction: 2) *</p>
+<p class="p5"><span class="Apple-converted-space">        </span>(rq ** -1) * (250 / (freq ** 0.8));</p>
+<p class="p5"><span class="Apple-converted-space">    </span><span class="s5">OffsetOut</span>.ar(out, sig);</p>
+<p class="p5">}).add;</p>
+<p class="p4"><br></p>
+<p class="p7"><span class="s5">SynthDef</span><span class="s2">(</span><span class="s6">\sin</span><span class="s2">, { </span>|out = 0, freq = 400, att = 0.005, rel = 0.1, amp = 0.1|</p>
+<p class="p5"><span class="Apple-converted-space">    </span><span class="s7">var</span> sig = { <span class="s5">SinOsc</span>.ar(freq, <span class="s5">Rand</span>(0, 2pi)) } ! 2;</p>
+<p class="p5"><span class="Apple-converted-space">    </span>sig = sig * <span class="s5">EnvGen</span>.ar(<span class="s5">Env</span>.perc(att, rel, amp), doneAction: 2);</p>
+<p class="p5"><span class="Apple-converted-space">    </span><span class="s5">OffsetOut</span>.ar(out, sig);</p>
+<p class="p5">}).add;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p7"><span class="s5">SynthDef</span><span class="s2">(</span><span class="s6">\saw</span><span class="s2">, { </span>|out = 0, freq = 400, att = 0.005, rel = 0.1, amp = 0.1|</p>
+<p class="p5"><span class="Apple-converted-space">    </span><span class="s7">var</span> sig = { <span class="s5">VarSaw</span>.ar(freq, <span class="s5">Rand</span>(0, 1)) } ! 2;</p>
+<p class="p5"><span class="Apple-converted-space">    </span>sig = sig * <span class="s5">EnvGen</span>.ar(<span class="s5">Env</span>.perc(att, rel, amp), doneAction: 2);</p>
+<p class="p5"><span class="Apple-converted-space">    </span><span class="s5">OffsetOut</span>.ar(out, sig);</p>
+<p class="p5">}).add;</p>
+<p class="p4"><br></p>
+<p class="p8">EventShortcuts<span class="s2">.on;</span></p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p2"><br></p>
+<p class="p9"><b>Ex.1) Straight usage with finite Patterns and Events</b></p>
+<p class="p10"><br></p>
+<p class="p5">(</p>
+<p class="p6">// use EventShortcuts</p>
+<p class="p4"><br></p>
+<p class="p8">EventShortcuts<span class="s2">.on;</span></p>
+<p class="p8">EventShortcuts<span class="s2">.postAll;</span></p>
+<p class="p4"><br></p>
+<p class="p6">// base Pbind</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~x</span> = <span class="s5">Pbind</span>(<span class="s6">\d</span>, 0.1, <span class="s6">\i</span>, <span class="s6">\sin</span>);</p>
+<p class="p4"><br></p>
+<p class="p6">// chars for the string, event patterns or events</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~a</span> = <span class="s5">Pbind</span>(<span class="s6">\m</span>, <span class="s5">Pseries</span>(60, 2, 4)) &lt;&gt; <span class="s8">~x</span>;</p>
+<p class="p5"><span class="s8">~b</span> = <span class="s5">Pbind</span>(<span class="s6">\m</span>, <span class="s5">Pseries</span>(80, -2, 8)) &lt;&gt; <span class="s8">~x</span>;</p>
+<p class="p5"><span class="s8">~c</span> = (i: <span class="s6">\saw</span>, m: [95, 96, 97], d: 0.8);</p>
+<p class="p4"><br></p>
+<p class="p6">// define sequence</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"aab"</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p6">// symplay wraps into a PsymNilSafe</p>
+<p class="p6">// PLseq defaults to repeats = inf and refers to 'p' in current Environment,</p>
+<p class="p6">// thus the String "aab", the EventStreamPlayer should also get a name for start/stop,</p>
+<p class="p6">// in this case we take the same letter (p) as interpreter variable</p>
+<p class="p4"><br></p>
+<p class="p5">p = <span class="s5">PLseq</span>(<span class="s6">\p</span>).symplay</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// replace String of PLseq</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"aacb"</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// use of basic String operations</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~p</span> = <span class="s8">~p</span> ++ <span class="s9">"cc"</span></p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~p</span> = <span class="s8">~p</span>.reverse</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p6">// new char and sequence</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~d</span> = <span class="s5">Pbind</span>(<span class="s6">\m</span>, <span class="s5">Pwhite</span>(60, 90, 2), <span class="s6">\i</span>, <span class="s6">\noise</span>) &lt;&gt; <span class="s8">~x</span>;</p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"adadcb"<span class="s2">;</span></p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p6">// replace String</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"bbcbcad"</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// new chars</p>
+<p class="p6">// the Function as first arg of Pseries is evaluated with every embedding,</p>
+<p class="p6">// thus movements up and down start on different pitches</p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p5"><span class="s8">~a</span> = <span class="s5">Pbind</span>(<span class="s6">\m</span>, <span class="s5">Pseries</span>({ rrand(60, 75) }, 7, 4)) &lt;&gt; <span class="s8">~x</span>;</p>
+<p class="p5"><span class="s8">~b</span> = <span class="s5">Pbind</span>(<span class="s6">\m</span>, <span class="s5">Pseries</span>({ rrand(85, 95) }, -5, 8)) &lt;&gt; <span class="s8">~x</span>;</p>
+<p class="p5"><span class="s8">~c</span> = <span class="s5">Pbind</span>(<span class="s6">\i</span>, <span class="s6">\noise</span>, <span class="s6">\m</span>, <span class="s5">Pn</span>((95..100), 2)) &lt;&gt; <span class="s8">~x</span></p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// modify ~b</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~b</span> = <span class="s5">Pbind</span>(<span class="s6">\i</span>, <span class="s5">PLrand</span>([<span class="s6">\sin</span>, <span class="s6">\saw</span>])) &lt;&gt; <span class="s8">~b</span>;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// modify list, loop goes on</p>
+<p class="p6">// evaluate several times, compare sound and posted String</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~p</span> = <span class="s8">~p</span>.scramble</p>
+<p class="p4"><br></p>
+<p class="p5">p.stop</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p12"><b>Ex.2) Repeated embedding</b></p>
+<p class="p4"><br></p>
+<p class="p6">// Control of embedding resp. the number of Events, that one Patterns should produce when played,</p>
+<p class="p6">// is a subtle topic. A basic distinction is whether an embedded sequence should be produced with<span class="Apple-converted-space"> </span></p>
+<p class="p6">// desired behaviour from begin to end (2a) or it should be paused and resumed (2b).<span class="Apple-converted-space"> </span></p>
+<p class="p6">// The latter is the classical behaviour of Streams, but it can be mimiced with PSx stream patterns.<span class="Apple-converted-space"> </span></p>
+<p class="p6">// In any case embedding can be done with varying length, e.g. by defined sequences or by interaction.</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p9"><b>Ex.2a) Embedding without continuation</b></p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p6">// base Pbinds</p>
+<p class="p5"><span class="s8">~x</span> = <span class="s5">Pbind</span>(<span class="s6">\d</span>, 0.15, <span class="s6">\i</span>, <span class="s6">\sin</span>, <span class="s6">\rel</span>, 1.5, <span class="s6">\a</span>, 0.02);</p>
+<p class="p5"><span class="s8">~y</span> = <span class="s5">Pbind</span>(<span class="s6">\d</span>, <span class="s5">Pn</span>(0.9, 1), <span class="s6">\i</span>, <span class="s6">\saw</span>, <span class="s6">\att</span>, 0.8, <span class="s6">\rel</span>, 4, <span class="s6">\a</span>, 0.006);</p>
+<p class="p4"><br></p>
+<p class="p6">// variable for repeats arg</p>
+<p class="p5"><span class="s8">~ar</span> = 4;</p>
+<p class="p4"><br></p>
+<p class="p6">// descending sequence, note the repeats arg: as with the start arg</p>
+<p class="p6">// the Function is evaluated with every embedding,</p>
+<p class="p6">// ~ar can be a Stream or a value</p>
+<p class="p5"><span class="s8">~a</span> = <span class="s5">Pbind</span>(<span class="s6">\m</span>, <span class="s5">Pseries</span>({ rrand(75.0, 95) }, -7, { <span class="s8">~ar</span>.next })) &lt;&gt; <span class="s8">~x</span>;</p>
+<p class="p4"><br></p>
+<p class="p6">// chords without octave doubling</p>
+<p class="p5"><span class="s8">~b</span> = <span class="s5">Pbind</span>(<span class="s6">\m</span>, <span class="s5">Pfunc</span> { { [48, 60, 72].choose } ! 9 + (0..12).scramble.drop(3) }) &lt;&gt; <span class="s8">~y</span>;</p>
+<p class="p4"><br></p>
+<p class="p6">// define sequence</p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"ba"</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5">p = <span class="s5">PLseq</span>(<span class="s6">\p</span>).symplay</p>
+<p class="p4"><br></p>
+<p class="p6">// change to other repeats number</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~ar</span> = 6</p>
+<p class="p4"><br></p>
+<p class="p6">// make it a sequence with a Stream</p>
+<p class="p4"><br></p>
+<p class="p6"><span class="s8">~ar</span><span class="s2"> = </span><span class="s5">PLseq</span><span class="s2">([2, 2, 4]).asStream<span class="Apple-converted-space">  </span></span>// or shorter: PLseq([2, 2, 4]).iter</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// go back to num and change String</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~ar</span> = 3</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"baaa"</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"baabaaaa"</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5">p.stop</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p9"><b>Ex.2b) Embedding with continuation</b></p>
+<p class="p4"><br></p>
+<p class="p6">// This can be done by feeding a stream into a pattern, either directly or with PSx</p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p6">// base Pbind</p>
+<p class="p5"><span class="s8">~x</span> = <span class="s5">Pbind</span>(<span class="s6">\d</span>, 0.2, <span class="s6">\rel</span>, 0.5, <span class="s6">\a</span>, 0.03);</p>
+<p class="p4"><br></p>
+<p class="p6">// Streams to be continued</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~as</span> = (<span class="s5">Pbind</span>(<span class="s6">\m</span>, <span class="s5">Pn</span>(<span class="s5">Pseries</span>(60, 1, 16)), <span class="s6">\i</span>, <span class="s6">\saw</span>) &lt;&gt; <span class="s8">~x</span>).asStream;</p>
+<p class="p5"><span class="s8">~bs</span> = (<span class="s5">Pbind</span>(<span class="s6">\m</span>, <span class="s5">Pn</span>(<span class="s5">Pseries</span>(90, -1, 16)), <span class="s6">\i</span>, <span class="s6">\sin</span>) &lt;&gt; <span class="s8">~x</span>).asStream;</p>
+<p class="p4"><br></p>
+<p class="p6">// variable for repeats args</p>
+<p class="p5"><span class="s8">~ar</span> = 4;</p>
+<p class="p5"><span class="s8">~br</span> = 4;</p>
+<p class="p4"><br></p>
+<p class="p6">// for getting next values of an event stream we must pass an empty event as arg '.next(())'</p>
+<p class="p5"><span class="s8">~a</span> = <span class="s5">Pfuncn</span>({ <span class="s8">~as</span>.next(()) }, { <span class="s8">~ar</span>.next });</p>
+<p class="p5"><span class="s8">~b</span> = <span class="s5">Pfuncn</span>({ <span class="s8">~bs</span>.next(()) }, { <span class="s8">~br</span>.next });</p>
+<p class="p4"><br></p>
+<p class="p6">// define sequence</p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"ab"</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5">p = <span class="s5">PLseq</span>(<span class="s6">\p</span>).symplay</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// change repeats</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~ar</span> = 2;</p>
+<p class="p5"><span class="s8">~br</span> = 1;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// this causes ~a to produce nils, only ~b still returns events</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~ar</span> = <span class="s10">nil</span>;</p>
+<p class="p4"><br></p>
+<p class="p6">// This stops the player.</p>
+<p class="p6">// Note that this kind of nil-detection works because 'symplay' employs PsymNilSafe.</p>
+<p class="p6">// A construct like Psym(Pseq("ab", inf), ...).play would hang in that case</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~br</span> = <span class="s10">nil</span>;</p>
+<p class="p4"><br></p>
+<p class="p6">// Note that this is different from the case, when the dictionary's key itself is nil.</p>
+<p class="p6">// Then we get silent events, that also would't cause a hang with Psym(Pseq("ab", inf), ...).play</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// evaluate above code starting from ~x = ... again and run</p>
+<p class="p4"><br></p>
+<p class="p5">p = <span class="s5">PLseq</span>(<span class="s6">\p</span>).trace.symplay</p>
+<p class="p4"><br></p>
+<p class="p6">// now we get a rest event</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~a</span> = <span class="s10">nil</span></p>
+<p class="p4"><br></p>
+<p class="p6">// player keeps running silently, stop explicitely</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~b</span> = <span class="s10">nil</span></p>
+<p class="p4"><br></p>
+<p class="p5">p.stop</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// same as above written with PSx stream patterns</p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p6">// base Pbind</p>
+<p class="p5"><span class="s8">~x</span> = <span class="s5">Pbind</span>(<span class="s6">\d</span>, 0.2, <span class="s6">\rel</span>, 0.5, <span class="s6">\a</span>, 0.03);</p>
+<p class="p4"><br></p>
+<p class="p6">// variable for repeats args</p>
+<p class="p5"><span class="s8">~ar</span> = 4;</p>
+<p class="p5"><span class="s8">~br</span> = 4;</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~a</span> = <span class="s5">PS</span>(<span class="s5">Pbind</span>(<span class="s6">\m</span>, <span class="s5">Pn</span>(<span class="s5">Pseries</span>(60, 1, 16)), <span class="s6">\i</span>, <span class="s6">\saw</span>) &lt;&gt; <span class="s8">~x</span>, { <span class="s8">~ar</span>.next });</p>
+<p class="p5"><span class="s8">~b</span> = <span class="s5">PS</span>(<span class="s5">Pbind</span>(<span class="s6">\m</span>, <span class="s5">Pn</span>(<span class="s5">Pseries</span>(90, -1, 16)), <span class="s6">\i</span>, <span class="s6">\sin</span>) &lt;&gt; <span class="s8">~x</span>, { <span class="s8">~br</span>.next });</p>
+<p class="p4"><br></p>
+<p class="p6">// define sequence</p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"ab"</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5">p = <span class="s5">PLseq</span>(<span class="s6">\p</span>).symplay</p>
+<p class="p4"><br></p>
+<p class="p6">// change repeats</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~ar</span> = 2;</p>
+<p class="p5"><span class="s8">~br</span> = 1;</p>
+<p class="p4"><br></p>
+<p class="p5">p.stop;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p9"><b>Ex.3) Parallel embedding</b></p>
+<p class="p4"><br></p>
+<p class="p6">// This can e.g. be done with Ppar, Ptuple or Pspawner, which is most flexible.</p>
+<p class="p6">// There's a tiny isssue here in combination with EventShortcuts, duration keys</p>
+<p class="p6">// should be in full length (You could apply method 'eventShortcuts' inside Ppar,</p>
+<p class="p6">// but that's even more typing in that case, so we just write 'dur' instead of 'd').</p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p6">// base Pbind</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~x</span> = <span class="s5">Pbind</span>(<span class="s6">\dur</span>, 0.1, <span class="s6">\i</span>, <span class="s6">\sin</span>);</p>
+<p class="p5"><span class="s8">~y</span> = <span class="s5">Pbind</span>(<span class="s6">\dur</span>, 0.05, <span class="s6">\i</span>, <span class="s6">\sin</span>);</p>
+<p class="p4"><br></p>
+<p class="p6">// chars for the String, event patterns or events</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~a</span> = <span class="s5">Pbind</span>(<span class="s6">\m</span>, <span class="s5">Pseries</span>({ rrand(60.0, 65) }, 1, 8)) &lt;&gt; <span class="s8">~x</span>;</p>
+<p class="p5"><span class="s8">~b</span> = <span class="s5">Pbind</span>(<span class="s6">\m</span>, <span class="s5">Pseries</span>({ rrand(85.0, 95) }, -1, 8)) &lt;&gt; <span class="s8">~y</span>;</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~c</span> = <span class="s5">Ppar</span>([<span class="s8">~a</span>, <span class="s8">~b</span>]);</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~d</span> = (i: <span class="s6">\saw</span>, m: [95, 96, 97], d: 0.8);</p>
+<p class="p4"><br></p>
+<p class="p6">// define sequence</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"accd"</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5">p = <span class="s5">PLseq</span>(<span class="s6">\p</span>).symplay</p>
+<p class="p4"><br></p>
+<p class="p6">// equivalent with Pspawner</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~c</span> = <span class="s5">Pspawner </span>{ <span class="s7">|sp|</span> sp.par(<span class="s8">~a</span>); sp.par(<span class="s8">~b</span>) };</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// with Pspawner you have precise control over embedding of subsequences</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~c</span> = <span class="s5">Pspawner </span>{ <span class="s7">|sp|</span> sp.par(<span class="s8">~a</span>); 4.do { sp.par(<span class="s8">~b</span>) } };</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~e</span> = <span class="s5">Pspawner </span>{ <span class="s7">|sp|</span> sp.par(<span class="s8">~a</span>); 3.do { sp.seq(<span class="s8">~b</span>) } };</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"acde"</p>
+<p class="p4"><br></p>
+<p class="p5">p.stop</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p9"><b>Ex.4) Use of other PLx list patterns</b></p>
+<p class="p4"><br></p>
+<p class="p6">// We can keep the String constant and switch to different PLx list patterns.</p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p6">// base Pbind</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~x</span> = <span class="s5">Pbind</span>(<span class="s6">\d</span>, 0.1, <span class="s6">\i</span>, <span class="s6">\saw</span>);</p>
+<p class="p5"><span class="s8">~y</span> = <span class="s5">Pbind</span>(<span class="s6">\d</span>, 0.2, <span class="s6">\i</span>, <span class="s6">\sin</span>);</p>
+<p class="p4"><br></p>
+<p class="p6">// chars for the String, event patterns or events</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~a</span> = <span class="s5">Pbind</span>(<span class="s6">\m</span>, <span class="s5">Pseries</span>(60, <span class="s5">Pwhite</span>(1.0, 7.0), 4)) &lt;&gt; <span class="s8">~x</span>;</p>
+<p class="p5"><span class="s8">~b</span> = <span class="s5">Pbind</span>(<span class="s6">\m</span>, <span class="s5">Pseries</span>(80, <span class="s5">Pwhite</span>(1.0, 7.0), 4)) &lt;&gt; <span class="s8">~y</span>;</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~c</span> = <span class="s8">~x</span> &lt;&gt; <span class="s8">~b</span>;</p>
+<p class="p5"><span class="s8">~d</span> = <span class="s8">~y</span> &lt;&gt; <span class="s8">~a</span>;</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~e</span> = <span class="s5">Pbind</span>(<span class="s6">\i</span>, <span class="s6">\noise</span>, <span class="s6">\m</span>, <span class="s5">Pn</span>(70, 2)) &lt;&gt; <span class="s8">~x</span>;</p>
+<p class="p4"><br></p>
+<p class="p6">// define sequence</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"abcde"</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// we need another proxy in that case, take general PL</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~l</span> = <span class="s5">PLseq</span>(<span class="s6">\p</span>);</p>
+<p class="p4"><br></p>
+<p class="p5">p = <span class="s5">PL</span>(<span class="s6">\l</span>).symplay;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// scramble sequence and keep</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~l</span> = <span class="s5">PLshuf</span>(<span class="s6">\p</span>);</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// scramble with every loop</p>
+<p class="p4"><br></p>
+<p class="p8"><span class="s8">~l</span><span class="s2"> = </span>PLshufn<span class="s2">(</span><span class="s6">\p</span><span class="s2">);</span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// weighted random</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~l</span> = <span class="s5">PLwrand</span>(<span class="s6">\p</span>, [4, 1, 3, 1, 1]/10);</p>
+<p class="p4"><br></p>
+<p class="p5">p.stop;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p12"><b>Ex.5) PLbindef and PLbindefPar</b></p>
+<p class="p10"><br></p>
+<p class="p6">// High-level control of Strings can be combined with replacing key streams with PLbindef/PLbindefPar</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p9"><b>Ex.5a) PLbindef</b></p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p6">// base PLbindef, continued embedding with PS as in Ex. 2b</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~x</span> = <span class="s5">PS</span>(<span class="s5">PLbindef</span>(<span class="s6">\y</span>, <span class="s6">\dur</span>, 0.1, <span class="s6">\i</span>, <span class="s6">\noise</span>, <span class="s6">\rq</span>, 0.5, <span class="s6">\att</span>, 0.05, <span class="s6">\rel</span>, 0.1, <span class="s6">\a</span>, 0.05));</p>
+<p class="p4"><br></p>
+<p class="p6">// chars for the String, event patterns or events</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~a</span> = <span class="s5">Pbind</span>(<span class="s6">\m</span>, <span class="s5">Pn</span>(75, 1)) &lt;&gt; <span class="s8">~x</span>;</p>
+<p class="p5"><span class="s8">~b</span> = <span class="s5">Pbind</span>(<span class="s6">\m</span>, <span class="s5">Pn</span>(80, 1)) &lt;&gt; <span class="s8">~x</span>;</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~c</span> = <span class="s5">Ppar</span>([<span class="s8">~a</span>, <span class="s8">~b</span>]);</p>
+<p class="p4"><br></p>
+<p class="p6">// define sequence</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"ab"</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p5">p = <span class="s5">PLseq</span>(<span class="s6">\p</span>).symplay</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// update PLbindef's rq and amplitude with patterns</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~y</span>.rq = <span class="s5">PLseq</span>((100..1).mirror / 1000)</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~y</span>.a = <span class="s5">PLseq</span>((20..80).mirror / 1000)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// update String</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~p</span> = <span class="s9">"c"</span></p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"ababccc"</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// stop and cleanup</p>
+<p class="p4"><br></p>
+<p class="p5">p.stop</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s5">PLbindef</span>(<span class="s6">\y</span>).remove</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p9"><b>Ex.5b) PLbindefPar</b></p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p6">// data base for two PLbindefPars, continued embedding with PS as in Ex. 2b</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~w</span> = [<span class="s6">\dur</span>, 0.1, <span class="s6">\i</span>, <span class="s6">\noise</span>, <span class="s6">\rq</span>, 0.5, <span class="s6">\att</span>, 0.05, <span class="s6">\rel</span>, 0.1, <span class="s6">\a</span>, 0.02];</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~chord</span> = (46, 53..95);</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~a</span> = <span class="s5">PS</span>(<span class="s5">PLbindefPar</span>(<span class="s6">\u</span>, 7, <span class="s6">\m</span>, <span class="s8">~chord</span>, *<span class="s8">~w</span>), 1);</p>
+<p class="p5"><span class="s8">~b</span> = <span class="s5">PS</span>(<span class="s5">PLbindefPar</span>(<span class="s6">\v</span>, 7, <span class="s6">\m</span>, <span class="s8">~chord</span> + 2, *<span class="s8">~w</span>), 1);</p>
+<p class="p4"><br></p>
+<p class="p6">// define sequence</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"ab"</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p5">p = <span class="s5">PLseq</span>(<span class="s6">\p</span>).symplay</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~u</span>.rq = 0.005</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~v</span>.i = <span class="s6">\saw</span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// evolving changes</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~u</span>.rq = <span class="s5">PLseq</span>((100, 95..5).mirror / 1000)</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~v</span>.a = <span class="s5">Pseg</span>(<span class="s5">PLseq</span>([0.01, 0.04]), <span class="s5">Pwhite</span>(4, 7))</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// change sequence per String</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"aabb"</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"aabbabab"</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"aabbcababc"</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"aaaab"</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// fade out</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~v</span>.a = <span class="s5">Pseg</span>(<span class="s5">Pseq</span>([0.02, 0]), 20)</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~u</span>.a = <span class="s5">Pseg</span>(<span class="s5">Pseq</span>([0.02, 0]), 20)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// stop and cleanup</p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p5">p.stop;</p>
+<p class="p5"><span class="s5">PLbindef</span>(<span class="s6">\u</span>).remove;</p>
+<p class="p5"><span class="s5">PLbindef</span>(<span class="s6">\v</span>).remove;</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p12"><b>Ex.6) String sequencing with PbindFx</b></p>
+<p class="p10"><br></p>
+<p class="p6">// Control with Strings can be thought in many ways.</p>
+<p class="p6">// With effects one can e.g. use different Strings for src and fx sequencing.</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p9"><b>Ex.6a) PbindFx</b></p>
+<p class="p4"><br></p>
+<p class="p6">// boot server with extended resources for PbindFx</p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p5">s.options.numPrivateAudioBusChannels = 1024;</p>
+<p class="p5">s.options.memSize = 8192 * 16;</p>
+<p class="p5">s.reboot;</p>
+<p class="p4"><br></p>
+<p class="p6">// fx synths</p>
+<p class="p4"><br></p>
+<p class="p7"><span class="s5">SynthDef</span><span class="s2">(</span><span class="s6">\resample</span><span class="s2">, { </span>|out = 0, in, mix = 1, amp = 1,</p>
+<p class="p7"><span class="Apple-tab-span">	</span>resampleRate = 22050, lagTime = 1|</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s7">var</span> sig, inSig = <span class="s5">In</span>.ar(in, 2);</p>
+<p class="p5"><span class="Apple-tab-span">	</span>sig = <span class="s5">Latch</span>.ar(inSig, <span class="s5">Impulse</span>.ar(resampleRate)); <span class="s11">// resampling</span></p>
+<p class="p6"><span class="s2"><span class="Apple-tab-span">	</span></span>// lag in milliseconds for smoothing</p>
+<p class="p5"><span class="Apple-tab-span">	</span>sig = sig.lag(lagTime * 0.001);</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s5">Out</span>.ar(out, (1 - mix) * inSig + (sig * mix));</p>
+<p class="p5">}).add;</p>
+<p class="p4"><br></p>
+<p class="p7"><span class="s5">SynthDef</span><span class="s2">(</span><span class="s6">\wah</span><span class="s2">, { </span>|out, in, resLo = 200, resHi = 5000,</p>
+<p class="p7"><span class="Apple-converted-space">    </span>cutOffMoveFreq = 0.5, rq = 0.1, amp = 1, mix = 1|</p>
+<p class="p5"><span class="Apple-converted-space">    </span><span class="s7">var</span> sig, inSig = <span class="s5">In</span>.ar(in, 2);</p>
+<p class="p5"><span class="Apple-converted-space">    </span>sig = <span class="s5">RLPF</span>.ar(</p>
+<p class="p5"><span class="Apple-converted-space">        </span>inSig,</p>
+<p class="p5"><span class="Apple-converted-space">        </span><span class="s5">LinExp</span>.kr(<span class="s5">LFDNoise3</span>.kr(cutOffMoveFreq), -1, 1, resLo, resHi),</p>
+<p class="p5"><span class="Apple-converted-space">        </span>rq,</p>
+<p class="p5"><span class="Apple-converted-space">        </span>amp</p>
+<p class="p5"><span class="Apple-converted-space">    </span>).softclip;</p>
+<p class="p5"><span class="Apple-converted-space">    </span><span class="s5">Out</span>.ar(out, (1 - mix) * inSig + (sig * mix));</p>
+<p class="p5">}).add;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// src synths</p>
+<p class="p4"><br></p>
+<p class="p7"><span class="s5">SynthDef</span><span class="s2">(</span><span class="s6">\noise</span><span class="s2">, { </span>|out = 0, freq = 400, att = 0.005, rel = 0.1, rq = 0.1, amp = 0.1|</p>
+<p class="p5"><span class="Apple-converted-space">    </span><span class="s7">var</span> sig = { <span class="s5">WhiteNoise</span>.ar } ! 2;</p>
+<p class="p5"><span class="Apple-converted-space">    </span>sig = <span class="s5">BPF</span>.ar(sig, freq, rq) *</p>
+<p class="p5"><span class="Apple-converted-space">        </span><span class="s5">EnvGen</span>.ar(<span class="s5">Env</span>.perc(att, rel, amp), doneAction: 2) *</p>
+<p class="p5"><span class="Apple-converted-space">        </span>(rq ** -1) * (250 / (freq ** 0.8));</p>
+<p class="p5"><span class="Apple-converted-space">    </span><span class="s5">OffsetOut</span>.ar(out, sig);</p>
+<p class="p5">}).add;</p>
+<p class="p4"><br></p>
+<p class="p7"><span class="s5">SynthDef</span><span class="s2">(</span><span class="s6">\saw</span><span class="s2">, { </span>|out = 0, freq = 400, att = 0.005, rel = 0.1, amp = 0.1|</p>
+<p class="p5"><span class="Apple-converted-space">    </span><span class="s7">var</span> sig = { <span class="s5">VarSaw</span>.ar(freq, <span class="s5">Rand</span>(0, 1)) } ! 2;</p>
+<p class="p5"><span class="Apple-converted-space">    </span>sig = sig * <span class="s5">EnvGen</span>.ar(<span class="s5">Env</span>.perc(att, rel, amp), doneAction: 2);</p>
+<p class="p5"><span class="Apple-converted-space">    </span><span class="s5">OffsetOut</span>.ar(out, sig);</p>
+<p class="p5">}).add;</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// prepare EventShortcuts for additional keys</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s5">EventShortcuts</span>.addOnBase(<span class="s6">\default</span>, <span class="s6">\fxExs</span>, (</p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span>dec: </span>\decayTime<span class="s2">,</span></p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span>cd: </span>\cleanupDelay<span class="s2">,</span></p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span>cf: </span>\cutOffMoveFreq<span class="s2">,</span></p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span>fxo: </span>\fxOrder<span class="s2">,</span></p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span>rs: </span>\resampleRate</p>
+<p class="p5">), <span class="s10">true</span>);</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s5">EventShortcuts</span>.makeCurrent(<span class="s6">\fxExs</span>);</p>
+<p class="p4"><br></p>
+<p class="p8">EventShortcuts<span class="s2">.on;</span></p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p6">// base Pbind</p>
+<p class="p6">// PbindFx's fxOrder (short: fxo) syntax employed by Symbol mapping:</p>
+<p class="p6">// u: no fx, x: resample, y: wah, z: resample and wah in sequence</p>
+<p class="p4"><br></p>
+<p class="p8"><span class="s8">~r</span><span class="s2"> = </span>Pbind<span class="s2">(</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">\fxo</span>, <span class="s5">Psym</span>(<span class="s5">PLseq</span>(<span class="s6">\fx</span>), (u:0, x:1, y:2, z:[1, 2])),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">\a</span>, 0.07,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">\att</span>, 0.01,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">\rel</span>, 0.3,</p>
+<p class="p5"><span class="Apple-converted-space">    </span><span class="s6">\cd</span>, <span class="s5">Pkey</span>(<span class="s6">\att</span>)+ <span class="s5">Pkey</span>(<span class="s6">\rel</span>) + 0.1</p>
+<p class="p5">);</p>
+<p class="p4"><br></p>
+<p class="p6">// PS to embed</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~a</span> = <span class="s5">PS</span>(<span class="s5">Pbind</span>(<span class="s6">\i</span>, <span class="s6">\saw</span>, <span class="s6">\d</span>, 0.1, <span class="s6">\m</span>, <span class="s5">PLseq</span>([60, 60, 60, 62])) &lt;&gt; <span class="s8">~r</span>, 1);</p>
+<p class="p4"><br></p>
+<p class="p8"><span class="s8">~b</span><span class="s2"> = </span>PS<span class="s2">(</span>Pbind<span class="s2">(</span></p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span></span>\i<span class="s2">, </span>\noise<span class="s2">,</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">\d</span>, 0.2,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">\m</span>, <span class="s5">PLseq</span>([<span class="s5">Pwhite</span>(41.0, 50),<span class="s5">Pwhite</span>(71.0, 80)]),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">\rq</span>, 0.01</p>
+<p class="p5">) &lt;&gt; <span class="s8">~r</span>, 1);</p>
+<p class="p4"><br></p>
+<p class="p6">// no cleanupDelay defaults for fxs as they don't delay</p>
+<p class="p8"><span class="s2">q = </span>PbindFx<span class="s2">(</span>PsymNilSafe<span class="s2">(</span>PLseq<span class="s2">(</span><span class="s6">\p</span><span class="s2">)), [</span></p>
+<p class="p13"><span class="s2"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span>\fx<span class="s2">, </span>\resample<span class="s2">,</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">\mix</span>, 0.3,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">\rs</span>, <span class="s5">Pwhite</span>(200, 500),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">\a</span>, 1</p>
+<p class="p5"><span class="Apple-tab-span">	</span>],[</p>
+<p class="p5"><span class="Apple-converted-space">   <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s6">\fx</span>, <span class="s6">\wah</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">\mix</span>, 0.8,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">\cf</span>, <span class="s5">Pwhite</span>(0.5, 5),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">\a</span>, 0.7</p>
+<p class="p5">]);</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p6">// start instrument sequence with no fx</p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p5"><span class="s8">~fx</span> = <span class="s9">"u"</span>;</p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"aab"<span class="s2">;</span></p>
+<p class="p5">p = q.play;</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p6">// fx sequences</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~fx</span><span class="s2"> = </span>"uuxy"</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~fx</span><span class="s2"> = </span>"uyuxzzzz"</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~p</span> = <span class="s9">"b"</span></p>
+<p class="p4"><br></p>
+<p class="p5">p.stop</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p9"><b>Ex.6b) PbindFx and PLbindef</b></p>
+<p class="p4"><br></p>
+<p class="p6">// There's more fine-tuned control if we can replace key streams also</p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p6">// base pairs for PLbindef</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~r</span> = [</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">\fxo</span>, <span class="s5">Psym</span>(<span class="s5">PLseq</span>(<span class="s6">\fx</span>), (u:0, x:1, y:2, z:[1, 2])),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">\a</span>, 0.07,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">\att</span>, 0.01,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">\rel</span>, 0.3,</p>
+<p class="p5"><span class="Apple-converted-space">    </span><span class="s6">\cd</span>, <span class="s5">Pkey</span>(<span class="s6">\att</span>) + <span class="s5">Pkey</span>(<span class="s6">\rel</span>) + 0.001</p>
+<p class="p5">];</p>
+<p class="p4"><br></p>
+<p class="p6">// PS to embed</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~a</span> = <span class="s5">PS</span>(<span class="s5">PLbindef</span>(<span class="s6">\aa</span>, <span class="s6">\i</span>, <span class="s6">\saw</span>, <span class="s6">\d</span>, 0.1, <span class="s6">\m</span>, <span class="s5">PLseq</span>([60, 60, 60, 62]), *<span class="s8">~r</span>), 1);</p>
+<p class="p4"><br></p>
+<p class="p8"><span class="s8">~b</span><span class="s2"> = </span>PS<span class="s2">(</span>PLbindef<span class="s2">(</span><span class="s6">\bb</span><span class="s2">,</span></p>
+<p class="p13"><span class="s2"><span class="Apple-tab-span">	</span></span>\i<span class="s2">, </span>\noise<span class="s2">,</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">\d</span>, 0.2,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">\m</span>, <span class="s5">PLseq</span>([<span class="s5">Pwhite</span>(41.0, 50),<span class="s5">Pwhite</span>(71.0, 80)]),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="s6">\rq</span>, 0.1,</p>
+<p class="p5"><span class="Apple-tab-span">	</span>*<span class="s8">~r</span></p>
+<p class="p5">), 1);</p>
+<p class="p4"><br></p>
+<p class="p6">// as we have defined fx chars 'x' and 'y' above,</p>
+<p class="p6">// choose related names 'xx' and'yy' for PLbindefs</p>
+<p class="p4"><br></p>
+<p class="p8"><span class="s2">q = </span>PbindFx<span class="s2">(</span>PsymNilSafe<span class="s2">(</span>PLseq<span class="s2">(</span><span class="s6">\p</span><span class="s2">)),</span></p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span></span>PLbindef<span class="s2">(</span><span class="s6">\xx</span><span class="s2">,</span></p>
+<p class="p13"><span class="s2"><span class="Apple-converted-space">    <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></span>\fx<span class="s2">, </span>\resample<span class="s2">,</span></p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">\mix</span>, 0.3,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">\rs</span>, <span class="s5">Pwhite</span>(200, 500),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">\a</span>, 1</p>
+<p class="p5"><span class="Apple-tab-span">	</span>),</p>
+<p class="p8"><span class="s2"><span class="Apple-tab-span">	</span></span>PLbindef<span class="s2">(</span><span class="s6">\yy</span><span class="s2">,</span></p>
+<p class="p5"><span class="Apple-converted-space">   <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s6">\fx</span>, <span class="s6">\wah</span>,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">\mix</span>, 0.8,</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">\cf</span>, <span class="s5">Pwhite</span>(0.5, 5),</p>
+<p class="p5"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">\a</span>, 0.7</p>
+<p class="p5"><span class="Apple-tab-span">	</span>)</p>
+<p class="p5">);</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p6">// start with no fxs</p>
+<p class="p4"><br></p>
+<p class="p5">(</p>
+<p class="p5"><span class="s8">~fx</span> = <span class="s9">"u"</span>;</p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"aab"<span class="s2">;</span></p>
+<p class="p5">p = q.play;</p>
+<p class="p5">)</p>
+<p class="p4"><br></p>
+<p class="p6">// fx sequence</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~fx</span><span class="s2"> = </span>"uuxy"</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// midinote for ~a and ~b</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~aa</span>.m = [50, 52]</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~bb</span>.m = <span class="s5">Pwhite</span>(80, 96)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// switch to single fx resample for testing changes of its control streams</p>
+<p class="p6">// resample, test rate</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~fx</span> = <span class="s9">"x"</span></p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~xx</span>.rs = <span class="s5">Pwhite</span>(1000, 3000)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// same with wah</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~fx</span> = <span class="s9">"y"</span></p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~yy</span>.cf = 3</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// src changes</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~aa</span>.rel = 0.1</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~bb</span>.rel = 0.5</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// further playing</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~fx</span><span class="s2"> = </span>"xxy"</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s8">~p</span><span class="s2"> = </span>"aabaabaaaabb"</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~aa</span>.m = [38, 40]</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~bb</span>.rq = 0.7</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~fx</span> = <span class="s9">"z"</span></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// fade out</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~aa</span>.a = <span class="s5">Pseg</span>(<span class="s5">Pseq</span>([0.04, 0]), 20)</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s8">~bb</span>.a = <span class="s5">Pseg</span>(<span class="s5">Pseq</span>([0.04, 0]), 20)</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p6">// cleanup</p>
+<p class="p4"><br></p>
+<p class="p5">p.stop</p>
+<p class="p4"><br></p>
+<p class="p5"><span class="s5">Pdef</span>.removeAll</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+</body>
+</html>

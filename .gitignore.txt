@@ -1,0 +1,4 @@
+
+# ignore gits in folders
+
+.git

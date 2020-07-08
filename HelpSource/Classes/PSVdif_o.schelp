@@ -1,0 +1,53 @@
+
+CLASS::PSVdif_o
+summary::Sieve pattern for difference of integer generators with offsets and point output	
+categories:: Libraries>miSCellaneous>Sieves and Psieve Patterns, Streams-Patterns-Events>Sieves and Psieve Patterns
+related:: Overviews/miSCellaneous, Tutorials/Sieves_and_Psieve_patterns, Classes/Sieve, Classes/Psieve, Classes/PSVunion, Classes/PSVunion_i, Classes/PSVunion_o, Classes/PSVunion_oi, Classes/PSVsect, Classes/PSVsect_i, Classes/PSVsect_o, Classes/PSVsect_oi, Classes/PSVsymdif, Classes/PSVsymdif_i, Classes/PSVsymdif_o, Classes/PSVsymdif_oi, Classes/PSVdif, Classes/PSVdif_i, Classes/PSVdif_oi, Classes/PSVop, Classes/PSVop_i, Classes/PSVop_o, Classes/PSVop_oi 
+
+DESCRIPTION::
+Pattern for difference of integer generators with offsets and point output. Corresponds to Sieve's methods link::Classes/Sieve#*dif_o:: and link::Classes/Sieve#-dif_o::. For an introduction and more examples see link::Tutorials/Sieves_and_Psieve_patterns::.
+
+
+
+CLASSMETHODS::
+
+
+method::new
+
+Creates a new PSVdif_o object.
+
+argument::genList
+An array of generators and corresponding offsets. 
+Allowed generators: Integers, Streams or Patterns producing intervals or Sieves itself.
+Integers and Stream/Pattern output must be strictly positive. 
+Integers as generators produce zero and its positive multiples.
+Offsets must be integers.
+			
+argument::maxLength
+Integer. Maximum number of items, which the stream will return.
+Defaults to inf.
+
+argument::limit
+Integer. Limit up to which integers can be returned by the stream.
+If no limit is passed, returned integers might go up to default limit 65536.
+
+
+SECTION::Examples
+
+code::
+p = PSVdif_o([3, 1, 5, -2], 10)
+
+p.asStream.nextN(15)
+
+
+a = Sieve(4, 20)
+
+q = PSVdif_o([a, 90, 3, 80], 20)
+
+q.asStream.all
+
+
+r = PSVdif_o([a, 90, 3, 80], limit: 100)
+
+r.asStream.all
+::

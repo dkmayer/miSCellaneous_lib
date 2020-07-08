@@ -1,0 +1,104 @@
+CLASS:: PHSplayer
+summary:: PHS player object
+categories::Libraries>miSCellaneous>HS and HSpar, Streams-Patterns-Events>HS and HSpar
+related:: Overviews/miSCellaneous, Guides/Guide_to_HS_and_HSpar, Tutorials/HS_with_VarGui, Classes/HS, Classes/PHS, Classes/PHSuse, Classes/PHSusePlayer
+
+DESCRIPTION::
+Implicitely instantiated when link::Classes/PHS::'s play method is called, allows stopping and resuming with options also concerning the help synth.
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PHSplayer object.
+
+argument::pHelpSynth
+A PHS object.
+
+
+INSTANCEMETHODS::
+
+method::play
+
+argument::clock
+A TempoClock object. If not assigned, takes the default TempoClock.
+
+argument::quant
+Quant or SimpleNumber. Makes the player start at the next grid that gives enough time for latency. 
+
+argument::hsPlay
+Boolean. Determines if help synth should also start. Defaults to true.
+
+argument::pbindPlay
+Boolean. Determines if Pbind(s) should play. Defaults to true.
+
+argument::quantBufferTime
+SimpleNumber (seconds). Calculated time to include latency for "stepping in" 
+is lengthened by this value. Defaults to 0.2.
+
+method::stop
+
+argument::hsStop
+Boolean. Determines if help synth should stop. Defaults to false.
+
+argument::pbindStop
+Boolean. Determines if Pbind player(s) should stop. Defaults to true.
+
+argument::addAction
+Function to be evaluated at receive time.
+
+method::pause
+
+= strong::stop::
+
+method::free
+
+Stop the PHSplayer and all PHSusePlayers that are using the same HS, also free the HS.
+
+Note:: strong::stop:: (= strong::pause::) allows resuming the player - strong::free:: resets, player can be started again. 
+::
+
+EXAMPLES::
+
+code::
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+
+// define HS, PHS - play
+
+(
+h = HS(s, { |freq = 0.5, dev = 10, center = 65| LFDNoise3.kr(freq, dev, center) });
+
+p = PHS(h, nil, // default help synth args
+    Prand([0.4, 0.2],inf), [ \midinote, Pkey(\val), \amp, 0.1  ],
+    0.1, [ \midinote, Pkey(\val) + 9.5 + Pxrand([0, 2, 5],inf), \amp, 0.08 ]
+).play;
+)
+
+
+// stop only help synth
+
+p.stop(hsStop: true, pbindStop: false);
+
+
+// stop pbind
+
+p.stop;
+
+
+// resume help synth and eventstream player
+
+p.play(hsPlay: true, pbindPlay: true);
+
+
+// stop player and free HS
+
+p.free;
+
+
+::

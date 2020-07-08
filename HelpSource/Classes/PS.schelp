@@ -1,0 +1,251 @@
+CLASS:: PS
+summary:: Pattern that behaves like a Stream
+categories::Libraries>miSCellaneous>PSx stream patterns, Streams-Patterns-Events>PSx stream patterns
+related:: Overviews/miSCellaneous, Tutorials/PSx_stream_patterns, Classes/MemoRoutine, Classes/PSdup, Classes/PSrecur, Classes/PSloop
+
+
+DESCRIPTION::
+
+
+In general Patterns are stateless. But e.g. for counted embedding in other Patterns the exception of stream-like behaviour is practical. PS might also be used in cases where Streams must not be passed to certain Patterns.
+
+note::
+Name and implementation of former Pstream has changed with miSCellaneous_v0.9, in compliance with other PSx patterns it's been renamed to PS / PStream, however for backwards compatibility Pstream will still work by subclassing.
+
+::
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PS object.
+
+argument::srcPat
+Source pattern, might also be event pattern.
+
+argument::length
+Number of output items, may be pattern or stream, defaults to inf.
+
+argument::bufSize
+Size of buffer to store last values, defaults to 1.
+
+argument::copyItems
+Determines if and how to copy items, which are which are either non-Sets or member of Sets.
+Takes Integer 0 (or false or Symbol \false), 1 (or true or Symbol \true) or 2 (or Symbol \deep).
+Other values are interpreted as 0. Defaults to 0.
+
+0: original item
+
+1: copy item
+
+2: deepCopy item
+
+argument::copySets
+Determines if to copy Sets (and hence Events).
+Takes Integer 0 (or false or Symbol \false), 1 (or true or Symbol \true).
+Other values are interpreted as 0. Defaults to 1.
+
+0: original Set
+
+1: copy Set
+
+note::
+The distinction of copying items and sets makes sense in the case of event streams. Per default Events are copied (strong::copySets:: == 1), not their values (strong::copyItems:: == 0). By playing Events those are used to store additional data (synth ids, msgFuncs …) which is mostly not of interest when refering to the event stream, e.g. with PSx patterns which use MemoRoutine - copied Events will not contain this additional data. If values of Events or values returned directly by the stream (being no kind of Sets) are unstructured then copying makes no sense, this is the normal case, so copyItems defaults to 0. When going to alter the ouput, you might want to set strong::copyItems:: to 1 for a PSx returning simple arrays or 2 for nested arrays (deepCopy). For deepCopying Events you'd have to set strong::copySets:: to 1 and strong::copyItems:: to 2 (an option strong::copySets:: == 2 doesn't exist as it would be contradictory in combination with strong::copyItems:: < 2).
+::
+
+
+note::
+Copy options concern copying into PS's buffer as well as the output of a Stream derived from the PS. When such a Stream is outputting copies this prevents unintended altering of items from strong::srcPat::. On the other hand storing copies in PS's buffer prevents these from being altered unintendedly.
+::
+
+
+INSTANCEMETHODS::
+
+method::lastValue
+Last value stored in strong::memoRoutine::
+
+method::lastValues
+Array of last values stored in strong::memoRoutine::, latest value is first in array.
+
+method::at
+Returns ith item of array of last values stored in strong::memoRoutine:: (keep in mind reversed order: last value first)
+
+method::bufSize
+Size of array of last values.
+
+method::srcPat
+Instance variable getter and setter methods.
+
+method::length
+Instance variable getter and setter methods.
+
+method::lengthStream
+Instance variable getter and setter methods.
+
+method::memoRoutine
+Instance variable getter and setter methods.
+
+method::count
+Instance variable getter and setter methods.
+Counts each call of next / value / resume / run on the strong::memoRoutine::.
+If several Streams are derived from one PS each call of next on a derived Stream
+will be counted by the strong::memoRoutine:: and thus by the PS.
+
+method::bufSeq
+Returns items of the array strong::lastValues::, but in the order in which they appeared, i.e.
+latest value is first in array.
+
+argument::dropNils
+Boolean. If strong::dropNils:: is true (default), nils will be rejected from the array.
+
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+
+// PS used to store a sequence of 6 events
+
+(
+p = Pbind(
+    \midinote, Pwhite(60, 90, 6),
+    \dur, Prand([0.2, 0.4], inf)
+);
+
+// As the sequence ends with nil, nil is also stored in the buffer of PStream's MemoRoutine.
+// Hence to store the whole sequence we must increase the buffer size by 1.
+
+q = PS(p, bufSize: 7);
+
+q.play;
+)
+
+
+// values are shifted, so latest are first
+
+q.lastValues
+
+
+// method bufSeq gives items in order in which they appeared, dropping nils by default
+
+q.bufSeq
+
+
+// repeat original sequence
+
+Pseq(q.bufSeq).play
+
+
+// play in reverse order, as Stream has been finished there's also a nil to be dropped
+
+Pseq(q.lastValues.drop(1)).play
+
+
+// counted embedding of value patterns
+// PLx variants default to repeats = inf
+
+(
+p = PLseq([
+    PS(PLseq((60..65)), 3),
+    PS(PLseq((80..90)), Pwhite(2,5))
+]);
+
+x = Pbind(
+    \midinote, p,
+    \dur, 0.1
+).play;
+)
+
+x.stop;
+
+
+// counted embedding of event patterns
+
+(
+p = Pbind(
+    \midinote, PLseq((55..70)) + Pfunc { [0, [4,5].choose] },
+    \dur, 0.2
+);
+
+q = Pbind(
+    \midinote, PLseq((80..100)),
+    \dur, 0.05
+);
+
+x = PLseq([
+    PS(p, Pwhite(2,6)),
+    PS(q, Pwhite(2,6))
+]).play;
+)
+
+x.stop;
+
+::
+
+note::
+Repeated streamifying of a PS is just like resuming a Stream (yes, PS behaves like ... a Stream). For getting a Stream to start at the beginning as defined by the Pattern enclosed by the PS, you'd have to generate a new PS, e.g. by reevaluating its definition or wrapping it into a Function.
+::
+
+
+code::
+
+p = PS(Pseries(), 5);
+
+// evaluate more than once
+
+p.asStream.all;
+
+
+
+// compare
+
+q = { PS(Pseries(), 5) };
+
+// evaluate more than once
+
+q.value.asStream.all;
+
+
+
+// For recursively generating data see PSrecur.
+// Referring to buffered last values of a PS can
+// easily be done with method .at.
+
+
+// canonical brown movement
+// define 3 voices refering to a PS
+// use separate PS to collect data
+// plot
+
+(
+p = PS(Pbrown(65, 90, 2.1), inf, 16);
+p.iter.nextN(16);
+
+q = Pfunc { p[5] - 7 };
+r = Pfunc { p[10] - 14 };
+t = Pfunc { p[15] - 21 };
+
+u = PS(Ptuple([p,q,r,t]), bufSize: 100);
+
+a = Plotter().superpose_(true).plotMode_(\plines);
+a.value = u.iter.nextN(100).flop
+)
+
+// playback stored pitches
+
+(
+v = Pbind(
+	\midinote, Pseq(u.bufSeq),
+	\dur, 0.2
+).trace.play
+)
+
+::
+

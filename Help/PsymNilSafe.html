@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {color: #0326cb}
+span.s5 {color: #008300}
+span.s6 {color: #ff7c00}
+span.s7 {color: #737373}
+span.s8 {color: #434ccb}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>PsymNilSafe<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>Psym variant that avoids hangs if all referenced patterns return nil</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: Psym</b></p>
+<p class="p4"><br></p>
+<p class="p1">This adapts an idea of James Harkins' PnNilSafe (ddwPatterns quark) for Psym. If all patterns in the Dictinonary return nil, then Psym's embedInStream can produce an infinite loop, as it never yields. PnNilSafe can't be wrapped around Psym, but the check with logical time can be built into Psym itself. The wrapping into PsymNilSafe can shortly be written by applying 'symplay' instead of 'play'.</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>See also: </b><a href="PLx suite.html"><span class="s3">Psym</span></a>, <a href="PLx and live coding with Strings.html"><span class="s3">PLx and live coding with Strings</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new (pattern, dict, maxNull)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new PsymNilSafe object. <b>pattern </b>expects a pattern of Symbols, <b>dict</b> the lookup dictionary and defaults to the current Environment. <b>maxNull </b>is the number of events with delta = 0 after which PsymNilSafe's method 'embedInStream' yields and thus stops a potentially endless loop. <b>maxNull </b>defaults to 128.</p>
+<p class="p8"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p9"><br></p>
+<p class="p5"><b>Instance Method for Class Pattern</b></p>
+<p class="p9"><span class="Apple-converted-space"> </span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>aPattern.symplay(dict, clock, protoEvent, quant, maxNull = 128)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Play a pattern wrapped into a PsymNilSafe. Arguments <b>clock</b>, <b>protoEvent </b>and<b> quant </b>work as with playing a Pattern, arguments <b>dict </b>and <b>maxNull</b> work as with PsymNilSafe.new.</p>
+<p class="p10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></p>
+<p class="p5"><b>Example</b></p>
+<p class="p9"><br></p>
+<p class="p11">(</p>
+<p class="p11">s = <span class="s4">Server</span>.local;</p>
+<p class="p11"><span class="s4">Server</span>.default = s;</p>
+<p class="p11">s.boot;</p>
+<p class="p11">)</p>
+<p class="p4"><br></p>
+<p class="p11">(</p>
+<p class="p11">x = <span class="s4">Pbind</span>(<span class="s5">\midinote</span>, <span class="s4">Pseries</span>(60, 1, 10), <span class="s5">\dur</span>, 0.5).asStream;</p>
+<p class="p11">y = <span class="s4">Pbind</span>(<span class="s5">\midinote</span>, <span class="s4">Pseries</span>(90, -1, 10), <span class="s5">\dur</span>, 0.5).asStream;</p>
+<p class="p4"><br></p>
+<p class="p11">z = <span class="s4">Pseq</span>([2, 3, 1, 2], 1).asStream;</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s6">~a</span> = <span class="s4">Pfuncn</span>({ x.next(()) }, { z.next });</p>
+<p class="p11"><span class="s6">~b</span> = <span class="s4">Pfuncn</span>({ y.next(()) }, { z.next });</p>
+<p class="p4"><br></p>
+<p class="p11"><span class="s4">PsymNilSafe</span>(<span class="s4">Pseq</span>(<span class="s7">"ab"</span>, <span class="s8">inf</span>)).trace.play;</p>
+<p class="p4"><br></p>
+<p class="p12">// shorter with method 'symplay':</p>
+<p class="p12">// trace indicates all events with delta = 0 (maxNull = 128) in the post window</p>
+<p class="p12">// Pseq("ab", inf).trace.symplay</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p12">// ATTENTION: with Psym the example leads to a SC hang !</p>
+<p class="p12">// Psym(Pseq("ab", inf), currentEnvironment).trace.play</p>
+<p class="p11">)</p>
+</body>
+</html>

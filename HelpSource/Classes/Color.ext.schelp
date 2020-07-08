@@ -1,0 +1,6 @@
+
+INSTANCEMETHODS::
+
+private:: miSC_exp, miSC_iplToGrey, miSC_dim
+
+

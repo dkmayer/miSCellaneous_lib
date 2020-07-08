@@ -1,0 +1,301 @@
+CLASS:: Dwalk
+summary:: demand rate ugen for (random) walks
+categories:: Libraries>miSCellaneous
+related:: Overviews/miSCellaneous, Guides/Introduction_to_miSCellaneous, Classes/ZeroXBufRd, Classes/ZeroXBufWr
+
+DESCRIPTION::
+
+Dwalk can be used for general purposes in a way similar to Pwalk, but can also return data in a form, which is especially suited for usage with link::Classes/ZeroXBufRd::. A sequence of Integers (stepsPerDir) determines the number of consequential additions of numbers (stepWidth) before directional changes. Dwalk returns the current sum and, optionally, the current direction (plus or minus 1).
+
+For buffer modulation with link::Classes/ZeroXBufRd:: a stepWidth of 1 allows stepping through adjacent segments. There are two ways to achieve smooth directional changes of the read pointer: (1) at zero crossings of the original waveform together with inverting it or (2) at the positions where the waveform changes direction (up/down) or in other words: its slope crosses zero.
+
+
+note::
+For implementational reasons Dwalk doesn't multichannel expand, use duplication of Functions instead.
+::
+
+note::
+If withDirs is set to 1 and many values are polled, extended memory size is recommended: a high bufSize is needed for Dunique (as – and especially – with ZeroXBufRd).
+::
+
+note::
+Ordinary ugens for stepWidth and steps per direction (via stepsPerDirMulUGen and stepsPerDirAddUGen) should be avoided in combination with ZeroXBufRd. 
+::
+
+
+
+CLASSMETHODS::
+
+method::new
+
+argument::stepsPerDir
+Integer or demand rate ugen determining the integer number of steps into one direction. If withDirs equals 0 also an ordinary ugens might be passed. If withDirs equals 1 a Dunique is used internally, in this case for passing an ordinary ugen alone or in combination with a demand rate ugen use strong::stepsPerDirMulUGen:: or strong::stepsPerDirAddUGen::. Defaults to 1.
+
+argument::stepWidth 
+Number, demand rate or other ugen determining the step width. Defaults to 1. How strong::stepWidth:: is interpreted in case of a demand rate or other ugen depends on the value of strong::stepMode::. An ordinary ugens should not be chosen when using Dwalk for ZeroXBufRd.
+
+
+argument::stepMode
+Determines how strong::stepWidth:: is interpreted in case of a demand rate or other ugen: 
+list::
+## 0 – one step width is taken for all steps into one direction
+## 1 – step width changes per step.			
+::
+Defaults to 0.
+
+argument::start
+The start value, which is returned anyway. Defaults to 0.
+
+argument::lo
+Low boundary value, causes clipping. Directional changes apply after clipping. Might also be demand rate or other ugen, defaults to -inf.
+
+argument::hi
+High boundary value, causes clipping. Directional changes apply after clipping. Might also be demand rate or other ugen, defaults to inf.
+
+argument::startDir
+The start direction, which is returned anyway. Defaults to 1.
+
+argument::dirChangeMode
+Determines if directional changes should apply immediately (1) or after a repetition of the current value (0, default). The latter corresponds to the convention of ZeroXBufRd: if a segment should be played in reverse direction, the index (the zeroX arg) would stay the same whereas the direction (the dir arg) is multiplied with -1. 
+
+argument::withDirs
+0, 1, false or true. Defaults to 0. Determines if direction values (plus or minus 1) should be returned. In this case the result is an array of two demand rate ugens returning the summed numbers and the direction values. If set to 1 a Dunique is used internally and strong::stepsPerDir:: must not get an ordinary ugen. 
+
+argument::stepsPerDirMulUGen
+Ordinary ugen to be multiplied with strong::stepsPerDir::. This option is only necessary in the case that strong::withDirs:: equals 1 and should not be used in combination with ZeroXBufRd. The number of steps per direction is calculated by strong::stepsPerDir:: * strong::stepsPerDirMulUGen:: + strong::stepsPerDirAddUGen::. Defaults to 1.
+
+argument::stepsPerDirAddUGen
+Ordinary ugen to be multiplied with strong::stepsPerDir::. This option is only necessary in the case that strong::withDirs:: equals 1 and should not be used in combination with ZeroXBufRd. The number of steps per direction is calculated by strong::stepsPerDir:: * strong::stepsPerDirMulUGen:: + strong::stepsPerDirAddUGen::. Defaults to 0.
+
+argument::dUniqueBufSize
+Determines the buffer size for a Dunique object which has to be used in case that strong::withDirs:: is set to 1. Defaults to 1048576. 		
+
+
+
+SECTION::Examples
+
+
+anchor::Ex.1::
+code::
+(
+// boot with extended resources
+
+s = Server.local;
+Server.default = s;
+s.options.memSize = 8192 * 32; 
+s.reboot;
+)
+::
+
+
+subsection::Ex.1: Basic usage
+
+code::
+// dirChangeMode == 1 (immediate direction change)
+// note that here we get two resulting sequences (withDirs == 1):
+// the actual number sequence and the sequence of directions (+-1)
+
+
+// stepsPerDir sequence: 
+// 1, 2, 3, 1, 2, 3, 1...
+
+
+// step sequence with default stepWidth == 1: 
+// 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, ...
+
+// resulting number sequence: 
+// 0, 1, 0, -1, 0, 1, 2, 1, 2, 3, 2, 1, 0, 1, ...
+
+(
+{
+	var x = Dwalk(Dseq([1, 2, 3], inf), dirChangeMode: 1, withDirs: 1);
+	Duty.ar(SampleDur.ir, 0, x)
+}.plot(0.002)
+)
+
+
+
+// For usage with ZeroXBufRd the dirChangeMode flag needs to be set to 0 (default)
+// in order to avoid jumps in the resulting waveform 
+	
+// Let's regard how such a sequence looks like
+
+(
+{
+	var x = Dwalk(Dseq([1, 2, 3], inf), withDirs: 1);
+	Duty.ar(SampleDur.ir, 0, x)
+}.plot(0.002)
+)
+
+
+// It might be counterintuitive that the number sequence starts with two 0s,
+// but it makes sense if we regard the input and the definition:
+
+
+// stepsPerDir sequence: 
+// 1, 2, 3, 1, 2, 3, 1...
+
+
+// step sequence with default stepWidth == 1: 
+// 1, -1, -1, 1, 1, 1, -1, 1, 1, -1, -1, -1, 1, ...
+
+// The start value (which is always returned) defaults to 0, 
+// for the next value to return, a directional change in the step sequence is encountered,
+// because of dirChangeMode 0 again 0 is returned.
+// The next step is -1, which is no change in direction, thus -1 is effectively added and returned.
+// Then the direction is changed to 1, so -1 is returned once more – and so on.
+
+
+// resulting number sequence: 
+// 0, 0, -1, -1, 0, 1, 1, 1, 2, 2, 1, 0, 0, 0, -1, -1, ...
+
+
+
+//////////////////////////////////////////////////////////
+
+
+
+// changing stepWidth with default stepMode 0:
+// slopes vary, but stay the same within one direction
+
+(
+{
+	var x = Dwalk(Dseq([1, 2, 3], inf), Dwhite(0.1, 0.5), dirChangeMode: 1);
+	Duty.ar(SampleDur.ir, 0, x)
+}.plot(0.002)
+)
+
+
+// changing stepWidth with default stepMode 1:
+// slopes can vary also within one direction
+
+(
+{
+	var x = Dwalk(Dseq([1, 2, 3], inf), Dwhite(0.1, 0.5), stepMode: 1, dirChangeMode: 1);
+	Duty.ar(SampleDur.ir, 0, x)
+}.plot(0.002)
+)
+
+
+// also ordinary ugens might be passed to stepWidth ...
+
+(
+{
+	var x = Dwalk(Dseq([1, 2, 3], inf), SinOsc.ar(1000).range(0.1, 1), dirChangeMode: 1);
+	Duty.ar(SampleDur.ir, 0, x)
+}.plot(0.003)
+)
+
+
+// ... or to stepsPerDir, but note that it must be an integer (or will be rounded to one),
+// quantisation can lead to surprising patterns
+
+(
+{
+	var x = Dwalk(SinOsc.ar(1000).range(1, 5), dirChangeMode: 1);
+	Duty.ar(SampleDur.ir, 0, x)
+}.plot(0.1)
+)
+
+(
+{
+	var x = Dwalk(SinOsc.ar(1001).range(1, 5), dirChangeMode: 1);
+	Duty.ar(SampleDur.ir, 0, x)
+}.plot(0.1)
+)
+
+
+// special case of an ordinary ugen involved in determining the steps per direction plus withDirs set to 1:
+// in this case internally a Dunique is used which must not get an ordinary ugen input,
+// hence the arguments stepsPerDirMulUGen and stepsPerDirAddUGen must be used.
+
+(
+{
+	var x = Dwalk(stepsPerDirMulUGen: SinOsc.ar(1000).range(1, 5).round, dirChangeMode: 1, withDirs: 1);
+	Duty.ar(SampleDur.ir, 0, x)
+}.plot(0.1)
+)
+::
+
+
+anchor::Ex.2::
+subsection::Ex.2: Stochastic synthesis
+
+code::
+// similar to DemandEnvGen Dwalk can be used for stochastic synthesis textures 
+// LeakDC recommended, though it obfuscates the original waveform
+
+(
+y = {
+    var x = {
+		Dwalk(
+			Dstutter(Dwhite(1, 10), Dwhite(5, 50)),
+			0.01,
+			lo: -1,
+			hi: 1
+		) } ! 2;
+	LeakDC.ar(Duty.ar(SampleDur.ir, 0, x)) * 0.5
+}.play
+)
+
+y.release
+
+
+(
+y = {
+	var x = {
+		Dwalk(
+			Dstutter(Dwhite(3, 10), Drand((1..200), inf)),
+			Dstutter(Dstutter(5, Dwhite(1, 30)), Dseq((1..70) ** 2, inf) / 30000),
+			lo: -1,
+			hi: 1
+		) } ! 2;
+	LeakDC.ar(Duty.ar(SampleDur.ir, 0, x)) * 0.3
+}.play
+)
+
+y.release
+
+
+// glitchy
+
+(
+y = {
+	var x = {
+		Dwalk(
+			Dstutter(Dwhite(3, 10), Drand((1..200), inf)),
+			Dstutter(Dstutter(5, Dwhite(1, 30)), Dseq((1..70) ** 2, inf) / 30000),
+			lo: SinOsc.ar(0.1).range(-1, 0),
+			hi: Dstutter(
+				Drand([
+					Dstutter(Dwhite(10, 15), Drand([Dseq((200..1)), Dseq((150..1))], inf)),
+					Dwhite(5000, 40000, 1)
+				], inf),
+				Dseq([0, 1], inf)
+			)
+		) } ! 2;
+	LeakDC.ar(Duty.ar(SampleDur.ir, 0, x)) * 0.3
+}.play
+)
+
+y.release
+::
+
+
+
+anchor::Ex.3::
+subsection::Ex.3: Smooth concatenation of adjacent wavesets
+
+See link::Classes/ZeroXBufRd#Ex. 9::
+
+anchor::Ex.4::
+subsection::Ex.4: Smooth concatenation of adjacent segments restricted by turning points resp. local minima or maxima
+
+See link::Classes/ZeroXBufRd#Ex. 10::
+
+
+
+
+
+
+

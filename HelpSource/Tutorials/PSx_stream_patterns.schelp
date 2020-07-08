@@ -1,0 +1,69 @@
+
+TITLE::PSx stream patterns
+summary::Pattern variants that have a state and can remember their last values
+categories:: Libraries>miSCellaneous>PSx stream patterns, Streams-Patterns-Events
+related:: Overviews/miSCellaneous, Guides/Introduction_to_miSCellaneous, Classes/MemoRoutine, Classes/PS, Classes/PSdup, Classes/PSrecur, Classes/PSloop
+
+
+DESCRIPTION::
+
+In general Patterns are thought to have no state. They are defining models for the really generative objects, Streams, which respond to the method next that causes them to return a next value. So, in general, an arbitrary number of Streams might be derived from one Pattern, all behaving as defined by the latter.
+However there are cases where it is comfortable to have objects that behave like Streams, e.g. resume from their last state if embedded, and at the same time still benefit from everything which is already implemented for Patterns. PSx stream patterns are an attempt to accomplish this. PSx patterns behave like Streams - they resume from last state when repeatedly embedded -, they remember their last value (or a number of last values) and they are real Patterns by subclassing, i.e. operators defined for Patterns can be applied. Internally they use Stream's subclass link::Classes/MemoRoutine:: which performs value buffering.
+
+
+SECTION::PSx value and event pattern classes
+
+link::Classes/PS::, link::Classes/PSdup::, link::Classes/PSrecur::, link::Classes/PSloop::
+
+
+EXAMPLES::
+
+
+code::
+
+(
+p = Pseq([
+    PS(Pseq((1..9), inf), 3),
+    PS((Pseries() + 1) * 100, Pseq([1,2,3], inf))
+], inf);
+
+q = p.asStream;
+
+q.nextN(50);
+)
+
+// ATTENTION:
+
+// It is important to remember that, differing from normal
+// Pattern convention, repeatedly applying .asStream to a
+// PSx pattern or a Pattern that encloses a PSx doesn't cause a Stream to begin at the start.
+// Every new Stream refers to the internally used and previously left off MemoRoutine.
+
+
+p.asStream.nextN(5);
+
+p.asStream.nextN(10);
+
+
+// For getting a totally new Stream you can reevaluate the Pattern definition or
+// define the Pattern with a wrapping Function:
+
+(
+a = {
+    Pseq([
+        PS(Pseq((1..9), inf), 3),
+        PS((Pseries() + 1) * 100, Pseq([1,2,3], inf))
+    ], inf);
+};
+
+b = a.value.asStream;
+
+b.nextN(50);
+)
+
+a.value.asStream.nextN(5);
+
+a.value.asStream.nextN(10);
+
+::
+

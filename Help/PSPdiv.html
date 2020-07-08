@@ -1,0 +1,542 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1038.36">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Helvetica; min-height: 16.0px}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p9 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p10 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p11 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p13 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p14 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p16 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Helvetica; min-height: 11.0px}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00}
+p.p18 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0433ff}
+p.p19 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #008300}
+p.p20 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #ff7c00}
+p.p21 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c0e}
+p.p22 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0326cb}
+p.p23 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica; min-height: 17.0px}
+p.p24 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00; min-height: 12.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {color: #00bbff}
+span.s5 {text-decoration: underline ; color: #01caff}
+span.s6 {font: 12.0px Helvetica}
+span.s7 {color: #0326cb}
+span.s8 {color: #008300}
+span.s9 {color: #0433ff}
+span.s10 {color: #ff7c00}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>PSPdiv<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>dynamic multi-layer pulse divider<span class="Apple-converted-space"> </span></b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p4"><b>Inherits from: Pspawner</b></p>
+<p class="p5"><br></p>
+<p class="p3"><span class="s2"><b>See also: </b><a href="Pspawner.html"><span class="s3">Pspawner</span></a></span><span class="s4">,</span><span class="s2"> <a href="Sieves and Psieve patterns.html"><span class="s3">Sieves and Psieve patterns</span></a></span><span class="s4">,</span><span class="s2"> <a href="Buffer Granulation.html"><span class="s5">Buffer Granulation</span></a></span><span class="s4">,</span><span class="s2"> <a href="Live Granulation.html"><span class="s5">Live Granulation</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p4">PSPdiv controls the timing of one or several layers of event patterns by a single pulse pattern. In every layer single pulse durations or integer multiples ('division bases') of pulse durations can be divided by Integers or proportionally. For every layer the event pattern data can be given as event pattern or a function, which is generating an event pattern for every divisional operation. Division bases and divisions as well as the pulse itself can be controlled by patterns.<span class="Apple-converted-space"> </span></p>
+<p class="p4">PSPdiv is built on Pspawner and therefore allows sequential or parallel spawning: the type of embedding can be sequenced by a pattern for every divisional operation. So a single layer alone can produce a number of overlapping sequences.</p>
+<p class="p6"><br></p>
+<p class="p1">Time division in space notation scheme with two layers and embedding of sequential type:</p>
+<p class="p7"><br></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="s6"><img src="attachments/PSPdiv/PSPdiv_graph_1.png" width = 650 alt="attachments/PSPdiv/PSPdiv_graph_1.png"></span></p>
+<p class="p2"><span class="Apple-tab-span">	</span></p>
+<p class="p4">A sequence of regular or irregular <b>pulses</b> is given as pattern of floats, these durations are marked as proportional spaces in the graphic. The sequence of <b>divBases </b>collects groups of <b>pulses</b> and divides them according to the sequence of <b>divs</b>. The resulting durations of each layer are again marked by proportional spacing, common entry points of layers are marked by emphasized vertical lines.</p>
+<p class="p2"><br></p>
+<p class="p4">Special thanks to Ron Kuivila for developing Pspawner, it's such a versatile class !</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p8"><b>Creation / Class Methods</b></p>
+<p class="p9"><br></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span>*new (pulse, evPat, div, divBase, divType)</b></p>
+<p class="p11"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p10"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Creates a new PSPdiv object.</p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>pulse </b>- Duration or pattern of durations, given as beats. Defaults to 1.</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>evPat </b>- An event pattern, a Function generating event patterns or: a SequenceableCollection thereof.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If an event pattern is given, the durations of the current division, calculated from current values of<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>pulse</b>, <b>div</b> and <b>divBase</b>, are inserted with the 'dur' key, there's no use in passing durations in</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the event pattern in this case.<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>If a Function is given, it will be passed 4 arguments:</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) an array of durations of the current division, based on the following arguments</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) the current division number <b>div</b></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) the current division base number <b>divBase</b></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>.) the current division type <b>divType </b>('seq' or 'par')</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>The Function should return the event pattern to be scheduled for this division. The typical</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>application would be using the array of durations in a Pseq with repeats = 1 as 'dur' value,<span class="Apple-converted-space"> <span class="Apple-tab-span">	</span></span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>though you are free to let it return any kind of event pattern.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Layers are slightly shifted, so that the event from a pattern of lower index is calculated</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>before an event from a pattern of higher index, if events are scheduled to happen at the same time.</p>
+<p class="p13"><br></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>div </b>- Integer or array of array of numbers, determining a division of <b>divBase</b> * <b>pulse</b> beats or</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a pattern returning such or: a SequenceableCollection thereof. Defaults to 1.</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>A single array of numbers is interpreted as indicator for several layers (see note below),</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>hence the doubled array is necessary for a proportional division.</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>divBase </b>- Integer determining the number of multiples of <b>pulse</b> to be used as base of division or</p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a pattern returning such or: a SequenceableCollection thereof. Defaults to 1.</p>
+<p class="p13"><br></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>divType </b>- Symbol 'seq' or 'par' or or a pattern returning such or: a SequenceableCollection thereof.<span class="Apple-converted-space"> </span></p>
+<p class="p12"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 'seq'. Determines the type of embedding according to Pspawner's convention.</p>
+<p class="p13"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>NOTE: </b>If one of the arguments <b>evPat</b>,<b> div</b>,<b> divBase </b>and<b> divType </b>is passed as SequenceableCollection of size &gt; 1,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a multitude of layers is assumed and the other args are interpreted accordingly. To avoid ambiguities only one</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>size &gt; 1 is allowed at maximum amongst these args (but more than one of them can be a SequenceableCollection</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>of this size). Consequently a proportional <b>div</b> arg for one layer must be passed in double brackets.</p>
+<p class="p6"><br></p>
+<p class="p6"><br></p>
+<p class="p14"><b>Examples</b></p>
+<p class="p5"><br></p>
+<p class="p15">(</p>
+<p class="p15">s = <span class="s7">Server</span>.local;</p>
+<p class="p15"><span class="s7">Server</span>.default = s;</p>
+<p class="p15">s.boot;</p>
+<p class="p15">)</p>
+<p class="p9"><br></p>
+<p class="p5"><br></p>
+<p class="p14"><b>Ex. 1: <span class="Apple-converted-space">  </span>Basic functionality with one layer</b></p>
+<p class="p16"><br></p>
+<p class="p16"><br></p>
+<p class="p17">// test SynthDef</p>
+<p class="p5"><br></p>
+<p class="p15">(</p>
+<p class="p18"><span class="s7">SynthDef</span><span class="s2">(</span><span class="s8">\varKlank</span><span class="s2">, { </span>|freq = 500, att = 0.01, rel = 0.1, sourceType = 0,</p>
+<p class="p18"><span class="Apple-tab-span">	</span>ringtime = 1, pan = 0, amp = 0.1|</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s9">var</span> sig, source = <span class="s7">Select</span>.ar(sourceType, [</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">BrownNoise</span>.ar(0.05),</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">Impulse</span>.ar(0)</p>
+<p class="p15"><span class="Apple-tab-span">	</span>]);</p>
+<p class="p15"><span class="Apple-tab-span">	</span>sig = <span class="s7">DynKlank</span>.ar(`[freq * (1..8), amp * (8..1)/8, ringtime * (1!8)], source);</p>
+<p class="p15"><span class="Apple-tab-span">	</span>sig = <span class="s7">Splay</span>.ar(sig);</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s7">OffsetOut</span>.ar(0, <span class="s7">Balance2</span>.ar(sig[0], sig[1], pan) *</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">EnvGen</span>.ar(<span class="s7">Env</span>.perc(att, rel), doneAction: 2))</p>
+<p class="p15">}).add;</p>
+<p class="p15">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p15">(</p>
+<p class="p17">// base pattern, no need to provide durations, as they are calculated from other PSPdiv args</p>
+<p class="p15">p = <span class="s7">Pbind</span>(</p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\instrument<span class="s2">, </span>\varKlank<span class="s2">,</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">Pwhite</span>(65, 90),</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.1,</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\att</span>, <span class="s7">Pwhite</span>(0.005, 0.02),</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\rel</span>, 2,</p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\sourceType<span class="s2">, 1,</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\ringtime<span class="s2">, 2,</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\pan</span>, <span class="s7">Pwhite</span>(-0.3, 0.3)</p>
+<p class="p15">);</p>
+<p class="p15">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// div = 1, pulse not divided</p>
+<p class="p5"><br></p>
+<p class="p15">x = <span class="s7">PSPdiv</span>(0.8, p, 1).play;</p>
+<p class="p5"><br></p>
+<p class="p15">x.stop</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// div as array of two items leads to expansion into two layers</p>
+<p class="p5"><br></p>
+<p class="p15">x = <span class="s7">PSPdiv</span>(0.8, p, [2, 1]).play;</p>
+<p class="p5"><br></p>
+<p class="p15">x.stop</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// here div is interpreted as proportion for one layer</p>
+<p class="p5"><br></p>
+<p class="p15">x = <span class="s7">PSPdiv</span>(0.8, p, [[3, 1]] ).play;</p>
+<p class="p5"><br></p>
+<p class="p15">x.stop</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// specifying per layer</p>
+<p class="p5"><br></p>
+<p class="p15">x = <span class="s7">PSPdiv</span>(0.8, [p, <span class="s7">Pbindf</span>(p, <span class="s8">\rel</span>, 0.1)], [1, [3, 2, 1]] ).play;</p>
+<p class="p5"><br></p>
+<p class="p15">x.stop</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// use with PL proxies</p>
+<p class="p5"><br></p>
+<p class="p15">(</p>
+<p class="p17">// defaults, want to replace later on</p>
+<p class="p15"><span class="s10">~pulse</span> = 0.8;</p>
+<p class="p15"><span class="s10">~div</span> = 1;</p>
+<p class="p20">~divBase<span class="s2"> = 1;</span></p>
+<p class="p20">~divType<span class="s2"> = </span><span class="s8">\seq</span><span class="s2">;</span></p>
+<p class="p5"><br></p>
+<p class="p19"><span class="s2">q = </span><span class="s7">PSPdiv</span><span class="s2">(</span><span class="s7">PL</span><span class="s2">(</span>\pulse<span class="s2">), p, </span><span class="s7">PL</span><span class="s2">(</span>\div<span class="s2">), </span><span class="s7">PL</span><span class="s2">(</span>\divBase<span class="s2">), </span><span class="s7">PL</span><span class="s2">(</span>\divType<span class="s2">));</span></p>
+<p class="p15">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// start playing</p>
+<p class="p5"><br></p>
+<p class="p15">x = q.play</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// replace on the fly:</p>
+<p class="p17">// alternating tuplets</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~div</span> = <span class="s7">PLseq</span>([2, 3]);</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// "dotted" notes, now we don't need double brackets as above as it's the source of the PL,</p>
+<p class="p17">// not the PSPdiv arg</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~div</span> = [3, 1];</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// acceleration and deceleration by pulse pattern control</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~pulse</span> = <span class="s7">Pseg</span>(<span class="s7">PLseq</span>([0.8, 0.3]), 10)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p15">(</p>
+<p class="p17">// use divBase for base length control of tuplets</p>
+<p class="p17">// here this could be written with div sequencing only also</p>
+<p class="p5"><br></p>
+<p class="p20">~pulse<span class="s2"> = 1;</span></p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~div</span> = <span class="s7">PLseq</span>([2, 6]);</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~divBase</span> = <span class="s7">PLseq</span>([1, 1, 2]);</p>
+<p class="p15">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p15">x.stop</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p9"><br></p>
+<p class="p9"><br></p>
+<p class="p14"><b>Ex. 2: <span class="Apple-converted-space">  </span>Parallel embedding with one layer</b></p>
+<p class="p9"><br></p>
+<p class="p21">// SynthDef from Ex. 1</p>
+<p class="p5"><br></p>
+<p class="p15">(</p>
+<p class="p17">// default values for proxies</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~pulse</span> = 0.5;</p>
+<p class="p15"><span class="s10">~div</span> = <span class="s7">PLseq</span>([6, 4]);</p>
+<p class="p20">~divBase<span class="s2"> = 2;</span></p>
+<p class="p20">~divType<span class="s2"> = </span><span class="s8">\par</span><span class="s2">;</span></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// evPat argument now given as Function</p>
+<p class="p17">// this especially makes sense in combination with parallel embedding</p>
+<p class="p17">// otherwise parallel patterns would poll event data from a single event stream</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p15">p = { <span class="s9">|durs|</span></p>
+<p class="p17"><span class="s2"><span class="Apple-tab-span">	</span></span>// use durs calculated from pulse, div and divBase</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s9">var</span> size = durs.size;</p>
+<p class="p22"><span class="s2"><span class="Apple-tab-span">	</span></span>Pbind<span class="s2">(</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, <span class="s7">Pseq</span>(durs),</p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\instrument<span class="s2">, </span>\varKlank<span class="s2">,</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">Pseq</span>(<span class="s10">~baseStream</span>.next + rrand(0, 7) + (0..size)),</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.1,</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\att</span>, <span class="s7">Pwhite</span>(0.005, 0.02),</p>
+<p class="p20"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\rel</span><span class="s2">, </span>~releaseStream<span class="s2">.next,<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\ringtime<span class="s2">, 2,</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\sourceType<span class="s2">, 1,</span></p>
+<p class="p20"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\pan</span><span class="s2">, </span>~panStream<span class="s2">.next</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span>)</p>
+<p class="p15">};</p>
+<p class="p5"><br></p>
+<p class="p17">// these streams deliver items for each embedding</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~baseStream</span> = <span class="s7">PLseq</span>([60, 70, 80]).iter;</p>
+<p class="p15"><span class="s10">~releaseStream</span> = <span class="s7">Pn</span>(<span class="s7">Pshuf</span>([2, 0.6, 0.2])).iter;</p>
+<p class="p15"><span class="s10">~panStream</span> = <span class="s7">Pwhite</span>(-0.8, 0.8).iter;</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// we still have only one layer, but it will overlap</p>
+<p class="p5"><br></p>
+<p class="p19"><span class="s2">q = </span><span class="s7">PSPdiv</span><span class="s2">(</span><span class="s7">PL</span><span class="s2">(</span>\pulse<span class="s2">), p, </span><span class="s7">PL</span><span class="s2">(</span>\div<span class="s2">), </span><span class="s7">PL</span><span class="s2">(</span>\divBase<span class="s2">), </span><span class="s7">PL</span><span class="s2">(</span>\divType<span class="s2">));</span></p>
+<p class="p15">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// start</p>
+<p class="p5"><br></p>
+<p class="p15">x = q.play</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// change to sequential embedding</p>
+<p class="p5"><br></p>
+<p class="p20">~divType<span class="s2"> = </span><span class="s8">\seq</span><span class="s2">;</span></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// type of embedding can be sequenced too</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~divType</span> = <span class="s7">PLrand</span>([<span class="s8">\seq</span>, <span class="s8">\par</span>, <span class="s8">\par</span>]);</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// default divBase was 2, allow shorter division bases</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~divBase</span> = <span class="s7">PLrand</span>([1, 2]);</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p15">x.stop</p>
+<p class="p9"><br></p>
+<p class="p9"><br></p>
+<p class="p9"><br></p>
+<p class="p14"><b>Ex. 3: <span class="Apple-converted-space">  </span>Ornamenting a line with a second layer</b></p>
+<p class="p9"><br></p>
+<p class="p5"><br></p>
+<p class="p21">// SynthDef from Ex. 1</p>
+<p class="p5"><br></p>
+<p class="p15">(</p>
+<p class="p15">p = <span class="s7">Pbind</span>(</p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\instrument<span class="s2">, </span>\varKlank<span class="s2">,</span></p>
+<p class="p17"><span class="s2"><span class="Apple-tab-span">	</span></span>// basic melodic line, data stored in variable for use by ornamentation</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, (<span class="s7">Pn</span>(<span class="s7">Pshuf</span>([72, 74, 76, 79, 81])).collect { <span class="s9">|x|</span> <span class="s10">~m</span> = x; }) +</p>
+<p class="p17"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// random broadening of line<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">PLrand</span>([[-14, 0], [0, 14]]),</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.15,</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\att</span>, <span class="s7">Pwhite</span>(0.01, 0.02),</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\rel</span>, 3,</p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\sourceType<span class="s2">, 1,</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\ringtime<span class="s2">, 3,</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\pan</span>, <span class="s7">Pwhite</span>(-0.3, 0.3)</p>
+<p class="p15">);</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~releaseStream</span> = <span class="s7">Pn</span>(<span class="s7">Pshuf</span>([2, 0.5, 0.2])).iter;</p>
+<p class="p15"><span class="s10">~panStream</span> = <span class="s7">Pwhite</span>(-0.8, 0.8).iter;</p>
+<p class="p15"><span class="s10">~dirStream</span> = <span class="s7">PLseq</span>([1, -1]).iter;</p>
+<p class="p5"><br></p>
+<p class="p17">// defines trill pattern for every event from melodic line</p>
+<p class="p5"><br></p>
+<p class="p15">q = { <span class="s9">|durs|</span></p>
+<p class="p17"><span class="s2"><span class="Apple-tab-span">	</span></span>// use durs calculated from pulse, div and divBase</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s9">var</span> size = durs.size, midibase = <span class="s10">~m</span>;</p>
+<p class="p22"><span class="s2"><span class="Apple-tab-span">	</span></span>Pbind<span class="s2">(</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\dur</span>, <span class="s7">Pseq</span>(durs),</p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\instrument<span class="s2">, </span>\varKlank<span class="s2">,</span></p>
+<p class="p17"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// define trill alternating above and below basic melodic line</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">Pn</span>(rrand(4, 9) * <span class="s10">~dirStream</span>.next, size) + <span class="s7">PLseq</span>([0, 1]) + midibase,</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.1,</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s8">\att</span>, <span class="s7">Pwhite</span>(0.005, 0.02),</p>
+<p class="p20"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\rel</span><span class="s2">, </span>~releaseStream<span class="s2">.next,</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\ringtime<span class="s2">, 2,</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>\sourceType<span class="s2">, 1,</span></p>
+<p class="p20"><span class="s2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span><span class="s8">\pan</span><span class="s2">, </span>~panStream<span class="s2">.next</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span>)</p>
+<p class="p15">};</p>
+<p class="p5"><br></p>
+<p class="p17">// default values for PL proxies, want to replace later on</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~pulse</span> = <span class="s7">PLshufn</span>([1, 1, 2]/2);</p>
+<p class="p15"><span class="s10">~div</span> = <span class="s7">PLrand</span>([4, 6, 8]);</p>
+<p class="p20">~divBase<span class="s2"> = 1;</span></p>
+<p class="p20">~divType<span class="s2"> = </span><span class="s8">\seq</span><span class="s2">;</span></p>
+<p class="p5"><br></p>
+<p class="p22"><span class="s2">r = </span>PSPdiv<span class="s2">(</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s7">PL</span><span class="s2">(</span>\pulse<span class="s2">),</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span>[p, q],</p>
+<p class="p15"><span class="Apple-tab-span">	</span>[1, <span class="s7">PL</span>(<span class="s8">\div</span>)],</p>
+<p class="p15"><span class="Apple-tab-span">	</span>[1, <span class="s7">PL</span>(<span class="s8">\divBase</span>)],</p>
+<p class="p15"><span class="Apple-tab-span">	</span>[1, <span class="s7">PL</span>(<span class="s8">\divType</span>)]</p>
+<p class="p15">);</p>
+<p class="p15">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// start with sequential embedding: trill on every note, variuos divisions</p>
+<p class="p5"><br></p>
+<p class="p15">x = r.play</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// change to parallel embedding of trills, overlapping</p>
+<p class="p5"><br></p>
+<p class="p15">(</p>
+<p class="p20">~divBase<span class="s2"> = 2;</span></p>
+<p class="p15"><span class="s10">~div</span> = <span class="s7">PLrand</span>([8, 12, 16]);</p>
+<p class="p20">~divType<span class="s2"> = </span><span class="s8">\par</span><span class="s2">;</span></p>
+<p class="p15">)</p>
+<p class="p5"><br></p>
+<p class="p15">x.stop</p>
+<p class="p9"><br></p>
+<p class="p9"><br></p>
+<p class="p9"><br></p>
+<p class="p14"><b>Ex. 4: <span class="Apple-converted-space">  </span>Polyrhythmics of several layers</b></p>
+<p class="p23"><br></p>
+<p class="p24"><br></p>
+<p class="p21">// SynthDef from Ex. 1</p>
+<p class="p17">// three layers using varying pentatonic scales shifted by sixth tones</p>
+<p class="p5"><br></p>
+<p class="p15">(</p>
+<p class="p17">// staccato layer</p>
+<p class="p15">p = <span class="s7">Pbind</span>(</p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\instrument<span class="s2">, </span>\varKlank<span class="s2">,</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">PLshufn</span>([0, 2, 4, 7, 9]) + <span class="s7">Pn</span>(<span class="s7">Pstutter</span>(15, <span class="s7">Pwhite</span>(80, 100, 1))) +</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.6 + [0, -14],</p>
+<p class="p17"><span class="s2"><span class="Apple-tab-span">	</span></span>// use some rests</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.06,</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\att</span>, <span class="s7">Pwhite</span>(0.01, 0.02),</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\rel</span>, 0.15,</p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\sourceType<span class="s2">, 1,</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\ringtime<span class="s2">, 3,</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\pan</span>, <span class="s7">Pwhite</span>(-0.3, 0.3)</p>
+<p class="p15">);</p>
+<p class="p5"><br></p>
+<p class="p17">// long release layer</p>
+<p class="p15">q = <span class="s7">Pbind</span>(</p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\instrument<span class="s2">, </span>\varKlank<span class="s2">,</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">PLshufn</span>([0, 2, 4, 7, 9]) + <span class="s7">Pn</span>(<span class="s7">Pstutter</span>(20, <span class="s7">Pwhite</span>(60, 80, 1))) +</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s7">PLrand</span>([[-14, 0]]) + <span class="s7">PLrand</span>([0, 12]),</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.08,</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\att</span>, <span class="s7">Pwhite</span>(0.01, 0.02),</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\rel</span>, 2,</p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\sourceType<span class="s2">, 1,</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\ringtime<span class="s2">, 2,</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\pan</span>, <span class="s7">Pwhite</span>(-0.3, 0.3)</p>
+<p class="p15">);</p>
+<p class="p5"><br></p>
+<p class="p17">// "drum" layer</p>
+<p class="p15">r = <span class="s7">Pbind</span>(</p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\instrument<span class="s2">, </span>\varKlank<span class="s2">,</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, <span class="s7">PLshufn</span>([0, 2, 4, 7, 9]) + <span class="s7">Pn</span>(<span class="s7">Pstutter</span>(25, <span class="s7">Pwhite</span>(35, 50, 1))) +</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0.3 + [-12, 0],</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\amp</span>, 0.02,</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\att</span>, <span class="s7">Pwhite</span>(0.01, 0.02),</p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\rel</span>, 0.35,</p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\sourceType<span class="s2">, 0,</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\ringtime<span class="s2">, 1,</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\pan</span>, <span class="s7">Pwhite</span>(-0.3, 0.3)</p>
+<p class="p15">);</p>
+<p class="p5"><br></p>
+<p class="p17">// default values for PL proxies, want to replace later on</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~pulse</span> = <span class="s7">PLshufn</span>([1, 1, 2] * 5/9);</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~div0</span> = <span class="s7">PLshufn</span>([4, 8]);</p>
+<p class="p15"><span class="s10">~div1</span> = <span class="s7">PLshufn</span>([2, 3, 4]);</p>
+<p class="p15"><span class="s10">~div2</span> = <span class="s7">PLshufn</span>([2, 4]);</p>
+<p class="p20">~divBase<span class="s2"> = 1;</span></p>
+<p class="p20">~divType<span class="s2"> = </span><span class="s8">\seq</span><span class="s2">;</span></p>
+<p class="p5"><br></p>
+<p class="p22"><span class="s2">u = </span>PSPdiv<span class="s2">(</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s7">PL</span><span class="s2">(</span>\pulse<span class="s2">),</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span>[p, q, r],</p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span>[</span><span class="s7">PL</span><span class="s2">(</span>\div0<span class="s2">), </span><span class="s7">PL</span><span class="s2">(</span>\div1<span class="s2">), </span><span class="s7">PL</span><span class="s2">(</span>\div2<span class="s2">)],</span></p>
+<p class="p17"><span class="s2"><span class="Apple-tab-span">	</span></span>// will be exapanded to array of 3 PLs with same symbol reference</p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s7">PL</span><span class="s2">(</span>\divBase<span class="s2">),</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s7">PL</span><span class="s2">(</span>\divType<span class="s2">)</span></p>
+<p class="p15">);</p>
+<p class="p15">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// start</p>
+<p class="p5"><br></p>
+<p class="p15">x = u.play</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// vary pulse</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~pulse</span> = <span class="s7">PLshufn</span>([1, 1.5, 2.5, 3] * 5/9);</p>
+<p class="p5"><br></p>
+<p class="p20">~pulse<span class="s2"> = 1;</span></p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~div0</span> = <span class="s7">PLshufn</span>([4, 6, 8]);</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~div2</span> = <span class="s7">PLshufn</span>([2, 4, 6]);</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~pulse</span> = <span class="s7">PLshufn</span>([1, 1, 9/8]);</p>
+<p class="p5"><br></p>
+<p class="p15">x.stop;</p>
+<p class="p23"><br></p>
+<p class="p23"><br></p>
+<p class="p23"><br></p>
+<p class="p14"><b>Ex. 5: <span class="Apple-converted-space">  </span>Granulation, control of many layers <span class="Apple-converted-space"> </span></b></p>
+<p class="p23"><br></p>
+<p class="p21">// SynthDef from Ex. 1</p>
+<p class="p5"><br></p>
+<p class="p15">(</p>
+<p class="p15"><span class="s10">~amp</span> = 0.05;</p>
+<p class="p15"><span class="s10">~att</span> = 0.005;</p>
+<p class="p15"><span class="s10">~rel</span> = 0.05;</p>
+<p class="p20">~sourceType<span class="s2"> = 0;</span></p>
+<p class="p20">~ringtime<span class="s2"> = 1;</span></p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~pan</span> = <span class="s7">PLseq</span>([0.8, -0.8]);</p>
+<p class="p5"><br></p>
+<p class="p17">// Pbind generator, patterns will stick to midinotes</p>
+<p class="p18"><span class="s2">p = { </span>|midinote|<span class="s2"> </span><span class="s7">Pbind</span><span class="s2">(</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\instrument<span class="s2">, </span>\varKlank<span class="s2">,</span></p>
+<p class="p15"><span class="Apple-tab-span">	</span><span class="s8">\midinote</span>, midinote,</p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\amp<span class="s2">, </span><span class="s7">PL</span><span class="s2">(</span>\amp<span class="s2">),</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\att<span class="s2">, </span><span class="s7">PL</span><span class="s2">(</span>\att<span class="s2">),</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\rel<span class="s2">, </span><span class="s7">PL</span><span class="s2">(</span>\rel<span class="s2">),</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\sourceType<span class="s2">, </span><span class="s7">PL</span><span class="s2">(</span>\sourceType<span class="s2">),</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\ringtime<span class="s2">, </span><span class="s7">PL</span><span class="s2">(</span>\ringtime<span class="s2">),</span></p>
+<p class="p19"><span class="s2"><span class="Apple-tab-span">	</span></span>\pan<span class="s2">, </span><span class="s7">PL</span><span class="s2">(</span>\pan<span class="s2">)</span></p>
+<p class="p15">) };</p>
+<p class="p5"><br></p>
+<p class="p17">// produce an array of Pbinds, covering a whole tone cluster<span class="Apple-converted-space"> </span></p>
+<p class="p15">q = ((1, 3..51) + 40).collect(p.(<span class="s7">_</span>));</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~size</span> = q.size;</p>
+<p class="p5"><br></p>
+<p class="p17">// same pattern source for each PL,<span class="Apple-converted-space"> </span></p>
+<p class="p17">// but for each midinote divisions per pulse can vary</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~div</span> = <span class="s7">Pfunc</span> { (2 ** (1..4)).choose.asInteger };</p>
+<p class="p20">~divBase<span class="s2"> = 1;</span></p>
+<p class="p5"><br></p>
+<p class="p20">~pulse<span class="s2"> = 1;</span></p>
+<p class="p15"><span class="s10">~rel</span> = 0.015;</p>
+<p class="p20">~sourceType<span class="s2"> = 1;</span></p>
+<p class="p5"><br></p>
+<p class="p17">// as q is an array the args 'div' and 'divBase' will be expanded to arrays</p>
+<p class="p15">u = <span class="s7">PSPdiv</span>(<span class="s7">PL</span>(<span class="s8">\pulse</span>), q, <span class="s7">PL</span>(<span class="s8">\div</span>), <span class="s7">PL</span>(<span class="s8">\divBase</span>));</p>
+<p class="p15">)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p15">x = u.play</p>
+<p class="p5"><br></p>
+<p class="p17">// this setting exchanges the source of all PL patterns expanded as 'div' arg</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~div</span> = <span class="s7">Pfunc</span> { (2 ** (1..6)).choose.asInteger }</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p17">// also with divBase, layers are decorrelated as each stream from this pattern acts differently</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~divBase</span> = <span class="s7">PLrand</span>([1, 2])</p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~divBase</span> = <span class="s7">PLrand</span>([1, 2, 3])</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p15"><span class="s10">~pulse</span> = 1/4</p>
+<p class="p5"><br></p>
+<p class="p15">x.stop</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p24"><br></p>
+<p class="p24"><br></p>
+<p class="p24"><br></p>
+</body>
+</html>
