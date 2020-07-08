@@ -1,0 +1,248 @@
+CLASS:: HS
+summary:: object for use of synth values in the language by event patterns
+categories::Libraries>miSCellaneous>HS and HSpar, Streams-Patterns-Events>HS and HSpar
+related:: Overviews/miSCellaneous, Guides/Guide_to_HS_and_HSpar, Tutorials/HS_with_VarGui, Classes/PHS, Classes/PHSuse, Classes/PHSplayer, Classes/PHSusePlayer 
+
+
+DESCRIPTION::
+
+
+To be used in connection with link::Classes/PHS:: / link::Classes/PHSuse:: to play event patterns using synth values. Holds a singular synth definition, keeps track of OSC traffic when PHS / PHSuse are played. For using several help synths in parallel or setting controllers of a singular help synth see link::Classes/HSpar:: and related.
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new HS object.
+
+argument::server
+Must be running server.
+
+argument::ugenFunc
+Function that defines the synth. 
+
+argument::demandLatency
+Latency of help synth in seconds. Default value 0.15. 
+
+argument::respondLatency
+Time in seconds, given to the response to be received by the client on time. 
+Default value 0.15.
+
+argument::postOSC
+Boolean for posting of (server to client) OSC messages. Defaults to false.
+
+argument::granularity
+Time grains per second, quantization for bookkeeping. Defaults to 200.
+
+argument::inputCheck
+Boolean for checking input data. Defaults to true.
+
+
+
+discussion::
+
+code::
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+// make a new HS 
+// This compiles the SynthDef and prepares the HS to be played with a PHS,
+// no Synth object is yet instantiated.
+
+h = HS(s, { LFDNoise3.kr(0.7, 15, 75) });
+
+::
+
+A PHS, like a Pbind, defines event stream behaviour, only durations are given separately.
+Here values are demanded just by one stream with constant duration, 
+but more than one duration pattern per HS and more than one Pbind per duration pattern
+may be defined - see the link::Classes/PHS:: help file for examples. 
+
+The play method of a PHS creates a PHSplayer which plays a synth from HS's synth definition, 
+synth values are accessible within the PHS definition by the variable code::~val::, e.g. by code::Pkey(\val)::.
+If HS's synthdef has no args, this must be specified in the PHS by code::nil:: or code::[]::.
+
+code::
+
+p = PHS(h, [], 0.15, [ \midinote, Pkey(\val) ]).play;
+
+// also:
+// p = PHS(h, [], 0.15, [ \midinote, Pfunc { |e| e.use { ~val } }  ]).play;
+
+// stop allows resuming, cleanup with free or Cmd-. 
+
+p.stop; // HS synth still playing 
+
+p.play; // resume the PHSplayer
+
+p.stop(true); // HS synth also paused 
+
+p.play; // resume the PHSplayer together with HS synth
+
+p.free; // also stop HS synth and cleanup - PHSplayer and HS object are freed
+
+::
+
+INSTANCEMETHODS::
+
+method::demandLatency
+Set or get latency of help synth in seconds. Defaults to 0.15. 
+
+method::respondLatency
+Set or get time (in seconds) given to the response to be received by the client on time. Defaults to 0.15.
+
+method::postOSC
+Set or get the flag that defines whether OSC messages should be posted or not. Boolean. Defaults to false.
+
+method::granularity
+Set or get the (Integer) number of time grains per second, denoting the quantization for bookkeeping. Defaults to 200.
+
+method::inputCheck
+Set or get the flag that defines whether input data should be checked. Boolean. Defaults to true.
+
+
+method::listen
+
+Make HS ready to poll values from a synth, demanded by possibly more than one stream. 
+Therefore strong::num:: trigger synths are run, ready to receive triggers for sending help synth values back to client,
+but a synth from HS's ugenFunc definition is not yet playing after that.
+If PHS / PHSuse are played there is no need to call strong::listen:: explicitely.
+
+argument::num
+Integer. Number of trigger synths.
+
+argument::latency
+Float. Latency in seconds.
+
+
+
+method::play
+
+Play a synth derived from HS's ugenFunc definition. HS must already be listening.
+If PHS / PHSuse are played there is no need to call strong::play:: explicitely.
+
+argument::args
+Synth args.
+
+argument::latency
+Float. Latency in seconds.
+
+method::clearBookkeeping
+Cleanup OSC bookkeeping.
+
+method::stop
+Free the playing help synth and cleanup OSC bookkeeping.
+
+method::sleep
+Free the listening trigger synths.
+
+method::busFree
+Deallocate the bus.
+
+method::free
+Free all related PHSplayers / PHSusePlayers, then strong::stop::, strong::sleep:: and strong::busFree::.
+
+Note:: strong::stop:: and strong::free:: will normally be called by the respective player methods, see link::Classes/PHSplayer::.
+::
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+// define a tendency for chord density
+
+h = HS(s, { LFDNoise3.kr(0.5, 4, 5) });
+
+
+// language operations used for building chords from synth values
+
+(
+p = PHS(h, [], 0.18, 
+    [\midinote, Pkey(\val).collect {|x| 
+        Array.series(x.round, 60 - (x * 1.2), 5) + Array.rand(x.round, -0.8, 0.8)  },
+    \legato, 0.6, 
+    \amp, 0.05]
+).play;
+)
+
+// cleanup (freeing buses and nodes) by pressing Cmd-. or explicitely
+
+p.free;
+
+
+/////////////////////////////////////////////////////////////////////
+
+// example with other than default instrument
+// define synth to move between two sounds
+
+(
+SynthDef(\simpleMorph, {|out = 0, freq = 440, amp = 0.1, morphQ = 0|
+    var src, normalMorphQ = morphQ.mod(1);
+    src = Saw.ar(freq, mul: amp) * (1 - normalMorphQ) + (SinOsc.ar(freq, mul: amp) * normalMorphQ);
+    Out.ar(out, src ! 2 * EnvGen.ar(Env.perc, doneAction: 2));
+}).add;
+)
+
+// HelpSynth definition, values between 0 and 1
+// Clock and quant for syncing
+
+(
+h = HS(s, { LFTri.kr(0.5, mul: 0.5, add: 0.5) });
+
+c = TempoClock.new;
+q = 0.2;
+)
+
+// help synth values for pitch and synth arg \morphQ 
+ 
+(
+p = PHS(h, [], 0.2, 
+    [\instrument, \simpleMorph, 
+    \midinote, Pkey(\val) * 30 + 60 + [0, 9] + Pxrand([0, 1.5, -1.5], inf), 
+    \amp, 0.07,
+    \morphQ, Pkey(\val) ]
+).play(c,q);
+)
+
+
+// sync it with a normal pbind (EventStreamPlayer) with default instrument
+// no use of HS / PHS
+
+(
+r = Pbind(
+    \dur, 0.2, 
+    \midinote, Pxrand([58, 60, 61, 63, 64, 67, 69, 70], inf) + 
+        [-7, 0, 5, 9] + Pseq([0.2, -0.2],inf), 
+    \amp, 0.03
+).play(c, quant: q);
+)
+
+// pause and stop are synonym
+
+p.pause;
+
+
+// resume p in sync
+
+p.play(c, q);
+
+
+// stop and free
+
+(
+r.stop;
+p.free;
+)
+
+::
+ 

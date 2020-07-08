@@ -1,0 +1,219 @@
+CLASS:: PLn
+summary:: dynamic scope placeholder pattern whose streams will be finished before replacements
+categories::Libraries>miSCellaneous>PLx suite, Streams-Patterns-Events>PLx suite
+related:: Overviews/miSCellaneous, Tutorials/PLx_suite, Tutorials/Event_patterns_and_Functions, Classes/VarGui, Tutorials/VarGui_shortcut_builds, Classes/PL 
+
+
+DESCRIPTION::
+
+
+Takes Symbol args for later reference by the Streams, which will read from variables in the Environments of their instantiation. See link::Tutorials/PLx_suite::. In contrast to link::Classes/PL:: a replacement doesn't take effect immediately, but with the next embedding. This behaviour might be preferred with syncing.
+note:: 
+As sources are finished before next replacements are possible, infinite source streams, other than with other PLx patterns, inhibit further replacements at all. For the option of finishing substreams with PLx list patterns see their cutItems arg and link::#Ex.3::.
+::
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PL object.
+
+argument::item
+Symbol or other Object. 
+If a Symbol is passed, item can be assigned to an envir variable later on.
+Can be dynamically replaced by Patterns or Streams.
+
+argument::repeats
+Symbol or repeats arg. If a Symbol is passed, repeats can be assigned to an envir variable later on. Defaults to inf.
+
+argument::envir
+Dictionary or one of the Symbols 
+\top, \t (topEnvironment), \current, \c (currentEnvironment).
+Dictionary to be taken for variable reference. Defaults to \current.
+
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+::
+
+anchor::Ex.1::  
+subsection::Ex.1:   Protection of periods
+
+code::
+
+// compare PL and PLn, start with polling two items from each Stream
+// Note that Pseq defaults to repeats = 1 and PL/PLn default to repeats = inf
+
+(
+~a = Pseq([1, 2, 3]);
+x = PLn(\a).asStream;
+y = PL(\a).asStream;
+
+x.nextN(2);
+y.nextN(2);
+)
+
+
+// replace proxy source 
+
+~a = ~a * 100;
+
+
+// Stream from PLn finishes before replacement
+
+x.nextN(2)
+
+// With PL substream is replaced immediately
+
+y.nextN(2)
+::
+
+
+anchor::Ex.2::  
+subsection::Ex.2:   Protection of periods for syncing
+
+
+code::
+
+// playing two interval lines in parallel
+
+(
+~a = Pseq([4, 2, 0]) + [0, -5];
+~b = Pseq([7, 5, 4]) + [0, 5];
+		
+p = Pbind(
+	\dur, Pseq([0.4, 0.2, 0.2], inf),
+	\note, PLn(\a)
+);
+		
+q = Pbindf(p, \note, PLn(\b));
+
+x = Ppar([p, q]).play;	
+)
+
+	
+
+// replace the lower event stream, new notes start after end of embedding Pseq
+	
+~a = Pseq([3, 2, 0]) + [0, -5];
+
+
+// replace second line
+
+~b = Pseq([7, 5, 4]) + [5, 12];
+
+
+// source nil stops event stream after end of embedding Pseq
+
+~a = nil;	
+::
+
+
+anchor::Ex.3::  
+subsection::Ex.3:   Protection of periods and subperiods with event streams
+
+code::
+
+// define two Pbinds of same length, play first
+
+(
+x = Pbind(
+	\dur, Pseq([0.4, 0.2, 0.2]),
+	\note, Pseq([4, 2, 0]) 
+);
+
+y = Pbind(
+	\dur, 0.2,
+	\note, Pseq([7, 7, 5, 4]) 
+);
+
+~a = x;
+
+PLn(\a).play;
+)
+
+// switch between them several times, periods are protected
+
+~a = y;
+
+~a = x;
+
+
+// define a sequence of parts, we want to exchange parts later on
+
+(
+~trill_1 = Pbind(
+	\dur, 0.4/3,
+	\note, Pseq([7, 9, 7]) 
+);	
+
+~trill_2 = Pbind(
+	\dur, 0.4/5,
+	\note, Pseq([7, 8, 7, 8, 7]) 
+);
+
+~fin = Pbind(
+	\dur, 0.2,
+	\note, Pseq([5, 4]) 
+);
+
+~b = [~trill_1, ~fin];
+)
+
+// replace with a PLseq
+// note that source must have repeats = 1,
+// in order to protect substreams with PLseq and change the behaviour later on
+// we pass to cutItmes a Function that, for now, returns false
+
+(
+~cutItems = false;
+~a = PLseq(\b, 1, cutItems: \cutItems);
+
+~b[0] = ~trill_2;
+)
+
+// helper function to generate trill patterns
+
+~trill = { |lo, hi, dur, reps| Pbind(\dur, dur / reps, \note, Pser([lo, hi], reps)) };
+
+
+// replace with a long slow trill
+
+~b[0] = ~trill_3 = ~trill.(7, 9, 0.9, 5);
+
+
+
+// replace back while long trill, 
+// due to the current value ~cutItems = false it will be completed and
+// replacement takes effect in next loop
+	
+~b[0] = ~trill_2;
+
+// replace back
+
+~b[0] = ~trill_3;
+
+
+// change replacing behaviour
+
+~cutItems = true;
+
+
+// now replacing while long trill will take immediate effect
+
+~b[0] = ~trill_2;
+
+
+// stop
+
+~a = nil
+
+::
+ 

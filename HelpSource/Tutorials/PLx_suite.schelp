@@ -1,0 +1,577 @@
+TITLE::PLx suite
+summary::dynamic scope Pattern variants
+categories:: Libraries>miSCellaneous>PLx suite, Streams-Patterns-Events
+related:: Overviews/miSCellaneous, Guides/Introduction_to_miSCellaneous, Tutorials/Event_patterns_and_Functions, Classes/VarGui, Tutorials/VarGui_shortcut_builds, Tutorials/Buffer_Granulation, Tutorials/Live_Granulation, Tutorials/PLx_and_live_coding_with_Strings
+
+
+DESCRIPTION::
+
+Environmental variables within functions can act as placeholders for values, but also Patterns itself. So Patterns including functional code (e.g. Pfunc, Plazy, Pcollect) can, thanks to dynamic scoping, turn into different Streams, depending on the environment where streamifying happens ( link::Tutorials/Event_patterns_and_Functions:: ). This can be used for getting a whole parametrized family of Streams / EventStreamPlayers from a single pattern definition. Other applications are on-the-fly replacements and gui control of parameters of Pbinds / EventStreamPlayers with link::Classes/VarGui:: . Nevertheless constructs with Plazy, Pfunc etc. require some redundant typing which is saved by PLx Patterns (lazy evaluation). They are either plain wrapper classes or include variant implementations for the most common pattern types and deliver a more or less unified way for the described kind of placeholding.
+
+Unification however can only be approximated as Patterns, even those of one type (e.g. ListPatterns), are defining different behaviour: not all inputs of a source pattern x can be dynamically updated (e.g. the start of a Pseries), not all of them are allowed to be Patterns itself. Implementation and usage may differ a bit from class to class. If there is no PLx implementation of a source Pattern class you can use PL as a general pattern placeholder input, see link::Classes/PL:: help file for an example. link::Classes/PLbindef:: and link::Classes/PLbindefPar:: allow key stream replacements in shortcut object prototyping syntax.
+
+
+
+note::
+PL follows a paradigm of immediate replacement. There are cases though where you might prefer to finish streams or substreams before replacement, especially when syncing comes into play, for these options consider link::Classes/PLn:: and the strong::cutItems:: arg of PLx list patterns.
+::
+warning::
+Feeding a looped process with an invalid input has always the potential to lead to hangs. See link::Classes/PsymNilSafe:: and link::Tutorials/PLx_and_live_coding_with_Strings:: for some remarks on that.
+::
+
+SECTION::PLx pattern classes
+
+subsection::value and event patterns
+
+link::Classes/PL::, link::Classes/PLn::, link::Classes/PLseq::, link::Classes/PLser::, link::Classes/PLrand::, link::Classes/PLwrand::, link::Classes/PLshuf::, link::Classes/PLshufn::, link::Classes/PLslide::, link::Classes/PLtuple::, link::Classes/PLwalk::, link::Classes/PLswitch::, link::Classes/PLswitch1::
+
+subsection::value patterns
+
+link::Classes/PLwhite::, link::Classes/PLlprand::, link::Classes/PLhprand::, link::Classes/PLmeanrand::, link::Classes/PLbrown::, link::Classes/PLgbrown::, link::Classes/PLseries::, link::Classes/PLgeom::, link::Classes/PLbeta::, link::Classes/PLcauchy::, link::Classes/PLgauss::, link::Classes/PLpoisson::, link::Classes/PLexprand::
+
+subsection::filter patterns
+
+link::Classes/PLnaryop::, link::Classes/PLnaryFunc::, link::Classes/PLIdev::
+
+subsection::subclasses of Pdef
+
+link::Classes/PLbindef::, link::Classes/PLbindefPar::
+
+
+
+EXAMPLES::
+
+anchor::Ex. 1a::
+subsection::Ex. 1a:   ListPatterns placeholder constructs with Plazy
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+
+// This is how dynamic scope placeholding of a ListPattern
+// could be done with Plazy,
+// Pn defaults to repeats = inf.
+
+(
+p = Pn(Plazy { Pseq(~a, 1) });
+
+~a = (60..70);
+
+x = Pbind(
+    \midinote, p,
+    \dur, 0.2
+).play;
+)
+
+
+// First drawback: replacing of a new list doesn't have an immediate effect
+// as the old list is looped through before.
+
+// Try evaluating this before the end of the original loop.
+
+~a = (75..84) ++ Pseq([85,86], 10);
+
+
+// Second drawback: replacing of a single pattern element,
+// which corresponds to a stream just being embedded,
+// doesn't have an immediate effect
+// as this embedding is finished before.
+
+// Try evaluating this during the trill, it doesn't have an
+// effect before the next loop.
+
+~a[10] = 91;
+
+x.stop;
+
+::
+
+Similar placeholder constructs with Pcollect and Pfunc have similar drawbacks concerning replacement. However, this type of "delayed replacement" might be wanted in some cases and is also possible with PLx patterns, see link::Classes/PLn:: and the strong::cutItems:: arg of PLx list patterns.
+
+
+
+anchor::Ex. 1b::
+subsection::Ex. 1b:   PLx implementation of ListPatterns
+
+PLx Patterns take symbols as input. Derived Streams get the values of the Environment of streamification.
+
+
+code::
+
+(
+p = Pbind(
+    \midinote, PLseq(\a),
+    \dur, 0.2
+);
+
+~a = (60..70);
+
+y = p.play;
+)
+
+
+// replacement of the whole list has an immediate effect now,
+// with Pseq the loop starts with the new list
+
+~a = (75..84) ++ Pseq([85,86], 10);
+
+
+// replacing a single element also has an immediate effect,
+// (as PLseq's cutItems arg defaults to true),
+// try evaluating during the trill
+
+~a[10] = 91;
+
+y.stop;
+
+
+// PLx ListPattern implementations can also act as
+// ordinary ListPatterns if args are not Symbols.
+// Difference: repeats arg defaults to inf,
+// so you save typing in this case,
+// but don't apply .all to Streams derived from such Patterns !
+
+(
+x = Pbind(
+    \midinote, PLseq((60..70)),
+    \dur, 0.2
+).play;
+)
+
+x.stop;
+
+::
+
+anchor::Ex. 1c::
+subsection::Ex. 1c:   PLx implementation of Non-ListPatterns
+
+
+code::
+
+// an explicit definition with Plazy
+
+p = Pwhite(Pn(Plazy { ~lo }), Pn(Plazy { ~hi }), { ~r });
+
+
+// similarily done implicitely by PLwhite
+
+q = PLwhite(\lo, \hi, \r);
+
+
+// streamify in envir
+
+e = (lo: 60, hi: 90, r: 30);
+
+e.use { q.asStream.all };
+
+
+// reset repeats to inf and streamify again
+
+e.use { ~r = inf; x = Pbind(\midinote, q, \dur, 0.2).play };
+
+
+// replace lower bound by pattern
+
+e.lo = PLseq([60, 90]);
+
+x.stop;
+
+::
+
+
+anchor::Ex. 1d::
+subsection::Ex. 1d:   Plain PL
+
+A general placeholder that can be updated after instantiation.
+Its repeats arg defaults to inf.
+
+code::
+
+PL(\a, \r);
+
+// roughly equivalent to
+
+Pn(Plazy { ~a }, { ~r });
+
+
+e = (a: Pseq((60, 62.5..80)));
+
+e.use { x = Pbind(\midinote, PL(\a), \dur, 0.1).play }
+
+
+// note that with this replacement new scrambles are chosen
+// repeatedly because Pshuf's repeats arg defaults to 1.
+
+e.a = Pshuf((80, 78.5..65));
+
+
+// fixed reordering
+
+e.a = Pshuf((80, 78.5..65), inf);
+
+e.a = PLshuf((80, 78.5..65));
+
+
+x.stop;
+
+::
+
+PL can also be used with Patterns which don't have a PLx implementation.
+See link::Classes/PL:: for an example.
+
+
+
+anchor::Ex. 2::
+subsection::Ex. 2:   Playing in different Environments
+
+code::
+
+// Pbind to be streamified differently in different environments
+
+(
+p = Pbind(
+    \midinote, PLseq(\a),
+    \dur, PL(\d)
+);
+
+e = (a: (67..72), d: 0.1);
+f = (a: (85..90), d: 0.2);
+)
+
+
+// start in sync or individually
+
+x = e.use { p.play(quant: 0.2) };
+y = f.use { p.play(quant: 0.2) };
+
+
+// replacement of array elements ...
+
+e.a[0] = 95;
+f.a[0] = [75, 79];
+
+
+// ... which may also be Patterns
+
+f.a[0] = Pseq([75, 79], 3);
+
+
+// replacing the whole array
+
+f.a = (83..80);
+
+f.a = (79..75) +.t [0, 3.5];
+
+e.a = [Pseq([63, 65.5], 4), 85, 87];
+
+x.stop;
+y.stop;
+
+::
+
+
+
+anchor::Ex. 3::
+subsection::Ex. 3:   Use with VarGui
+
+code::
+
+// basic form of a step sequencer (amp defaults to 0 in associated global ControlSpec)
+
+(
+\default.pVarGui(
+    ctrBefore: [\a, [0, 6, \lin, 1, 3] ! 8],
+    pBefore: [\degree, PLseq(\a) ]
+).gui;
+)
+
+::
+
+
+See link::Classes/VarGui:: and link::Tutorials/VarGui_shortcut_builds:: for further examples.
+
+
+
+
+anchor::Ex. 4::
+subsection::Ex. 4:   The repeats arg
+
+PLx Patterns' repeats arg defaults to inf. This makes sense in situations where you want to go on replacing items on the fly. If a PLx Patterns is itself enclosed you may want to set it to a different value. Anyway the resulting number of repeats is the product of outer and inner repeats.
+
+code::
+
+// PL(\a) defaults to repeats = inf
+// Pshuf defaults to repeats = 1, is embedded repeatedly and
+// so it continues producing new permutations (like Pshufn)
+
+(
+p = Pbind(
+    \midinote, PL(\a),
+    \dur, 0.15
+);
+
+~a = Pshuf((60..63));
+)
+
+
+x = p.play;
+
+
+// same effect, but this is normal Pshufn behaviour
+
+~a = Pshufn((60..63));
+~a = Pshufn((60..63), inf);
+
+x.stop;
+
+
+// PL(\a, 2) demands inner repeats = inf for endless running
+
+(
+p = Pbind(
+    \midinote, PL(\a, 2),
+    \dur, 0.15
+);
+
+~a = Pshuf((60..63), inf);
+)
+
+// now normal Pshuf behaviour
+
+x = p.play;
+
+
+// same achieved with PLshuf((60..63)) as it defaults to repeats = inf
+
+~a = PLshuf((60..63));
+
+
+// stop with a Pseq which defaults to repeats = 1, played twice because of PL(\a, 2)
+
+~a = Pseq((70..65));
+
+
+::
+
+
+anchor::Ex. 5a::
+subsection::Ex. 5a:   Updating input of N-ary operators
+
+One may want to have the choice to update inputs of N-ary operators applied to Patterns too. A common case is clipping. Say you have a Pcauchy pattern (distribution with a relatively high number of outliers) and want to dynamically change its mean value and clip bounds.
+
+
+code::
+
+(
+p = Pbind(
+    \midinote, PLcauchy(\m, \s).collect(_.clip(~lo, ~hi)),
+    \dur, 0.1
+);
+)
+
+// define the environment
+
+e = (m: 75, s: 1, lo: 60, hi: 90);
+
+e.use { x = p.play };
+
+// update upper bound to mean value
+
+e.hi = 75;
+
+x.stop;
+
+
+// above pitch pattern could be written explicitely too with Pnaryop
+
+Pnaryop(\clip, PLcauchy(\m, \s), [Pfunc { ~lo }, Pfunc { ~hi }])
+
+// more powerful: PL allows updating with patterns
+
+Pnaryop(\clip, PLcauchy(\m, \s), [PL(\lo), PL(\hi)])
+
+// even shorter: the PLnaryop class expands to the above
+
+PLnaryop(\clip, PLcauchy(\m, \s), [\lo, \hi])
+
+
+// In the simple case of updating clip bounds with values
+// maybe one would rather use the version with collect.
+
+// But with Pnaryop you can pass a list of arbitrary patterns as arglist
+// and with PLnaryop you can dynamically update with arbitrary patterns -
+// both can be used for more differentiated control of clip bounds
+// (or args of any other N-ary operator or Function).
+// Also the source pattern can be replaced.
+
+(
+p = Pbind(
+    \midinote, PLnaryop(\clip, \pat, [\lo, \hi]),
+    \dur, 0.1
+);
+)
+
+// define the environment and play
+
+e = (pat: PLcauchy(\m, \s), m: 75, s: 1, lo: 60, hi: 90);
+
+e.use { x = p.play };
+
+
+// compare distributions
+
+e.pat = PLgauss(\m, \s);
+
+
+// switch back to Cauchy with more outliers
+
+e.pat = PLcauchy(\m, \s);
+
+
+// update bounds, lo bound 85 is mostly gone below,
+// so nearly every second event has this midinote
+// vice versa with hi bound 65
+
+e.lo = PLseq([60, 85]);
+
+e.use { ~lo = 60; ~hi = PLseq([65, 90]) };
+
+
+// clipping to a window that loops through the distribution:
+// values are taking more or less the wandering clip bounds if lo or hi,
+// but are rather randomly distributed between clip bounds around the mean value
+
+e.use { ~lo = PLseq((50..95)); ~hi = ~lo + 10 };
+
+x.stop;
+
+::
+
+For replacing operators dynamically take PLnaryFunc with the operator wrapped into a Function.
+
+
+anchor::Ex. 5b::
+subsection::Ex. 5b:   Updating input of N-ary Functions
+
+Self-defined functions can be used as with PLnaryop.
+
+
+code::
+
+(
+p = Pbind(
+    \midinote, PLnaryFunc(\f, \src, [\b, \c]),
+    \dur, 0.1
+);
+)
+
+// define Environment
+
+(
+e = ();
+
+e.src = Pstutter(3, PLseq((60, 70..90)));
+e.b = PLseq((0..2));
+e.c = 0;
+
+e.f = { |x,y,z| x + y + z };
+)
+
+
+// run
+
+e.use { x = p.play };
+
+
+// replace function input
+
+e.b = PLseq((0..1));
+
+e.c = [-5, 0];
+
+e.c = PLseq([[-5, 0], [0, 3]]);
+
+e.b = PLshuf((0..3));
+
+
+// replace function
+
+e.f = { |x,y,z| x + (y * 1.2) + z };
+
+e.f = { |x,y,z| x + y + (z * 1.7) };
+
+
+x.stop;
+
+::
+
+
+subsection::Ex. 6:   PLbind / PLbindef
+
+code::
+
+// start PLbindef, an special Environment of that name is created for setting
+
+p = PLbindef(\a, \midinote, 70).play
+
+// set in it
+
+~a.midinote = Pwhite(60, 80)
+
+~a.midinote = ~a.midinote + [0, 4]
+
+~a.dur = 0.25
+
+// cleanup
+
+(
+p.stop;
+p.remove;
+)
+
+
+// PLbindef sprouts parallel processes
+// start 4 in unisono
+
+p = PLbindefPar(\b, 4, \midinote, 60, \dur, 2, \amp, 0.03).play
+
+// set single streams
+
+~b[3].midinote = Pwhite(70, 70.5)
+
+~b[3].dur = 0.05
+
+
+~b[2].midinote = Pwhite(65.0, 67)
+
+~b[2].dur = 0.1
+
+
+// use method value for setting
+
+~b.([0, 1], \midinote, Pwhite(50, 60), \dur, 0.1)
+
+
+// general setting, now we probably aren't in sync
+
+~b.dur = 2
+
+
+// reset syncs
+
+p.reset
+
+
+// stop and cleanup
+
+(
+p.stop;
+p.remove;
+)
+::
+
+

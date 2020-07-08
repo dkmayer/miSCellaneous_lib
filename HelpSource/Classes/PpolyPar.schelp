@@ -1,0 +1,500 @@
+CLASS:: PpolyPar
+summary:: polyphonic event pattern for an arbitrary number of timed setting streams
+categories::Libraries>miSCellaneous>Other patterns
+related:: Overviews/miSCellaneous, Guides/Introduction_to_miSCellaneous, Classes/Pmono, Classes/PmonoPar, Classes/PbindFx
+
+
+DESCRIPTION::
+
+This is similar to PmonoPar and allows an arbitrary number of monophonic streams as well as an arbitrary number of differently timed setting streams applied to them in parallel. Each setting action can affect an arbitrary combination of running synths. PpolyPar can be used for polyphonic sources alone as well as in combination with effects.
+
+strong::History::: PmonoPar and PpolyPar grew out of discussions on sc-users list, based on an example by Jonatan Liljedahl. Thanks to him, Ron Kuivila, user Monsieur and others for their comments on this – I then suggested classes PsetGroup and PsetFxGroup, which internally used Pgroup. Meanwhile I reworked the implementation, but it's still based on groups. I renamed PsetGroup to PmonoPar – as this makes the functionality more clear – and PsetFxGroup to PpolyPar, as it can be used with or without effect synths, the crucial point is the setting of parallel streams.
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PpolyPar object.
+
+argument::setPatternPairs
+SequenceableCollection of SequenceableCollections containing key/value pairs.
+Each of the inner collections represents the data of one synth setting stream.
+Per convention key/value pairs written after a pair with \dur will cause setting, pairs before will not.
+If keys \midinote, \note or \degree are occuring after \dur, they will be converted to a frequency value, which will be used for setting the arg 'freq'.
+
+Also per convention, if the number of setting streams (the size of strong::setPatternPairs::) equals the number
+of synths (the size of strong::defNames::), the settings of stream i will automatically affect synth i.
+If sizes are unequal, each collection of key/value pairs needs a pair with key strong::\synths:: and a value.
+This value can be an Integer, meaning synth i, or a SequenceableCollection of Integers, in which case all of those
+synths will be affected by the setting. The value can also be a Pattern, so that synths to be set
+might change from event to event (see examples).
+
+argument::defNames
+SequenceableCollection of Symbols or Strings. Names of the SynthDefs to be used for the synths being set.
+Defaults to #[\default].
+
+argument::order
+SequenceableCollection of Integers indicating the order of nodes passed to strong::defNames::.
+Defaults to nil, in that case an order 0, ... , (defNames.size - 1) is assumed, i.e. synth i comes before synth i+1.
+
+argument::offset
+Number. Offset to be taken for time-shifting synth inits and streams. Defaults to 1e-6.
+
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+::
+
+anchor::Ex.1a::
+subsection::Ex.1a:   PpolyPar with different instruments
+
+code::
+
+// basic SynthDefs, EnvGate invents a gate arg which is necessary for release
+
+(
+SynthDef(\saw, { |freq = 400, freqlag = 0.0, amp = 0.1, amplag = 0.01|
+	Out.ar(0, Saw.ar(Lag.kr(freq, freqlag), VarLag.kr(amp, amplag, warp: 1)) ! 2 * EnvGate());
+}).add;
+
+SynthDef(\pulse, { |freq = 400, freqlag = 0.0, amp = 0.1, amplag = 0.05|
+	Out.ar(0, Pulse.ar(Lag.kr(freq, freqlag), mul: VarLag.kr(amp, amplag, warp: 1)) ! 2 * EnvGate());
+}).add;
+
+SynthDef(\sine, { |freq = 400, freqlag = 0.0, amp = 0.1, amplag = 0.05|
+	Out.ar(0, SinOsc.ar(Lag.kr(freq, freqlag), 0, mul: VarLag.kr(amp, amplag, warp: 1)) ! 2 * EnvGate());
+}).add;
+)
+
+// simple usage, each stream is setting the corresponding instrument
+
+// per convention keys after \dur are the ones to be set
+// note that you'd need \freq (the SynthDef arg)
+
+(
+p = PpolyPar([[
+		\dur, 1/6,
+		\amp, Pwrand([0, 0.07], [1, 7]/8, inf),
+		\midinote, Pshuf((30..68), inf)
+	],[
+		\dur, Prand([1, 1, 2]/4, inf),
+		\amp, Pwrand([0, 0.07, 0.1], [0.3, 0.3, 0.4], inf),
+		\freqlag, 0.2,
+		\amplag, Prand([0.2, 0.4], inf),
+		\midinote, Pbrown(70, 90, 5)
+	]],
+	[\saw, \pulse]
+).play;
+)
+
+p.stop;
+::
+
+
+anchor::Ex.1b::
+subsection::Ex.1b:   PpolyPar with different instruments and overlapping settings
+
+
+code::
+
+// SynthDefs from Ex. 1a
+
+(
+// Function to create midinote patterns in different ranges
+
+r = { |add = 0| Pstutter(5, Pwhite(60, 70) + add) };
+
+// each setting stream affects two synths: those of corresponding indices of \synths,
+// but only with one value: the Integer polled from the Pstutter stream
+
+p = PpolyPar([[
+		\synths, [0, 1],
+		\dur, 1/6,
+		\midinote, r.(),
+		\amp, 0.04
+	],[
+		\synths, [0, 2],
+		\dur, 1/4,
+		\midinote, r.(10),
+		\amp, 0.03
+	],[
+		\synths, [1, 2],
+		\dur, 1/3,
+		\midinote, r.(20),
+		\amp, 0.05
+	]],
+	[\saw, \pulse, \sine]
+).play
+)
+
+p.stop;
+::
+
+
+anchor::Ex.1c::
+subsection::Ex.1c:   PpolyPar with different instruments, overlapping settings with array dispatch
+
+
+code::
+
+// SynthDefs from Ex. 1a
+
+(
+// Similar to Ex. 1b, but the midinote pattern will cause the stream to generate arrays of two elements,
+// they will be distributed to the indicated synths
+
+r = { |add = 0, int = 7| Pstutter(5, Pwhite(60, 65) + [0, int] + add) };
+
+// each setting streams affects two synths: those of corresponding indices of \synths
+
+p = PpolyPar([[
+		\synths, [0, 1],
+		\dur, 1/6,
+		\midinote, r.(0, 5),
+		\amp, 0.04
+	],[
+		\synths, [0, 2],
+		\dur, 1/4,
+		\midinote, r.(10, 6),
+		\amp, 0.03
+	],[
+		\synths, [1, 2],
+		\dur, 1/3,
+		\midinote, r.(20, 7),
+		\amp, 0.05
+	]],
+	[\saw, \pulse, \sine]
+).play
+)
+
+p.stop;
+
+::
+
+
+anchor::Ex.2a::
+subsection::Ex.2a:   PpolyPar with one effect synth
+
+code::
+
+(
+// With t_gate a percussive envelope will be triggered,
+// so articulation can be achieved within a monophonic stream.
+// This is similar to Pbind, though only if envelopes are shorter than entry time differences.
+
+SynthDef(\test, { |out = 0, freq = 440, att = 0.01, rel = 0.1, amp = 0.1, t_gate = 1|
+	var sig = Saw.ar(freq, amp), delayedSig;
+    sig = sig!2 * EnvGen.ar(Env.perc(att, rel), t_gate);
+	// add some spatial variance by LFO on delaytime
+	delayedSig = DelayL.ar(sig, delaytime: { LFDNoise3.kr(0.5).range(0.005, 0.02) } ! 2);
+	Out.ar(out, delayedSig * EnvGate())
+}).add;
+
+// Effect synthdefs with in and out bus,
+// both get an EnvGate which introduces a gate arg for proper release,
+// one could also add a gate arg and an EnvGen using it.
+
+// wet/dry-relation is fixed, considering the example with fx chain a bypass arg is introduced
+
+SynthDef(\echo, { |out = 0, in, maxdtime = 0.2, dtime = 0.2, decay = 3, amp = 0.5, bypass = 0|
+	var sig, insig;
+	insig = In.ar(in, 2);
+	sig = CombL.ar(insig, maxdtime, dtime, decay, amp, add: insig) * EnvGate();
+	Out.ar(out, bypass * insig + ((1 - bypass) * sig));
+}).add;
+
+
+SynthDef(\wah, { |out = 0, in, freqLo = 200, freqHi = 5000, modFreq = 10, amp = 0.7, bypass = 0|
+	var sig, insig;
+	insig = In.ar(in, 2);
+	sig = RLPF.ar(
+		insig,
+		LinExp.kr(LFDNoise1.kr(modFreq), -1, 1, freqLo, freqHi),
+		0.1,
+		amp,
+		insig * 0.3
+		).softclip * 0.8 * EnvGate();
+	Out.ar(out, bypass * insig + ((1 - bypass) * sig));
+}).add;
+)
+
+
+// Whereas node order is done by PpolyPar, bus handling is the user's responsibility,
+// it looks more flexible to me to define buses separately.
+
+// one fx
+
+b = Bus.audio(s, 2);
+
+(
+p = PpolyPar([[
+		\dur, 0.5,
+		\amp, 0.2,
+		\out, b,
+		\t_gate, 1,
+		\midinote, Pwhite(50, 100)
+	],[
+		// dur = inf causes just a running fx synth, none of its args is set by a stream
+		\dur, inf,
+		\in, b,
+		\dtime, 0.1,
+		\decay, 3
+	]],
+	[\test, \echo]
+).play
+)
+
+p.stop;
+
+b.free;
+
+::
+
+
+anchor::Ex.2b::
+subsection::Ex.2b:   PpolyPar with more effect synths
+
+code::
+
+// SynthDefs from Ex. 2a
+
+(
+b = Bus.audio(s, 2);
+c = Bus.audio(s, 2);
+)
+
+
+// still none of the effects is set by a stream
+
+(
+p = PpolyPar([[
+		// values before \dur are not sent to server, so do this work here:
+		// echo (out b) is coupled with short release time
+		// wah (out c) is coupled with longer release time
+		\data, Prand([[b, 0.1], [c, 0.5]], inf),
+		\dur, Prand([1, 1, 2]/5, inf),
+		\amp, 0.3,
+		// data dispatch from above, these values will be sent
+		\rel, Pkey(\data).collect(_[1]),
+		\out, Pkey(\data).collect(_[0]),
+		\t_gate, 1,
+		\midinote, Pwhite(50, 100)
+	],[
+		\dur, inf,
+		\in, b,
+		\out, 0,
+		\dtime, 0.1,
+		\decay, 3
+	],[
+		\dur, inf,
+		\in, c,
+		\amp, 0.3
+	]],
+	[\test, \echo, \wah]
+).play;
+)
+
+p.stop;
+
+(
+b.free;
+c.free;
+)
+
+
+::
+
+
+
+anchor::Ex.2c::
+subsection::Ex.2c:   PpolyPar with more effect synths and streamed setting
+
+code::
+
+// SynthDefs from Ex. 2a
+
+(
+b = Bus.audio(s, 2);
+c = Bus.audio(s, 2);
+)
+
+
+// effects set by streams
+
+(
+p = PpolyPar([[
+		// values before \dur are not sent to server, so do this work here:
+		// echo (out b) is coupled with short release time
+		// wah (out c) is coupled with longer release time
+		\data, Prand([[b, 0.1], [c, 0.5]], inf),
+		// will get "bars" of length 4/5
+		\dur, Pn(Pshuf([1, 1, 2]/5)),
+		\amp, 0.3,
+		// data dispatch from above, these values will be sent
+		\rel, Pkey(\data).collect(_[1]),
+		\out, Pkey(\data).collect(_[0]),
+		\t_gate, 1,
+		\midinote, Pwhite(50, 100)
+	],[
+		\dur, 4/5,
+		\in, b,
+		// change delaytime per "bar", random add avoids repeating echo frequencies
+		\dtime, Pshuf([1, 2, 4]/40, inf) + (Pwhite(-0.5, 0.5)/40),
+		\decay, 3
+	],[
+		\dur, 4/5,
+		\in, c,
+		// change modFreq per "bar"
+		\modFreq, Pshuf((1..20), inf),
+		\amp, 0.3
+	]],
+	[\test, \echo, \wah]
+).play
+)
+
+p.stop;
+
+(
+b.free;
+c.free;
+)
+
+::
+
+
+anchor::Ex.2d::
+subsection::Ex.2d:   PpolyPar with more effect synths, streamed setting and more than one setting stream per synth
+
+code::
+
+// SynthDefs from Ex. 2a
+
+(
+b = Bus.audio(s, 2);
+c = Bus.audio(s, 2);
+)
+
+
+// Now we have more setting streams than synths,
+// so we need to define which synth is to be set by which stream,
+// this done via the \synths key, which must be contained in every collection of pairs.
+
+(
+p = PpolyPar([[
+		\synths, 0,
+		// values before \dur are not sent to server, so do this work here:
+		// echo (out b) is coupled with short release time
+		// wah (out c) is coupled with longer release time
+		\data, Prand([[b, 0.1], [c, 0.5]], inf),
+		// will get "bars" of length 4/5
+		\dur, Pn(Pshuf([1, 1, 2]/5)),
+		\amp, 0.3,
+		// data dispatch from above, these values will be sent
+		\rel, Pkey(\data).collect(_[1]),
+		\out, Pkey(\data).collect(_[0]),
+		\t_gate, 1
+	],[
+		// stream setting frequency
+		\synths, 0,
+		\dur, 1/20,
+		\midinote, Pshuf((45..90), inf)
+	],[
+		\synths, 1,
+		\dur, 4/5,
+		\in, b,
+		// change delaytime per "bar", random add avoids repeating echo frequencies
+		\dtime, Pshuf([1, 2, 4]/40, inf) + (Pwhite(-0.5, 0.5)/40),
+		\decay, 3
+	],[
+		\synths, 2,
+		\dur, 4/5,
+		\in, c,
+		// change modFreq per "bar"
+		\modFreq, Pshuf((1..20), inf),
+		\amp, 0.3
+	]],
+	[\test, \echo, \wah]
+).play
+)
+
+p.stop;
+
+(
+b.free;
+c.free;
+)
+
+::
+
+
+anchor::Ex.2e::
+subsection::Ex.2e:   PpolyPar with effect chain and streamed fx repatching
+
+code::
+// SynthDefs from Ex. 2a
+
+(
+b = Bus.audio(s, 2);
+c = Bus.audio(s, 2);
+)
+
+// Here effects are chained in order - see buses passed to \in and \out
+// Again more setting streams than synths, so the \synths key is needed.
+
+(
+p = PpolyPar([[
+		\synths, 0, // source synth
+		// will get "bars" of length 4/5
+		\dur, Pn(Pshuf([1, 1, 2]/5)),
+		\amp, 0.3,
+		\rel, 0.2,
+		\out, b,
+		\t_gate, 1
+	],[
+		// freq rhythm might differ from envelope rhythm (stream 0)
+		\synths, 0,
+		\dur, Pn(Pshuf([1, 1, 2]/5)),
+		\midinote, Pshuf((45..90), inf)
+	],[
+		\synths, 1, // echo
+		\dur, 4/5,
+		\in, b, // gets from source and sends to wah
+		\out, c,
+		// change delaytime per "bar", random add avoids repeating echo frequencies
+		\dtime, Pshuf([1, 2, 4]/20, inf) + (Pwhite(-0.5, 0.5)/20),
+		\decay, 3
+	],[
+		\synths, 2, // wah
+		\dur, 4/5,
+		\in, c, // gets from echo, sends to out 0 by default
+		// change modFreq per "bar"
+		\modFreq, Pshuf((1..20), inf),
+		\amp, 0.3
+	],[
+		// this stream determines effects in action by setting bypass args of both fx synths
+		\synths, [1, 2],
+		\dur, 1/5,
+		// alternate bypassing of wah synth
+		\bypass, Pseq([[0, 0], [0, 1]], inf)
+	]],
+	[\test, \echo, \wah]
+).play
+)
+
+p.stop;
+
+(
+b.free;
+c.free;
+)
+
+
+::
+

@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="1187.4">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ee}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Helvetica}
+p.p6 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica}
+p.p8 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p9 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica}
+p.p10 {margin: 0.0px 0.0px 0.0px 85.0px; text-indent: -85.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Monaco; min-height: 16.0px}
+p.p12 {margin: 0.0px 0.0px 0.0px 57.0px; text-indent: -57.0px; font: 14.0px Helvetica}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00}
+p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #cd1c00; min-height: 12.0px}
+p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0326cb}
+p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0433ff}
+p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {text-decoration: underline}
+span.s4 {font: 9.0px Monaco}
+span.s5 {color: #008300}
+span.s6 {color: #0433ff}
+span.s7 {color: #434ccb}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Fb1_ODEintdef<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>container for ordinary differential equation numeric integrators</b></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>Part of:</b> <a href="../miSCellaneous.html"><span class="s3">miSCellaneous</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>Inherits from: UGen</b></p>
+<p class="p4"><br></p>
+<p class="p1">For the optional definition of ODE integration procedures that can then be used with Fb1_ODE. This is an advanced feature, the built-in symplectic procedures should suffice for most use cases. See the source code in Fb1_ODEintdef.sc for the way integrators are defined and Fb1_ODE help for general information about Fb1 ODE integrator UGens.</p>
+<p class="p2"><br></p>
+<p class="p1"><b>HISTORY AND CREDITS:</b> Big credit to David Pirrò from IEM Graz for pointing me to the symplectic integration methods, which are essential for audifying ODEs, as they help to ensure numeric stability in the long run (e.g. to avoid drifts of oscillations that are mathematically expected to be regular). See the chapter on integration in his dissertation [2], pp 135-146. You might also want check David Pirròs optimized ODE compiler named Henri [3]. Big credit also to Nathaniel Virgo who brought up the buffering strategy used in Fb1, which is Fb1_ODE's working horse. <span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>WARNING: </b>The usage of this class is – inherently – highly experimental. Be careful with amplitudes, as always with feedback it can become loud! Sudden blowups might result form the mathematical characteristics of the ODE systems or they might come from parameter changes on which ODEs can react extremely sensitive to, they can also stem from numerical accumulation effects. It is highly recommended to take precautionary measures, e.g. by limiting/distorting operators (tanh, clip, softclip, distort) with the <b>compose</b> option (See Fb1_ODE help Ex.5) and/or external limiting and/or using MasterFX from the JITLibExtensions quark.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>Fb1_ODE in its plain form (without <b>tMul</b> modulation, use of <b>compose</b> etc.) produces audio data as a numerical integration of an ODE initial value problem, defined by Fb1_ODEdef and a numerical procedure, defined by Fb1_ODEintdef. This of course supposes well-defined ODE systems and it should be kept in mind that the Fb1_ODE framework doesn't perform any mathematical checks regarding the principal existence and uniqueness of a solution of a given Fb1_ODEdef.<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>NOTE: </b>The convenience of direct definition of the ODE relation comes with the price of a large number of UGens involved. You might want to allow a higher number of UGens with the server option numWireBufs. For a nice workflow I'd recommended to take reduced blockSizes (e.g. 1, 2, 4, 8, 16) while experimenting as compile time is shorter, but once you have finished the design of a SynthDef it might pay going back to blocksize 32 or 64 for runtime efficiency, especially if many kr UGens are involved. <span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2"><b>See also: </b><a href="Fb1_ODE.html"><span class="s3">Fb1_ODE</span></a>, <a href="Fb1_ODEdef.html"><span class="s3">Fb1_ODEdef</span></a>, <a href="Fb1.html"><span class="s3">Fb1</span></a>, <a href="Fb1_MSD.html"><span class="s3">Fb1_MSD</span></a>, <a href="Fb1_SD.html"><span class="s3">Fb1_SD</span></a>, <a href="Fb1_Lorenz.html"><span class="s3">Fb1_Lorenz</span></a>, <a href="Fb1_Hopf.html"><span class="s3">Fb1_Hopf</span></a>, <a href="Fb1_HopfA.html"><span class="s3">Fb1_HopfA</span></a>, <a href="Fb1_HopfAFDC.html"><span class="s3">Fb1_HopfAFDC</span></a>, <a href="Fb1_VanDerPol.html"><span class="s3">Fb1_VanDerPol</span></a>, <a href="Fb1_Duffing.html"><span class="s3">Fb1_Duffing</span></a></span></p>
+<p class="p2"><br></p>
+<p class="p1"><b>References:</b></p>
+<p class="p2"><br></p>
+<p class="p1">[1]<span class="Apple-tab-span">	</span>Trefethen, Lloyd N.; Birkisson Ásgeir; Driscoll, Tobin A. (2017):<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><i>Exploring ODEs</i>. SIAM - Society for Industrial and Applied Mathematics.</p>
+<p class="p1"><span class="Apple-tab-span">	</span>Free download from: https://people.maths.ox.ac.uk/trefethen/Exploring.pdf<span class="Apple-tab-span">	</span></p>
+<p class="p1">[2]<span class="Apple-tab-span">	</span>Pirrò, David (2017). <i>Composing Interactions</i>. Dissertation.<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-tab-span">	</span>Institute of Electronic Music and Acoustics, University of Music and Performing Arts Graz.</p>
+<p class="p1"><span class="Apple-tab-span">	</span>Free download from: https://pirro.mur.at/media/pirro_david_composing_interactions_print.pdf<span class="Apple-tab-span">	</span></p>
+<p class="p1">[3]<span class="Apple-tab-span">	</span>https://git.iem.at/davidpirro/henri</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p5"><b>Creation / Class Methods</b></p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*new (name, function, stepDepth = 1, sizeFactor = 1)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Creates a new Fb1_ODEintdef object and stores it in a Dictionary for further usage with Fb1_ODE.</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>name </b>- The name of the integration procedure, expects a Symbol.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Default Fb1_ODEintdefs cannot be overwritten.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>function </b>- The implementation of the Function ("stepper") which describes the numeric procedure.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>It must take the arguments odeDef, t, y, dt and ... args for further ODE args and</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>must return the new integration value(s). For evaluating the ODE function<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>the method Fb1_ODEdef::value is used which performs the evaluation depending on its first argument.</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>stepDepth </b>- Integer. Values greater than one are for multi-step procedures.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 1.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><b>sizeFactor </b>- Integer. 1 means that the procedure buffers only integration values,</p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2 means that the differential is buffered too.<span class="Apple-converted-space"> </span></p>
+<p class="p9"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>Defaults to 1.<span class="Apple-converted-space"> </span></p>
+<p class="p10"><br></p>
+<p class="p10"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*at (key)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Returns the Fb1_ODEintdef instance of the Symbol <b>key</b> if it exists.</p>
+<p class="p6"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*keys</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Returns an array of all keys of currently stored Fb1_ODEintdefs.</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*postAll</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Posts all keys of currently stored Fb1_ODEintdefs.</p>
+<p class="p8"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*remove (key)</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Removes the Fb1_ODEintdef of the Symbol <b>key</b> from the Dictionary.</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>*reset</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><span class="s4"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>Removes all Fb1_ODEintdefs other than the predefined ones from the Dictionary.</p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p6"><br></p>
+<p class="p6"><span class="Apple-tab-span">	</span></p>
+<p class="p5"><b>Instance Methods</b></p>
+<p class="p4"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>name<span class="Apple-converted-space"> </span></b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Getter for the Fb1_ODEintdef's name.</p>
+<p class="p11"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>function<span class="Apple-converted-space"> </span></b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Getter for the Fb1_ODEintdef's function.</p>
+<p class="p11"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>stepDepth</b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Getter for the Fb1_ODEintdef's stepDepth.</p>
+<p class="p11"><br></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span>sizeFactor<span class="Apple-converted-space"> </span></b></p>
+<p class="p8"><b><span class="Apple-tab-span">	</span></b></p>
+<p class="p7"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b>Getter for the Fb1_ODEintdef's sizeFactor.</p>
+<p class="p11"><br></p>
+<p class="p11"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p11"><br></p>
+<p class="p12"><b>Examples</b></p>
+<p class="p4"><br></p>
+<p class="p13">// This shows how the classical 4-step Runge-Kutta is implemented,</p>
+<p class="p13">// quite straight it follows its mathematical definition.</p>
+<p class="p14"><br></p>
+<p class="p13">// t: the old time</p>
+<p class="p13">// y: the old state (array)</p>
+<p class="p13">// dt: the integration step</p>
+<p class="p13">// size: the size of the ODE (not used here, but needs to be there)</p>
+<p class="p13">// ... args is for further args of the ODE</p>
+<p class="p14"><br></p>
+<p class="p13">// The odeDef argument expects the Fb1_ODEdef object.</p>
+<p class="p13">// The evaluation of the ODE function is implemented by odeDef::value.</p>
+<p class="p13">// This method takes a first argument i which determines the kind of evaluation:</p>
+<p class="p13">// For i == nil it returns the evaluation value(s) as Array,</p>
+<p class="p13">// for a number it only returns the ith component.</p>
+<p class="p13">// The distinction is necessary as the symplectic procedures refer to</p>
+<p class="p13">// the single components of the ODE system.</p>
+<p class="p14"><br></p>
+<p class="p13">// There exist also symplectic Runge-Kutta procedures which I didn't test so far.</p>
+<p class="p13">// they would probably also need that option.</p>
+<p class="p4"><br></p>
+<p class="p15">Fb1_ODEintdef<span class="s2">(</span><span class="s5">\rk4</span><span class="s2">,</span></p>
+<p class="p16"><span class="s2"><span class="Apple-tab-span">	</span>{ </span>|odeDef, t, y, dt, size ... args|</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">var</span> k1 = odeDef.(<span class="s7">nil</span>, t, y, *args);</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">var</span> k2 = odeDef.(<span class="s7">nil</span>, dt * 0.5 + t, k1 * dt * 0.5 + y, *args);</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">var</span> k3 = odeDef.(<span class="s7">nil</span>, dt * 0.5 + t, k2 * dt * 0.5 + y, *args);</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">var</span> k4 = odeDef.(<span class="s7">nil</span>, dt + t, k3 * dt + y, *args);</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>((k2 + k3) * 2 + k1 + k4) * dt / 6 + y</p>
+<p class="p17"><span class="Apple-tab-span">	</span>}, 1, 1);</p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p13">// The same procedure as '_d' variant which stores the differential</p>
+<p class="p13">// The argument y is now passed an array of doubled size with the</p>
+<p class="p13">// last differential values in the second half of it.</p>
+<p class="p13">// Finally the new differential value is calculated and appended to the integration.</p>
+<p class="p4"><br></p>
+<p class="p15">Fb1_ODEintdef<span class="s2">(</span><span class="s5">\rk4_d</span><span class="s2">,</span></p>
+<p class="p16"><span class="s2"><span class="Apple-tab-span">	</span>{ </span>|odeDef, t, y, dt, size ... args|</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s6">var</span> k1, k2, k3, k4, yy, ff, yNew, fNew;</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>yy = y[0..size-1];</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ff = y[size..2*size-1];</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>k1 = ff;</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>k2 = odeDef.(<span class="s7">nil</span>, dt * 0.5 + t, k1 * dt * 0.5 + yy, *args);</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>k3 = odeDef.(<span class="s7">nil</span>, dt * 0.5 + t, k2 * dt * 0.5 + yy, *args);</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>k4 = odeDef.(<span class="s7">nil</span>, dt + t, k3 * dt + yy, *args);</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>yNew = ((k2 + k3) * 2 + k1 + k4) * dt / 6 + yy;</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>fNew = odeDef.(<span class="s7">nil</span>, t + dt, yNew, *args);</p>
+<p class="p17"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>yNew ++ fNew</p>
+<p class="p17"><span class="Apple-tab-span">	</span>}, 1, 2);</p>
+<p class="p11"><br></p>
+</body>
+</html>

@@ -1,0 +1,7 @@
+
+INSTANCEMETHODS::
+
+private:: miSC_getCtrIndex
+
+private:: miSC_getParentHelpSynth, miSC_isGeneratedByHelpSynth
+

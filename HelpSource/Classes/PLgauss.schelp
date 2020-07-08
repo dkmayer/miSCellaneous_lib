@@ -1,0 +1,86 @@
+CLASS:: PLgauss      
+summary:: dynamic scope Pgauss variant
+categories::Libraries>miSCellaneous>PLx suite, Streams-Patterns-Events>PLx suite
+related:: Overviews/miSCellaneous, Classes/Pgauss, Tutorials/PLx_suite, Tutorials/Event_patterns_and_Functions, Classes/VarGui, Tutorials/VarGui_shortcut_builds 
+
+
+DESCRIPTION::
+
+
+Takes Symbol args for later reference by the Streams, which will read from variables in the Environments of their instantiation. See link::Tutorials/PLx_suite::. 
+
+
+CLASSMETHODS::
+
+method::new
+
+Creates a new PLgauss object.
+
+argument::mean
+Symbol or Pgauss mean arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Can be dynamically replaced by Patterns or Streams. Defaults to 0.
+
+argument::dev
+Symbol or Pgauss dev arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Can be dynamically replaced by Patterns or Streams. Defaults to 1.
+
+argument::length
+Symbol or Pgauss length arg. 
+If a Symbol is passed, list can be assigned to an envir variable later on.
+Defaults to inf.
+
+argument::envir
+Dictionary or one of the Symbols 
+\top, \t (topEnvironment), \current, \c (currentEnvironment).
+Dictionary to be taken for variable reference. Defaults to \current.
+
+
+
+EXAMPLES::
+
+code::
+
+(
+s = Server.local;
+Server.default = s;
+s.boot;
+)
+		
+		
+// definition for future reference in arbitrary Environments,
+// Gauss distribution is not bounded, so do clip !
+
+(
+p = Pbind(
+    \midinote, PLgauss(\mean, \dev).clip(60, 90),
+    \dur, 0.1
+);
+)
+
+// prepare current Environment
+
+(
+~mean = 75;
+~dev = 0.3;
+)
+
+
+// run
+
+x = p.play;
+
+
+// move mean value and distribution
+// PLseq defaults to repeats = inf
+
+(
+~mean = PLseq((80, 79.75..70.25));
+~dev = Pstutter(8, PLseq([4, 0]));
+)
+
+x.stop;
+
+::
+
