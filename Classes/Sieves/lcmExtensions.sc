@@ -61,6 +61,7 @@
 		args.any(_ == 0).if { ^0 };
 
 		factors = this.abs.factors;
+		(factors == []).if {factors = [1]}{};
 		argListFactors = args.abs.collect(_.factors);
 
 		f = { |dict|
