@@ -70,6 +70,7 @@ Fb1_ODE : UGen {
 			basicDelta, blockFactor, outInit, sig, composeIns, argIns, argListFlatAr,
 			odeDef, odeIntDef, err, tMulIn, tSum, tSumInOld, fb1_in, fb1_func,
 			outScale, fb1_intFunc, fb1_inDepth, fb1_inInit, op;
+		var templateString, rateString, s, dtRate;
 
 		odeDef = Fb1_ODEdef.at(name);
 		odeIntDef = Fb1_ODEintdef.at(intType);
@@ -139,15 +140,15 @@ Fb1_ODE : UGen {
 		};
 
 		(stepDepth > 1).if {
-			var templateString =
+			templateString =
 				"A multi-step procedure is selected, so initial ODE solution " ++
 				"approximations have to be calculated in language, ";
-			var rateString = (rate == \audio).if { "sampleRate" }{ "controlRate" };
+			rateString = (rate == \audio).if { "sampleRate" }{ "controlRate" };
 
 			// for multi-step procedures we need the first values (resp. arrays of values)
 			dt0 = dt0 ?? {
-				var s = Server.default;
-				var dtRate = s.notNil.if {
+				s = Server.default;
+				dtRate = s.notNil.if {
 					(rate == \audio).if {
 						s.sampleRate
 					}{

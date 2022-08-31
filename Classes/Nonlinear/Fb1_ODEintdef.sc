@@ -594,9 +594,9 @@ Fb1_ODEintdef {
 	}
 
 	initFb1_ODEintdef { |name|
-
+		var err;
 		(initKeys.notNil and: { initKeys.includes(name) }).if {
-			var err = SimpleInitError("Fb1_ODEintdef of this name already exists");
+			err = SimpleInitError("Fb1_ODEintdef of this name already exists");
 			err.class_("Fb1_ODEintdef");
 			err.throw;
 		};
