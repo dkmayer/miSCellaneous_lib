@@ -46,7 +46,7 @@ Fb1 : UGen {
 				buf.set([initItem], buf.numFrames-1)
 			}
 			{ initItem.isKindOf(SequenceableCollection) }{
-				initItem.every(_.isKindOf(Number)).if {
+				initItem.every(_.isValidUGenInput).if {
 					(initItem.size > buf.numFrames).if {
 						SimpleInitError("wrong inInit/outInit data, size too large").throw
 					}{
