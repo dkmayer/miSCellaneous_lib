@@ -28,7 +28,7 @@ VarGui	{
 		hasConnectedVarEnvirGroups, hasConnectedSynthCtrGroups, firstSynthCtrIndices,
 		<>varStrings, varCtrSizes, synthCtrSizes, <>synthCtrStrings, <>saveData, <>envirs,
 		<>varEnvirIndices, <synthCtrSynthIndices, <>varEnvirGroups, <synths, <>assumePlaying, <>assumeRunning,
-		<>assumeEnded, envirs, streamEnvirs, <streamEnvirIndices, varEnvirIndices, <clocks, <quants,
+		<>assumeEnded, streamEnvirs, <streamEnvirIndices, <clocks, <quants,
 		<>window, <playerSection, <>colors, <>varCtrColorPairs, <>synthCtrColorPairs, <>synthCtrSliders,
 		<>varCtrSliders, <>synthSliderDict, <>varSliderDict, <>synthNameBoxes;
 

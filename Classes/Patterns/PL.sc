@@ -743,7 +743,7 @@ PLnaryFunc : Pnaryop {
 //////////////////////
 
 PLn : Pn {
-	var <>item, <>repeats, <>envir;
+	var <>item, <>envir;
 	*new { |item, repeats = inf, envir = \current|
 		^super.newCopyArgs(
 			Plazy({ envir.miSC_getEnvir[item] }),
